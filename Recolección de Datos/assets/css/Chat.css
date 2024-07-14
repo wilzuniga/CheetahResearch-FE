@@ -1,0 +1,206 @@
+img {
+  border-radius: 5px;
+}
+
+* {
+  outline: none;
+}
+
+* {
+  /*box-sizing: inherit;*/
+}
+
+*:before, *:after {
+  /*box-sizing: inherit;*/
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@media (min-width: 992px) {
+  .btn {
+    width: 90px;
+  }
+}
+
+.row {
+  display: flex;
+}
+
+@media (max-height: 667px) {
+  #Header, #Type-Box {
+    height: 50px;
+    align-content: center;
+  }
+}
+
+@media (max-height: 667px) {
+  #Type-Box .row {
+    height: 40px;
+    align-content: center;
+  }
+}
+
+.fa-info-circle:hover {
+  border-color: var(--bs-teal);
+  color: #0e4065;
+  outline-color: var(--bs-warning-bg-subtle);
+  cursor: pointer;
+}
+
+@media (min-width: 300px) {
+  .card {
+    max-width: 250px;
+  }
+}
+
+@media (min-width: 576px) {
+  .card {
+    max-width: 450px;
+  }
+}
+
+@media (min-width: 768px) {
+  .card {
+    max-width: 650px;
+  }
+}
+
+@media (min-width: 992px) {
+  .card {
+    max-width: 850px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .card {
+    max-width: 1050px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .card {
+    max-width: 1250px;
+  }
+}
+
+@media (min-width: 300px) {
+  #EmptyF-BG {
+    width: 250px;
+  }
+}
+
+@media (min-width: 576px) {
+  #EmptyF-BG {
+    width: 450px;
+  }
+}
+
+@media (min-width: 768px) {
+  #EmptyF-BG {
+    width: 650px;
+  }
+}
+
+#container-btSend {
+  min-width: 50px;
+}
+
+#Type-Box {
+  height: 100px;
+}
+
+@media (min-width: 300px) {
+  #TypeB-BG {
+    height: 85%;
+  }
+}
+
+@media (min-width: 300px) {
+  #Type-Box {
+    height: 9%;
+  }
+}
+
+@media (min-width: 768px) {
+  #TypeB-BG {
+    height: 92%;
+  }
+}
+
+@media (min-width: 768px) {
+  #Type-Box {
+    height: 8%;
+  }
+}
+
+@media (min-height: 667px) and (max-height: 840px) {
+  #TypeB-BG {
+    height: 50px;
+  }
+}
+
+@media (min-height: 340px) and (max-height: 420px) {
+  #Header {
+  }
+}
+
+@media (min-height: 340px) and (max-height: 420px) {
+  #Chat-Box {
+    grid-row: auto;
+  }
+}
+
+@media (min-height: 1000px) {
+  #Message-Input {
+    font-size: 2rem;
+  }
+}
+
+#Feed-BG::-webkit-scrollbar {
+  width: 10px;
+}
+
+#Feed-BG::-webkit-scrollbar-track {
+  background: rgba(46,46,46,0.72);
+  border-radius: 3px;
+}
+
+#Feed-BG::-webkit-scrollbar-thumb {
+  background: #242424;
+  border-radius: 15px;
+}
+
+.card-text {
+  font-size: 1rem;
+}
+
+.card-subtitle {
+  font-size: 0.75rem;
+}
+
+#Message-Input {
+  font-size: 1rem;
+}
+
+@media (min-height: 1000px) {
+  .card-text {
+    font-size: 1.3rem;
+  }
+}
+
+@media (min-height: 1000px) {
+  .card-subtitle {
+    font-size: 1.05rem;
+  }
+}
+
+@media (min-height: 1000px) {
+  #Message-Input {
+    font-size: 1.3rem;
+  }
+}
+

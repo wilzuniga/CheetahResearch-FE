@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');
+
+/* General Font Style */
+body {
+    background-color: #072934;
+}
+
+/*
+072934
+2e3e66
+414656
+eb7e20
+*/
+.dropdown-menu :hover{
+    background-color: #eb7e20;
+    color: #ffffff;
+}
+
+.sidebar .nav-item .nav-link i {
+    color: #414656; /* Color de los iconos de la sidebar */
+}
+
+.sidebar-dark .sidebar-brand {
+    color: #414656; /* Color del texto del sidebar */
+}
+
+
+
+#wrapper #content-wrapper {
+    background-color: #072934;
+}
+
+.text-center .btn {
+    background-color: #00b24d; /* Fondo del botón circular */
+}
+
+/* Bootstrap Overrides for Colors */
+.bg-gradient-primary {
+    background-image: linear-gradient(180deg, #eb7e20 1%, #eb7e20 100%); /* Color de fondo del gradiente */
+}
+
+
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #414656; /* Color de los enlaces en la barra de navegación oscura */
+}
+
+
+
+
+.card {
+    --bs-card-border-color: #e3e6f0; /* Color del borde de la tarjeta */
+    --bs-card-cap-bg: #eb7e20; /* Color de fondo de la tarjeta, encabezado */
+    color : #414656; /* Color del texto de la tarjeta */
+    --bs-card-bg: #ffffff; /* Color de fondo de la tarjeta */
+}
+
+
+
+
+.sidebar-dark #sidebarToggle:hover {
+    color: #eb7e20; /* Color del icono del sidebarToggle al pasar el mouse */
+}
+
+.sidebar-dark.toggled #sidebarToggle::after {
+    color: #eb7e20; /* Color del icono del sidebarToggle al estar activo */
+}
+
