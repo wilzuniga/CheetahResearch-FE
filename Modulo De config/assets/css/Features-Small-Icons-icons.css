@@ -58,3 +58,7 @@
 #contentCard_PaginaOverview {
 }
 
+.list-group-item-active {
+  background-color: var(--bs-primary);
+}
+

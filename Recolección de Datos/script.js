@@ -228,4 +228,30 @@ function getMessage(message, imageSrc) {
 }
 
 
+function load() {
+    const preguntas = [];
+    const url = 'http://34.201.10.223:3001/start';
+    
+    axios.post(url, { study_id: '6693439476426b2d514875d1' }, {
+        headers: {
+            'Content-Type': 'multipart/form-data',  
+        }
+    }).then((response) => {
+        const data = response.data;
+        data.forEach((element) => {
+            preguntas.push(element);
+        });
+
+        console.log('Preguntas cargadas:', preguntas);
+    }).catch((error) => {
+        console.log('Error al cargar las preguntas:', error);
+    });
+
+    // Ejemplo de cómo usar el arreglo de preguntas guardadas
+    console.log('Preguntas guardadas:', preguntas);
+
+    return preguntas;
+}
+
+
 
