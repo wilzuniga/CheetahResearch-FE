@@ -92,7 +92,7 @@ function guardarPreguntas() {
     console.log(preguntas) ;
     formData.append('questions', JSON.stringify(preguntas));
     
-    const url = 'http://34.201.10.223:3000/createQuestion/' + localStorage.getItem('selectedStudyId');
+    const url = 'http://34.201.10.223:3000/createQuestion/' + localStorage.getItem('selectedStudyId') + '/' ;
 
     axios.post(url, formData, {
         headers: {

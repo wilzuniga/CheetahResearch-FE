@@ -1,3 +1,6 @@
+let contaWeight = 0;
+let contador = 0;
+
 //Enviar mensaje al presionar enter
 document.getElementById('Message-Input').addEventListener('keydown', function (event) {
     const imageIcon = document.getElementById('imageIcon');
@@ -93,6 +96,42 @@ document.getElementById('btIMG').addEventListener('click', function () {
 
 //Enviar un mensaje como entrevistador
 function sendMessage(message, imageSrc) {
+    let messages = localStorage.getItem('preguntas');
+    let preguntasArreglo = JSON.parse(messages);
+    let sendApi = preguntasArreglo[contador] + '|' + message;
+    contaWeight++
+
+
+    const url = 'http://34.201.10.223:3001/communicate/';
+     
+    axios.post(url, { prompt: sendApi }, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    }).then((response) => {
+        const data = response.data;
+        console.log(data);
+        localStorage.setItem('preguntaAtcual', response.data.response);
+
+        let messageeee = localStorage.getItem('preguntaAtcual')
+        if (contaWeight == 3) {
+            contador++
+            contaWeight = 0
+            getMessage(messageeee, null);
+        }else{
+            if (messageeee.includes(preguntasArreglo[contador])) {
+                console.log('pregunta', preguntasArreglo[contador]);
+                let messageeee = preguntasArreglo[contador];
+                getMessage(messageeee, null);
+            }else{
+                getMessage(messageeee, null);
+            }
+        }
+
+    }).catch((error) => {
+        console.log('Error:', error);
+    });
+
     const Feed = document.getElementById('Feed');//Validar Feed Vacío
     const emptyFeed = document.getElementById('Empty-Feed');
     if (Feed.style.display === 'none') {
@@ -157,6 +196,11 @@ function sendMessage(message, imageSrc) {
 
     //Scroll automático hacia abajo cuando se envía un mensaje nuevo
     scrollPanel.scrollTop = scrollPanel.scrollHeight;
+
+    //recibir mensaje
+
+
+
 }
 
 //Función para recibir un mensaje de encuestador
@@ -230,28 +274,31 @@ function getMessage(message, imageSrc) {
 
 function load() {
     const preguntas = [];
-    const url = 'http://34.201.10.223:3001/start';
-    
+    const url = 'http://34.201.10.223:3001/start/';
+    console.log('Cargando preguntas...');
+
     axios.post(url, { study_id: '6693439476426b2d514875d1' }, {
         headers: {
             'Content-Type': 'multipart/form-data',  
         }
     }).then((response) => {
         const data = response.data;
-        data.forEach((element) => {
-            preguntas.push(element);
+        console.log(data);
+        const questions = data.questions;
+        questions.forEach(question => {
+            preguntas.push(question);
         });
 
-        console.log('Preguntas cargadas:', preguntas);
+        // Guardar en localStorage solo después de haber terminado de agregar las preguntas
+        localStorage.setItem('preguntas', JSON.stringify(preguntas));
+        console.log('Preguntas cargadas');
+        console.log(localStorage.getItem('preguntas'));
+        let messages = localStorage.getItem('preguntas');
+        let preguntasArreglo = JSON.parse(messages);
+        getMessage(preguntasArreglo[0], null);
     }).catch((error) => {
-        console.log('Error al cargar las preguntas:', error);
+        console.log('Error:', error);
     });
-
-    // Ejemplo de cómo usar el arreglo de preguntas guardadas
-    console.log('Preguntas guardadas:', preguntas);
-
-    return preguntas;
 }
-
 
 
