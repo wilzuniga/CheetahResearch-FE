@@ -4,10 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const pesoTXT = document.getElementById('PesoTXT');
     const anexoPregunta = document.getElementById('AnexoPregunta');
     const anexoPreguntaURL = document.getElementById('AnexoPreguntaURL');
-    const preguntaLST = document.getElementById('PreguntaLST');
-    const pesoLST = document.getElementById('PesoLST');
-    const anexoLST = document.getElementById('AnexoLST');
     const listGroup = document.querySelector('.list-group');
+    const overlay = document.getElementById('overlay');
+    const followUpQuestionTXT = document.getElementById('FollowUpQuestionTXT');
+    const followUpQuestionAddBTN = document.getElementById('FollowUpQuestionAddBTN');
+
+    let currentFollowUpList = null;
 
     agregarPreguntaBtn.addEventListener('click', (event) => {
         event.preventDefault();
@@ -41,10 +43,45 @@ document.addEventListener('DOMContentLoaded', () => {
             newSmall.style.fontFamily = "'IBM Plex Sans', sans-serif";
             newSmall.textContent = anexo;
 
+            const followQuestionList = document.createElement('ul');
+            followQuestionList.style.color = '#000000';
+            followQuestionList.id = 'FollowQuestionList';
+
+            const eliminarBtn = document.createElement('button');
+            eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+            eliminarBtn.innerText = 'Eliminar';
+            eliminarBtn.style.marginRight = '10px';
+            eliminarBtn.addEventListener('click', () => {
+                newListItem.remove();
+            });
+
+            const addFollowQuestionBTN = document.createElement('button');
+            addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
+            addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
+            addFollowQuestionBTN.style.marginRight = '10px';
+            addFollowQuestionBTN.addEventListener('click', () => {
+                overlay.style.display = 'flex';
+                currentFollowUpList = followQuestionList;
+            });
+
+            followUpQuestionAddBTN.addEventListener('click', () => {
+                const followUpQuestion = followUpQuestionTXT.value;
+                if (followUpQuestion) {
+                    const followUpListItem = document.createElement('li');
+                    followUpListItem.textContent = followUpQuestion;
+                    currentFollowUpList.appendChild(followUpListItem);
+                    followUpQuestionTXT.value = '';
+                    overlay.style.display = 'none';
+                }
+            });
+
             newDiv.appendChild(newH5);
             newDiv.appendChild(newSpan);
             newListItem.appendChild(newDiv);
+            newListItem.appendChild(followQuestionList);
             newListItem.appendChild(newSmall);
+            newListItem.appendChild(eliminarBtn);
+            newListItem.appendChild(addFollowQuestionBTN);
             listGroup.appendChild(newListItem);
 
             // Clear input fields
