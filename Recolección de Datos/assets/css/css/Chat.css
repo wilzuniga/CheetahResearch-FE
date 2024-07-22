@@ -1,0 +1,58 @@
+img {
+  border-radius: 5px;
+}
+
+* {
+  outline: none;
+}
+
+* {
+  /*box-sizing: inherit;*/
+}
+
+*:before, *:after {
+  /*box-sizing: inherit;*/
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+}
+
+/* Feed Scrollbar */
+
+#Feed-BG::-webkit-scrollbar {
+  width: 10px;
+}
+
+#Feed-BG::-webkit-scrollbar-track {
+  background: rgba(46,46,46,0.72);
+  border-radius: 3px;
+}
+
+#Feed-BG::-webkit-scrollbar-thumb {
+  background: #797979;
+  border-radius: 15px;
+}
+
+/* Type-Box Scrollbar */
+
+#Message-Input::-webkit-scrollbar {
+  width: 15px;
+}
+
+#Message-Input::-webkit-scrollbar-track {
+  background: #aaa7aa;
+  border-radius: 2px;
+}
+
+#Message-Input::-webkit-scrollbar-thumb {
+  background: #2e3e43;
+  border-radius: 15px;
+}
+
