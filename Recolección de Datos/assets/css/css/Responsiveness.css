@@ -1,0 +1,376 @@
+/* Empty Feed */
+
+#EmptyF-BG {
+  max-width: 100%;
+}
+
+@media (min-width: 400px) {
+  #EmptyF-BG {
+    width: 300px;
+  }
+}
+
+@media (min-width: 500px) {
+  #EmptyF-BG {
+    width: 450px;
+  }
+}
+
+@media (min-width: 700px) {
+  #EmptyF-BG {
+    width: 650px;
+  }
+}
+
+@media (min-height: 1000px) {
+  #EmptyF-BG {
+    min-height: 206px;
+  }
+}
+
+/* Chat, TypeBox Container */
+
+@media (min-width: 900px) {
+  #Chat-BG {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+}
+
+/* Chat Container */
+
+#Chat-Box {
+  height: 90%;
+}
+
+@media (min-height: 900px) {
+  #Chat-Box {
+    height: 92%;
+  }
+}
+
+@media (min-height: 340px) and (max-height: 420px) {
+  #Chat-Box {
+    grid-row: auto;
+  }
+}
+
+/* Type Box Container */
+
+#Type-Box {
+  height: 10%;
+}
+
+@media (min-width: 900px) {
+  #Type-Box {
+    border-radius: 10px;
+  }
+}
+
+@media (min-height: 900px) {
+  #Type-Box {
+    height: 8%;
+  }
+}
+
+@media (min-height: 1000px) {
+  #TypeB-Container {
+    /*height: 10px;*/
+  }
+}
+
+/* Type Box */
+
+@media (min-width: 300px) {
+  #TypeB-BG {
+    height: 85%;
+  }
+}
+
+@media (min-width: 700px) {
+  #TypeB-BG {
+    height: 92%;
+  }
+}
+
+@media (min-height: 700px) and (max-height: 840px) {
+  #TypeB-BG {
+    height: 80%;
+  }
+}
+
+/* Nombre del Bot */
+
+#Bot-Name {
+  font-size: 1.4rem;
+}
+
+@media (min-height: 700px) {
+  #Bot-Name {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-height: 800px) {
+  #Bot-Name {
+    font-size: 1.6rem;
+  }
+}
+
+@media (min-height: 900px) {
+  #Bot-Name {
+    font-size: 1.7rem;
+  }
+}
+
+@media (min-height: 1000px) {
+  #Bot-Name {
+    font-size: 1.8rem;
+  }
+}
+
+@media (min-height: 1100px) {
+  #Bot-Name {
+    font-size: 190%;
+  }
+}
+
+/* Estado del Bot */
+
+#Bot-Status {
+  font-size: 0.8rem;
+}
+
+@media (min-height: 700px) {
+  #Bot-Status {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-height: 800px) {
+  #Bot-Status {
+    font-size: 1rem;
+  }
+}
+
+@media (min-height: 900px) {
+  #Bot-Status {
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-height: 1000px) {
+  #Bot-Status {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-height: 1100px) {
+  #Bot-Status {
+    font-size: 130%;
+  }
+}
+
+/* Texto en mensajes */
+
+.card-text {
+  font-size: 0.9rem;
+}
+
+@media (min-width: 400px) {
+  .card-text {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 500px) {
+  .card-text {
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .card-text {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-height: 1000px) and (max-width: 500px) {
+  .card-text {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-height: 1000px) and (min-width: 500px) {
+  .card-text {
+    font-size: 1.3rem;
+  }
+}
+
+/* Fecha en mensajes */
+
+.card-subtitle {
+  font-size: 0.7rem;
+}
+
+@media (min-width: 400px) {
+  .card-subtitle {
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 500px) {
+  .card-subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .card-subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (min-height: 1000px) and (max-width: 500px) {
+  .card-subtitle {
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-height: 1000px) and (min-width: 500px) {
+  .card-subtitle {
+    font-size: 1.05rem;
+  }
+}
+
+/* Typing... Msg */
+
+#Typing-Msg .card {
+  width: 80px;
+  height: 60px;
+}
+
+@media (min-width: 400px) {
+  #Typing-Msg .card {
+    width: 85px;
+    height: 65px;
+  }
+}
+
+@media (min-width: 500px) {
+  #Typing-Msg .card {
+    width: 95px;
+    height: 75px;
+  }
+}
+
+@media (min-width: 600px) {
+  #Typing-Msg .card {
+    width: 100px;
+    height: 80px;
+  }
+}
+
+@media (min-height: 1000px) and (max-width: 500px) {
+  #Typing-Msg .card {
+    width: 90px;
+    height: 70px;
+  }
+}
+
+@media (min-height: 1000px) and (min-width: 500px) {
+  #Typing-Msg .card {
+    width: 95px;
+    height: 75px;
+  }
+}
+
+/* Texto en Type-Box */
+
+#Message-Input {
+  font-size: 1rem;
+}
+
+@media (min-width: 500px) {
+  #Message-Input {
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 600px) {
+  #Message-Input {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-height: 1000px) {
+  #Message-Input {
+    font-size: 2rem;
+  }
+}
+
+@media (min-height: 1000px) and (max-width: 500px) {
+  #Message-Input {
+    font-size: 1rem;
+  }
+}
+
+@media (min-height: 1000px) and (min-width: 500px) {
+  #Message-Input {
+    font-size: 1.3rem;
+  }
+}
+
+/* Bot Image (Container and Div) */
+
+.BotIMG-Cont {
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+}
+
+@media (min-width: 400px) {
+  .BotIMG-Cont {
+    width: 35px;
+    height: 35px;
+    border-radius: 20px;
+  }
+}
+
+@media (min-width: 500px) {
+  .BotIMG-Cont {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+  }
+}
+
+@media (min-width: 600px) {
+  .BotIMG-Cont {
+    width: 50px;
+    height: 50px;
+    border-radius: 30px;
+  }
+}
+
+.BotIMG-Div {
+  margin-left: -20px;
+  margin-right: 6px;
+}
+
+@media (min-width: 500px) {
+  .BotIMG-Div {
+    margin-left: -10px;
+    margin-right: 8px;
+  }
+}
+
+@media (min-width: 600px) {
+  .BotIMG-Div {
+    margin-left: -9px;
+    margin-right: 9px;
+  }
+}
+
+/* Other */
+

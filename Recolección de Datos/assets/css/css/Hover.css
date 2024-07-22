@@ -1,0 +1,42 @@
+/* Default Properties */
+
+#btIMG-Cont {
+  background: transparent;
+  transition: 0.2s ease-in-out;
+}
+
+#btSend-Cont {
+  background: #072934;
+  transition: 0.2s ease-in-out;
+}
+
+#btSend {
+  color: #929292;
+  transition: 0.2s ease-in-out;
+}
+
+#btIMG {
+  color: #072934;
+  transition: 0.2s ease-in-out;
+}
+
+/* Hover Properties */
+
+#btSend-Cont:hover {
+  background: #eb7e20;
+}
+
+#btSend-Cont:hover #btSend {
+  color: #072934;
+}
+
+#btIMG:hover {
+  color: #e05a30;
+}
+
+#btIMG-Cont:hover {
+  background: #083340;
+}
+
+/* No focus (Mobile) */
+
