@@ -35,12 +35,89 @@ function createSurveyerForm() {
     return formContainer;
 }
 
-// Función para agregar el formulario al contenedor
-function appendSurveyerForm() {
-    const formContainer = document.getElementById('form-containerSurveyer');
-    const surveyerForm = createSurveyerForm();
-    formContainer.appendChild(surveyerForm);
+function createSurveyerFormReadOnly() {
+    const formContainer = document.createElement('div');
+    url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/getInterviewer/';
+
+    axios.post(url, { study_id: localStorage.getItem('selectedStudyId') }, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    }).then(response => {
+        const data = response.data;
+        formContainer.innerHTML = `
+            <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'IBM Plex Sans', sans-serif;">Encuestador</h2>
+            <form class="p-3 p-xl-4
+            " method="post" style="font-family: 'IBM Plex Sans', sans-serif;">
+                <div class="mb-3">
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Imagen</p>
+                    <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
+                    </div>
+                <div class="mb-3">
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Nombre del Encuestador</p>
+                    <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" placeholder="Nombre" value="${data.interviewerName}" disabled>
+                </div>
+                <div class="mb-3">
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Tono Encuestador</p>
+                    <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" placeholder="Ingresa el tono en el cual hablará el encuestador" value="${data.interviewerTone}" disabled>
+                </div>
+                <div class="mb-3">
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Observaciones importantes</p>
+                    <input class="form-control" type="text" id="ObservacionesImportantesTXT" name="Observaciones Importantes" placeholder="Observaciones importantes al Encuestador" value="${data.importantObservation}" disabled>
+                </div>
+                <div class="mb-3">
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Saludo</p>
+                    <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" placeholder="Ingresa el saludo del encuestador" disabled>${data.interviewerGreeting}</textarea>
+                </div>
+            </form>
+        `;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+    return formContainer;
 }
+
+
+    
+
+// Función para agregar el formulario al contenedor
+async function appendSurveyerForm() {
+    const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/getInterviewer/';
+    
+    try {
+        const response = await axios.post(url, { study_id: localStorage.getItem('selectedStudyId') }, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        
+        const data = response.data;
+        const formContainer = document.getElementById('form-containerSurveyer');
+        
+        if (data.interviewerName != null) {
+            const surveyerForm = createSurveyerFormReadOnly();
+            formContainer.appendChild(surveyerForm);
+        } else {
+            const surveyerForm = createSurveyerForm();
+            formContainer.appendChild(surveyerForm);
+            document.getElementById('CrearEncuestadorBtn').addEventListener('click', (event) => {
+                event.preventDefault();
+                captureSurveyerFormData();
+            });
+        }
+    } catch (error) {
+        const formContainer = document.getElementById('form-containerSurveyer');
+        const surveyerForm = createSurveyerForm();
+        formContainer.appendChild(surveyerForm);
+        document.getElementById('CrearEncuestadorBtn').addEventListener('click', (event) => {
+            event.preventDefault();
+            captureSurveyerFormData();
+        });
+        }
+}
+
 
 
 // Función para capturar y guardar datos del formulario del encuestador
@@ -52,7 +129,7 @@ function captureSurveyerFormData() {
     const fileInput = document.querySelector('input[type="file"]');
 
     //operacion POST, CON FORM DATa y hacer que los componentes ya no sean modificables
-    const url = 'http://34.201.10.223:3000/addInterviewer/';
+    const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/addInterviewer/';
     const data = new FormData();
     data.append('interviewerName', nombreEncuestador);
     data.append('interviewerProfilePicture', fileInput.files[0]);
@@ -102,10 +179,7 @@ window.onload = () => {
     CSrvyr_DeactivateNavBy();
     appendSurveyerForm();
 
-    document.getElementById('CrearEncuestadorBtn').addEventListener('click', (event) => {
-        event.preventDefault();
-        captureSurveyerFormData();
-    });
+    
 }
 
 

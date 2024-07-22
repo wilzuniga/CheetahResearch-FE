@@ -19,9 +19,44 @@
     <link rel="stylesheet" href="assets/css/css/Simple-Bootstrap-Chat.css">
     <link rel="stylesheet" href="assets/css/css/Hover.css">
     <link rel="stylesheet" href="assets/css/css/Responsiveness.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        #overlay {
+            position: fixed; /* Posiciona el overlay de manera fija */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(3px); /* Filtro de desenfoque */ 
+            display: flex;
+            align-items: center; /* Centra verticalmente */
+            justify-content: center; /* Centra horizontalmente */
+            z-index: 1000; /* Asegura que el overlay esté por encima del contenido */
+            display: none; /* Ocultar por defecto */
+        }
+
+        #overlayContent {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            max-width: 600px; /* Opcional: limita el ancho máximo */
+            box-sizing: border-box; /* Incluye el padding en el ancho total */
+        }
+
+        .card-body {
+            word-wrap: break-word; /* Permite que el texto haga salto de línea */
+            word-break: break-word; /* O también puedes usar word-break: break-all; */
+        }
+    </style>
 </head>
 
-<body class="d-flex flex-column" style="height: 100%;background: url(&quot;assets/img/Main%20BG.png&quot;) center / cover;">
+<body class="d-flex flex-column" style="height: 100%;background: url(&quot;assets/img/Main%20BG.png&quot;) center / cover;" onload="loadInterviewer()">
+    <div id="overlay" style="display: flex;">
+        
+    </div>
+
     <div class="container-fluid d-flex flex-row justify-content-start align-items-center align-content-center" id="Header-BG" style="height: 8%;width: 100%;background: #0f191fdc;backdrop-filter: blur(2px);-webkit-backdrop-filter: blur(2px);">
         <div class="row d-flex flex-column justify-content-center align-content-center" style="height: 100%;">
             <div class="col d-flex flex-column justify-content-center align-content-center" style="height: 100%;padding-right: 8px;padding-left: 8px;padding-top: 0px;margin-left: 15px;">
@@ -76,6 +111,7 @@
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/js/bs-init.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

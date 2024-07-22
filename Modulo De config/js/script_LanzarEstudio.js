@@ -1,8 +1,11 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Actualizar el título del estudio desde localStorage
-    const tituloDelEstudio = localStorage.getItem('tituloDelEstudio');
-    if (tituloDelEstudio) {
-        document.getElementById('TituloEstudioLBL').innerText = tituloDelEstudio;
+function load(){    // Actualizar el título del estudio desde localStorage
+    const datos = localStorage.getItem('selectedStudyData');
+    console.log(datos);
+    if (datos) {
+        const estudio = JSON.parse(datos);
+        console.log(estudio.summary);
+        document.getElementById('TituloEstudioLBL').innerText = estudio.title;
+        document.getElementById('ResumenEstudioLBL').innerText = estudio.summary;
     }
 
     // Manejar el evento del botón de agregar filtro
@@ -60,4 +63,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cardHeader.appendChild(copiarIcono);
     });
-});
+};

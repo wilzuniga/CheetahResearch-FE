@@ -34,6 +34,7 @@ function enableNavItems() {
 }
 
 function CE_DeactivateNavBy(){
+    console.log('Verificando si se activan los botones');
     if(localStorage.getItem('selectedStudyId') != null){
         console.log('Study id:', localStorage.getItem('selectedStudyId'));
         enableNavItems();
@@ -176,7 +177,7 @@ function CaptureAndPostformdta() {
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
     //StudysaveToLocStrg();
     //operacion POST, CON FORM DATA
-    const url = 'http://34.201.10.223:3000/createStudy/';
+    const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/createStudy/';
     const data = new FormData();
     data.append('title', tituloDelEstudio);
     data.append('target', mercadoObjetivo);
@@ -187,13 +188,14 @@ function CaptureAndPostformdta() {
         .then(response => {
             console.log('Estudio creado:', response.data);
             localStorage.setItem('selectedStudyId', response.data.study_id);
+            CE_DeactivateNavBy();
+
         }
         )
         .catch(error => {
             console.error('Error al crear el estudio:', error);
         });
 
-    CE_DeactivateNavBy();
     
 
     return {
@@ -233,7 +235,7 @@ function ApendStudies(){
 
 
 function loadStudies() {
-    const url = 'http://34.201.10.223:3000/get_studies/';
+    const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/get_studies/';
 
     axios.get(url)
         .then(response => {
