@@ -4,7 +4,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const email = document.getElementById('InputEmail').value;
     const password = document.getElementById('InputPassword').value;
 
-    const response = await fetch('http://127.0.0.1:8000/login/', {
+    const response = await fetch('http://api.cheetah-research.com/login/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -3,7 +3,7 @@ document.getElementById('passwordResetForm').addEventListener('submit', async fu
 
     const email = document.getElementById('InputEmail').value;
 
-    const response = await fetch('http://127.0.0.1:8000/password-reset/', {
+    const response = await fetch('http://api.cheetah-research.com/password-reset/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -16,5 +16,5 @@ document.getElementById('passwordResetForm').addEventListener('submit', async fu
         const errorData = await response.json();
         alert(errorData.error || 'Password reset failed');
     }
-
+        
 });
