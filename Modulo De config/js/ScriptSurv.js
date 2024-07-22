@@ -5,11 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const anexoPregunta = document.getElementById('AnexoPregunta');
     const anexoPreguntaURL = document.getElementById('AnexoPreguntaURL');
     const listGroup = document.querySelector('.list-group');
-    const overlay = document.getElementById('overlay');
-    const followUpQuestionTXT = document.getElementById('FollowUpQuestionTXT');
-    const followUpQuestionAddBTN = document.getElementById('FollowUpQuestionAddBTN');
-
-    let currentFollowUpList = null;
 
     agregarPreguntaBtn.addEventListener('click', (event) => {
         event.preventDefault();
@@ -19,9 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const anexo = anexoPregunta.files.length > 0 ? anexoPregunta.files[0].name : anexoPreguntaURL.value;
 
         if (pregunta && peso) {
-            const newListItem = document.createElement('a');
+            const newListItem = document.createElement('div');
             newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
-            newListItem.href = '#';
             newListItem.style.fontFamily = "'IBM Plex Sans', sans-serif";
 
             const newDiv = document.createElement('div');
@@ -47,6 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
             followQuestionList.style.color = '#000000';
             followQuestionList.id = 'FollowQuestionList';
 
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.style.marginTop = '10px';
+
             const eliminarBtn = document.createElement('button');
             eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
             eliminarBtn.innerText = 'Eliminar';
@@ -54,34 +51,21 @@ document.addEventListener('DOMContentLoaded', () => {
             eliminarBtn.addEventListener('click', () => {
                 newListItem.remove();
             });
+            buttonsDiv.appendChild(eliminarBtn);
 
             const addFollowQuestionBTN = document.createElement('button');
             addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
             addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
             addFollowQuestionBTN.style.marginRight = '10px';
-            addFollowQuestionBTN.addEventListener('click', () => {
-                overlay.style.display = 'flex';
-                currentFollowUpList = followQuestionList;
-            });
-
-            followUpQuestionAddBTN.addEventListener('click', () => {
-                const followUpQuestion = followUpQuestionTXT.value;
-                if (followUpQuestion) {
-                    const followUpListItem = document.createElement('li');
-                    followUpListItem.textContent = followUpQuestion;
-                    currentFollowUpList.appendChild(followUpListItem);
-                    followUpQuestionTXT.value = '';
-                    overlay.style.display = 'none';
-                }
-            });
+            buttonsDiv.appendChild(addFollowQuestionBTN);
 
             newDiv.appendChild(newH5);
             newDiv.appendChild(newSpan);
             newListItem.appendChild(newDiv);
             newListItem.appendChild(followQuestionList);
             newListItem.appendChild(newSmall);
-            newListItem.appendChild(eliminarBtn);
-            newListItem.appendChild(addFollowQuestionBTN);
+            newListItem.appendChild(buttonsDiv);
+            
             listGroup.appendChild(newListItem);
 
             // Clear input fields
@@ -89,11 +73,48 @@ document.addEventListener('DOMContentLoaded', () => {
             pesoTXT.value = '';
             anexoPregunta.value = '';
             anexoPreguntaURL.value = '';
+
+            addFollowQuestionBTN.addEventListener('click', (event) => {
+                event.preventDefault();  // Prevent the default form submit behavior
+
+                const overlay = document.getElementById('overlay');
+                overlay.innerHTML = `
+                    <div id="overlayContent">
+                        <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: 'IBM Plex Sans', sans-serif;" />
+                        <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;">Agregar pregunta</button>
+                        <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;">Cerrar</button>
+                    </div>
+                `;
+            
+                // Mostrar el overlay
+                overlay.style.display = 'flex';
+            
+                // Añadir evento para cerrar el overlay
+                document.getElementById('CerrarOverlay').addEventListener('click', () => {
+                    overlay.style.display = 'none'; // Ocultar el overlay
+                });
+            
+                // Añadir evento para agregar la pregunta de seguimiento
+                document.getElementById('AgregarPreguntaOverlay').addEventListener('click', () => {
+                    const followUpQuestion = document.getElementById('FollowUpQuestionTXT').value;
+                    if (followUpQuestion) {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = followUpQuestion;
+                        followQuestionList.appendChild(listItem);
+                        document.getElementById('FollowUpQuestionTXT').value = ''; // Limpiar el campo de texto
+                        overlay.style.display = 'none'; // Ocultar el overlay
+                    } else {
+                        alert('Por favor, ingresa una pregunta de seguimiento.');
+                    }
+                });
+            });
         } else {
             alert('Por favor, ingresa tanto la pregunta como el peso.');
         }
     });
 });
+
+
 
 
 function guardarPreguntas() {
