@@ -1,7 +1,7 @@
 async function logOut(){
     try {
 
-        let response = await fetch('http://api.cheetah-research.com/logout/', {
+        let response = await fetch('http://127.0.0.1:8000/logout/', {
             method: 'POST',
             headers: {
                 'Authorization': `Token ${localStorage.getItem('token')}`
