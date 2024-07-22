@@ -16,7 +16,7 @@ document.getElementById('resetPasswordFormConfirm').addEventListener('submit', a
         return;
     }
 
-    const response = await fetch(`http://127.0.0.1:8000/password-reset-confirm/${uidb64}/${token}/`, {
+    const response = await fetch(`http://ec2-44-203-206-68.compute-1.amazonaws.com/password-reset-confirm/${uidb64}/${token}/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-bs-theme="light" lang="en">
+<html data-bs-theme="light" lang="en" data-bss-forced-theme="light" style="height: 100%;">
 
 <head>
     <meta charset="utf-8">
@@ -9,37 +9,46 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=League+Spartan&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
-    <link rel="stylesheet" href="assets/css/Features-Small-Icons-icons.css">
-    <link rel="stylesheet" href="assets/css/untitled.css">
+    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Brands.css">
+    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Free.css">
+    <link rel="stylesheet" href="assets/css/Ionicons.css">
+    <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/css/bs-theme-overrides.css">
+    <link rel="stylesheet" href="assets/css/css/Features-Small-Icons-icons.css">
+    <link rel="stylesheet" href="assets/css/css/untitled.css">
+    <link rel="stylesheet" href="assets/css/css/Hover.css">
+    <link rel="stylesheet" href="assets/css/css/Responsiveness.css">
 </head>
 
-<body class="bg-gradient-primary" style="background: var(--bs-primary);">
-    <div class="container">
+<body class="d-flex flex-column justify-content-center align-items-center bg-gradient-primary" style="height: 100%;width: 100%;background: var(--bs-primary);">
+    <div class="container" style="z-index: 1;position: absolute;">
         <div class="row justify-content-center">
             <div class="col-md-9 col-lg-12 col-xl-10">
-                <div class="card shadow-lg o-hidden border-0 my-5">
+                <div class="card border-0 shadow-lg o-hidden my-5">
                     <div class="card-body p-0">
                         <div class="row">
                             <div class="col-lg-6 d-none d-lg-flex">
-                                <div class="flex-grow-1 bg-login-image" style="background: url(&quot;assets/img/photo-1516625151625-de173ddaebbf.jpg&quot;) center / cover;"></div>
+                                <div class="flex-grow-1 bg-login-image" style="background:url(&quot;assets/img/photo-1516625151625-de173ddaebbf.jpg&quot;) center / cover;"></div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h4 class="text-dark mb-4" style="font-family: 'IBM Plex Sans', sans-serif;">Iniciar Sesion</h4>
+                                        <h4 class="text-dark mb-4" style="font-family:'IBM Plex Sans', sans-serif;">Iniciar Sesion</h4>
                                     </div>
-                                    <form class="user" style="font-family: 'IBM Plex Sans', sans-serif;" id="loginForm">
-                                        <div class="mb-3" style="font-family: 'IBM Plex Sans', sans-serif;"><input class="form-control form-control-user" type="email" id="InputEmail" aria-describedby="emailHelp" placeholder="Email" name="email" style="font-family: 'IBM Plex Sans', sans-serif;"></div>
-                                        <div class="mb-3" style="font-family: 'IBM Plex Sans', sans-serif;"><input class="form-control form-control-user" type="password" id="InputPassword" placeholder="Contraseña" name="password" style="font-family: 'IBM Plex Sans', sans-serif;"></div>
-                                        <div class="mb-3" style="font-family: 'IBM Plex Sans', sans-serif;">
-                                            <div class="custom-checkbox small" style="font-family: 'IBM Plex Sans', sans-serif;"></div>
+                                    <form class="user" style="font-family:'IBM Plex Sans', sans-serif;" id="loginForm">
+                                        <p class="text-center" id="Error-Login" style="font-size: 0.9rem;margin-left: 0px;margin-bottom: 5px;font-family: 'League Spartan', sans-serif;text-decoration: underline;color: red;display: none;">Error al iniciar sesión</p>
+                                        <div class="mb-3" style="font-family:'IBM Plex Sans', sans-serif;"><input class="form-control form-control form-control-user" type="email" aria-describedby="emailHelp" id="InputEmail" name="email" placeholder="Email" style="font-family:'IBM Plex Sans', sans-serif;" required=""></div>
+                                        <div class="mb-3" style="font-family:'IBM Plex Sans', sans-serif;"><input class="form-control form-control form-control-user" type="password" id="InputPassword" name="password" placeholder="Contraseña" style="font-family:'IBM Plex Sans', sans-serif;" required=""></div>
+                                        <div class="mb-3" style="font-family:'IBM Plex Sans', sans-serif;">
+                                            <div class="custom-checkbox small" style="font-family:'IBM Plex Sans', sans-serif;"></div>
                                         </div>
-                                        <hr style="font-family: 'IBM Plex Sans', sans-serif;"><button class="btn btn-primary d-block btn-user w-100" id="IniciarSesionBTN" type="submit" style="font-family: 'IBM Plex Sans', sans-serif;">Iniciar Sesion</button>
-                                        <hr style="font-family: 'IBM Plex Sans', sans-serif;">
+                                        <hr style="font-family:'IBM Plex Sans', sans-serif;"><button class="btn btn-primary d-block btn-user w-100" id="IniciarSesionBTN" type="submit" style="font-family:'IBM Plex Sans', sans-serif;">Iniciar Sesion</button>
+                                        <hr style="font-family:'IBM Plex Sans', sans-serif;">
                                     </form>
-                                    <div class="text-center" style="font-family: 'IBM Plex Sans', sans-serif;"><a class="small" href="forgot-password.html" style="font-family: 'IBM Plex Sans', sans-serif;">¿Olvidaste tu contraseña?</a></div>
-                                    <div class="text-center" style="font-family: 'IBM Plex Sans', sans-serif;"><a class="small" href="register.html" style="font-family: 'IBM Plex Sans', sans-serif;">Solicita Acceso</a></div>
+                                    <div class="text-center" style="font-family:'IBM Plex Sans', sans-serif;"><a class="small" href="forgot-password.html" style="font-family:'IBM Plex Sans', sans-serif;">¿Olvidaste tu contraseña?</a></div>
+                                    <div class="text-center" style="font-family:'IBM Plex Sans', sans-serif;"><a class="small" href="register.html" style="font-family:'IBM Plex Sans', sans-serif;">Solicita Acceso</a></div>
                                 </div>
                             </div>
                         </div>
@@ -48,10 +57,57 @@
             </div>
         </div>
     </div>
+    <div class="container flex-column justify-content-center align-items-center align-content-center" id="AuthAwait-Cont" style="z-index: 2;width: 100%;height: 100%;position: absolute;padding: 0px;backdrop-filter: blur(3px);-webkit-backdrop-filter: blur(3px);border-radius: 10px;overflow: hidden;border-style: none;display: none;">
+        <div class="shadow-lg d-flex flex-column justify-content-center align-items-center align-content-center" style="width: 55%;height: 350px;border-radius: 10px;overflow: hidden;">
+            <div class="row" style="width: 100%;height: 55%;background: #072934e9;">
+                <div class="col d-flex justify-content-center align-items-center align-content-center" style="background: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-shield-lock" style="font-size: 8rem;color: #f0631d;">
+                        <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56"></path>
+                        <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415z"></path>
+                    </svg></div>
+            </div>
+            <div class="row" style="width: 100%;height: 45%;background: #eb7e20;">
+                <div class="col d-flex flex-column justify-content-center align-items-center align-content-center">
+                    <p class="fw-normal d-flex" style="font-family: 'IBM Plex Sans', sans-serif;font-size: 1.8rem;color: #2e3e43;margin-bottom: 5px;"></p>
+                    <h1 style="font-family: 'IBM Plex Sans', sans-serif;color: #2e3e43;margin-bottom: 10px;">¡Uh Oh!</h1>
+                    <p class="fw-normal text-center d-flex align-items-center" style="font-family: 'League Spartan', sans-serif;color: #ffffff;margin-bottom: 5px;">Tu cuenta está en proceso de aprobación...<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" id="MoreInfo" style="height: 50%;font-size: 24px;margin-left: 6px;margin-bottom: 9px;cursor: pointer;">
+                            <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"></path>
+                        </svg></p><a id="Link-AuthReturn" href="#">Regresar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container flex-column justify-content-center align-items-center align-content-center" id="AuthAwait-Info" style="z-index: 3;width: 100%;height: 100%;position: relative;padding: 0px;backdrop-filter: blur(3px);-webkit-backdrop-filter: blur(3px);border-radius: 10px;overflow: hidden;border-style: none;display: none;">
+        <div class="shadow-lg d-flex flex-column justify-content-center align-items-center align-content-center" id="AuthAwait-InfoDiv" style="border-radius: 10px;overflow: hidden;margin-bottom: 40px;">
+            <div class="row" style="width: 100%;height: 55%;background: #4dc0e3;">
+                <div class="col d-flex justify-content-center align-items-center align-content-center" style="background: transparent;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" style="font-size: 5rem;color: #072934;">
+                        <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                        <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"></path>
+                    </svg></div>
+            </div>
+            <div class="row" style="width: 100%;height: 100%;background: #aaa7aa;">
+                <div class="col d-flex flex-column justify-content-center align-items-center align-content-center">
+                    <h1 class="text-center" style="font-family: 'IBM Plex Sans', sans-serif;color: #072934;margin-bottom: 5px;">Cuenta por aprobar...</h1>
+                    <p class="fw-normal text-center d-flex align-items-center" style="font-family: 'League Spartan', sans-serif;color: #2e3e43;margin-bottom: 5px;">Tu cuenta debe de ser autenticada por un administrador después de crearla, espera hasta obtener un correo de aprobación.</p><a id="Link-InfoReturn" href="#">Entendido</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
-    <script src="assets/js/theme.js"></script>
-    <script src="js/Script_LoginAuth.js"></script>
+    <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/js/bs-init.js"></script>
+    <script src="assets/js/js/theme.js"></script>
+    <script src="assets/js/Script_CrearEncuestador.js"></script>
+    <script src="assets/js/script_LanzarEncuesta.js"></script>
+    <script src="assets/js/script_LanzarEstudio.js"></script>
+    <script src="assets/js/Script_LoginAuth.js"></script>
+    <script src="assets/js/Script_LogOutAuth.js"></script>
+    <script src="assets/js/Script_Password_Reset.js"></script>
+    <script src="assets/js/Script_Password_ResetConfirm.js"></script>
+    <script src="assets/js/script_PPCrearEstudio.js"></script>
+    <script src="assets/js/Script_RegisterUsers.js"></script>
+    <script src="assets/js/ScriptSurv.js"></script>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-document.getElementById('loginForm').addEventListener('submit', async function(event) {
+document.getElementById('loginForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
     const email = document.getElementById('InputEmail').value;
@@ -15,10 +15,12 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);
+
         alert('Login successful');
-        window.location.href = './paginaPrincipal.html';
+
     } else {
         const errorData = await response.json();
         alert(errorData.error || 'Login failed');
     }
 });
+

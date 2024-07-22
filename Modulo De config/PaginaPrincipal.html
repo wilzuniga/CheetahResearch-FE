@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-bs-theme="light" lang="en">
+<html data-bs-theme="light" lang="en" data-bss-forced-theme="light">
 
 <head>
     <meta charset="utf-8">
@@ -9,31 +9,43 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=League+Spartan&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
-    <link rel="stylesheet" href="assets/css/Features-Small-Icons-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="assets/css/untitled.css">
+    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Brands.css">
+    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Free.css">
+    <link rel="stylesheet" href="assets/css/Ionicons.css">
+    <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/css/bs-theme-overrides.css">
+    <link rel="stylesheet" href="assets/css/css/Features-Small-Icons-icons.css">
+    <link rel="stylesheet" href="assets/css/css/untitled.css">
+    <link rel="stylesheet" href="assets/css/css/Hover.css">
+    <link rel="stylesheet" href="assets/css/css/Responsiveness.css">
 </head>
 
-<body style="width: 100%;" onload="deleteFromLocStrg()">
-    <div class="text-center d-lg-flex justify-content-lg-center align-items-lg-center" style="background: var(--bs-primary);height: 25vh;margin: 10px;border-radius: 5px;"><a class="navbar-brand align-items-center justify-content-xxl-end align-items-xxl-center sidebar-brand m-0" href="PaginaPrincipal.html">
-        <div class="sidebar-brand-icon rotate-n-15"><img class="mx-auto d-none d-md-block" data-bs-toggle="tooltip" data-bss-tooltip src="assets/img/NegroLogo.png" width="194" height="99" style="transform: rotate(23deg);width: 186px;height: 74px;filter: brightness(78%);" /></div>
-        <div class="sidebar-brand-text mx-3"><span data-bs-toggle="tooltip" data-bss-tooltip style="font-family: 'IBM Plex Sans', sans-serif;color: #072934;font-size: 49px;">CHEETAH RESEARCH</span></div>
-    </a></div>
-    <div class="card" id="contentCard_PaginaOverview" style="margin: 10px;height: 100vh;padding: 10px;">
-        <h1 style="color: var(--bs-body-bg);margin: 10px;background: var(--bs-primary);border-radius: 10px;padding: 05px;font-family: 'IBM Plex Sans', sans-serif;">SELECCIONAR ESTUDIO</h1>
-        <div class="list-group" id="listgrouptudies" style="margin: 10px;font-family: 'IBM Plex Sans', sans-serif;">
-
-
-
-        </div><button class="btn btn-primary" type="button" style="margin: 10px;width: 25%;font-weight: bold;font-family: 'IBM Plex Sans', sans-serif;" onclick="window.location.href='CreacionDeEstudio.html';">Crear Estudio</button>
-            <button class="btn btn-primary" type="button" style="margin: 10px;width: 25%;font-weight: bold;font-family: 'IBM Plex Sans', sans-serif;" onclick="logOut()">Cerrar Sesion</button>
-
+<body style="width:100%;">
+    <div class="text-center d-lg-flex justify-content-lg-center align-items-lg-center" style="background:var(--bs-primary);height:25vh;margin:10px;border-radius:5px;"><a class="navbar-brand align-items-center justify-content-xxl-end align-items-xxl-center sidebar-brand m-0" href="PaginaPrincipal.html">
+            <div class="sidebar-brand-icon rotate-n-15"><img class="d-none d-md-block mx-auto" data-bs-toggle="tooltip" data-bss-tooltip="" src="assets/img/NegroLogo.png" width="194" height="99" style="transform:rotate(23deg);width:186px;height:74px;filter:brightness(78%);"></div>
+            <div class="sidebar-brand-text mx-3"><span data-bs-toggle="tooltip" data-bss-tooltip="" style="font-family:'IBM Plex Sans', sans-serif;color:#072934;font-size:49px;">CHEETAH RESEARCH</span></div>
+        </a></div>
+    <div class="card" id="contentCard_PaginaOverview" style="margin:10px;height:100vh;padding:10px;">
+        <h1 style="color:var(--bs-body-bg);margin:10px;background:var(--bs-primary);border-radius:10px;padding:05px;font-family:'IBM Plex Sans', sans-serif;">SELECCIONAR ESTUDIO</h1>
+        <ul class="list-group list-group-flush" id="listgrouptudies" style="margin:10px;font-family:'IBM Plex Sans', sans-serif;"></ul><button class="btn btn-primary" type="button" style="margin:10px;width:25%;font-weight:bold;font-family:'IBM Plex Sans', sans-serif;">Crear Estudio</button><button class="btn btn-primary" type="button" style="margin:10px;width:25%;font-weight:bold;font-family:'IBM Plex Sans', sans-serif;">Cerrar Sesion</button>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/theme.js"></script>
-    <script src="js/script_PPCrearEstudio.js"></script>
-    <script src="js/Script_LogOutAuth.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/js/bs-init.js"></script>
+    <script src="assets/js/js/theme.js"></script>
+    <script src="assets/js/Script_CrearEncuestador.js"></script>
+    <script src="assets/js/script_LanzarEncuesta.js"></script>
+    <script src="assets/js/script_LanzarEstudio.js"></script>
+    <script src="assets/js/Script_LoginAuth.js"></script>
+    <script src="assets/js/Script_LogOutAuth.js"></script>
+    <script src="assets/js/Script_Password_Reset.js"></script>
+    <script src="assets/js/Script_Password_ResetConfirm.js"></script>
+    <script src="assets/js/script_PPCrearEstudio.js"></script>
+    <script src="assets/js/Script_RegisterUsers.js"></script>
+    <script src="assets/js/ScriptSurv.js"></script>
 </body>
 
 </html>
