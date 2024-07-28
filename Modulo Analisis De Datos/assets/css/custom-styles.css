@@ -2,7 +2,7 @@
 
 /* General Font Style */
 body {
-    background-color: #072934;
+    background-color: #ffffff;
 }
 
 /*
@@ -27,7 +27,7 @@ eb7e20
 
 
 #wrapper #content-wrapper {
-    background-color: #072934;
+    background-color: #ffffff;
 }
 
 .text-center .btn {
@@ -53,6 +53,7 @@ eb7e20
     --bs-card-cap-bg: #eb7e20; /* Color de fondo de la tarjeta, encabezado */
     color : #414656; /* Color del texto de la tarjeta */
     --bs-card-bg: #ffffff; /* Color de fondo de la tarjeta */
+    padding: 0px;
 }
 
 

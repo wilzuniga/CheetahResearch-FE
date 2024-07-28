@@ -95,7 +95,7 @@ function createFilledStudyForm() {
         tituloDelEstudio: studyData.title,
         mercadoObjetivo: studyData.marketTarget,
         objetivosDelEstudio: studyData.studyObjectives,
-        Resumen: studyData.summary,
+        Resumen: studyData.prompt,
     };
 
     const title = '<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: \'IBM Plex Sans\', sans-serif;">Resumen del Estudio</h2>';
@@ -123,6 +123,9 @@ function createFilledStudyForm() {
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'IBM Plex Sans', sans-serif;">Prompt del Estudio</p>
             <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif;" readonly>${selectedStudyData.Resumen}</textarea>
         </div>`;
+
+    console.log(studyData);
+
 
     const form = `
         <form class="p-3 p-xl-4" method="post" style="font-family: 'IBM Plex Sans', sans-serif;">
@@ -167,6 +170,7 @@ function deleteFromLocStrg() {
     localStorage.removeItem('preguntas');
 
     localStorage.removeItem('selectedStudyId');
+    localStorage.removeItem('selectedStudyData');
 }
 
 
@@ -188,6 +192,8 @@ function CaptureAndPostformdta() {
         .then(response => {
             console.log('Estudio creado:', response.data);
             localStorage.setItem('selectedStudyId', response.data.study_id);
+            localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
+            
             CE_DeactivateNavBy();
 
         }
@@ -195,8 +201,6 @@ function CaptureAndPostformdta() {
         .catch(error => {
             console.error('Error al crear el estudio:', error);
         });
-
-    
 
     return {
         tituloDelEstudio,
@@ -231,9 +235,6 @@ function ApendStudies(){
     document.getElementById('PromptGeneralTXT').value = localStorage.getItem('promptDelEstudio');
 }
 
-
-
-
 function loadStudies() {
     const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/get_studies/';
 
@@ -255,6 +256,7 @@ function loadStudies() {
 }
 
 function createStudyElement(study) {
+    console.log('Study');
     const a = document.createElement('a');
     a.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
     a.href = 'CreacionDeEstudio.html';

@@ -397,7 +397,7 @@ function load() {
     const url = 'http://44.200.62.13:8000/start/';
     console.log('Cargando preguntas...');
 
-    axios.post(url, { study_id: '669e0e8cc2af27bcc4720339' }, {
+    axios.post(url, { study_id: '669ee33ec2af27bcc4720342' }, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }
@@ -405,9 +405,9 @@ function load() {
         const data = response.data;
         hash = data.hash;
 
+        console.log(data);
 
         getMessage(data.response, null);
-        console.log(data);
 
     }).catch((error) => {
         console.log('Error:', error);
@@ -417,7 +417,7 @@ function load() {
 function loadInterviewer(){
     const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getInterviewer/";
 
-    axios.post(url, { study_id: '669e0e8cc2af27bcc4720339' }, {
+    axios.post(url, { study_id: '669ee33ec2af27bcc4720342' }, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }

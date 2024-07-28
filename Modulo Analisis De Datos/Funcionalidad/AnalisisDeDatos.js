@@ -1,18 +1,65 @@
 // agregarCard.js
 
+
+function content() {
+    
+    const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/669ee33ec2af27bcc4720342";
+
+    axios.get(url)
+        .then(function (response) {
+            // handle success
+            console.log(response.data);
+            var data = response.data;
+            //jsonstring = JSON.stringify(data);
+            const htmlString = `
+            <h1>General</h1>
+            <h2>Narrativa</h2>
+            <p>${data.General.narrative.General}</p>
+            <h2>Factual</h2>
+            <p>${data.General.factual.General}</p>
+          
+            <h1>Genero Masculino</h1>
+            <h2>Narrativa</h2>
+            <p>${data.General.narrative.Genero_Masculino}</p>
+            <h2>Factual</h2>
+            <p>${data.General.factual.Genero_Masculino}</p>
+          
+            <h1>Genero Femenino</h1>
+            <h2>Narrativa</h2>
+            <p>${data.General.narrative.Genero_Femenino}</p>
+            <h2>Factual</h2>
+            <p>${data.General.factual.Genero_Femenino}</p>
+          `;
+
+            agregarCard("Analisis de Datos, Resumen General", htmlString);
+        }
+        )
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        }
+        )
+        .then(function () {
+            // always executed
+        }
+        );
+
+    contenido();
+}
+
+
+
+
 function contenido() {
     //generaar tarjeta de muestra
 
     var filtros = [
-        "Iluminación LED",
-        "HVAC",
-        "Materiales aislantes"
+        "Masculino",
+        "Femenino",
+        "General"
     ];
 
     
-    agregarCard("Analisis de Datos, Resumen", 
-        "En el estudio del restaurante de alitas Alitas y Más, los clientes fueron encuestados para evaluar sus hábitos de consumo, preferencias y percepciones del servicio. A través de preguntas diseñadas para entender su frecuencia de visita, sabores favoritos, preferencias de acompañamientos, calificación del servicio y sugerencias de mejoras, se pudo identificar diferentes estilos de comunicación entre los encuestados.Se encontró que aproximadamente el 20% de los encuestados se identificaron como reveladores, quienes expresaron sus opiniones con entusiasmo y relataron experiencias personales relacionadas con el restaurante. Estos clientes no solo compartieron sus sabores favoritos de alitas y acompañamientos preferidos, sino que también destacaron la importancia del servicio y ofrecieron sugerencias detalladas para mejorar la experiencia general.Por otro lado, alrededor del 30% de los encuestados adoptaron un enfoque factual en sus respuestas, proporcionando hechos y evaluaciones concretas sobre la frecuencia de sus visitas, sus sabores favoritos de alitas y su calificación del servicio. Este grupo mostró una preferencia por la precisión y la objetividad al expresar sus opiniones, enfocándose en aspectos tangibles como la calidad de los alimentos y la eficiencia del servicio. Además, aproximadamente el 26% de los encuestados se identificaron como informativos, quienes ofrecieron información detallada y contextual sobre sus elecciones de sabores de alitas, acompañamientos preferidos y sugerencias de mejoras. Estos clientes demostraron un interés en compartir conocimientos y proporcionar razones detrás de sus preferencias, contribuyendo así a una comprensión más profunda de sus percepciones y expectativas. Finalmente, cerca del 24% de los encuestados fueron clasificados como buscadores de acción, destacándose por su enfoque en sugerencias concretas para mejorar el restaurante. Este grupo enfatizó la importancia de implementar cambios prácticos y específicos, como mejorar la velocidad del servicio y ampliar las opciones de sabores y promociones, con el objetivo de optimizar la experiencia del cliente y fomentar la lealtad. En el estudio del restaurante de alitas Alitas y Más, los clientes fueron encuestados para evaluar sus hábitos de consumo, preferencias y percepciones del servicio. A través de preguntas diseñadas para entender su frecuencia de visita, sabores favoritos, preferencias de acompañamientos, calificación del servicio y sugerencias de mejoras, se pudo identificar diferentes estilos de comunicación entre los encuestados.Se encontró que aproximadamente el 20% de los encuestados se identificaron como reveladores, quienes expresaron sus opiniones con entusiasmo y relataron experiencias personales relacionadas con el restaurante. Estos clientes no solo compartieron sus sabores favoritos de alitas y acompañamientos preferidos, sino que también destacaron la importancia del servicio y ofrecieron sugerencias detalladas para mejorar la experiencia general.Por otro lado, alrededor del 30% de los encuestados adoptaron un enfoque factual en sus respuestas, proporcionando hechos y evaluaciones concretas sobre la frecuencia de sus visitas, sus sabores favoritos de alitas y su calificación del servicio. Este grupo mostró una preferencia por la precisión y la objetividad al expresar sus opiniones, enfocándose en aspectos tangibles como la calidad de los alimentos y la eficiencia del servicio. Además, aproximadamente el 26% de los encuestados se identificaron como informativos, quienes ofrecieron información detallada y contextual sobre sus elecciones de sabores de alitas, acompañamientos preferidos y sugerencias de mejoras. Estos clientes demostraron un interés en compartir conocimientos y proporcionar razones detrás de sus preferencias, contribuyendo así a una comprensión más profunda de sus percepciones y expectativas. Finalmente, cerca del 24% de los encuestados fueron clasificados como buscadores de acción, destacándose por su enfoque en sugerencias concretas para mejorar el restaurante. Este grupo enfatizó la importancia de implementar cambios prácticos y específicos, como mejorar la velocidad del servicio y ampliar las opciones de sabores y promociones, con el objetivo de optimizar la experiencia del cliente y fomentar la lealtad. En el estudio del restaurante de alitas Alitas y Más, los clientes fueron encuestados para evaluar sus hábitos de consumo, preferencias y percepciones del servicio. A través de preguntas diseñadas para entender su frecuencia de visita, sabores favoritos, preferencias de acompañamientos, calificación del servicio y sugerencias de mejoras, se pudo identificar diferentes estilos de comunicación entre los encuestados.Se encontró que aproximadamente el 20% de los encuestados se identificaron como reveladores, quienes expresaron sus opiniones con entusiasmo y relataron experiencias personales relacionadas con el restaurante. Estos clientes no solo compartieron sus sabores favoritos de alitas y acompañamientos preferidos, sino que también destacaron la importancia del servicio y ofrecieron sugerencias detalladas para mejorar la experiencia general.Por otro lado, alrededor del 30% de los encuestados adoptaron un enfoque factual en sus respuestas, proporcionando hechos y evaluaciones concretas sobre la frecuencia de sus visitas, sus sabores favoritos de alitas y su calificación del servicio. Este grupo mostró una preferencia por la precisión y la objetividad al expresar sus opiniones, enfocándose en aspectos tangibles como la calidad de los alimentos y la eficiencia del servicio. Además, aproximadamente el 26% de los encuestados se identificaron como informativos, quienes ofrecieron información detallada y contextual sobre sus elecciones de sabores de alitas, acompañamientos preferidos y sugerencias de mejoras. Estos clientes demostraron un interés en compartir conocimientos y proporcionar razones detrás de sus preferencias, contribuyendo así a una comprensión más profunda de sus percepciones y expectativas. Finalmente, cerca del 24% de los encuestados fueron clasificados como buscadores de acción, destacándose por su enfoque en sugerencias concretas para mejorar el restaurante. Este grupo enfatizó la importancia de implementar cambios prácticos y específicos, como mejorar la velocidad del servicio y ampliar las opciones de sabores y promociones, con el objetivo de optimizar la experiencia del cliente y fomentar la lealtad. En el estudio del restaurante de alitas Alitas y Más, los clientes fueron encuestados para evaluar sus hábitos de consumo, preferencias y percepciones del servicio. A través de preguntas diseñadas para entender su frecuencia de visita, sabores favoritos, preferencias de acompañamientos, calificación del servicio y sugerencias de mejoras, se pudo identificar diferentes estilos de comunicación entre los encuestados.Se encontró que aproximadamente el 20% de los encuestados se identificaron como reveladores, quienes expresaron sus opiniones con entusiasmo y relataron experiencias personales relacionadas con el restaurante. Estos clientes no solo compartieron sus sabores favoritos de alitas y acompañamientos preferidos, sino que también destacaron la importancia del servicio y ofrecieron sugerencias detalladas para mejorar la experiencia general.Por otro lado, alrededor del 30% de los encuestados adoptaron un enfoque factual en sus respuestas, proporcionando hechos y evaluaciones concretas sobre la frecuencia de sus visitas, sus sabores favoritos de alitas y su calificación del servicio. Este grupo mostró una preferencia por la precisión y la objetividad al expresar sus opiniones, enfocándose en aspectos tangibles como la calidad de los alimentos y la eficiencia del servicio. Además, aproximadamente el 26% de los encuestados se identificaron como informativos, quienes ofrecieron información detallada y contextual sobre sus elecciones de sabores de alitas, acompañamientos preferidos y sugerencias de mejoras. Estos clientes demostraron un interés en compartir conocimientos y proporcionar razones detrás de sus preferencias, contribuyendo así a una comprensión más profunda de sus percepciones y expectativas. Finalmente, cerca del 24% de los encuestados fueron clasificados como buscadores de acción, destacándose por su enfoque en sugerencias concretas para mejorar el restaurante. Este grupo enfatizó la importancia de implementar cambios prácticos y específicos, como mejorar la velocidad del servicio y ampliar las opciones de sabores y promociones, con el objetivo de optimizar la experiencia del cliente y fomentar la lealtad. En el estudio del restaurante de alitas Alitas y Más, los clientes fueron encuestados para evaluar sus hábitos de consumo, preferencias y percepciones del servicio. A través de preguntas diseñadas para entender su frecuencia de visita, sabores favoritos, preferencias de acompañamientos, calificación del servicio y sugerencias de mejoras, se pudo identificar diferentes estilos de comunicación entre los encuestados.Se encontró que aproximadamente el 20% de los encuestados se identificaron como reveladores, quienes expresaron sus opiniones con entusiasmo y relataron experiencias personales relacionadas con el restaurante. Estos clientes no solo compartieron sus sabores favoritos de alitas y acompañamientos preferidos, sino que también destacaron la importancia del servicio y ofrecieron sugerencias detalladas para mejorar la experiencia general.Por otro lado, alrededor del 30% de los encuestados adoptaron un enfoque factual en sus respuestas, proporcionando hechos y evaluaciones concretas sobre la frecuencia de sus visitas, sus sabores favoritos de alitas y su calificación del servicio. Este grupo mostró una preferencia por la precisión y la objetividad al expresar sus opiniones, enfocándose en aspectos tangibles como la calidad de los alimentos y la eficiencia del servicio. Además, aproximadamente el 26% de los encuestados se identificaron como informativos, quienes ofrecieron información detallada y contextual sobre sus elecciones de sabores de alitas, acompañamientos preferidos y sugerencias de mejoras. Estos clientes demostraron un interés en compartir conocimientos y proporcionar razones detrás de sus preferencias, contribuyendo así a una comprensión más profunda de sus percepciones y expectativas. Finalmente, cerca del 24% de los encuestados fueron clasificados como buscadores de acción, destacándose por su enfoque en sugerencias concretas para mejorar el restaurante. Este grupo enfatizó la importancia de implementar cambios prácticos y específicos, como mejorar la velocidad del servicio y ampliar las opciones de sabores y promociones, con el objetivo de optimizar la experiencia del cliente y fomentar la lealtad."
-    )
 
     llenarFiltros(filtros);
 

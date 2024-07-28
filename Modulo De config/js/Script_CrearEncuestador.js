@@ -76,6 +76,8 @@ function createSurveyerFormReadOnly() {
         console.error(error);
     });
 
+    enableNavItems();
+
     return formContainer;
 }
 
