@@ -143,8 +143,30 @@ function sendMessage(message, imageSrc) {
         }
     }).then((response) => {
         const data = response.data;
-        getMessage(data.response, null);
-        console.log(data);
+        if (data.response.includes('LISTO')) {
+            const farewellMessage = `Hola,\n\nGracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!]`;
+
+            getMessage(farewellMessage, null);
+            const url = 'http://44.200.62.13:8000/logs/';
+            axios.post(url, { hash: hash }, {study_id: '669ee33ec2af27bcc4720342'},{
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+
+
+            }).then((response) => {
+
+            }
+            ).catch((error) => {
+                console.log('Error:', error);
+            });
+
+
+        }else{
+            getMessage(data.response, null);
+            console.log(data);
+        }
+        
     }).catch((error) => {
         console.log('Error:', error);
     });

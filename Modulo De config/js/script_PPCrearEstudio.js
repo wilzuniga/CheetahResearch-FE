@@ -159,18 +159,22 @@ function StudysaveToLocStrg() {
 }
 
 function deleteFromLocStrg() {
-    localStorage.removeItem('tituloDelEstudio');
-    localStorage.removeItem('mercadoObjetivo');
-    localStorage.removeItem('objetivosDelEstudio');
-    localStorage.removeItem('promptDelEstudio');
-    localStorage.removeItem('nombreEncuestador');
-    localStorage.removeItem('tonoEncuestador');
-    localStorage.removeItem('observacionesImportantes');
-    localStorage.removeItem('saludoEncuestador');
-    localStorage.removeItem('preguntas');
+    //verificar si se esta en PaginaPrincipal.html o CreacionDeEstudio.html
+    if(window.location.href.includes('PaginaPrincipal.html')){
+        console.log('Borrando datos del estudio');
+        localStorage.removeItem('tituloDelEstudio');
+        localStorage.removeItem('mercadoObjetivo');
+        localStorage.removeItem('objetivosDelEstudio');
+        localStorage.removeItem('promptDelEstudio');
+        localStorage.removeItem('nombreEncuestador');
+        localStorage.removeItem('tonoEncuestador');
+        localStorage.removeItem('observacionesImportantes');
+        localStorage.removeItem('saludoEncuestador');
+        localStorage.removeItem('preguntas');
 
-    localStorage.removeItem('selectedStudyId');
-    localStorage.removeItem('selectedStudyData');
+        localStorage.removeItem('selectedStudyId');
+        localStorage.removeItem('selectedStudyData');
+    }
 }
 
 

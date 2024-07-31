@@ -10,26 +10,12 @@ function content() {
             // handle success
             console.log(response.data);
             var data = response.data;
+            stringresponse= data.general.narrative.General;
+            const coso = marked(stringresponse);
+
+
             //jsonstring = JSON.stringify(data);
-            const htmlString = `
-            <h1>General</h1>
-            <h2>Narrativa</h2>
-            <p>${data.General.narrative.General}</p>
-            <h2>Factual</h2>
-            <p>${data.General.factual.General}</p>
-          
-            <h1>Genero Masculino</h1>
-            <h2>Narrativa</h2>
-            <p>${data.General.narrative.Genero_Masculino}</p>
-            <h2>Factual</h2>
-            <p>${data.General.factual.Genero_Masculino}</p>
-          
-            <h1>Genero Femenino</h1>
-            <h2>Narrativa</h2>
-            <p>${data.General.narrative.Genero_Femenino}</p>
-            <h2>Factual</h2>
-            <p>${data.General.factual.Genero_Femenino}</p>
-          `;
+            const htmlString = coso;
 
             agregarCard("Analisis de Datos, Resumen General", htmlString);
         }

@@ -19,6 +19,32 @@
             pointer-events: none;
             opacity: 0.6;
         }
+
+        #overlay {
+            position: fixed; /* Posiciona el overlay de manera fija */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+            display: flex;
+            align-items: center; /* Centra verticalmente */
+            justify-content: center; /* Centra horizontalmente */
+            z-index: 1000; /* Asegura que el overlay esté por encima del contenido */
+            display: none; /* Ocultar por defecto */
+        }
+
+        #overlayContent {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            max-width: 600px; /* Opcional: limita el ancho máximo */
+            box-sizing: border-box; /* Incluye el padding en el ancho total */
+        }
+
+
     </style>
 </head>
 
@@ -66,6 +92,13 @@
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <div class="card" id="contentCard_PaginaOverview" style="margin: 10px;height: calc(100vh - 20px);padding: 10px;overflow-y: scroll;">
+
+
+                    <div id="overlay" style="display: none;">
+                    
+                    </div>
+
+
                     <h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: 'IBM Plex Sans', sans-serif;">Lanzar Estudio</h2>
                     <form class="p-3 p-xl-4" method="post" style="font-family: 'IBM Plex Sans', sans-serif;">
                         <div class="mb-3" style="font-family: 'IBM Plex Sans', sans-serif;">
@@ -88,6 +121,11 @@
                         <div style="height: 5px;background: var(--bs-primary);margin-top: 24px;margin-bottom: 14px;border-radius: 5px;"></div>
                         <div style="margin-top: 10px;margin-bottom: 24px;">
                             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'IBM Plex Sans', sans-serif;">Modalidad de Testing</p><label class="switch"><input type="checkbox" /><span class="slider round"></span></label>
+                        </div>
+
+                        <div class="mb-3" style="font-family: 'IBM Plex Sans', sans-serif;">
+                            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'IBM Plex Sans', sans-serif;">Configurar Deploy de analisis de datos</p>
+                            <button class="btn btn-primary" id="AgregarFiltroBTN" style="margin-top: 10px;font-family: 'IBM Plex Sans', sans-serif;">Configurar</button>
                         </div>
 
                         <div class="card mb-4" style="margin-top: 24px;font-family: 'IBM Plex Sans', sans-serif;">

@@ -170,6 +170,7 @@ function guardarPreguntas() {
     );
 
     enviarDatos(questions);
+    console.log(questions);
     questions = [];
     questionsImg = [];;
 }
@@ -229,7 +230,7 @@ function enableNavItems() {
 }
 
 function CE_DeactivateNavBy(){
-    const preguntas = [];
+    questions = [];
 
 
     const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/get_survey/' + localStorage.getItem('selectedStudyId') ;
@@ -237,10 +238,10 @@ function CE_DeactivateNavBy(){
     .then(response => {
         console.log(response.data);
         response.data.questions.forEach((pregunta) => {
-            preguntas.push(pregunta);
+            questions.push(pregunta);
         });
 
-        if(preguntas.length > 0){
+        if(questions.length > 0){
             //AGREGAR PREGUNTAS AL LISTADO DE PREGUNTAS
             console.log("pregunta entra 11");
     
@@ -249,7 +250,7 @@ function CE_DeactivateNavBy(){
     
             listGroup.innerHTML = '';
     
-            preguntas.forEach((pregunta, index) => {
+            questions.forEach((pregunta, index) => {
                 console.log("pregunta entra");
                 
     
@@ -372,6 +373,7 @@ function CE_DeactivateNavBy(){
 
 document.getElementById('GuardarEncuestaBtn').addEventListener('click', (event) => {
     event.preventDefault();
+    guardarPreguntas(); 
     alert('Encuesta guardada exitosamente');
 
 });
