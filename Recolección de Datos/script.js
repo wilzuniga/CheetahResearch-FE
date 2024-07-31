@@ -148,7 +148,7 @@ function sendMessage(message, imageSrc) {
 
             getMessage(farewellMessage, null);
             const url = 'http://44.200.62.13:8000/logs/';
-            axios.post(url, { hash: hash }, {study_id: '669ee33ec2af27bcc4720342'},{
+            axios.post(url, { hash: hash }, {study_id: '66aa799b1b95df16ba3083a8'},{
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
@@ -419,7 +419,7 @@ function load() {
     const url = 'http://44.200.62.13:8000/start/';
     console.log('Cargando preguntas...');
 
-    axios.post(url, { study_id: '669ee33ec2af27bcc4720342' }, {
+    axios.post(url, { study_id: '66aa799b1b95df16ba3083a8' }, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }
@@ -439,7 +439,7 @@ function load() {
 function loadInterviewer(){
     const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getInterviewer/";
 
-    axios.post(url, { study_id: '669ee33ec2af27bcc4720342' }, {
+    axios.post(url, { study_id: '66aa799b1b95df16ba3083a8' }, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }

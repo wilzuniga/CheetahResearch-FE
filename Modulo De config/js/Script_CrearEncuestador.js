@@ -44,6 +44,7 @@ function createSurveyerFormReadOnly() {
             'Content-Type': 'multipart/form-data',
         }
     }).then(response => {
+        console.log(response);
         const data = response.data;
         formContainer.innerHTML = `
             <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'IBM Plex Sans', sans-serif;">Encuestador</h2>
@@ -60,10 +61,6 @@ function createSurveyerFormReadOnly() {
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Tono Encuestador</p>
                     <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" placeholder="Ingresa el tono en el cual hablará el encuestador" value="${data.interviewerTone}" disabled>
-                </div>
-                <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Observaciones importantes</p>
-                    <input class="form-control" type="text" id="ObservacionesImportantesTXT" name="Observaciones Importantes" placeholder="Observaciones importantes al Encuestador" value="${data.importantObservation}" disabled>
                 </div>
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Saludo</p>
