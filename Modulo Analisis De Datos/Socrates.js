@@ -392,7 +392,10 @@ function load() {
 
         console.log(data);
 
-        getMessage(data.response, null);
+        // poner la cosa con id"Bot-Status" como "Conectado"
+        document.getElementById('Bot-Status').innerText = 'Conectado';
+
+
 
     }).catch((error) => {
         console.log('Error:', error);
