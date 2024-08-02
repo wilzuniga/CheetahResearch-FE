@@ -207,9 +207,7 @@ function sendMessage(message, imageSrc) {
     }).then((response) => {
         const data = response.data;
         if (data.response.includes('LISTO')) {
-            const farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.
-            \n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.
-            \n\n¡Que tengas un excelente día!`;
+            const farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
 
             getMessage(farewellMessage, null);
             const url = 'http://44.200.62.13:8000/logs/';
@@ -265,41 +263,7 @@ function sendMessage(message, imageSrc) {
     // });
 
     //Procesar y Enviar Respuesta como Encuestador
-    axios.post(url, { prompt: message, hash: hash }, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        }
-    }).then((response) => {
-        const data = response.data;
-        if (data.response.includes('LISTO')) {
-            const farewellMessage = `Hola,
-            \n\nGracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.
-            \n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.
-            \n\n¡Que tengas un excelente día!]`;
 
-            getMessage(farewellMessage, null);
-            const url = 'http://44.200.62.13:8000/logs/';
-            axios.post(url, { hash: hash }, { study_id: '66aa799b1b95df16ba3083a8' }, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-
-
-            }).then((response) => {
-
-            }
-            ).catch((error) => {
-                console.log('Error:', error);
-            });
-        } else {
-            getMessage(data.response, null);
-            loadingMsg.style.display = 'none';
-            console.log(data);
-        }
-
-    }).catch((error) => {
-        console.log('Error:', error);
-    });
 
     //     headers: {
     //         'Content-Type': 'multipart/form-data',
@@ -372,7 +336,6 @@ function getMessage(message, imageSrc) {
 
     const BotIMG = document.createElement('img');
     BotIMG.src = imgPP;
-    BotIMG.style.maxWidth = '100%';
     BotIMG.style.maxHeight = '100%';
 
     const card = document.createElement('div');
@@ -490,7 +453,9 @@ function load() {
     });
 }
 
+
 //Función Cargar Entrevistador
+
 function loadInterviewer(study_id) {
     const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getInterviewer/";
 
@@ -508,7 +473,7 @@ function loadInterviewer(study_id) {
 
 
 
-        document.getElementById('Bot-Name').innerText = nombre;
+        document.getElementById('Bot-Name').innerText = nombre; 
         const formContainer = document.createElement('div');
 
 
@@ -538,9 +503,7 @@ function loadInterviewer(study_id) {
         });
 
     })
-        .catch(error => {
-            console.error(error);
-        });
+    .catch(error => {
+        console.error(error);
+    });
 }
-
-

@@ -48,31 +48,6 @@ document.getElementById('btSend').addEventListener('click', function () {
     }
 });
 
-//Recibir mensaje al presionar ctrl+enter (Función de Prueba)
-document.getElementById('Message-Input').addEventListener('keydown', function (event) {
-    let loadingMsg = document.getElementById('Typing-Msg');
-    if (!(event.key === 'Enter' && event.shiftKey) && (event.key === 'Enter' && event.ctrlKey)) {
-        event.preventDefault();
-        const message = this.value.trim();
-        const imageSrc = imageInput.src;
-
-        if (message || imageSrc) {
-            if (imageInput.style.display !== 'none') {
-                getMessage(message, imageSrc);
-                this.value = '';
-                imageInput.src = '';
-                imageIcon.style.display = 'flex';
-                imageInput.style.display = 'none';
-                loadingMsg.style.display = 'none';
-            } else {
-                getMessage(message, null);
-                this.value = '';
-                loadingMsg.style.display = 'none';
-            }
-        }
-    }
-});
-
 //Función elegir imagen al presionar botón de imagen
 document.getElementById('btIMG').addEventListener('click', function () {
     const fileInput = document.getElementById('fileInput');
@@ -137,21 +112,10 @@ function sendMessage(message, imageSrc) {
     card.style.borderBottomRightRadius = '0px';
     card.style.borderBottomWidth = 'medium';
     card.style.borderColor = '#BDC3C9';
-    card.style.background = '#e6edf4';
+    card.style.background = 'var(--bs-CR-white)';
 
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
-
-    const img = document.createElement('img');
-    if (imageSrc) {
-        img.className = 'img-fluid d-flex order-1 mx-auto mb-2'
-        img.src = imageSrc;
-        img.style.maxHeight = '18rem';
-        img.style.height = 'auto';
-        img.style.minHeight = '9rem';
-        img.style.paddingLeft = '0px';
-        cardBody.appendChild(img);
-    }
 
     const p = document.createElement('p');
     p.className = 'card-text text-start text-break d-flex order-2';
@@ -241,142 +205,21 @@ function sendMessage(message, imageSrc) {
     // });
 }
 
-//Función para recibir un mensaje de encuestador (TEST)
-function getMessage(message, imageSrc) {
-    const Feed = document.getElementById('Feed');//Validar Feed Vacío
-    const emptyFeed = document.getElementById('Empty-Feed');
-    if (Feed.style.display === 'none') {
-        emptyFeed.style.display = 'none';
-        Feed.style.display = 'flex';
-    }
-
-    let options = {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-
-        hour: '2-digit',
-        minute: '2-digit',
-
-        hour12: true
-    };
-
-    const messageList = document.getElementById('Message-List');
-    const li = document.createElement('li');
-    li.className = 'd-flex my-3';
-
-    const BotIMG_Div = document.createElement('div');
-    BotIMG_Div.className = 'BotIMG-Div d-flex justify-content-end align-items-center align-content-center align-self-end';
-    BotIMG_Div.style.width = '50px';
-    BotIMG_Div.style.height = '100%';
-    BotIMG_Div.style.paddingRight = '2px';
-    BotIMG_Div.style.paddingLeft = '0px';
-
-    const BotIMG_Cont = document.createElement('div');
-    BotIMG_Cont.className = 'BotIMG-Cont text-truncate d-flex justify-content-center align-items-center align-content-center';
-    BotIMG_Cont.style.background = '#d1d1d1';
-
-    const BotIMG = document.createElement('img');
-    BotIMG.src = imgPP;
-    BotIMG.style.maxWidth = '100%';
-    BotIMG.style.maxHeight = '100%';
-
-    const card = document.createElement('div');
-    card.className = 'card d-inline-block';
-    card.style.maxWidth = '75%';
-    card.style.borderRadius = '15px';
-    card.style.borderBottomLeftRadius = '0px';
-    card.style.borderBottomWidth = 'medium';
-    card.style.borderColor = '#C2681A';
-    card.style.background = '#eb7e20';
-
-    const cardBody = document.createElement('div');
-    cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
-
-    const img = document.createElement('img');
-    if (imageSrc) {
-        img.className = 'img-fluid d-flex order-1 mx-auto mb-2'
-        img.src = imageSrc;
-        img.style.maxHeight = '18rem';
-        img.style.height = 'auto';
-        img.style.minHeight = '9rem';
-        img.style.paddingLeft = '0px';
-        cardBody.appendChild(img);
-    }
-
-    const p = document.createElement('p');
-    p.className = 'text-break text-start d-flex order-2 card-text';
-    p.style.color = '#f0f0f0';
-    p.style.fontFamily = "'IBM Plex Sans', sans-serif";
-    p.style.marginBottom = "6px";
-    p.textContent = message;
-    p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios
-
-    const h4 = document.createElement('h4');
-    h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
-    h4.style.marginTop = '0px';
-    h4.style.color = '#555155';
-    h4.style.fontFamily = "'League Spartan', sans-serif";
-    h4.textContent = new Intl.DateTimeFormat('es-419', options).format(new Date());
-    h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
-
-
-
-    BotIMG_Cont.appendChild(BotIMG);
-
-    BotIMG_Div.appendChild(BotIMG_Cont);
-
-    cardBody.appendChild(p);
-    cardBody.appendChild(h4);
-    card.appendChild(cardBody);
-
-    li.appendChild(BotIMG_Div);
-    li.appendChild(card);
-
-    messageList.appendChild(li);
-
-    //Scroll automático hacia abajo cuando se envía un mensaje nuevo
-    const scrollPanel = document.getElementById('Feed-BG');
-    scrollPanel.scrollTop = scrollPanel.scrollHeight;
-
-    //Mensaje de espera de respuesta queda abajo
-    let loadingMsg = document.getElementById('Typing-Msg');
-    messageList.insertBefore(loadingMsg, null);
-}
-
 //Funciones cambiar colores de botones al soltar botón (móviles)
 document.getElementById('btSend-Cont').addEventListener('touchstart', function () {
     btSend = document.getElementById('btSend');
-    btSend.style.color = '#072934';
-    this.style.background = '#eb7e20';
+    btSend.style.color = '#929292';
+    this.style.background = 'var(--bs-CR-black)';
     this.style.transition = '0s ease-in-out';
 });
 document.getElementById('btSend-Cont').addEventListener('touchend', function () {
     btSend = document.getElementById('btSend');
-    btSend.style.color = '#929292';
-    this.style.backgroundColor = '#072934';
+    btSend.style.color = 'var(--bs-gray-dark)';
+    this.style.backgroundColor = 'var(--bs-CR-orange)';
     this.style.transition = '0.2s ease-in-out';
 });
 
-document.getElementById('btIMG').addEventListener('touchstart', function () {
-    this.style.color = '#e05a30';
-    this.style.transition = '0s ease-in-out';
-});
-document.getElementById('btIMG').addEventListener('touchend', function () {
-    this.style.color = '#072934';
-    this.style.transition = '0.2s ease-in-out';
-});
-
-document.getElementById('btIMG-Cont').addEventListener('touchstart', function () {
-    this.style.background = '#083340';
-    this.style.transition = '0s ease-in-out';
-});
-document.getElementById('btIMG-Cont').addEventListener('touchend', function () {
-    this.style.background = 'transparent';
-    this.style.transition = '0.2s ease-in-out';
-});
-
-//Función load
+//Función Cargar Encuesta
 function load() {
     const preguntas = [];
     const url = 'http://54.145.222.179:3000/startS/';
@@ -402,6 +245,7 @@ function load() {
     });
 }
 
+//Función Cargar Entrevistador
 function loadInterviewer(){
     
         const nombre = 'Socrates';
@@ -422,10 +266,10 @@ function loadInterviewer(){
         formContainer.innerHTML = `
         <div id="overlayContent" class="text-wrap">
             <img src="${imagen}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
-            <p id="greeting">
+            <p id="greeting"">
             ${interviewerGreeting}
             </p>
-            <button id="AceptarChat" class="btn btn-primary" style="margin: 10px 10px 0 0;">Iniciar</button>
+            <button id="AceptarChat" class="btn" style="margin: 10px 10px 0 0;background: var(--bs-CR-black);">Iniciar</button>
         </div>
         `;
 
