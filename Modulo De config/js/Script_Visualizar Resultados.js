@@ -2,7 +2,7 @@ let Demographic_Filters = [];
 let ResumenGeneral, ResumenIndividual, AnalisisPsicograficos;
 
 function AgregarFiltros() {
-    const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/66abccd9a47c8cd2dc5d7a2f";
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/66abccd9a47c8cd2dc5d7a2f";
 
     axios.get(url)
         .then(function (response) {
@@ -71,7 +71,7 @@ function AgregarFiltros() {
 
 
 function LLenarResumenes(){
-    const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/66abccd9a47c8cd2dc5d7a2f";
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/66abccd9a47c8cd2dc5d7a2f";
 
     axios.get(url)
         .then(function (response) {
@@ -474,8 +474,8 @@ function LLenarResumenes(){
 // insertar lorem ipsilum en el div coon id ResumenGeneral al cargarlo 
 document.addEventListener('DOMContentLoaded', () => {
     
-    //const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/" + localStorage.getItem('selectedStudyId');
-    const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/66abccd9a47c8cd2dc5d7a2f";
+    //const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/66abccd9a47c8cd2dc5d7a2f";
 
     axios.get(url)
         .then(function (response) {

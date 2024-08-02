@@ -183,7 +183,7 @@ function enviarDatos(preguntas) {
         formData.append(questionImg.index, questionImg.file);
     });
 
-    const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/createQuestion/' + localStorage.getItem('selectedStudyId') + '/';
+    const url = 'https://api.cheetah-research.ai/configuration/createQuestion/' + localStorage.getItem('selectedStudyId') + '/';
 
     axios.post(url, formData, {
         headers: {
@@ -233,7 +233,7 @@ function CE_DeactivateNavBy(){
     questions = [];
 
 
-    const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/get_survey/' + localStorage.getItem('selectedStudyId') ;
+    const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId') ;
     axios.get(url)
     .then(response => {
         console.log(response.data);
