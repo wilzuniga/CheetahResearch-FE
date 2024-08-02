@@ -59,13 +59,13 @@
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <div class="card" id="contentCard_PaginaConversaConTuData" style="margin: 10px;height: calc(100vh - 20px);padding: 11px;overflow-y: scroll;">
-                    <h1 style="margin-left: 10px;font-weight: bold;color: var(--bs-emphasis-color);font-size: 20px;font-family: 'IBM Plex Sans', sans-serif;">Solicitudes de Acceso</h1><select style="margin-left: 10px;margin-right: 10px;background: var(--bs-body-bg);margin-top: 10px;height: 45px;font-size: 20px;color: rgb(133,135,150);border-radius: 10px;border-color: var(--bs-tertiary-color);margin-bottom: 10px;font-family: 'IBM Plex Sans', sans-serif;">
+                    <h1 style="margin-left: 10px;font-weight: bold;color: var(--bs-emphasis-color);font-size: 20px;font-family: 'IBM Plex Sans', sans-serif;">Solicitudes de Acceso</h1>
+                    <select id="inactiveUsersSelect" style="margin-left: 10px;margin-right: 10px;background: var(--bs-body-bg);margin-top: 10px;height: 45px;font-size: 20px;color: rgb(133,135,150);border-radius: 10px;border-color: var(--bs-tertiary-color);margin-bottom: 10px;font-family: 'IBM Plex Sans', sans-serif;">
                         <optgroup label="This is a group">
-                            <option value="12" selected="">This is item 1</option>
-                            <option value="13">This is item 2</option>
-                            <option value="14">This is item 3</option>
+
                         </optgroup>
-                    </select><button class="btn btn-primary" type="button" style="margin: 0px;width: 25vh;margin-left: 10px;background: var(--bs-btn-border-color);font-weight: bold;font-family: 'IBM Plex Sans', sans-serif;">Conceder Acceso</button>
+                    </select>
+                    <button class="btn btn-primary" type="button" style="margin: 0px;width: 25vh;margin-left: 10px;background: var(--bs-btn-border-color);font-weight: bold;font-family: 'IBM Plex Sans', sans-serif;" onclick="concederAcceso()">Conceder Acceso</button>
                     <div style="height: 5px;background: var(--bs-primary);border-radius: 5px;margin: 10px;margin-top: 20px;margin-bottom: 10px;font-family: 'IBM Plex Sans', sans-serif;"></div>
                     <h1 style="margin-left: 10px;color: var(--bs-emphasis-color);font-weight: bold;font-size: 20px;font-family: 'IBM Plex Sans', sans-serif;">Eliminar Estudio</h1><select style="margin-left: 10px;margin-right: 10px;background: var(--bs-body-bg);margin-top: 10px;height: 45px;font-size: 20px;color: rgb(133,135,150);border-radius: 10px;border-color: var(--bs-tertiary-color);margin-bottom: 10px;font-family: 'IBM Plex Sans', sans-serif;">
                         <optgroup label="This is a group">
@@ -73,7 +73,8 @@
                             <option value="13">This is item 2</option>
                             <option value="14">This is item 3</option>
                         </optgroup>
-                    </select><button class="btn btn-primary" type="button" style="margin: 0px;width: 25vh;margin-left: 10px;background: #e8112d;font-weight: bold;border-color: #e8112d;font-family: 'IBM Plex Sans', sans-serif;">Eliminar Estudio</button>
+                    </select>
+                    <button class="btn btn-primary" type="button" style="margin: 0px;width: 25vh;margin-left: 10px;background: #e8112d;font-weight: bold;border-color: #e8112d;font-family: 'IBM Plex Sans', sans-serif;">Eliminar Estudio</button>
                 </div>
             </div>
         </div>
@@ -81,6 +82,8 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/theme.js"></script>
+    <script src="js/Script_ListNonActiveUser.js"></script>
+    <script src="js/Script_ConcederAcceso.js"></script>
 </body>
 
 </html>
