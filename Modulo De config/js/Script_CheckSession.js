@@ -9,7 +9,7 @@ async function checkSession(){
         if (response.status === 200) {
             console.log('Sesión activa');
         } else {
-            window.location.href = 'login.html';
+            window.location.href = '../login.html';
         }
     } catch (error) {
         console.log('error check session', error);
