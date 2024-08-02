@@ -1,6 +1,19 @@
 let imgPP;
 let hash = 0;
 
+
+
+function initializePage() {
+    console.log('Page initialized');
+    const study_id = new URLSearchParams(window.location.search).get('id');
+    if (study_id) {
+        console.log('ID de estudio:', study_id);
+        loadInterviewer(study_id);
+    } else {
+        console.error('No se encontró el parámetro id en la URL.');
+    }
+}
+
 //Enviar mensaje al presionar enter
 document.getElementById('Message-Input').addEventListener('keydown', function (event) {
     const imageIcon = document.getElementById('imageIcon');
@@ -478,10 +491,10 @@ function load() {
 }
 
 //Función Cargar Entrevistador
-function loadInterviewer() {
+function loadInterviewer(study_id) {
     const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getInterviewer/";
 
-    axios.post(url, { study_id: '66abccd9a47c8cd2dc5d7a2f' }, {
+    axios.post(url, { study_id: study_id }, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }
@@ -529,4 +542,5 @@ function loadInterviewer() {
             console.error(error);
         });
 }
+
 
