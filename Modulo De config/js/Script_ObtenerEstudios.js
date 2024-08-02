@@ -12,17 +12,16 @@ async function listNonActiveUsers() {
             throw new Error('Network response was not ok');
         }
 
-        const study = await response.json();
-        const studySelect: document.getElementById('inactiveUsersSelect');
+        const studys = await response.json();
+        const studySelect=document.getElementById('select-Study');
 
+        studySelect.innerHTML = '';
 
-        userSelect.innerHTML = '';
-
-        users.forEach(user => {
+        studys.forEach(study => {
             const option = document.createElement('option');
-            option.value = user.email;
-            option.textContent = user.email;
-            userSelect.appendChild(option);
+            option.value = study.id;
+            option.textContent = study.name;
+            studySelect.appendChild(option);
         });
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
