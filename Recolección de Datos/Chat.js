@@ -198,7 +198,7 @@ function sendMessage(message, imageSrc) {
 
 
     //Procesar y Enviar Respuesta como Encuestador
-    const url = 'http://44.200.62.13:8000/communicate/';
+    const url = 'https://api.cheetah-research.ai/chatbot/communicate/';
 
     axios.post(url, { prompt: message , hash: hash }, {
         headers:{
@@ -210,7 +210,7 @@ function sendMessage(message, imageSrc) {
             const farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
 
             getMessage(farewellMessage, null);
-            const url = 'http://44.200.62.13:8000/logs/';
+            const url = 'https://api.cheetah-research.ai/chatbot/logs/';
             axios.post(url, { hash: hash }, {study_id: '66abccd9a47c8cd2dc5d7a2f'},{
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -433,7 +433,7 @@ document.getElementById('btIMG').addEventListener('touchend', function () {
 //Función Cargar Encuesta
 function load() {
     const preguntas = [];
-    const url = 'http://44.200.62.13:8000/start/';
+    const url = 'https://api.cheetah-research.ai/chatbot/start/';
     console.log('Cargando preguntas...');
 
     axios.post(url, { study_id: '66abccd9a47c8cd2dc5d7a2f' }, {
@@ -457,7 +457,7 @@ function load() {
 //Función Cargar Entrevistador
 
 function loadInterviewer(study_id) {
-    const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getInterviewer/";
+    const url = "https://api.cheetah-research.ai/configuration/getInterviewer/";
 
     axios.post(url, { study_id: study_id }, {
         headers: {
