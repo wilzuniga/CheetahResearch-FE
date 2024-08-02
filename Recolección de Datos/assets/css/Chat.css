@@ -1,17 +1,18 @@
+/* Font: Hedliner-Sans-Mono-Font */
+@font-face {
+  font-family: 'hedliner';
+  src: url('../fonts/hedliner-webfont.woff') format('woff'),
+  url('../fonts/hedliner-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
 img {
   border-radius: 5px;
 }
 
 * {
   outline: none;
-}
-
-* {
-  /*box-sizing: inherit;*/
-}
-
-*:before, *:after {
-  /*box-sizing: inherit;*/
 }
 
 * {

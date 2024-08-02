@@ -5,7 +5,6 @@ let hash = 0;
 document.getElementById('Message-Input').addEventListener('keydown', function (event) {
     const imageIcon = document.getElementById('imageIcon');
     const imageInput = document.getElementById('imageInput');
-    let loadingMsg = document.getElementById('Typing-Msg');
 
     if (!(event.key === 'Enter' && event.shiftKey) && !(event.key === 'Enter' && event.ctrlKey) && event.key === 'Enter') {
         event.preventDefault();
@@ -19,11 +18,9 @@ document.getElementById('Message-Input').addEventListener('keydown', function (e
                 imageInput.src = '';
                 imageIcon.style.display = 'flex';
                 imageInput.style.display = 'none';
-                loadingMsg.style.display = 'none';
             } else {
                 sendMessage(message, null);
                 this.value = '';
-                loadingMsg.style.display = 'none';
             }
         }
     }
@@ -32,7 +29,6 @@ document.getElementById('Message-Input').addEventListener('keydown', function (e
 //Enviar mensaje al presionar botón de enviar
 document.getElementById('btSend').addEventListener('click', function () {
     let messageInput = document.getElementById('Message-Input');
-    let loadingMsg = document.getElementById('Typing-Msg');
     const imageIcon = document.getElementById('imageIcon');
     const imageInput = document.getElementById('imageInput');
     const message = messageInput.value.trim();
@@ -45,11 +41,9 @@ document.getElementById('btSend').addEventListener('click', function () {
             imageInput.src = '';
             imageIcon.style.display = 'flex';
             imageInput.style.display = 'none';
-            loadingMsg.style.display = 'none';
         } else {
             sendMessage(message, null);
             messageInput.value = '';
-            loadingMsg.style.display = 'none';
         }
     }
 });
@@ -102,32 +96,6 @@ document.getElementById('btIMG').addEventListener('click', function () {
     });
 });
 
-//Función display de espera de respuesta (TEST)
-let typingTimeout;//Variable fuera hace que el display no se resetée
-document.getElementById('Message-Input').addEventListener('input', function (event) {
-    const messageList = document.getElementById('Message-List');
-    const scrollPanel = document.getElementById('Feed-BG');
-    let loadingMsg = document.getElementById('Typing-Msg');
-    let loadingGif = document.getElementById('LoadingGif');
-
-    function hideMsg() {
-        loadingMsg.style.display = 'none';
-    }
-
-    if (event) {
-        if (loadingMsg.style.display === 'none') {
-            loadingGif.src = './assets/img/Loading%20Dots.gif';//Animación se resetea
-            loadingMsg.style.display = 'flex'
-            scrollPanel.scrollTop = scrollPanel.scrollHeight;
-        }
-
-        //Esconder loading al no detectar input
-        clearTimeout(typingTimeout);
-        typingTimeout = setTimeout(hideMsg, 1500);
-    }
-});
-
-
 //Enviar un mensaje como entrevistador
 function sendMessage(message, imageSrc) {
     // let messages = localStorage.getItem('preguntas');
@@ -135,70 +103,11 @@ function sendMessage(message, imageSrc) {
     // let sendApi = preguntasArreglo[contador] + '|' + message;
     // contaWeight++;
 
-    const url = 'http://44.200.62.13:8000/communicate/';
+    //Variables para display de Espera de Respuesta
+    let loadingGif = document.getElementById('LoadingGif');
+    let loadingMsg = document.getElementById('Typing-Msg');
 
-    axios.post(url, { prompt: message , hash: hash }, {
-        headers:{
-            'Content-Type': 'multipart/form-data',
-        }
-    }).then((response) => {
-        const data = response.data;
-        if (data.response.includes('LISTO')) {
-            const farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
-
-            getMessage(farewellMessage, null);
-            const url = 'http://44.200.62.13:8000/logs/';
-            axios.post(url, { hash: hash }, {study_id: '66abccd9a47c8cd2dc5d7a2f'},{
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-
-
-            }).then((response) => {
-
-            }
-            ).catch((error) => {
-                console.log('Error:', error);
-            });
-
-
-        }else{
-            getMessage(data.response, null);
-            console.log(data);
-        }
-        
-    }).catch((error) => {
-        console.log('Error:', error);
-    });
-
-    //     headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //     }
-    // }).then((response) => {
-    //     const data = response.data;
-    //     console.log(data);
-    //     localStorage.setItem('preguntaAtcual', response.data.response);
-
-    //     let messageeee = localStorage.getItem('preguntaAtcual')
-    //     if (contaWeight == 3) {
-    //         contador++;
-    //         contaWeight = 0;
-    //         getMessage(messageeee, null);
-    //     }else{
-    //         if (messageeee.includes(preguntasArreglo[contador])) {
-    //             console.log('pregunta', preguntasArreglo[contador]);
-    //             let messageeee = preguntasArreglo[contador];
-    //             getMessage(messageeee, null);
-    //         }else{
-    //             getMessage(messageeee, null);
-    //         }
-    //     }
-
-    // }).catch((error) => {
-    //     console.log('Error:', error);
-    // });
-
-    //Crear mensaje (formato entrevistador)
+    //Crear y enviar mensaje (formato Entrevistado)
     const Feed = document.getElementById('Feed');//Validar Feed Vacío
     const emptyFeed = document.getElementById('Empty-Feed');
     if (Feed.style.display === 'none') {
@@ -227,7 +136,7 @@ function sendMessage(message, imageSrc) {
     card.style.borderRadius = '15px';
     card.style.borderBottomRightRadius = '0px';
     card.style.borderBottomWidth = 'medium';
-    card.style.background = '#e6edf4';
+    card.style.background = 'var(--bs-CR-white)';
 
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
@@ -264,14 +173,83 @@ function sendMessage(message, imageSrc) {
     card.appendChild(cardBody);
     li.appendChild(card);
     messageList.appendChild(li);
+    loadingGif.src = './assets/img/Loading%20Dots.gif';//Animación se resetea
+    loadingMsg.style.display = 'flex';
 
     //Scroll automático hacia abajo cuando se envía un mensaje nuevo
     const scrollPanel = document.getElementById('Feed-BG');
     scrollPanel.scrollTop = scrollPanel.scrollHeight;
 
     //Mensaje de espera de respuesta queda abajo
-    let loadingMsg = document.getElementById('Typing-Msg');
     messageList.insertBefore(loadingMsg, null);
+
+
+    //Procesar y Enviar Respuesta como Encuestador
+    const url = 'http://44.200.62.13:8000/communicate/';
+
+    axios.post(url, { prompt: message , hash: hash }, {
+        headers:{
+            'Content-Type': 'multipart/form-data',
+        }
+    }).then((response) => {
+        const data = response.data;
+        if (data.response.includes('LISTO')) {
+            const farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.
+            \n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.
+            \n\n¡Que tengas un excelente día!`;
+
+            getMessage(farewellMessage, null);
+            const url = 'http://44.200.62.13:8000/logs/';
+            axios.post(url, { hash: hash }, {study_id: '66abccd9a47c8cd2dc5d7a2f'},{
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+
+
+            }).then((response) => {
+
+            }
+            ).catch((error) => {
+                console.log('Error:', error);
+            });
+
+
+        }else{
+            getMessage(data.response, null);
+            loadingMsg.style.display = 'none';
+            console.log(data);
+        }
+        
+    }).catch((error) => {
+        console.log('Error:', error);
+    });
+
+    //     headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //     }
+    // }).then((response) => {
+    //     const data = response.data;
+    //     console.log(data);
+    //     localStorage.setItem('preguntaAtcual', response.data.response);
+
+    //     let messageeee = localStorage.getItem('preguntaAtcual')
+    //     if (contaWeight == 3) {
+    //         contador++;
+    //         contaWeight = 0;
+    //         getMessage(messageeee, null);
+    //     }else{
+    //         if (messageeee.includes(preguntasArreglo[contador])) {
+    //             console.log('pregunta', preguntasArreglo[contador]);
+    //             let messageeee = preguntasArreglo[contador];
+    //             getMessage(messageeee, null);
+    //         }else{
+    //             getMessage(messageeee, null);
+    //         }
+    //     }
+
+    // }).catch((error) => {
+    //     console.log('Error:', error);
+    // });
 
     //Procesar y Enviar Respuesta como Encuestador
     axios.post(url, { prompt: message, hash: hash }, {
@@ -422,10 +400,7 @@ function getMessage(message, imageSrc) {
     h4.textContent = new Intl.DateTimeFormat('es-419', options).format(new Date());
     h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
 
-
-
     BotIMG_Cont.appendChild(BotIMG);
-
 
     BotIMG_Div.appendChild(BotIMG_Cont);
 
@@ -537,10 +512,9 @@ function loadInterviewer() {
 
         imgPP = data.interviewerProfilePicture;
         
-
-
-
-        
+        //Imagen del Bot para Espera de Respuesta
+        let TM_BotIMG = document.getElementById('typingMessage_BotIMG');
+        TM_BotIMG.src = imgPP;
 
         document.getElementById('overlay').innerHTML = formContainer.innerHTML;
 
