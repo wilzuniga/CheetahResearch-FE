@@ -28,25 +28,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pregunta && peso) {
             const newListItem = document.createElement('div');
             newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
-            newListItem.style.fontFamily = "'IBM Plex Sans', sans-serif";
+            newListItem.style.fontFamily = "'hedliner', sans-serif";
 
             const newDiv = document.createElement('div');
             newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
-            newDiv.style.fontFamily = "'IBM Plex Sans', sans-serif";
+            newDiv.style.fontFamily = "'hedliner', sans-serif";
 
             const newH5 = document.createElement('h5');
             newH5.classList.add('mb-1');
-            newH5.style.fontFamily = "'IBM Plex Sans', sans-serif";
+            newH5.style.fontFamily = "'hedliner', sans-serif";
             newH5.textContent = pregunta;
 
             const newSpan = document.createElement('span');
             newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
-            newSpan.style.fontFamily = "'IBM Plex Sans', sans-serif";
+            newSpan.style.fontFamily = "'hedliner', sans-serif";
             newSpan.textContent = peso;
 
             const newSmall = document.createElement('small');
             newSmall.classList.add('text-muted');
-            newSmall.style.fontFamily = "'IBM Plex Sans', sans-serif";
+            newSmall.style.fontFamily = "'hedliner', sans-serif";
             newSmall.textContent = anexo;
 
             const followQuestionList = document.createElement('ul');
@@ -91,9 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const overlay = document.getElementById('overlay');
                 overlay.innerHTML = `
                     <div id="overlayContent">
-                        <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: 'IBM Plex Sans', sans-serif;" />
-                        <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;">Agregar pregunta</button>
-                        <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;">Cerrar</button>
+                        <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: 'hedliner', sans-serif;" />
+                        <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: 'hedliner' ">Agregar pregunta</button>
+                        <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: 'hedliner'">Cerrar</button>
                     </div>
                 `;
             
@@ -256,7 +256,7 @@ function CE_DeactivateNavBy(){
     
                 const newListItem = document.createElement('div');
                 newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
-                newListItem.style.fontFamily = "'IBM Plex Sans', sans-serif";
+                newListItem.style.fontFamily = "'hedliner', sans-serif";
                 
                 const newDiv = document.createElement('div');
                 newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
@@ -322,9 +322,9 @@ function CE_DeactivateNavBy(){
                     const overlay = document.getElementById('overlay');
                     overlay.innerHTML = `
                         <div id="overlayContent">
-                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: 'IBM Plex Sans', sans-serif;" />
-                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;">Agregar pregunta</button>
-                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;">Cerrar</button>
+                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: 'hedliner', sans-serif;" />
+                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: 'hedliner'">Agregar pregunta</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: 'hedliner'" ">Cerrar</button>
                         </div>
                     `;
     

@@ -5,26 +5,26 @@
 function createSurveyerForm() {
     const formContainer = document.createElement('div');
     formContainer.innerHTML = `
-        <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'IBM Plex Sans', sans-serif;">Crear Encuestador</h2>
-        <form class="p-3 p-xl-4" method="post" style="font-family: 'IBM Plex Sans', sans-serif;">
+        <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;">Crear Encuestador</h2>
+        <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
             <div class="mb-3">
-                <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Seleccionar Imagen</p>
+                <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Seleccionar Imagen</p>
                 <input class="form-control" type="file" name="FileInput">
             </div>
             <div class="mb-3">
-                <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Nombre del Encuestador</p>
+                <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Nombre del Encuestador</p>
                 <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" placeholder="Nombre">
             </div>
             <div class="mb-3">
-                <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Tono Encuestador</p>
+                <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Tono Encuestador</p>
                 <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" placeholder="Ingresa el tono en el cual hablará el encuestador">
             </div>
             <div class="mb-3">
-                <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Observaciones importantes</p>
+                <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Observaciones importantes</p>
                 <input class="form-control" type="text" id="ObservacionesImportantesTXT" name="Observaciones Importantes" placeholder="Observaciones importantes al Encuestador">
             </div>
             <div class="mb-3">
-                <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Saludo</p>
+                <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Saludo</p>
                 <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" placeholder="Ingresa el saludo del encuestador"></textarea>
             </div>
             <div style="width: 250px;">
@@ -47,23 +47,23 @@ function createSurveyerFormReadOnly() {
         console.log(response);
         const data = response.data;
         formContainer.innerHTML = `
-            <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'IBM Plex Sans', sans-serif;">Encuestador</h2>
+            <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;">Encuestador</h2>
             <form class="p-3 p-xl-4
-            " method="post" style="font-family: 'IBM Plex Sans', sans-serif;">
+            " method="post" style="font-family: 'hedliner', sans-serif;">
                 <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Imagen</p>
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Imagen</p>
                     <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
                     </div>
                 <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Nombre del Encuestador</p>
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Nombre del Encuestador</p>
                     <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" placeholder="Nombre" value="${data.interviewerName}" disabled>
                 </div>
                 <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Tono Encuestador</p>
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Tono Encuestador</p>
                     <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" placeholder="Ingresa el tono en el cual hablará el encuestador" value="${data.interviewerTone}" disabled>
                 </div>
                 <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'IBM Plex Sans', sans-serif;">Saludo</p>
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Saludo</p>
                     <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" placeholder="Ingresa el saludo del encuestador" disabled>${data.interviewerGreeting}</textarea>
                 </div>
             </form>

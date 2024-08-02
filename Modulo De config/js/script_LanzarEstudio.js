@@ -1,3 +1,6 @@
+filtros = [];
+
+
 function load(){    // Actualizar el título del estudio desde localStorage
     const datos = localStorage.getItem('selectedStudyData');
     console.log(datos);
@@ -22,6 +25,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
         e.preventDefault();
         const filtroTxt = document.getElementById('FiltrosTXT').value;
         if (filtroTxt) {
+            filtros.push(filtroTxt);
             const filtroItem = document.createElement('li');
             filtroItem.classList.add('list-group-item');
             filtroItem.style.display = 'flex';

@@ -23,6 +23,14 @@
   border-radius: var(--bs-list-group-border-radius);
 }
 
+.card {
+  background-color: #e4e4e4;
+}
+
+.form-control {
+  font-family: 'hedliner', sans-serif;box-shadow: inset 2px 2px 5px 1px #6d6d6d; color: #072934;
+}
+
 .switch {
   position: relative;
   display: inline-block;
@@ -128,13 +136,27 @@ input:checked + .slider:before {
 }
 
 @font-face {
-  font-family: 'hedliner-semibold';
-  src: url('hedliner-semibold-webfont.woff2') format('woff2'),
-    url('hedliner-semibold-webfont.woff') format('woff');
+  font-family: 'hedliner';
+  src: url('../fonts/hedliner-webfont.woff') format('woff'),
+  url('../fonts/hedliner-webfont.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 
-.fs-hedliner-semibold {
-  font-family: 'hedliner-semibold';
+:root {
+  --primary-bg-opacity: 1; /* Define una variable CSS para la opacidad */
+}
+
+.bg-primary {
+  background-color: rgba(192, 96, 28, var(--primary-bg-opacity)) !important;
+}
+
+@media (max-width: 720px) {
+  img {
+      display: none;
+  }
+}
+
+.list-group-item {
+  background-color: #f5f5f5;
 }
