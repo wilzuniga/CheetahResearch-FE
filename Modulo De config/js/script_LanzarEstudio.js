@@ -11,7 +11,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
         let coso = estudio.prompt;
         //pasar de markdown a html
 
-                    // Insertar el HTML en el div
+        // Insertar el HTML en el div
 
         document.getElementById('TituloEstudioLBL').innerText = estudio.title;
         document.getElementById('ResumenEstudioLBL').innerText = coso;
