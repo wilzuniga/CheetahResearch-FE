@@ -214,7 +214,7 @@ function sendMessage(message, imageSrc) {
             const url = 'https://api.cheetah-research.ai/chatbot/logs/';
             console.log('study_id:', study_id);
 
-            axios.post(url, { hash: hash }, {study_id: study_id},{
+            axios.post(url, { hash: hash, study_id: study_id},{
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }

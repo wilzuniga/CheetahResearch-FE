@@ -13,14 +13,15 @@ async function listNonActiveUsers() {
         }
 
         const studys = await response.json();
+        console.log(studys);
         const studySelect=document.getElementById('select-Study');
 
         studySelect.innerHTML = '';
 
         studys.forEach(study => {
             const option = document.createElement('option');
-            option.value = study.id;
-            option.textContent = study.name;
+            option.value = study._id;
+            option.textContent = study.title;
             studySelect.appendChild(option);
         });
     } catch (error) {
