@@ -431,12 +431,12 @@ document.getElementById('btIMG').addEventListener('touchend', function () {
 });
 
 //Función Cargar Encuesta
-function load() {
+function load(study_id) {
     const preguntas = [];
     const url = 'https://api.cheetah-research.ai/chatbot/start/';
     console.log('Cargando preguntas...');
 
-    axios.post(url, { study_id: '66abccd9a47c8cd2dc5d7a2f' }, {
+    axios.post(url, { study_id: study_id }, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }
@@ -499,7 +499,7 @@ function loadInterviewer(study_id) {
         document.getElementById('AceptarChat').addEventListener('click', (event) => {
             event.preventDefault();
             document.getElementById('overlay').style.display = 'none';
-            load();
+            load(study_id);
         });
 
     })
