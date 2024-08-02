@@ -6,37 +6,34 @@
 }
 
 #btSend-Cont {
-  background: #072934;
+  background: var(--bs-CR-orange);
   transition: 0.2s ease-in-out;
 }
 
 #btSend {
-  color: #929292;
+  color: var(--bs-gray-dark);
   transition: 0.2s ease-in-out;
 }
 
 #btIMG {
-  color: #072934;
+  color: var(--bs-CR-orange);
   transition: 0.2s ease-in-out;
 }
 
 /* Hover Properties */
 
 #btSend-Cont:hover {
-  background: #eb7e20;
+  background: var(--bs-CR-black);
 }
 
 #btSend-Cont:hover #btSend {
-  color: #072934;
+  color: #929292;
 }
 
 #btIMG:hover {
-  color: #e05a30;
+  color: var(--bs-CR-gray-dark);
 }
 
 #btIMG-Cont:hover {
-  background: #083340;
+  background: var(--bs-CR-orange-2);
 }
-
-/* No focus (Mobile) */
-

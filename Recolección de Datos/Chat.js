@@ -1,4 +1,4 @@
-let imgPP ;
+let imgPP;
 let hash = 0;
 
 //Enviar mensaje al presionar enter
@@ -186,8 +186,8 @@ function sendMessage(message, imageSrc) {
     const url = 'http://44.200.62.13:8000/communicate/';
 
     //Procesar y Enviar Respuesta como Encuestador
-    axios.post(url, { prompt: message , hash: hash }, {
-        headers:{
+    axios.post(url, { prompt: message, hash: hash }, {
+        headers: {
             'Content-Type': 'multipart/form-data',
         }
     }).then((response) => {
@@ -200,7 +200,7 @@ function sendMessage(message, imageSrc) {
 
             getMessage(farewellMessage, null);
             const url = 'http://44.200.62.13:8000/logs/';
-            axios.post(url, { hash: hash }, {study_id: '66aa799b1b95df16ba3083a8'},{
+            axios.post(url, { hash: hash }, { study_id: '66aa799b1b95df16ba3083a8' }, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
@@ -212,12 +212,12 @@ function sendMessage(message, imageSrc) {
             ).catch((error) => {
                 console.log('Error:', error);
             });
-        }else{
+        } else {
             getMessage(data.response, null);
             loadingMsg.style.display = 'none';
             console.log(data);
         }
-        
+
     }).catch((error) => {
         console.log('Error:', error);
     });
@@ -249,7 +249,7 @@ function sendMessage(message, imageSrc) {
     //     console.log('Error:', error);
     // });
 
-    
+
 
     //recibir mensaje
 }
@@ -355,34 +355,34 @@ function getMessage(message, imageSrc) {
 }
 
 //Funciones cambiar colores de botones al soltar botón (móviles)
-document.getElementById('btSend-Cont').addEventListener('touchstart', function () {
-    btSend = document.getElementById('btSend');
-    btSend.style.color = '#072934';
-    this.style.background = '#eb7e20';
-    this.style.transition = '0s ease-in-out';
-});
-document.getElementById('btSend-Cont').addEventListener('touchend', function () {
-    btSend = document.getElementById('btSend');
-    btSend.style.color = '#929292';
-    this.style.backgroundColor = '#072934';
-    this.style.transition = '0.2s ease-in-out';
-});
-
-document.getElementById('btIMG').addEventListener('touchstart', function () {
-    this.style.color = '#e05a30';
-    this.style.transition = '0s ease-in-out';
-});
-document.getElementById('btIMG').addEventListener('touchend', function () {
-    this.style.color = '#072934';
-    this.style.transition = '0.2s ease-in-out';
-});
-
 document.getElementById('btIMG-Cont').addEventListener('touchstart', function () {
-    this.style.background = '#083340';
+    this.style.background = 'var(--bs-CR-orange-2)';
     this.style.transition = '0s ease-in-out';
 });
 document.getElementById('btIMG-Cont').addEventListener('touchend', function () {
     this.style.background = 'transparent';
+    this.style.transition = '0.2s ease-in-out';
+});
+
+document.getElementById('btSend-Cont').addEventListener('touchstart', function () {
+    btSend = document.getElementById('btSend');
+    btSend.style.color = '#929292';
+    this.style.background = 'var(--bs-CR-black)';
+    this.style.transition = '0s ease-in-out';
+});
+document.getElementById('btSend-Cont').addEventListener('touchend', function () {
+    btSend = document.getElementById('btSend');
+    btSend.style.color = 'var(--bs-gray-dark)';
+    this.style.backgroundColor = 'var(--bs-CR-orange)';
+    this.style.transition = '0.2s ease-in-out';
+});
+
+document.getElementById('btIMG').addEventListener('touchstart', function () {
+    this.style.color = 'var(--bs-CR-gray-dark)';
+    this.style.transition = '0s ease-in-out';
+});
+document.getElementById('btIMG').addEventListener('touchend', function () {
+    this.style.color = 'var(--bs-CR-orange)';
     this.style.transition = '0.2s ease-in-out';
 });
 
@@ -410,7 +410,7 @@ function load() {
 }
 
 //Función Cargar Entrevistador
-function loadInterviewer(){
+function loadInterviewer() {
     const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getInterviewer/";
 
     axios.post(url, { study_id: '66aa799b1b95df16ba3083a8' }, {
@@ -427,7 +427,7 @@ function loadInterviewer(){
 
 
 
-        document.getElementById('Bot-Name').innerText = nombre; 
+        document.getElementById('Bot-Name').innerText = nombre;
         const formContainer = document.createElement('div');
 
 
@@ -457,7 +457,7 @@ function loadInterviewer(){
         });
 
     })
-    .catch(error => {
-        console.error(error);
-    });
+        .catch(error => {
+            console.error(error);
+        });
 }
