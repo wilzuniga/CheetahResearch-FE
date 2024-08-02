@@ -2,7 +2,7 @@ let Demographic_Filters = [];
 let ResumenGeneral, ResumenIndividual, AnalisisPsicograficos;
 
 function AgregarFiltros() {
-    const url = "https://api.cheetah-research.ai/configuration/getSummaries/66abccd9a47c8cd2dc5d7a2f";
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
 
     axios.get(url)
         .then(function (response) {
@@ -71,7 +71,7 @@ function AgregarFiltros() {
 
 
 function LLenarResumenes(){
-    const url = "https://api.cheetah-research.ai/configuration/getSummaries/66abccd9a47c8cd2dc5d7a2f";
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
 
     axios.get(url)
         .then(function (response) {
@@ -475,7 +475,7 @@ function LLenarResumenes(){
 document.addEventListener('DOMContentLoaded', () => {
     
     //const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
-    const url = "https://api.cheetah-research.ai/configuration/getSummaries/66abccd9a47c8cd2dc5d7a2f";
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
 
     axios.get(url)
         .then(function (response) {
@@ -503,5 +503,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 });
+
+// Abrir un filechooser con el botón e ingresar los archivos a un arreglo de archivos botonImportar
+const botonImportar = document.getElementById('botonImportar');
+botonImportar.addEventListener('click', () => {
+    const fileChooser = document.createElement('input');
+    fileChooser.type = 'file';
+    fileChooser.multiple = true;
+    fileChooser.addEventListener('change', (event) => {
+        const files = event.target.files;
+        // Aquí puedes hacer algo con los archivos seleccionados, como guardarlos en un arreglo o procesarlos de alguna manera
+        console.log(files);
+    });
+    fileChooser.click();
+});
+
+
 
 
