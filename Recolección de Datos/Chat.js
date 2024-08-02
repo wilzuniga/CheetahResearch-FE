@@ -210,8 +210,9 @@ function sendMessage(message, imageSrc) {
             const farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
 
             getMessage(farewellMessage, null);
+            const study_id = new URLSearchParams(window.location.search).get('id');
             const url = 'https://api.cheetah-research.ai/chatbot/logs/';
-            axios.post(url, { hash: hash }, {study_id: '66abccd9a47c8cd2dc5d7a2f'},{
+            axios.post(url, { hash: hash }, {study_id: study_id},{
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
