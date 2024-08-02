@@ -4,7 +4,7 @@ document.getElementById('LanzarEstudioBtn').addEventListener('click', (e) => {
     if (studioID.trim() !== '') {
 
         const nuevaURL = `../../../CheetahResearch-FE/Recolección%20de%20Datos/Chat.html?id=${studioID}`;
-        const linkText = `Ir a Chat con ID ${studioID}`;
+        const linkText = `Recolección de Datos`;
         console.log(nuevaURL);
         document.getElementById('ModuloDeRecoleccionURL').innerHTML = `<a href="${nuevaURL}">${linkText}</a>`;
     } else {

@@ -1,7 +1,7 @@
 async function logOut(){
     try {
 
-        let response = await fetch('http://ec2-44-203-206-68.compute-1.amazonaws.com/logout/', {
+        let response = await fetch('https://api.cheetah-research.ai/configuration/logout/', {
             method: 'POST',
             headers: {
                 'Authorization': `Token ${localStorage.getItem('token')}`

@@ -1,6 +1,6 @@
 async function listNonActiveUsers() {
     try {
-        const response = await fetch('http://ec2-44-203-206-68.compute-1.amazonaws.com/listnonactive_user/', {
+        const response = await fetch('https://api.cheetah-research.ai/configuration/listnonactive_user/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
