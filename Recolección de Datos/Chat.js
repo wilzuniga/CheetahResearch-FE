@@ -1,4 +1,4 @@
-let imgPP ;
+let imgPP;
 let hash = 0;
 
 //Enviar mensaje al presionar enter
@@ -273,6 +273,72 @@ function sendMessage(message, imageSrc) {
     let loadingMsg = document.getElementById('Typing-Msg');
     messageList.insertBefore(loadingMsg, null);
 
+    //Procesar y Enviar Respuesta como Encuestador
+    axios.post(url, { prompt: message, hash: hash }, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    }).then((response) => {
+        const data = response.data;
+        if (data.response.includes('LISTO')) {
+            const farewellMessage = `Hola,
+            \n\nGracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.
+            \n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.
+            \n\n¡Que tengas un excelente día!]`;
+
+            getMessage(farewellMessage, null);
+            const url = 'http://44.200.62.13:8000/logs/';
+            axios.post(url, { hash: hash }, { study_id: '66aa799b1b95df16ba3083a8' }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+
+
+            }).then((response) => {
+
+            }
+            ).catch((error) => {
+                console.log('Error:', error);
+            });
+        } else {
+            getMessage(data.response, null);
+            loadingMsg.style.display = 'none';
+            console.log(data);
+        }
+
+    }).catch((error) => {
+        console.log('Error:', error);
+    });
+
+    //     headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //     }
+    // }).then((response) => {
+    //     const data = response.data;
+    //     console.log(data);
+    //     localStorage.setItem('preguntaAtcual', response.data.response);
+
+    //     let messageeee = localStorage.getItem('preguntaAtcual')
+    //     if (contaWeight == 3) {
+    //         contador++;
+    //         contaWeight = 0;
+    //         getMessage(messageeee, null);
+    //     }else{
+    //         if (messageeee.includes(preguntasArreglo[contador])) {
+    //             console.log('pregunta', preguntasArreglo[contador]);
+    //             let messageeee = preguntasArreglo[contador];
+    //             getMessage(messageeee, null);
+    //         }else{
+    //             getMessage(messageeee, null);
+    //         }
+    //     }
+
+    // }).catch((error) => {
+    //     console.log('Error:', error);
+    // });
+
+
+
     //recibir mensaje
 
 
@@ -382,30 +448,8 @@ function getMessage(message, imageSrc) {
 }
 
 //Funciones cambiar colores de botones al soltar botón (móviles)
-document.getElementById('btSend-Cont').addEventListener('touchstart', function () {
-    btSend = document.getElementById('btSend');
-    btSend.style.color = '#072934';
-    this.style.background = '#eb7e20';
-    this.style.transition = '0s ease-in-out';
-});
-document.getElementById('btSend-Cont').addEventListener('touchend', function () {
-    btSend = document.getElementById('btSend');
-    btSend.style.color = '#929292';
-    this.style.backgroundColor = '#072934';
-    this.style.transition = '0.2s ease-in-out';
-});
-
-document.getElementById('btIMG').addEventListener('touchstart', function () {
-    this.style.color = '#e05a30';
-    this.style.transition = '0s ease-in-out';
-});
-document.getElementById('btIMG').addEventListener('touchend', function () {
-    this.style.color = '#072934';
-    this.style.transition = '0.2s ease-in-out';
-});
-
 document.getElementById('btIMG-Cont').addEventListener('touchstart', function () {
-    this.style.background = '#083340';
+    this.style.background = 'var(--bs-CR-orange-2)';
     this.style.transition = '0s ease-in-out';
 });
 document.getElementById('btIMG-Cont').addEventListener('touchend', function () {
@@ -413,7 +457,29 @@ document.getElementById('btIMG-Cont').addEventListener('touchend', function () {
     this.style.transition = '0.2s ease-in-out';
 });
 
-//Función load
+document.getElementById('btSend-Cont').addEventListener('touchstart', function () {
+    btSend = document.getElementById('btSend');
+    btSend.style.color = '#929292';
+    this.style.background = 'var(--bs-CR-black)';
+    this.style.transition = '0s ease-in-out';
+});
+document.getElementById('btSend-Cont').addEventListener('touchend', function () {
+    btSend = document.getElementById('btSend');
+    btSend.style.color = 'var(--bs-gray-dark)';
+    this.style.backgroundColor = 'var(--bs-CR-orange)';
+    this.style.transition = '0.2s ease-in-out';
+});
+
+document.getElementById('btIMG').addEventListener('touchstart', function () {
+    this.style.color = 'var(--bs-CR-gray-dark)';
+    this.style.transition = '0s ease-in-out';
+});
+document.getElementById('btIMG').addEventListener('touchend', function () {
+    this.style.color = 'var(--bs-CR-orange)';
+    this.style.transition = '0.2s ease-in-out';
+});
+
+//Función Cargar Encuesta
 function load() {
     const preguntas = [];
     const url = 'http://44.200.62.13:8000/start/';
@@ -436,7 +502,8 @@ function load() {
     });
 }
 
-function loadInterviewer(){
+//Función Cargar Entrevistador
+function loadInterviewer() {
     const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getInterviewer/";
 
     axios.post(url, { study_id: '66abccd9a47c8cd2dc5d7a2f' }, {
@@ -453,7 +520,7 @@ function loadInterviewer(){
 
 
 
-        document.getElementById('Bot-Name').innerText = nombre; 
+        document.getElementById('Bot-Name').innerText = nombre;
         const formContainer = document.createElement('div');
 
 
@@ -484,8 +551,8 @@ function loadInterviewer(){
         });
 
     })
-    .catch(error => {
-        console.error(error);
-    });
+        .catch(error => {
+            console.error(error);
+        });
 }
 
