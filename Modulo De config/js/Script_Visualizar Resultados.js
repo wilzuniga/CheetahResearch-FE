@@ -2,29 +2,41 @@ let Demographic_Filters = [];
 let ResumenGeneral, ResumenIndividual, AnalisisPsicograficos;
 
 function AgregarFiltros() {
-    const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/669ee33ec2af27bcc4720342";
+    const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/66abccd9a47c8cd2dc5d7a2f";
 
     axios.get(url)
         .then(function (response) {
             
             var data = response.data;
             Demographic_Filters = [];
-            //ciclar la data para ver la estructura del json en la consola
-            for(let section in data){
-                for(let category in data[section]){
-                    for (let filter in data[section][category]) {
+            //ciclar la data a partir de la segunda section para ver la estructura del json en la consola
+
+                for(let category in data['general']){
+                    for (let filter in data['general'][category]) {
+                        console.log("-" + filter);
                         Demographic_Filters.push(filter);                        
                     }
                     break
 
                 }
-                break
-            }
+
 
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');
             const comboBox2 = document.getElementById('ComboBox_ResumenIndividual');
+            const comboBox3 = document.getElementById('Combobox_UserPersona');
+            const comboBox4 = document.getElementById('Combobox_EKMAN');
+            const comboBox5 = document.getElementById('Combobox_RasgosDePersonalidad');
+            const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
+            const comboBox7 = document.getElementById('Combobox_NPS');
+            const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
+            comboBox3.innerHTML = '';
+            comboBox4.innerHTML = '';
+            comboBox5.innerHTML = '';
+            comboBox6.innerHTML = '';
+            comboBox7.innerHTML = '';
+            comboBox8.innerHTML = '';
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -33,6 +45,13 @@ function AgregarFiltros() {
             option.text = optionText;
             comboBox.appendChild(option);
             comboBox2.appendChild(option.cloneNode(true));
+            comboBox3.appendChild(option.cloneNode(true));
+            comboBox4.appendChild(option.cloneNode(true));
+            comboBox5.appendChild(option.cloneNode(true));
+            comboBox6.appendChild(option.cloneNode(true));
+            comboBox7.appendChild(option.cloneNode(true));
+            comboBox8.appendChild(option.cloneNode(true));
+
         });
         }
         )
@@ -52,15 +71,15 @@ function AgregarFiltros() {
 
 
 function LLenarResumenes(){
-    const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/669ee33ec2af27bcc4720342";
+    const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/66abccd9a47c8cd2dc5d7a2f";
 
     axios.get(url)
         .then(function (response) {
     
             var data = response.data;
-            ResumenGeneral = data.general;
+            ResumenGeneral = data['general'];
             ResumenIndividual = data.individual_questions;            
-            AnalisisPsicograficos = data.psicographic_questions;
+            AnalisisPsicograficos = data['psicographic_questions'];
 
 
             
@@ -106,27 +125,17 @@ function LLenarResumenes(){
                     const selectedValue = event.target.value;
                 
                     // Obtener el objeto JSON correspondiente al valor seleccionado
-                    const jsonObject = ResumenGeneral_Factual[selectedValue];
+                    const markdownString = ResumenGeneral_Factual[selectedValue];
                 
                     // Convertir el objeto JSON a una cadena HTML
                     let htmlString = '';
                 
                     // Verificar si jsonObject existe
-                    if (jsonObject) {
-                        // Recorrer las propiedades del JSON
-                        for (const [category, data] of Object.entries(jsonObject)) {
-                            htmlString += `<h3>${category}</h3><ul>`;
-                            for (const [key, value] of Object.entries(data)) {
-                                // Convertir el valor a porcentaje solo si el valor es menor a 1
-                                const percentage = (value < 1 ? (value * 100).toFixed(2) : value);
-                                htmlString += `<li>${key}: ${percentage}%</li>`;
-                            }
-                            htmlString += `</ul>`;
-                        }
-                    }
+                    const coso = marked(markdownString);
+
                 
                     // Insertar el HTML en el div
-                    div.innerHTML = htmlString;
+                    div.innerHTML = coso;
                 
                 }
                 
@@ -155,9 +164,15 @@ function LLenarResumenes(){
                     const jsonObject = ResumenIndividual_Narrativo[selectedValue];
 
                     // Convertir el objeto JSON a una cadena HTML
+                    const markdownString = ResumenGeneral_Factual[selectedValue];
+                
+                    // Convertir el objeto JSON a una cadena HTML
                     let htmlString = '';
-
+                
                     // Verificar si jsonObject existe
+                    const coso = marked(markdownString);
+
+                    /*// Verificar si jsonObject existe
                     if (jsonObject) {
                         let index = 1; // Inicializar el índice
                         for (const [category, data] of Object.entries(jsonObject)) {
@@ -172,10 +187,10 @@ function LLenarResumenes(){
                             htmlString += `<br>`;
 
                         }
-                    }
+                    }*/
 
                     // Insertar el HTML en el div
-                    div.innerHTML = htmlString;
+                    div.innerHTML = coso;
 
                 } else if (StyleSelectedOption.value == 'percentage') {
 
@@ -214,11 +229,233 @@ function LLenarResumenes(){
                     div.innerHTML = htmlString;
 
                 }
+            });
+
+
+            //Analisis Psicograficos, no tienen narrativo ni factual. Solo filtros
+            const comboBoxUP = document.getElementById('Combobox_UserPersona');
+            const comboBoxEK = document.getElementById('Combobox_EKMAN');
+            const comboBoxRP = document.getElementById('Combobox_RasgosDePersonalidad');
+            const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
+            const comboBoxNPS = document.getElementById('Combobox_NPS');
+            const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
+
+            //ekman, perfecto
+            comboBoxEK.addEventListener('change', (event) => {
+                console.log(event.target.value);
                 
-                
+                // Obtener el div donde se mostrará el contenido
+                var div = document.getElementById('EKMANContent');
+
+                // Supongamos que `event.target.value` es el valor del combobox
+                const selectedValue = event.target.value;
+
+                // Obtener el objeto JSON correspondiente al valor seleccionado
+                const jsonObject = AnalisisPsicograficos['ekman'];
+                console.log(jsonObject);
+
+                // Convertir el objeto JSON a una cadena HTML
+                let htmlString = '';
+
+                // Verificar si jsonObject existe y tiene la categoría seleccionada
+
+
+                if (jsonObject && jsonObject[selectedValue]) {
+                    let index = 1; // Inicializar el índice
+                    const questions = jsonObject[selectedValue];
+                    questions.forEach(questionData => {
+                        // Añadir la pregunta
+                        htmlString += `<p><strong>${index}. Question:</strong> ${questionData.question}</p>`;
+                        // Añadir el resumen
+                        htmlString += `<p><strong>Summary:</strong></p><ul>`;
+                        for (const [key, value] of Object.entries(questionData.summary)) {
+                            htmlString += `<li>${key}: ${value}</li>`;
+                        }
+                        htmlString += `</ul>`;
+                        index++; // Incrementar el índice
+                        htmlString += `<br>`; // Añadir un salto de línea después de cada pregunta y resumen
+                    });
+                } else {
+                    htmlString = '<p>No se encontraron datos para la selección actual.</p>';
+                }
+
+                // Insertar el HTML en el div
+                div.innerHTML = htmlString;
 
             });
 
+            //Rasgos de personalidad, perfecto
+            comboBoxRP.addEventListener('change', (event) => {
+                console.log(event.target.value);
+            
+                // Obtener el div donde se mostrará el contenido
+                var div = document.getElementById('RasgosDePersonalidadContent');
+            
+                // Supongamos que `event.target.value` es el valor del combobox
+                const selectedValue = event.target.value;
+            
+                // Obtener el objeto JSON correspondiente al valor seleccionado
+                const jsonObject = AnalisisPsicograficos['personality'];
+                console.log(jsonObject);
+            
+                // Convertir el objeto JSON a una cadena HTML
+                let htmlString = '';
+            
+                // Verificar si jsonObject existe y tiene la categoría seleccionada
+                if (jsonObject && jsonObject[selectedValue]) {
+                    let index = 1; // Inicializar el índice
+                    const questions = jsonObject[selectedValue];
+                    questions.forEach(questionData => {
+                        // Añadir la pregunta
+                        htmlString += `<p><strong>${index}. Question:</strong> ${questionData.question}</p>`;
+                        // Añadir el resumen
+                        htmlString += `<p><strong>Summary:</strong></p><ul>`;
+                        for (const [key, value] of Object.entries(questionData)) {
+                            if (key !== 'question') { // Excluir la clave 'question' del resumen
+                                htmlString += `<li>${key}: ${value}</li>`;
+                            }
+                        }
+                        htmlString += `</ul>`;
+                        index++; // Incrementar el índice
+                        htmlString += `<br>`; // Añadir un salto de línea después de cada pregunta y resumen
+                    });
+                } else {
+                    htmlString = '<p>No se encontraron datos para la selección actual.</p>';
+                }
+            
+                // Insertar el HTML en el div
+                div.innerHTML = htmlString;
+            });
+
+            //Segmentos Psicograficos, perfecto
+
+            comboBoxSP.addEventListener('change', (event) => {
+
+                // Obtener el div donde se mostrará el contenido
+                var div = document.getElementById('SegmentosPsicograficosContent');
+            
+                // Supongamos que `event.target.value` es el valor del combobox
+                const selectedValue = event.target.value;
+            
+                // Obtener el objeto JSON correspondiente al valor seleccionado
+                const jsonObject = AnalisisPsicograficos['segmentos'];
+                console.log(jsonObject);
+            
+                // Convertir el objeto JSON a una cadena HTML
+                let htmlString = '';
+            
+                // Verificar si jsonObject existe y tiene la categoría seleccionada
+                if (jsonObject && jsonObject[selectedValue]) {
+                    let index = 1; // Inicializar el índice
+                    const questions = jsonObject[selectedValue];
+                    questions.forEach(questionData => {
+                        // Añadir la pregunta
+                        htmlString += `<p><strong>${index}. Question:</strong> ${questionData.question}</p>`;
+                        // Añadir el resumen
+                        htmlString += `<p><strong>Summary:</strong></p><ul>`;
+                        for (const [key, value] of Object.entries(questionData)) {
+                            if (key !== 'question') { // Excluir la clave 'question' del resumen
+                                htmlString += `<li>${key}: ${value}</li>`;
+                            }
+                        }
+                        htmlString += `</ul>`;
+                        index++; // Incrementar el índice
+                        htmlString += `<br>`; // Añadir un salto de línea después de cada pregunta y resumen
+                    });
+                } else {
+                    htmlString = '<p>No se encontraron datos para la selección actual.</p>';
+                }
+            
+                // Insertar el HTML en el div
+                div.innerHTML = htmlString;
+            }
+            );
+
+            //NPS, perfecto
+            comboBoxNPS.addEventListener('change', (event) => {
+                console.log(event.target.value);
+            
+                // Obtener el div donde se mostrará el contenido
+                var div = document.getElementById('NPSContent');
+            
+                // Supongamos que `event.target.value` es el valor del combobox
+                const selectedValue = event.target.value;
+            
+                // Obtener el objeto JSON correspondiente al valor seleccionado
+                const jsonObject = AnalisisPsicograficos['nps'];
+                console.log(jsonObject);
+            
+                // Convertir el objeto JSON a una cadena HTML
+                let htmlString = '';
+            
+                // Verificar si jsonObject existe y tiene la categoría seleccionada
+                if (jsonObject && jsonObject[selectedValue]) {
+                    let index = 1; // Inicializar el índice
+                    const questions = jsonObject[selectedValue];
+                    questions.forEach(questionData => {
+                        // Añadir la pregunta
+                        htmlString += `<p><strong>${index}. Question:</strong> ${questionData.question}</p>`;
+                        // Añadir el resumen
+                        htmlString += `<p><strong>Summary:</strong></p><ul>`;
+                        for (const [key, value] of Object.entries(questionData.summary)) {
+                            htmlString += `<li>${key}: ${value}</li>`;
+                        }
+                        htmlString += `</ul>`;
+                        index++; // Incrementar el índice
+                        htmlString += `<br>`; // Añadir un salto de línea después de cada pregunta y resumen
+                    });
+                } else {
+                    htmlString = '<p>No se encontraron datos para la selección actual.</p>';
+                }
+            
+                // Insertar el HTML en el div
+                div.innerHTML = htmlString;
+            });
+
+            comboBoxEC.addEventListener('change', (event) => {
+                console.log(event.target.value);
+            
+                // Obtener el div donde se mostrará el contenido
+                var div = document.getElementById('EstiloDeComunicacionContent');
+            
+                // Supongamos que `event.target.value` es el valor del combobox
+                const selectedValue = event.target.value;
+            
+                // Obtener el objeto JSON correspondiente al valor seleccionado
+                const jsonObject = AnalisisPsicograficos['estilo_comunicacion'];
+                console.log(jsonObject);
+            
+                // Convertir el objeto JSON a una cadena HTML
+                let htmlString = '';
+            
+                // Verificar si jsonObject existe y tiene la categoría seleccionada
+                if (jsonObject && jsonObject[selectedValue]) {
+                    let index = 1; // Inicializar el índice
+                    const questions = jsonObject[selectedValue];
+                    questions.forEach(questionData => {
+                        // Añadir la pregunta
+                        htmlString += `<p><strong>${index}. Question:</strong> ${questionData.question}</p>`;
+                        // Añadir el resumen
+                        htmlString += `<p><strong>Summary:</strong></p><ul>`;
+                        for (const [key, value] of Object.entries(questionData)) {
+                            if (key !== 'question') { // Excluir la clave 'question' del resumen
+                                htmlString += `<li>${key}: ${value}</li>`;
+                            }
+                        }
+                        htmlString += `</ul>`;
+                        index++; // Incrementar el índice
+                        htmlString += `<br>`; // Añadir un salto de línea después de cada pregunta y resumen
+                    });
+                } else {
+                    htmlString = '<p>No se encontraron datos para la selección actual.</p>';
+                }
+            
+                // Insertar el HTML en el div
+                div.innerHTML = htmlString;
+            });
+            
+
+            
         }
         )
         .catch(function (error) {
@@ -238,7 +475,7 @@ function LLenarResumenes(){
 document.addEventListener('DOMContentLoaded', () => {
     
     //const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/" + localStorage.getItem('selectedStudyId');
-    const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/669ee33ec2af27bcc4720342";
+    const url = "http://ec2-44-203-206-68.compute-1.amazonaws.com/getSummaries/66abccd9a47c8cd2dc5d7a2f";
 
     axios.get(url)
         .then(function (response) {

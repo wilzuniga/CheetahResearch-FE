@@ -1,3 +1,6 @@
+filtros = [];
+
+
 function load(){    // Actualizar el título del estudio desde localStorage
     const datos = localStorage.getItem('selectedStudyData');
     console.log(datos);
@@ -5,13 +8,13 @@ function load(){    // Actualizar el título del estudio desde localStorage
         const estudio = JSON.parse(datos);
         console.log(estudio.summary);
 
-        let coso = marked(estudio.summary);
+        let coso = estudio.prompt;
         //pasar de markdown a html
 
                     // Insertar el HTML en el div
 
         document.getElementById('TituloEstudioLBL').innerText = estudio.title;
-        document.getElementById('ResumenEstudioLBL').innerHTML = coso;
+        document.getElementById('ResumenEstudioLBL').innerText = coso;
     }
 
     // Manejar el evento del botón de agregar filtro
@@ -22,6 +25,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
         e.preventDefault();
         const filtroTxt = document.getElementById('FiltrosTXT').value;
         if (filtroTxt) {
+            filtros.push(filtroTxt);
             const filtroItem = document.createElement('li');
             filtroItem.classList.add('list-group-item');
             filtroItem.style.display = 'flex';
