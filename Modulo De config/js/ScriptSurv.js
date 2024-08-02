@@ -180,7 +180,7 @@ function enviarDatos(preguntas) {
     formData.append('questions', JSON.stringify(preguntas));
     questionsImg.forEach((questionImg) => {
         //formData.append(1, file1); // Archivo asociado a la pregunta con id 1 
-        formData.append(questionImg.index, questionImg.file);
+        formData.append(questionImg.index + 1, questionImg.file);
     });
 
     const url = 'https://api.cheetah-research.ai/configuration/createQuestion/' + localStorage.getItem('selectedStudyId') + '/';

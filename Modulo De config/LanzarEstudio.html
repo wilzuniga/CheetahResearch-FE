@@ -117,27 +117,48 @@
                             <p id="TituloEstudioLBL" style="font-size: 17px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Titulo del Estudio</p>
                         </div>
                         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-                            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Resumen del estudio</p>
+                            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Prompt del estudio</p>
                             <p id="ResumenEstudioLBL" style="font-size: 17px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Resumen del estudio</p>
                         </div>
                         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
                             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Filtros</p>
                             <input class="form-control" type="text" id="FiltrosTXT" name="bservaciones Importantes" placeholder="Agrega filtros para el modulo de Analisis" style="font-family: 'hedliner', sans-serif;">
                             <button class="btn btn-primary" id="AgregarFiltroBTN" style="margin-top: 10px;font-family: 'hedliner', sans-serif;">Agregar</button>
+                            <button class="btn btn-primary" id="guardarFitroBTN" style="margin-top: 10px;font-family: 'hedliner', sans-serif;">Guardar</button>
+
                         </div>
                         <ul class="list-group" id="FiltrosLST" style="font-family: 'hedliner', sans-serif;">
                             
                         </ul>
 
-                        <div style="height: 5px;background: var(--bs-primary);margin-top: 24px;margin-bottom: 14px;border-radius: 5px;"></div>
-                        <div style="margin-top: 10px;margin-bottom: 24px;">
-                            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Modalidad de Testing</p><label class="switch"><input type="checkbox" /><span class="slider round"></span></label>
-                        </div>
-
                         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
                             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Configurar Deploy de analisis de datos</p>
-                            <button class="btn btn-primary" id="AgregarFiltroBTN" style="margin-top: 10px;font-family: 'hedliner', sans-serif;">Configurar</button>
+
+                            <select id="Combobox_Modules" style="font-family: hedliner; margin-top: 10px; margin-bottom: 10px;">
+                                <option value="general">Modulo de Analisis General</option>
+                                <option value="individual_questions">Modulo de Analisis Individual</option>
+                                <option value="psicographic_questions">Modulo de Analisis Psicografico</option>
+                                <option value="user_personas">Modulo de Users Personas</option>
+                            </select>    
+
+                            <ul class="list-group" id="ModulesLST" style="font-family: 'hedliner', sans-serif;">
+                            
+                            </ul>
+                            <button class="btn btn-primary" id="AgregarModuloBTN" style="margin-top: 10px;font-family: 'hedliner', sans-serif;">Agregar</button>
+                            <button class="btn btn-primary" id="guardarModuloBTN" style="margin-top: 10px;font-family: 'hedliner', sans-serif;">Guardar</button>
+
                         </div>
+
+                        <div style="height: 5px;background: var(--bs-primary);margin-top: 24px;margin-bottom: 14px;border-radius: 5px;"></div>
+                        <div style="margin-top: 10px;margin-bottom: 24px;">
+                            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Modalidad de Testing</p>
+                            <label class="switch">
+                                <input type="checkbox" id="test_Switch"/>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+
+                        
 
                         <div class="card mb-4" style="margin-top: 24px;font-family: 'hedliner', sans-serif;">
                             <div class="card-header py-3" style="font-family: 'hedliner', sans-serif;">
