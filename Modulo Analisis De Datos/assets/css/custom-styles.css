@@ -21,7 +21,7 @@ eb7e20
 }
 
 .sidebar-dark .sidebar-brand {
-    color: #414656; /* Color del texto del sidebar */
+    color: var(--bs-CR-gray-dark); /* Color del texto del sidebar */
 }
 
 

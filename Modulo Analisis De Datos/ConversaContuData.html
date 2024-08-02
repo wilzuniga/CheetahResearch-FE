@@ -52,24 +52,25 @@
 
 <body id="page-top" onload="loadInterviewer()">
     <div id="wrapper">
-        <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-end sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;background: #eb7e20; flex-wrap: nowrap;">
+        <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-end sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="background: var(--bs-CR-black-dark); flex-wrap: nowrap;">
             <div class="container-fluid d-flex flex-column p-0">
                 <a class="navbar-brand align-items-center justify-content-xxl-end align-items-xxl-center sidebar-brand m-0" href="PaginaPrincipal.html">
                     <div class="sidebar-brand-icon rotate-n-15"><img data-bs-toggle="tooltip" data-bss-tooltip="" class="mx-auto d-none d-md-block" src="assets/img/NegroLogo.png" width="145" height="105" style="transform: rotate(23deg);width: 186px;height: 74px;"></div>
-                    <div class="sidebar-brand-text mx-3"><span data-bs-toggle="tooltip" data-bss-tooltip="" style="font-family: hedliner;color: #072934;">Cheetah Research</span></div>
+                    <div class="sidebar-brand-text mx-3"><span data-bs-toggle="tooltip" data-bss-tooltip="" style="font-family: hedliner;color: #c0d9e1;">Cheetah Research</span></div>
                 </a>
                 <div class="d-xl-flex align-items-xxl-start" style="position: sticky;height: 89px;"></div>
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="Overview.html"><i class="fas fa-window-maximize" style="font-size: 20px;"></i><span>Pagina Principal</span></a></li>
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Filtros&nbsp;</a>
-                        <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+                    <li class="nav-item"><a class="nav-link" href="Overview.html"><i class="fas fa-window-maximize" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: 'hedliner', sans-serif;color: #ffffff;">Pagina Principal</span></a></li>
+                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="font-family: 'hedliner', sans-serif;color: #ffffff;">Filtros&nbsp;</a>
+                        <div class="dropdown-menu" style="background: var(--bs-CR-gray);"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="AnalisisDeDatos.html"><i class="far fa-chart-bar" style="font-size: 20px;"></i><span>Analisis de Datos</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="DetalledeRespuestas.html"><i class="far fa-newspaper" style="font-size: 20px;"></i><span>Detalle de Respuestas</span></a></li>
-                    <li class="nav-item"><a class="nav-link active" href="ConversaContuData.html"><i class="far fa-comments" style="font-size: 20px;"></i><span>Socrates 🔎</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="AnalisisDeDatos.html"><i class="far fa-chart-bar" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: 'hedliner', sans-serif;color: #ffffff;" >Analisis de Datos</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="DetalledeRespuestas.html"><i class="far fa-newspaper" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: 'hedliner', sans-serif;color: #ffffff;" >Detalle de Respuestas</span></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="ConversaContuData.html"><i class="far fa-comments" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: 'hedliner', sans-serif;color: #ffffff;" >Socrates 🔎</span></a></li>
                 </ul>
             </div>
         </nav>
+
         <div class="d-flex flex-column" id="content-wrapper">
             <div class="card" id="contentCard_PaginaConversaConTuData" style="margin: 10px; height: 100%; overflow-y: auto; background: url(&quot;assets/img/Main%20BG.png&quot;) center / cover;">
 
@@ -122,7 +123,7 @@
                     <div class="row justify-content-center align-items-center align-content-center order-3" id="Type-Box" style="background: rgba(170,167,170,0.16);padding-top: 6px;padding-right: 5px;padding-bottom: 6px;padding-left: 5px;backdrop-filter: blur(2px);-webkit-backdrop-filter: blur(2px);">
                         <div class="col align-content-center" id="TypeB-Container" style="height: 100%;">
                             <div class="row text-truncate" id="TypeB-BG" style="border-radius: 10px;background: var(--bs-CR-gray-dark);">
-                                <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-8 col-xxl-9 p-0" style="height: 100%;"><textarea id="Message-Input" class="align-content-center border-0" placeholder="Escribir Mensaje..." style="outline: none; height: 100%;width: 100%;border-radius: 10px;resize: none;padding-left: 10px;background: #ffffff;box-shadow: inset 5px 5px 9px 1px #6d6d6d;color: #072934;"></textarea></div>
+                                <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-8 col-xxl-9 p-0" style="height: 100%;"><textarea id="Message-Input" class="align-content-center border-0" placeholder="Escribir Mensaje..." style="outline: none; height: 100%;width: 100%;border-radius: 10px;resize: none;padding-left: 10px;background: #ffffff;box-shadow: inset 5px 5px 20px 1px #6d6d6d;color: #072934;"></textarea></div>
                                 <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1 col-xxl-1 text-nowrap d-flex d-md-flex flex-fill justify-content-center align-items-center align-content-center p-0 col-1" id="btIMG-Cont" style="height: 100%;margin-right: 0px;border-top-left-radius: 10px;border-bottom-left-radius: 10px;"><button class="btn justify-content-center align-items-center align-content-center mx-auto" id="btIMG" type="button" style="border-radius: 10px;width: 100%;height: 100%;padding: 0px 0px;padding-right: 0px;position: relative;overflow: hidden; display: none;"><input type="file" accept="image/*" id="fileInput" style="display:none;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-image-fill" id="imageIcon" style="display: flex;">
                                             <path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"></path>
                                         </svg><img class="flash animated" id="imageInput" style="display:none;max-width:150%;object-fit:cover;position:absolute;"></button></div>
