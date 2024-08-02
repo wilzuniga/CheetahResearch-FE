@@ -126,3 +126,15 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+@font-face {
+  font-family: 'hedliner-semibold';
+  src: url('hedliner-semibold-webfont.woff2') format('woff2'),
+    url('hedliner-semibold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.fs-hedliner-semibold {
+  font-family: 'hedliner-semibold';
+}
