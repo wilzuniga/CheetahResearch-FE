@@ -185,7 +185,7 @@ function CaptureAndPostformdta() {
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
     //StudysaveToLocStrg();
     //operacion POST, CON FORM DATA
-    const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/createStudy/';
+    const url = 'https://api.cheetah-research.ai/configuration/createStudy/';
     const data = new FormData();
     data.append('title', tituloDelEstudio);
     data.append('target', mercadoObjetivo);
@@ -240,7 +240,7 @@ function ApendStudies(){
 }
 
 function loadStudies() {
-    const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/get_studies/';
+    const url = 'https://api.cheetah-research.ai/configuration/get_studies/';
 
     axios.get(url)
         .then(response => {

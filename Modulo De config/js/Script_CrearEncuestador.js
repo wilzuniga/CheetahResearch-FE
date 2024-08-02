@@ -37,7 +37,7 @@ function createSurveyerForm() {
 
 function createSurveyerFormReadOnly() {
     const formContainer = document.createElement('div');
-    url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/getInterviewer/';
+    url = 'https://api.cheetah-research.ai/configuration/getInterviewer/';
 
     axios.post(url, { study_id: localStorage.getItem('selectedStudyId') }, {
         headers: {
@@ -83,7 +83,7 @@ function createSurveyerFormReadOnly() {
 
 // Función para agregar el formulario al contenedor
 async function appendSurveyerForm() {
-    const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/getInterviewer/';
+    const url = 'https://api.cheetah-research.ai/configuration/getInterviewer/';
     
     try {
         const response = await axios.post(url, { study_id: localStorage.getItem('selectedStudyId') }, {
@@ -128,7 +128,8 @@ function captureSurveyerFormData() {
     const fileInput = document.querySelector('input[type="file"]');
 
     //operacion POST, CON FORM DATa y hacer que los componentes ya no sean modificables
-    const url = 'http://ec2-44-203-206-68.compute-1.amazonaws.com/addInterviewer/';
+    const url = 'https://api.cheetah-research.ai/configuration/addInterviewer/';
+    
     const data = new FormData();
     data.append('interviewerName', nombreEncuestador);
     data.append('interviewerProfilePicture', fileInput.files[0]);
