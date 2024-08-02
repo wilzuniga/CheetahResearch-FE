@@ -1,6 +1,6 @@
 async function checkSession(){
     try {
-        let response = await fetch('http://127.0.0.1:8000/check-session/', {
+        let response = await fetch('https://api.cheetah-research.ai/configuration/check-session/', {
             method: 'GET',
             headers: {
                 'Authorization': `Token ${localStorage.getItem('token')}`
