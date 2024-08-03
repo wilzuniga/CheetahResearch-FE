@@ -1,4 +1,4 @@
-let imgPP ;
+let imgPP;
 let hash = 0;
 
 //Enviar mensaje al presionar enter
@@ -120,7 +120,6 @@ function sendMessage(message, imageSrc) {
     const p = document.createElement('p');
     p.className = 'card-text text-start text-break d-flex order-2';
     p.style.color = '#212529';
-    p.style.fontFamily = "'IBM Plex Sans', sans-serif";
     p.style.marginBottom = '3px';
     p.textContent = message;
     p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios
@@ -147,12 +146,12 @@ function sendMessage(message, imageSrc) {
 
     //Mensaje de espera de respuesta queda abajo
     messageList.insertBefore(loadingMsg, null);
-    
-    //Procesar y Enviar Respuesta como Encuestador
-    const url = 'http://54.145.222.179:3000/communicateS/';
 
-    axios.post(url, { prompt: message , hash: hash }, {
-        headers:{
+    //Procesar y Enviar Respuesta como Encuestador
+    const url = 'https://api.cheetah-research.ai/analysis/communicateS/';
+
+    axios.post(url, { prompt: message, hash: hash }, {
+        headers: {
             'Content-Type': 'multipart/form-data',
         }
     }).then((response) => {
@@ -164,18 +163,18 @@ function sendMessage(message, imageSrc) {
             \n\n¡Que tengas un excelente día!]`;
 
             getMessage(farewellMessage, null);
-        
-        }else{
+            loadingMsg.style.display = 'none';
+        } else {
             getMessage(data.response, null);
             loadingMsg.style.display = 'none';
             console.log(data);
         }
-        
+
     }).catch((error) => {
         console.log('Error:', error);
     });
 
-        //     headers: {
+    //     headers: {
     //         'Content-Type': 'multipart/form-data',
     //     }
     // }).then((response) => {
@@ -203,7 +202,7 @@ function sendMessage(message, imageSrc) {
     // });
 }
 
-//Función para recibir un mensaje de encuestador (TEST)
+//Función para recibir un mensaje de encuestador
 function getMessage(message, imageSrc) {
     const Feed = document.getElementById('Feed');//Validar Feed Vacío
     const emptyFeed = document.getElementById('Empty-Feed');
@@ -320,7 +319,7 @@ document.getElementById('btSend-Cont').addEventListener('touchend', function () 
 //Función Cargar Encuesta
 function load() {
     const preguntas = [];
-    const url = 'http://54.145.222.179:3000/startS/';
+    const url = 'https://api.cheetah-research.ai/analysis/startS/';
     console.log('Cargando preguntas...');
 
     axios.post(url, { study_id: '669ee33ec2af27bcc4720342' }, {
@@ -333,7 +332,7 @@ function load() {
 
         console.log(data);
 
-        // poner la cosa con id"Bot-Status" como "Conectado"
+        //Bot Status - Conectado
         document.getElementById('Bot-Status').innerText = 'Conectado';
 
     }).catch((error) => {
@@ -342,17 +341,17 @@ function load() {
 }
 
 //Función Cargar Entrevistador
-function loadInterviewer(){
-        const nombre = 'Socrates';
-        const imagen = 'assets/img/Socrates.jpg';
-        const interviewerGreeting = `Saludos, buscador de verdades. Soy Sócrates, tu guía en este viaje hacia el conocimiento. A través del arte de la dialéctica, juntos desentrañaremos los misterios ocultos en los datos que nos rodean, pues es por medio del diálogo y la reflexión profunda que alcanzamos la verdadera sabiduría. Pregunta sin temor, y hallaremos respuestas que iluminen el camino hacia la comprensión.`;
+function loadInterviewer() {
+    const nombre = 'Socrates';
+    const imagen = 'assets/img/Socrates.jpg';
+    const interviewerGreeting = `Saludos, buscador de verdades. Soy Sócrates, tu guía en este viaje hacia el conocimiento. A través del arte de la dialéctica, juntos desentrañaremos los misterios ocultos en los datos que nos rodean, pues es por medio del diálogo y la reflexión profunda que alcanzamos la verdadera sabiduría. Pregunta sin temor, y hallaremos respuestas que iluminen el camino hacia la comprensión.`;
 
-        const formContainerI = document.getElementById('overlay');
+    const formContainerI = document.getElementById('overlay');
 
-        document.getElementById('Bot-Name').innerText = nombre; 
-        const formContainer = document.createElement('div');
+    document.getElementById('Bot-Name').innerText = nombre;
+    const formContainer = document.createElement('div');
 
-        formContainer.innerHTML = `
+    formContainer.innerHTML = `
         <div id="overlayContent" class="text-wrap">
             <img src="${imagen}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
             <p id="greeting"">
@@ -362,17 +361,17 @@ function loadInterviewer(){
         </div>
         `;
 
-        imgPP = imagen;
-        
-        //Imagen del Bot para Espera de Respuesta
-        let TM_BotIMG = document.getElementById('typingMessage_BotIMG');
-        TM_BotIMG.src = imgPP;
+    imgPP = imagen;
 
-        document.getElementById('overlay').innerHTML = formContainer.innerHTML;
+    //Imagen del Bot para Espera de Respuesta
+    let TM_BotIMG = document.getElementById('typingMessage_BotIMG');
+    TM_BotIMG.src = imgPP;
 
-        document.getElementById('AceptarChat').addEventListener('click', (event) => {
-            event.preventDefault();
-            document.getElementById('overlay').style.display = 'none';
-            load();
-        });
+    document.getElementById('overlay').innerHTML = formContainer.innerHTML;
+
+    document.getElementById('AceptarChat').addEventListener('click', (event) => {
+        event.preventDefault();
+        document.getElementById('overlay').style.display = 'none';
+        load();
+    });
 }

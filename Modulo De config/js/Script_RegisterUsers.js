@@ -42,6 +42,6 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 
 document.getElementById('MainP-Link').addEventListener('click', function (event) {
     const successContainer = document.getElementById('Success-Cont');
-    window.location.href = './login.html';
+    window.location.href = './login';
     successContainer.style.display = 'none';
 });
