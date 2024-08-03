@@ -15,28 +15,38 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
     <script src="./Funcionalidad/AnalisisDeDatos.js"></script>
+    <style>
+        @media (max-width: 1000px) {
+            img {
+                display: none;
+            }
+        }
 
+        .list-group-item {
+            display: none; /* Ocultar por defecto */
+        }
+    </style>
 </head>
 
-<body onload="content()" id="page-top">
+<body onload="initializePage()" id="page-top">
     <div id="wrapper">
         <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius:0px;border-bottom-right-radius: 0px;background: var(--bs-CR-black-dark);">
             <div class="container-fluid d-flex flex-column p-0">
-                <a class="navbar-brand d-xxl-flex align-items-center justify-content-xxl-center align-items-xxl-center sidebar-brand m-0" href="https://www.cheetah-research.com/analysis/MainPage" >
+                <a class="navbar-brand d-xxl-flex align-items-center justify-content-xxl-center align-items-xxl-center sidebar-brand m-0" href="https://www.cheetah-research.ai/analysis/MainPage/" >
                     <img style="height: auto;width: 230px;margin: -11px;margin-bottom: 0px; margin-top: 10px;" src="assets/img/NegroLogo.png" />
                 </a>
                 <div style="height: 30px;"></div>
                 
                 <ul id="accordionSidebar" class="navbar-nav text-light" style="font-family: hedliner;">
                     <li class="nav-item" style="font-family: hedliner">
-                        <a class="nav-link" href="https://www.cheetah-research.com/analysis/MainPage">
+                        <a class="nav-link" href="https://www.cheetah-research.ai/analysis/MainPage/">
                             <i class="fas fa-window-maximize" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
                             <span style="font-family: hedliner;">PAGINA PRINCIPAL</span>
                         </a>
                     </li>
                     
-                    <li class="nav-item" style="font-family: hedliner"><a class="nav-link" href="https://www.cheetah-research.com/analysis/DataAnalysis"><i class="far fa-chart-bar" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: hedliner;" >ANALISIS DE DATOS</span></a></li>
-                    <li class="nav-item" style="font-family: hedliner"><a class="nav-link" href="https://www.cheetah-research.com/analysis/Socrates"><i class="far fa-comments" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: hedliner;" >SOCRATES 🔎</span></a></li>
+                    <li class="nav-item" style="font-family: hedliner"><a class="nav-link" href="https://www.cheetah-research.ai/analysis/DataAnalysis/"><i class="far fa-chart-bar" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: hedliner;" >ANALISIS DE DATOS</span></a></li>
+                    <li class="nav-item" style="font-family: hedliner"><a class="nav-link" href="https://www.cheetah-research.ai/analysis/Socrates/"><i class="far fa-comments" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: hedliner;" >SOCRATES 🔎</span></a></li>
                 </ul>
 
             </div>
@@ -47,7 +57,11 @@
 
                     <div class="row" style="height: 95vh;">
                         <div class="col-lg-4" style="background: var(--bs-list-group-active-border-color); ">
-                            <div id="BAOColumn" class="d-xxl-flex justify-content-xxl-start align-items-xxl-center list-group" style="background: #000000;border-width: 20px;border-color: #C0601C ;height: 100%;padding-right: 10px;"><a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#ResumenGeneral" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner, sans-serif;font-weight: bold;">Resumen General</a><a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#ResumenIndividual" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-weight: bold;font-family: 'hedliner', sans-serif;">Resumen Individual</a><a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#UserPersona" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: 'hedliner', sans-serif;font-weight: bold;">User Persona</a><a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#AnalisisPsicograficos" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: 'hedliner', sans-serif;font-weight: bold;">Análisis Psicograficos</a>
+                            <div id="BAOColumn" class="d-xxl-flex justify-content-xxl-start align-items-xxl-center list-group" style="background: #000000;border-width: 20px;border-color: #C0601C ;height: 100%;padding-right: 10px;">
+                                <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" id="ResumenGeneralID" href="#ResumenGeneral" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner, sans-serif;font-weight: bold;">Resumen General</a>
+                                <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" id="ResumenIndividualID" href="#ResumenIndividual" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-weight: bold;font-family: 'hedliner', sans-serif;">Resumen Individual</a>
+                                <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" id="UserPersonaID" href="#UserPersona" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: 'hedliner', sans-serif;font-weight: bold;">User Persona</a>
+                                <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" id="AnalisisPsicograficosID" href="#AnalisisPsicograficos" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: 'hedliner', sans-serif;font-weight: bold;">Análisis Psicograficos</a>
                             </div>
                         </div>
                         <div class="col" style="overflow-x: hidden;overflow-y: auto;height: calc(95vh - 20px); ">

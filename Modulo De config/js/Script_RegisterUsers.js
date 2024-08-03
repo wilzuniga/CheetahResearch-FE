@@ -11,7 +11,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     } else {
         passwordError.style.display = 'none';
 
-        const response = await fetch('https://api.cheetah-research.ai/configuration/register/', {
+        const response = await fetch('https://api.cheetah-research.ai/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
