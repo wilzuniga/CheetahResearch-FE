@@ -24,3 +24,34 @@
 #btSend-Cont:hover #btSend {
   color: #929292;
 }
+
+/* Links */
+
+a {
+  color: #2e3e43;
+}
+
+a:hover {
+  color: #4dc0e3;
+}
+
+/* Botón Iniciar Chat */
+
+#AceptarChat {
+  color:var(--bs-CR-white);
+}
+
+#AceptarChat:hover {
+  color:var(--bs-CR-orange);
+}
+
+/* Nav Bar */
+
+.navbar-dark .navbar-nav .nav-link {
+  color: var(--bs-CR-white);
+}
+
+.nav-item:hover span {
+  color: var(--bs-CR-orange);
+  transition: 0.2s ease-in-out;
+}
