@@ -160,7 +160,7 @@ function StudysaveToLocStrg() {
 
 function deleteFromLocStrg() {
     //verificar si se esta en PaginaPrincipal.html o CreacionDeEstudio.html
-    if(window.location.href.includes('configuration/home')){
+    if(window.location.href.includes('home')){
         console.log('Borrando datos del estudio');
         localStorage.removeItem('tituloDelEstudio');
         localStorage.removeItem('mercadoObjetivo');
@@ -226,7 +226,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             const formContainer = document.getElementById('form-containerStudy');
             formContainer.innerHTML = createFilledStudyForm();       
         }
-    }else if(window.location.href.includes('https://www.cheetah-research.ai/configuration/home/')){
+    }else if(window.location.href.includes('home')){
 
         console.log('Study id:', localStorage.getItem('selectedStudyId'));
 
