@@ -227,6 +227,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             formContainer.innerHTML = createFilledStudyForm();       
         }
     }else if(window.location.href.includes('https://www.cheetah-research.ai/configuration/home/')){
+
         console.log('Study id:', localStorage.getItem('selectedStudyId'));
 
         loadStudies();
