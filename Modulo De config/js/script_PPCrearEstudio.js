@@ -226,7 +226,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             const formContainer = document.getElementById('form-containerStudy');
             formContainer.innerHTML = createFilledStudyForm();       
         }
-    }else if(window.location.href.includes('configuration/home')){
+    }else if(window.location.href.includes('home')){
         console.log('Study id:', localStorage.getItem('selectedStudyId'));
         loadStudies();
     }
