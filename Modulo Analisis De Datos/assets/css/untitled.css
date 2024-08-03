@@ -76,7 +76,7 @@
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #eb7e20;
+  box-shadow: 0 0 1px #C0601C;
 }
 
 .slider.round {
@@ -123,11 +123,11 @@ input:focus + .slider {
 }
 
 input:checked + .slider {
-  background-color: #eb7e20;
+  background-color: #C0601C;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #eb7e20;
+  box-shadow: 0 0 1px #C0601C;
 }
 
 input:checked + .slider:before {
