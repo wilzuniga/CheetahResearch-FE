@@ -1,4 +1,5 @@
 async function listNonActiveUsers() {
+
     try {
         const response = await fetch('https://api.cheetah-research.ai/configuration/get_studies/', {
             method: 'GET',
@@ -12,8 +13,8 @@ async function listNonActiveUsers() {
             throw new Error('Network response was not ok');
         }
 
+
         const studys = await response.json();
-        console.log(studys);
         const studySelect=document.getElementById('select-Study');
 
         studySelect.innerHTML = '';
