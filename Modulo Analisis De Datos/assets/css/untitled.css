@@ -168,3 +168,19 @@ input:checked + .slider:before {
     display: none;
   }
 }
+
+.list-group-item.active {
+  z-index: 2;
+  color: var(--bs-list-group-active-color);
+  background-color: #C0601C;
+  border-color: var(--bs-list-group-active-border-color);
+}
+
+
+@media (max-width: 1080px) {
+    img {
+        display: none;
+    }
+}
+
+

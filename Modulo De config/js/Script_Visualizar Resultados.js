@@ -474,7 +474,6 @@ function LLenarResumenes(){
 // insertar lorem ipsilum en el div coon id ResumenGeneral al cargarlo 
 document.addEventListener('DOMContentLoaded', () => {
     
-    //const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
     const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
 
     axios.get(url)
