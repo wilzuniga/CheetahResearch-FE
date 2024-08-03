@@ -173,36 +173,36 @@
 
 /* Texto en mensajes */
 
-.card-text {
+.card-text, a {
   font-size: 0.9rem;
 }
 
 @media (min-width: 400px) {
-  .card-text {
+  .card-text, a {
     font-size: 1rem;
   }
 }
 
 @media (min-width: 500px) {
-  .card-text {
+  .card-text, a {
     font-size: 1.1rem;
   }
 }
 
 @media (min-width: 600px) {
-  .card-text {
+  .card-text, a {
     font-size: 1.2rem;
   }
 }
 
 @media (min-height: 1000px) and (max-width: 500px) {
-  .card-text {
+  .card-text, a {
     font-size: 0.9rem;
   }
 }
 
 @media (min-height: 1000px) and (min-width: 500px) {
-  .card-text {
+  .card-text, a {
     font-size: 1.3rem;
   }
 }

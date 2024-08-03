@@ -1,11 +1,13 @@
 let imgPP;
 let hash = 0;
 
-
-
 function initializePage() {
     console.log('Page initialized');
     const study_id = new URLSearchParams(window.location.search).get('id');
+
+    console.log('study_id param ejemplo: ?id=66ac6dfbfc65e4742d415b60');
+    console.log('Utilizar Puerto 8080');
+
     if (study_id) {
         console.log('ID de estudio:', study_id);
         loadInterviewer(study_id);
@@ -57,31 +59,6 @@ document.getElementById('btSend').addEventListener('click', function () {
         } else {
             sendMessage(message, null);
             messageInput.value = '';
-        }
-    }
-});
-
-//Recibir mensaje al presionar ctrl+enter (Función de Prueba)
-document.getElementById('Message-Input').addEventListener('keydown', function (event) {
-    let loadingMsg = document.getElementById('Typing-Msg');
-    if (!(event.key === 'Enter' && event.shiftKey) && (event.key === 'Enter' && event.ctrlKey)) {
-        event.preventDefault();
-        const message = this.value.trim();
-        const imageSrc = imageInput.src;
-
-        if (message || imageSrc) {
-            if (imageInput.style.display !== 'none') {
-                getMessage(message, imageSrc);
-                this.value = '';
-                imageInput.src = '';
-                imageIcon.style.display = 'flex';
-                imageInput.style.display = 'none';
-                loadingMsg.style.display = 'none';
-            } else {
-                getMessage(message, null);
-                this.value = '';
-                loadingMsg.style.display = 'none';
-            }
         }
     }
 });
@@ -168,7 +145,6 @@ function sendMessage(message, imageSrc) {
     const p = document.createElement('p');
     p.className = 'card-text text-start text-break d-flex order-2';
     p.style.color = '#212529';
-    p.style.fontFamily = "'IBM Plex Sans', sans-serif";
     p.style.marginBottom = '3px';
     p.textContent = message;
     p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios
@@ -200,8 +176,8 @@ function sendMessage(message, imageSrc) {
     //Procesar y Enviar Respuesta como Encuestador
     const url = 'https://api.cheetah-research.ai/chatbot/communicate/';
 
-    axios.post(url, { prompt: message , hash: hash }, {
-        headers:{
+    axios.post(url, { prompt: message, hash: hash }, {
+        headers: {
             'Content-Type': 'multipart/form-data',
         }
     }).then((response) => {
@@ -210,16 +186,15 @@ function sendMessage(message, imageSrc) {
             const farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
 
             getMessage(farewellMessage, null);
+            loadingMsg.style.display = 'none';
             const study_id = new URLSearchParams(window.location.search).get('id');
             const url = 'https://api.cheetah-research.ai/chatbot/logs/';
             console.log('study_id:', study_id);
 
-            axios.post(url, { hash: hash, study_id: study_id},{
+            axios.post(url, { hash: hash, study_id: study_id }, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
-
-
             }).then((response) => {
 
             }
@@ -228,12 +203,24 @@ function sendMessage(message, imageSrc) {
             });
 
 
-        }else{
-            getMessage(data.response, null);
+        } else {
+            if ('file_path' in data) {
+                if ('url' in data) {
+                    getMessage(data.response, data.file_path, data.url);
+                } else {
+                    getMessage(data.response, data.file_path, null);
+                }
+            } else {
+                if ('url' in data) {
+                    getMessage(data.response, null, data.url);
+                } else {
+                    getMessage(data.response, null, null);
+                }
+            }
             loadingMsg.style.display = 'none';
             console.log(data);
         }
-        
+
     }).catch((error) => {
         console.log('Error:', error);
     });
@@ -302,8 +289,8 @@ function sendMessage(message, imageSrc) {
 
 }
 
-//Función para recibir un mensaje de encuestador (TEST)
-function getMessage(message, imageSrc) {
+//Función para recibir un mensaje de encuestador
+function getMessage(message, imageSrc, link) {
     const Feed = document.getElementById('Feed');//Validar Feed Vacío
     const emptyFeed = document.getElementById('Empty-Feed');
     if (Feed.style.display === 'none') {
@@ -347,13 +334,13 @@ function getMessage(message, imageSrc) {
     card.style.borderRadius = '15px';
     card.style.borderBottomLeftRadius = '0px';
     card.style.borderBottomWidth = 'medium';
-    card.style.background = '#eb7e20';
+    card.style.background = 'var(--bs-CR-orange-2)';
 
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
 
-    const img = document.createElement('img');
     if (imageSrc) {
+        const img = document.createElement('img');
         img.className = 'img-fluid d-flex order-1 mx-auto mb-2'
         img.src = imageSrc;
         img.style.maxHeight = '18rem';
@@ -363,10 +350,20 @@ function getMessage(message, imageSrc) {
         cardBody.appendChild(img);
     }
 
+    if (link) {
+        const anchor = document.createElement('a');
+        anchor.className = 'text-start text-break d-flex order-2';
+        anchor.style.fontFamily = "'League Spartan'";
+        anchor.style.marginBottom = "6px";
+        anchor.href = `https://${link}`;
+        anchor.textContent = `${link}`;
+        anchor.target = '_blank';
+        cardBody.appendChild(anchor);
+    }
+
     const p = document.createElement('p');
     p.className = 'text-break text-start d-flex order-2 card-text';
     p.style.color = '#f0f0f0';
-    p.style.fontFamily = "'IBM Plex Sans', sans-serif";
     p.style.marginBottom = "6px";
     p.textContent = message;
     p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios
@@ -456,9 +453,7 @@ function load(study_id) {
     });
 }
 
-
 //Función Cargar Entrevistador
-
 function loadInterviewer(study_id) {
     const url = "https://api.cheetah-research.ai/configuration/getInterviewer/";
 
@@ -476,7 +471,7 @@ function loadInterviewer(study_id) {
 
 
 
-        document.getElementById('Bot-Name').innerText = nombre; 
+        document.getElementById('Bot-Name').innerText = nombre;
         const formContainer = document.createElement('div');
 
 
@@ -487,12 +482,12 @@ function loadInterviewer(study_id) {
             <p id="greeting">
             ${data.interviewerGreeting}
             </p>
-            <button id="AceptarChat" class="btn btn-primary" style="margin: 10px 10px 0 0;">Iniciar Chat</button>
+            <button id="AceptarChat" class="btn" style="margin: 10px 10px 0 0;background: var(--bs-CR-black);">Iniciar Chat</button>
         </div>
         `;
 
         imgPP = data.interviewerProfilePicture;
-        
+
         //Imagen del Bot para Espera de Respuesta
         let TM_BotIMG = document.getElementById('typingMessage_BotIMG');
         TM_BotIMG.src = imgPP;
@@ -505,8 +500,7 @@ function loadInterviewer(study_id) {
             load(study_id);
         });
 
-    })
-    .catch(error => {
+    }).catch(error => {
         console.error(error);
     });
 }
