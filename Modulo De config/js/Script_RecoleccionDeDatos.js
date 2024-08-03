@@ -3,7 +3,7 @@ document.getElementById('LanzarEstudioBtn').addEventListener('click', (e) => {
     const studioID = localStorage.getItem('selectedStudyId');
     if (studioID.trim() !== '') {
 
-        const nuevaURL = `../../Recolección%20de%20Datos/Chat.html?id=${studioID}`;
+        const nuevaURL = `chatbot?=${studioID}/`;
         const linkText = `Recolección de Datos`;
         console.log(nuevaURL);
         document.getElementById('ModuloDeRecoleccionURL').innerHTML = `<a href="${nuevaURL}">${linkText}</a>`;
