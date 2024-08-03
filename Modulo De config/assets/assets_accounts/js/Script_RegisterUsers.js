@@ -54,7 +54,7 @@ document.getElementById('Link-Login').addEventListener('click', function (event)
     let successContainer = document.getElementById('Success-Cont');
 
 
-    window.location.href = 'https://www.cheetah-research.ai/login';
+    window.location.href = 'https://www.cheetah-research.ai/login/';
 
     successContainer.style.display = 'none';
 });
