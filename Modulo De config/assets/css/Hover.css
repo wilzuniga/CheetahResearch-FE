@@ -42,16 +42,16 @@ a:hover {
 }
 
 #AceptarChat:hover {
-  color:var(--bs-CR-orange);
+  color:#C0601C;
 }
 
 /* Nav Bar */
 
 .navbar-dark .navbar-nav .nav-link {
-  color: var(--bs-CR-white);
+  color: #FFFFFF;
 }
 
 .nav-item:hover span {
-  color: var(--bs-CR-orange);
+  color:#C0601C;
   transition: 0.2s ease-in-out;
 }

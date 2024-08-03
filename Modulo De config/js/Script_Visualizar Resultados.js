@@ -512,6 +512,26 @@ botonImportar.addEventListener('click', () => {
     fileChooser.multiple = true;
     fileChooser.addEventListener('change', (event) => {
         const files = event.target.files;
+
+        const url = "https://api.cheetah-research.ai/configuration/upload_files/" + localStorage.getItem('selectedStudyId');
+
+        const formData = new FormData();
+        for (const file of files) {
+            formData.append('files', file);
+        }
+
+        axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(response => {
+                console.log(response.data);
+                alert('Archivos subidos exitosamente');
+            })
+            .catch(error => {
+                console.error('Error al enviar los datos:', error);
+            });
         // Aquí puedes hacer algo con los archivos seleccionados, como guardarlos en un arreglo o procesarlos de alguna manera
         console.log(files);
     });

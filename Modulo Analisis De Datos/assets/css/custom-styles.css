@@ -24,8 +24,6 @@ eb7e20
     color: var(--bs-CR-gray-dark); /* Color del texto del sidebar */
 }
 
-
-
 #wrapper #content-wrapper {
     background-color: #ffffff;
 }
@@ -45,9 +43,6 @@ eb7e20
     color: #414656; /* Color de los enlaces en la barra de navegación oscura */
 }
 
-
-
-
 .card {
     --bs-card-border-color: #e3e6f0; /* Color del borde de la tarjeta */
     --bs-card-cap-bg: #eb7e20; /* Color de fondo de la tarjeta, encabezado */
@@ -55,9 +50,6 @@ eb7e20
     --bs-card-bg: #ffffff; /* Color de fondo de la tarjeta */
     padding: 0px;
 }
-
-
-
 
 .sidebar-dark #sidebarToggle:hover {
     color: #eb7e20; /* Color del icono del sidebarToggle al pasar el mouse */

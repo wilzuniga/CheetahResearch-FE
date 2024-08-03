@@ -160,7 +160,7 @@ function StudysaveToLocStrg() {
 
 function deleteFromLocStrg() {
     //verificar si se esta en PaginaPrincipal.html o CreacionDeEstudio.html
-    if(window.location.href.includes('PaginaPrincipal.html')){
+    if(window.location.href.includes('configuration/home')){
         console.log('Borrando datos del estudio');
         localStorage.removeItem('tituloDelEstudio');
         localStorage.removeItem('mercadoObjetivo');
@@ -217,7 +217,7 @@ function CaptureAndPostformdta() {
 
 // Llama a la función cuando la página se carga completamente
 window.addEventListener('DOMContentLoaded', (event) => {
-    if(window.location.href.includes('CreacionDeEstudio.html')){
+    if(window.location.href.includes('configuration/study')){
         if(localStorage.getItem('selectedStudyId') == null){
             console.log('Study id:', localStorage.getItem('selectedStudyId'));
             CE_DeactivateNavBy();
@@ -226,7 +226,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             const formContainer = document.getElementById('form-containerStudy');
             formContainer.innerHTML = createFilledStudyForm();       
         }
-    }else if(window.location.href.includes('PaginaPrincipal.html')){
+    }else if(window.location.href.includes('configuration/home')){
         console.log('Study id:', localStorage.getItem('selectedStudyId'));
         loadStudies();
     }
@@ -263,7 +263,7 @@ function createStudyElement(study) {
     console.log('Study');
     const a = document.createElement('a');
     a.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
-    a.href = 'CreacionDeEstudio.html';
+    a.href = 'https://www.cheetah-research.ai/configuration/study';
     a.style.fontFamily = "'hedliner', sans-serif";
 
     const div1 = document.createElement('div');

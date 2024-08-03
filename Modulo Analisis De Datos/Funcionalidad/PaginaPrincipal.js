@@ -1,5 +1,20 @@
 // agregarCard.js
 
+function initializePage() {
+    console.log('Page initialized');
+    const study_id = new URLSearchParams(window.location.search).get('id');
+
+    console.log('study_id param ejemplo: ?id=66ac6dfbfc65e4742d415b60');
+    console.log('Utilizar Puerto 8080');
+
+    if (study_id) {
+        console.log('ID de estudio:', study_id);
+        loadInterviewer(study_id);
+    } else {
+        console.error('No se encontró el parámetro id en la URL.');
+    }
+}
+
 function contenido() {
     //generaar tarjeta de muestra
     var nombreEstudio = "Estudio sobre la Eficiencia Energética en Edificios";
