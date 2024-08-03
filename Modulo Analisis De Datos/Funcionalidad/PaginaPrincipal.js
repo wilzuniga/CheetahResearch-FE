@@ -14,6 +14,20 @@ function initializePage() {
 function contenido() {
     var contenedor = document.getElementById("contentCard_PaginaOverview");
 
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study; 
+
+    axios.get(url)
+        .then(function (response) {
+    
+            var data = response.data;
+            ResumenGeneral = data['general']['narrative']['General'];
+
+            coso = marked(ResumenGeneral);
+            contenedor.innerHTML = coso;
+
+        });
+
+
 }
 
 
