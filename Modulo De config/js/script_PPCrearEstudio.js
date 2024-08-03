@@ -160,7 +160,7 @@ function StudysaveToLocStrg() {
 
 function deleteFromLocStrg() {
     //verificar si se esta en PaginaPrincipal.html o CreacionDeEstudio.html
-    if(window.location.href.includes('configuration/home')){
+    if(window.location.href.includes('home')){
         console.log('Borrando datos del estudio');
         localStorage.removeItem('tituloDelEstudio');
         localStorage.removeItem('mercadoObjetivo');

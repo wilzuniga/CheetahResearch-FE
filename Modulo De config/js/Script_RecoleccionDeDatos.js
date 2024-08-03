@@ -6,7 +6,7 @@ document.getElementById('LanzarEstudioBtn').addEventListener('click', (e) => {
         const nuevaURL = `https://www.cheetah-research.ai/chatbot?id=${studioID}`;
         const linkText = `Recolección de Datos`;
         const linkTextAnalisis = `Analisis de Datos`;
-        const nuevaULRanalisis = `https://www.cheetah-research.ai/analisis?id=${studioID}`;
+        const nuevaULRanalisis = `https://www.cheetah-research.ai/analysis/home/`;
         document.getElementById('ModuloDeRecoleccionURL').innerHTML = `<a href="${nuevaURL}">${linkText}</a>`;
         document.getElementById('ModuloDeAnalisisURL').innerHTML = `<a href="${nuevaULRanalisis}">${linkTextAnalisis}</a>`;
 

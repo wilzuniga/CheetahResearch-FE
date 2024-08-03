@@ -320,9 +320,9 @@ document.getElementById('btSend-Cont').addEventListener('touchend', function () 
 function load() {
     const preguntas = [];
     const url = 'https://api.cheetah-research.ai/analysis/startS/';
-    console.log('Cargando preguntas...');
 
-    axios.post(url, { study_id: '669ee33ec2af27bcc4720342' }, {
+    const study_id = new URLSearchParams(window.location.search).get('id');
+    axios.post(url, { study_id: study_id }, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }
