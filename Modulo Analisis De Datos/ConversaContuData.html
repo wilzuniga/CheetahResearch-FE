@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="assets/css/Chat.css">
     <link rel="stylesheet" href="assets/css/Hover.css">
     <link rel="stylesheet" href="assets/css/Responsiveness.css">
+    <link rel="stylesheet" href="assets/css/untitled.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <style>
@@ -32,7 +33,7 @@
         }
 
         #overlayContent {
-            background: white;
+            background: var(--bs-CR-white);
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -45,42 +46,42 @@
             word-wrap: break-word; /* Permite que el texto haga salto de línea */
             word-break: break-word; /* O también puedes usar word-break: break-all; */
         }
-
-
     </style>
 </head>
 
 <body id="page-top" onload="loadInterviewer()">
     <div id="wrapper">
-        <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-end sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="background: var(--bs-CR-black-dark); flex-wrap: nowrap;">
+        <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius:0px;border-bottom-right-radius: 0px;background: var(--bs-CR-black-dark);">
             <div class="container-fluid d-flex flex-column p-0">
-                <a class="navbar-brand align-items-center justify-content-xxl-end align-items-xxl-center sidebar-brand m-0" href="PaginaPrincipal.html">
-                    <div class="sidebar-brand-icon rotate-n-15"><img data-bs-toggle="tooltip" data-bss-tooltip="" class="mx-auto d-none d-md-block" src="assets/img/NegroLogo.png" width="145" height="105" style="transform: rotate(23deg);width: 186px;height: 74px;"></div>
-                    <div class="sidebar-brand-text mx-3"><span data-bs-toggle="tooltip" data-bss-tooltip="" style="font-family: hedliner;color: #c0d9e1;">Cheetah Research</span></div>
+                <a class="navbar-brand d-xxl-flex align-items-center justify-content-xxl-center align-items-xxl-center sidebar-brand m-0" href="https://www.cheetah-research.com/analysis/MainPage" >
+                    <img style="height: auto;width: 230px;margin: -11px;margin-bottom: 0px; margin-top: 10px;" src="assets/img/NegroLogo.png" />
                 </a>
-                <div class="d-xl-flex align-items-xxl-start" style="position: sticky;height: 89px;"></div>
-                <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="Overview.html"><i class="fas fa-window-maximize" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: 'hedliner', sans-serif;color: #ffffff;">Pagina Principal</span></a></li>
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="font-family: 'hedliner', sans-serif;color: #ffffff;">Filtros&nbsp;</a>
+                <div style="height: 30px;"></div>
+                
+                <ul id="accordionSidebar" class="navbar-nav text-light" style="font-family: 'hedliner', sans-serif;">
+                    <li class="nav-item" style="font-family: hedliner">
+                        <a class="nav-link" href="https://www.cheetah-research.com/analysis/MainPage">
+                            <i class="fas fa-window-maximize" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
+                            <span style="font-family: hedliner, sans-serif;">PAGINA PRINCIPAL</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown" style="font-family: hedliner"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="font-family: hedliner, sans-serif;">Filtros&nbsp;</a>
                         <div class="dropdown-menu" style="background: var(--bs-CR-gray);"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="AnalisisDeDatos.html"><i class="far fa-chart-bar" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: 'hedliner', sans-serif;color: #ffffff;" >Analisis de Datos</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="DetalledeRespuestas.html"><i class="far fa-newspaper" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: 'hedliner', sans-serif;color: #ffffff;" >Detalle de Respuestas</span></a></li>
-                    <li class="nav-item"><a class="nav-link active" href="ConversaContuData.html"><i class="far fa-comments" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: 'hedliner', sans-serif;color: #ffffff;" >Socrates 🔎</span></a></li>
+                    <li class="nav-item" style="font-family: hedliner"><a class="nav-link" href=" https://www.cheetah-research.com/analysis/DataAnalysis"><i class="far fa-chart-bar" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: hedliner, sans-serif;" >ANALISIS DE DATOS</span></a></li>
+                    <li class="nav-item" style="font-family: hedliner"><a class="nav-link" href="https://www.cheetah-research.com/analysis/AnswerDetails"><i class="far fa-newspaper" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: hedliner, sans-serif;" >DETALLE DE RESPUESTAS</span></a></li>
+                    <li class="nav-item" style="font-family: hedliner"><a class="nav-link active" href="https://www.cheetah-research.com/analysis/Socrates"><i class="far fa-comments" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: hedliner, sans-serif;" >SOCRATES 🔎</span></a></li>
                 </ul>
+
             </div>
         </nav>
 
         <div class="d-flex flex-column" id="content-wrapper">
             <div class="card" id="contentCard_PaginaConversaConTuData" style="margin: 10px; height: 100%; overflow-y: auto; background: url(&quot;assets/img/Main%20BG.png&quot;) center / cover;">
 
-
-
                 <div id="overlay" style="display: flex;">
         
                 </div>
-
-
 
                 <div class="container-fluid d-flex flex-row justify-content-start align-items-center align-content-center" id="Header-BG" style="height: 8%;width: 100%;background: #0a0a0adc;backdrop-filter: blur(2px);-webkit-backdrop-filter: blur(2px);">
                     <div class="row d-flex flex-column justify-content-center align-content-center" style="height: 100%;">
@@ -98,7 +99,7 @@
                                     <div class="card border-0" id="EmptyF-BG" style="background: linear-gradient(#13131364 0%, #ffffff08), #0a0a0a9c">
                                         <div class="card-body text-center">
                                             <p class="card-text" style="color: #aaa7aa;">Escribe algo para charlar con Socrates</p>
-                                            <p class="card-text" style="font-family: hedliner;font-size: 25px;color: #aaa7aa;"><strong>Cheetah Research</strong></p><img src="assets/img/Cheetah%20Paw%20Icon.svg" style="width: 60px;height: 60px;">
+                                            <p class="card-text" style="font-family: hedliner;font-size: 25px;color: #aaa7aa;"><strong>Cheetah Research</strong></p><img src="assets/img/Cheetah%20Paw%20Icon.svg" style="width: 60px;height: 60px;filter: invert(70%);">
                                             <p class="card-text" style="font-family: hedliner;padding: 30px;"><span style="color: var(--bs-CR-orange);">Pista: ¡Di Hola!</span></p>
                                         </div>
                                     </div>
@@ -132,9 +133,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
     </div>

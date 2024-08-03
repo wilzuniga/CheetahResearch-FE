@@ -37,3 +37,22 @@
 #btIMG-Cont:hover {
   background: var(--bs-CR-orange-2);
 }
+
+/* Links */
+
+a {
+  color: #2e3e43;
+}
+
+a:hover {
+  color: #4dc0e3;
+}
+
+/* Botón Iniciar Chat */
+#AceptarChat {
+  color:var(--bs-CR-white);
+}
+
+#AceptarChat:hover {
+  color:var(--bs-CR-orange);
+}

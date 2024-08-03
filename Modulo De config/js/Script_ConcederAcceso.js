@@ -3,7 +3,7 @@ async function concederAcceso() {
     const selectedEmail = selectElement.value;
     if (selectedEmail) {
         try {
-            const response = await fetch('http://ec2-44-203-206-68.compute-1.amazonaws.com/activate-user/', {
+            const response = await fetch('https://api.cheetah-research.ai/configuration/activate-user/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

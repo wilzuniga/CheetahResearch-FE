@@ -1,6 +1,6 @@
 async function listNonActiveUsers() {
     try {
-        const response = await fetch('https://api.cheetah-research.ai/configuration/listnonactive_user/', {
+        const response = await fetch('https://api.cheetah-research.ai/configuration/get_studies/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -12,17 +12,17 @@ async function listNonActiveUsers() {
             throw new Error('Network response was not ok');
         }
 
-        const users = await response.json();
-        const userSelect = document.getElementById('inactiveUsersSelect');
+        const studys = await response.json();
+        console.log(studys);
+        const studySelect=document.getElementById('select-Study');
 
+        studySelect.innerHTML = '';
 
-        userSelect.innerHTML = '';
-
-        users.forEach(user => {
+        studys.forEach(study => {
             const option = document.createElement('option');
-            option.value = user.email;
-            option.textContent = user.email;
-            userSelect.appendChild(option);
+            option.value = study._id;
+            option.textContent = study.title;
+            studySelect.appendChild(option);
         });
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);

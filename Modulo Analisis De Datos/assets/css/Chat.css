@@ -1,12 +1,3 @@
-/* Font: Hedliner-Sans-Mono-Font */
-@font-face {
-  font-family: 'hedliner';
-  src: url('../../assets/fonts/hedliner-webfont.woff') format('woff'),
-  url('../../assets/fonts/hedliner-webfont.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-
 img {
   border-radius: 5px;
 }
@@ -42,4 +33,3 @@ img {
   background: #2e3e43;
   border-radius: 15px;
 }
-
