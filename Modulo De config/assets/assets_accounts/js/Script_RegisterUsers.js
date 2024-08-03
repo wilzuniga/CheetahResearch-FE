@@ -53,7 +53,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 document.getElementById('Link-Login').addEventListener('click', function (event) {
     let successContainer = document.getElementById('Success-Cont');
 
-    window.location.href = './login.html';
+    window.location.href = './login';
     successContainer.style.display = 'none';
 });
 
