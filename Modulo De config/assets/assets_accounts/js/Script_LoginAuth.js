@@ -19,7 +19,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         const data = await response.json();
         localStorage.setItem('token', data.token);
 
-        window.location.href = './home';
+        window.location.href = 'https://cheetah-research.ai/home/';
     } else {
         const errorData = await response.json();
 

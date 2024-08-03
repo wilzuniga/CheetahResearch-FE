@@ -79,22 +79,22 @@ function createSurveyerFormReadOnly() {
 }
 
 
-    
+
 
 // Función para agregar el formulario al contenedor
 async function appendSurveyerForm() {
     const url = 'https://api.cheetah-research.ai/configuration/getInterviewer/';
-    
+
     try {
         const response = await axios.post(url, { study_id: localStorage.getItem('selectedStudyId') }, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
         });
-        
+
         const data = response.data;
         const formContainer = document.getElementById('form-containerSurveyer');
-        
+
         if (data.interviewerName != null) {
             const surveyerForm = createSurveyerFormReadOnly();
             formContainer.appendChild(surveyerForm);
@@ -138,6 +138,11 @@ function captureSurveyerFormData() {
     data.append('importantObservation', observacionesImportantes);
     data.append('study_id', localStorage.getItem('selectedStudyId'));
 
+    for (let pair of data.entries()) {
+        console.log(pair[0]+ ': ' + pair[1]);
+    }
+
+
     axios.post(url, data, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -156,7 +161,7 @@ function captureSurveyerFormData() {
     localStorage.setItem('observacionesImportantes', observacionesImportantes);
     localStorage.setItem('saludoEncuestador', saludoEncuestador);
 
-    //hacer el formulario solo lectura y que cada que se cargue la pagina regresen los datos 
+    //hacer el formulario solo lectura y que cada que se cargue la pagina regresen los datos
     document.getElementById('NombreEncuestadorTXT').readOnly = true;
     document.getElementById('TonoEncuestadorTXT').readOnly = true;
     document.getElementById('ObservacionesImportantesTXT').readOnly = true;

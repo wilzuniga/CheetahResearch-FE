@@ -3,10 +3,12 @@ document.getElementById('LanzarEstudioBtn').addEventListener('click', (e) => {
     const studioID = localStorage.getItem('selectedStudyId');
     if (studioID.trim() !== '') {
 
-        const nuevaURL = `chatbot?=${studioID}/`;
+        const nuevaURL = `https://www.cheetah-research.ai/chatbot?id=${studioID}`;
         const linkText = `Recolección de Datos`;
-        console.log(nuevaURL);
+        const linkTextAnalisis = `Analisis de Datos`;
+        const nuevaULRanalisis = `https://www.cheetah-research.ai/analisis?id=${studioID}`;
         document.getElementById('ModuloDeRecoleccionURL').innerHTML = `<a href="${nuevaURL}">${linkText}</a>`;
+        document.getElementById('ModuloDeAnalisisURL').innerHTML = `<a href="${nuevaULRanalisis}">${linkTextAnalisis}</a>`;
 
         let coso = document.getElementById('test_Switch');
 
