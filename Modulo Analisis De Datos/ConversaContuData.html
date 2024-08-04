@@ -60,14 +60,14 @@
     <div id="wrapper">
         <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius:0px;border-bottom-right-radius: 0px;background: var(--bs-CR-black-dark);">
             <div class="container-fluid d-flex flex-column p-0">
-                <a class="navbar-brand d-xxl-flex align-items-center justify-content-xxl-center align-items-xxl-center sidebar-brand m-0" href="https://www.cheetah-research.ai/analysis/home/" >
+                <a id="home-link" class="navbar-brand d-xxl-flex align-items-center justify-content-xxl-center align-items-xxl-center sidebar-brand m-0" href="#" >
                     <img style="height: auto;width: 230px;margin: -11px;margin-bottom: 0px; margin-top: 10px;" src="assets/img/NegroLogo.png" />
                 </a>
                 <div style="height: 30px;"></div>
                 
                 <ul id="accordionSidebar" class="navbar-nav text-light" style="font-family: hedliner;">
                     <li class="nav-item" style="font-family: hedliner">
-                        <a class="nav-link" href="https://www.cheetah-research.ai/analysis/home/">
+                        <a id="home-link2" class="nav-link" href="#">
                             <i class="fas fa-window-maximize" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
                             <span style="font-family: hedliner;">PAGINA PRINCIPAL</span>
                         </a>
@@ -161,8 +161,12 @@
         const studyId = getParameterByName('id');
         var link = document.getElementById('socrates-link');
         var link2 = document.getElementById('analis-link');
-        link.href = 'https://www.cheetah-research.ai/analysis/Socrates?id=' + study_id;
-        link2.href = 'https://www.cheetah-research.ai/analysis/DataAnalysis/?id=' + study_id;
+        var link3 = document.getElementById('home-link');
+        var link4 = document.getElementById('home-link2');
+        link.href = 'https://www.cheetah-research.ai/analysis/Socrates?id=' + studyId;
+        link2.href = 'https://www.cheetah-research.ai/analysis/DataAnalysis/?id=' + studyId;
+        link3.href = 'https://www.cheetah-research.ai/analysis/home/?id=' + studyId;
+        link4.href = 'https://www.cheetah-research.ai/analysis/home/?id=' + studyId;
     </script>
     <script src="Socrates.js"></script>
 </body>
