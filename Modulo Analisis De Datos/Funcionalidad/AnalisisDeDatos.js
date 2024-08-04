@@ -287,6 +287,43 @@ function LLenarResumenes(study){
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
 
+            //User Persona, perfecto
+            comboBoxUP.addEventListener('change', (event) => {
+                console.log(event.target.value);
+            
+                // Obtener el div donde se mostrará el contenido
+                var div = document.getElementById('UserPersonaContent');
+            
+                // Supongamos que `event.target.value` es el valor del combobox
+                const selectedValue = event.target.value;
+            
+                // Obtener el objeto JSON correspondiente al valor seleccionado
+                const jsonObject = AnalisisPsicograficos['user_persona'];
+                console.log(jsonObject);
+            
+                // Convertir el objeto JSON a una cadena HTML
+                let htmlString = '';
+            
+                // Verificar si jsonObject existe y tiene la categoría seleccionada
+                if (jsonObject && jsonObject[selectedValue]) {
+                    let index = 1; // Inicializar el índice
+
+                    //contenido para cada filtro es texto, no esta dividido en preguntas
+                    const content = jsonObject[selectedValue];
+                    //marked
+                    const coso = marked(content);
+                    htmlString = coso;
+
+                    
+                    
+                } else {
+                    htmlString = '<p>No se encontraron datos para la selección actual.</p>';
+                }
+            
+                // Insertar el HTML en el div
+                div.innerHTML = htmlString;
+            });
+
             //ekman, perfecto
             comboBoxEK.addEventListener('change', (event) => {
                 console.log(event.target.value);
