@@ -322,6 +322,7 @@ function load() {
     const url = 'https://api.cheetah-research.ai/analysis/startS/';
 
     const study_id = new URLSearchParams(window.location.search).get('id');
+    console.log(study_id);
     axios.post(url, { study_id: study_id }, {
         headers: {
             'Content-Type': 'multipart/form-data',
