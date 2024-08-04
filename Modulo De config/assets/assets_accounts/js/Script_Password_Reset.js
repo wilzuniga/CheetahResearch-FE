@@ -7,7 +7,7 @@ document.getElementById('passwordResetForm').addEventListener('submit', async fu
 
     resetError.style.display = 'none';
 
-    const response = await fetch('https://api.cheetah-research.ai/configuration/password-reset/', {
+    const response = await fetch('http://127.0.0.1:8000/password-reset/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
