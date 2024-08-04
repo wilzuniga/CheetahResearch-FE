@@ -1,5 +1,5 @@
-filtros = [];
-modules = [];
+let filtros = [];
+let modules = [];
 
 
 function load(){    // Actualizar el título del estudio desde localStorage
@@ -77,6 +77,7 @@ agregarModuloBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const moduloTxt = comboboxModules.options[comboboxModules.selectedIndex].text;
     if (moduloTxt) {
+        modules.push(moduloTxt);
         const moduloItem = document.createElement('li');
         moduloItem.classList.add('list-group-item');
         moduloItem.style.display = 'flex';
@@ -157,7 +158,8 @@ guardarFitroBTN
 guardarFitroBTN.addEventListener('click', (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('filters', filtros);
+    const filtrosString = JSON.stringify(filtros);
+    formData.append('filters', filtrosString);
 
     axios.post('https://api.cheetah-research.ai/configuration/filters/' + localStorage.getItem('selectedStudyId') , formData, {
         headers: {
@@ -166,7 +168,6 @@ guardarFitroBTN.addEventListener('click', (e) => {
     })
         .then(response => {
             console.log(response.data);
-            filtros
         })
         .catch(error => {
             console.error('Error al enviar los datos:', error);
@@ -177,8 +178,9 @@ guardarFitroBTN.addEventListener('click', (e) => {
 // Agregar un event listener para el botón de guardar módulos
 guardarModuloBTN.addEventListener('click', (e) => {
     e.preventDefault();
+    modulesString = JSON.stringify(modules);
     const formData = new FormData();
-    formData.append('modules', modules);
+    formData.append('modules', modulesString);
 
     axios.post('https://api.cheetah-research.ai/configuration/modules/' + localStorage.getItem('selectedStudyId'), formData, {
         headers: {
