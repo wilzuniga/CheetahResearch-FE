@@ -80,6 +80,7 @@ function LLenarResumenes(){
             ResumenGeneral = data['general'];
             ResumenIndividual = data.individual_questions;            
             AnalisisPsicograficos = data['psicographic_questions'];
+            User_Personas = data['user_personas'];
 
 
             
@@ -251,7 +252,7 @@ function LLenarResumenes(){
                 const selectedValue = event.target.value;
             
                 // Obtener el objeto JSON correspondiente al valor seleccionado
-                const jsonObject = AnalisisPsicograficos['user_personas'];
+                const jsonObject = User_Personas;
                 console.log(jsonObject);
             
                 // Convertir el objeto JSON a una cadena HTML

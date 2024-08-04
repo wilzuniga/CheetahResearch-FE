@@ -77,7 +77,7 @@ agregarModuloBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const moduloTxt = comboboxModules.options[comboboxModules.selectedIndex].text;
     if (moduloTxt) {
-        modules.push(moduloTxt);
+        modules.push(comboboxModules.options[comboboxModules.selectedIndex].value);
         const moduloItem = document.createElement('li');
         moduloItem.classList.add('list-group-item');
         moduloItem.style.display = 'flex';
@@ -178,7 +178,7 @@ guardarFitroBTN.addEventListener('click', (e) => {
 // Agregar un event listener para el botón de guardar módulos
 guardarModuloBTN.addEventListener('click', (e) => {
     e.preventDefault();
-    modulesString = JSON.stringify(modules);
+    const modulesString = JSON.stringify(modules);
     const formData = new FormData();
     formData.append('modules', modulesString);
 
