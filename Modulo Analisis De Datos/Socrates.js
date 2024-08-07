@@ -292,7 +292,7 @@ function getMessage(message, imageSrc) {
     */
    //manejo del mensaje con marked*/
 
-   let coso = marked(message);
+    let coso = marked(message);
 
     const h4 = document.createElement('h4');
     h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
@@ -306,7 +306,8 @@ function getMessage(message, imageSrc) {
 
     BotIMG_Div.appendChild(BotIMG_Cont);
 
-    cardBody.appendChild(coso);
+    cardBody.appendChild(document.createElement('div')).innerHTML = coso;
+
     cardBody.appendChild(h4);
     card.appendChild(cardBody);
 
