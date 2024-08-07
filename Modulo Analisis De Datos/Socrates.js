@@ -295,6 +295,7 @@ function getMessage(message, imageSrc) {
    let coso = marked(message);
    const messageDiv = document.createElement('div');
    messageDiv.className = 'text-start'; // Alineación a la izquierda
+   messageDiv.style.color = '#FFFFFF'; // Color del texto
    messageDiv.innerHTML = coso;
    cardBody.appendChild(messageDiv);
 
