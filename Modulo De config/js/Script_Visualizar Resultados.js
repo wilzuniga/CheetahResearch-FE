@@ -9,6 +9,7 @@ function AgregarFiltros() {
             
             var data = response.data;
             Demographic_Filters = [];
+            Demographic_Filters.push('Seleccionar filtro');
             //ciclar la data a partir de la segunda section para ver la estructura del json en la consola
 
                 for(let category in data['general']){
