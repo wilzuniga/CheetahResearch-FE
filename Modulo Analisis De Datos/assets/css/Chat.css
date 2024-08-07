@@ -30,6 +30,6 @@ img {
 }
 
 #Message-Input::-webkit-scrollbar-thumb {
-  background: #2e3e43;
+  background: var(--bs-CR-gray);
   border-radius: 15px;
 }
