@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-bs-theme="light" lang="en">
+<html data-bs-theme="light" lang="en" style="height: 100%;">
 
 <head>
     <meta charset="utf-8">
@@ -58,7 +58,7 @@
 </head>
 
 <body id="page-top" onload="loadInterviewer()">
-    <div id="wrapper">
+    <div id="wrapper" style="height: 100%;">
         <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius:0px;border-bottom-right-radius: 0px;background: var(--bs-CR-black-dark);">
             <div class="container-fluid d-flex flex-column p-0">
                 <a id="home-link" class="navbar-brand d-xxl-flex align-items-center justify-content-xxl-center align-items-xxl-center sidebar-brand m-0" href="#" >
@@ -102,7 +102,7 @@
                     <div class="row d-flex flex-column justify-content-center align-content-center" style="height: 100%;">
                         <div class="col d-flex flex-column justify-content-center align-content-center" style="height: 100%;padding-right: 8px;padding-left: 8px;padding-top: 0px;margin-left: 15px;">
                             <h1 class="fw-semibold d-flex flex-row align-items-center order-1" id="Bot-Name" style="margin: 0px;font-family: hedliner;margin-top: 6px;color: #aaa7aa;">Socrates</h1>
-                            <p class="fw-normal d-flex flex-row order-2" id="Bot-Status" style="margin: 0px;padding-left: 4px;margin-top: -2px;color: #eb7e20;">Desconectado</p>
+                            <p class="fw-normal d-flex flex-row order-2" id="Bot-Status" style="margin: 0px;padding-left: 4px;margin-top: -2px;color: var(--bs-CR-gray);">Desconectado</p>
                         </div>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                                         <div class="card-body text-center">
                                             <p class="card-text" style="color: #aaa7aa;">Escribe algo para charlar con Socrates</p>
                                             <p class="card-text" style="font-family: hedliner;font-size: 25px;color: #aaa7aa;"><strong>Cheetah Research</strong></p><img src="assets/img/Cheetah%20Paw%20Icon.svg" style="width: 60px;height: 60px;filter: invert(70%);">
-                                            <p class="card-text" style="font-family: hedliner;padding: 30px;"><span style="color: var(--bs-CR-orange);">Pista: ¡Di Hola!</span></p>
+                                            <p class="card-text" style="font-family: League Spartan;padding: 30px;"><span style="color: var(--bs-CR-orange);">Pista: ¡Di Hola!</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -138,12 +138,12 @@
                     </div>
                     <div class="row justify-content-center align-items-center align-content-center order-3" id="Type-Box" style="background: rgba(170,167,170,0.16);padding-top: 6px;padding-right: 5px;padding-bottom: 6px;padding-left: 5px;backdrop-filter: blur(2px);-webkit-backdrop-filter: blur(2px);">
                         <div class="col align-content-center" id="TypeB-Container" style="height: 100%;">
-                            <div class="row text-truncate" id="TypeB-BG" style="border-radius: 10px;background: var(--bs-CR-gray-dark);">
-                                <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-8 col-xxl-9 p-0" style="height: 100%;"><textarea id="Message-Input" class="align-content-center border-0" placeholder="Escribir Mensaje..." style="outline: none; height: 100%;width: 100%;border-radius: 10px;resize: none;padding-left: 10px;background: #ffffff;box-shadow: inset 5px 5px 20px 1px #6d6d6d;color: #072934;"></textarea></div>
+                            <div class="row" id="TypeB-BG" style="border-radius: 10px;background: var(--bs-CR-gray-dark);">
+                                <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-8 col-xxl-9 p-0" style="height: 100%;"><textarea id="Message-Input" class="align-content-center border-0" placeholder="Escribir Mensaje..." style="font-family: League Spartan;outline: none; height: 100%;width: 100%;border-radius: 10px;resize: none;padding-left: 10px;background: #ffffff;box-shadow: inset 2px 2px 5px 1px #6d6d6d;color: #072934;"></textarea></div>
                                 <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1 col-xxl-1 text-nowrap d-flex d-md-flex flex-fill justify-content-center align-items-center align-content-center p-0 col-1" id="btIMG-Cont" style="height: 100%;margin-right: 0px;border-top-left-radius: 10px;border-bottom-left-radius: 10px;"><button class="btn justify-content-center align-items-center align-content-center mx-auto" id="btIMG" type="button" style="border-radius: 10px;width: 100%;height: 100%;padding: 0px 0px;padding-right: 0px;position: relative;overflow: hidden; display: none;"><input type="file" accept="image/*" id="fileInput" style="display:none;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-image-fill" id="imageIcon" style="display: flex;">
                                             <path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"></path>
                                         </svg><img class="flash animated" id="imageInput" style="display:none;max-width:150%;object-fit:cover;position:absolute;"></button></div>
-                                <div class="col-auto col-sm-1 col-md col-lg-1 col-xl-1 col-xxl-1 text-nowrap d-md-flex justify-content-md-end p-0" id="btSend-Cont" style="min-width: 50px;height: 100%;margin-right: 0px;position: static;"><button class="btn float-end h-100" id="btSend" type="button" style="border-radius: 10px;width: 100%;border-style: none;border-color: #2e2e2e;border-bottom-style: none;"><i class="fab fa-telegram-plane" id="btSend-Icon"></i></button></div>
+                                <div class="col-auto col-sm-1 col-md col-lg-1 col-xl-1 col-xxl-1 text-nowrap d-md-flex justify-content-md-end p-0" id="btSend-Cont" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;min-width: 50px;height: 100%;margin-right: 0px;position: static;"><button class="btn float-end h-100" id="btSend" type="button" style="border-radius: 10px;width: 100%;border-style: none;border-color: #2e2e2e;border-bottom-style: none;"><i class="fab fa-telegram-plane" id="btSend-Icon"></i></button></div>
                             </div>
                         </div>
                     </div>
