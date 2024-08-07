@@ -165,6 +165,7 @@ function sendMessage(message, imageSrc) {
             getMessage(farewellMessage, null);
             loadingMsg.style.display = 'none';
         } else {
+            
             getMessage(data.response, null);
             loadingMsg.style.display = 'none';
             console.log(data);
@@ -269,8 +270,12 @@ function getMessage(message, imageSrc) {
     p.style.color = '#f0f0f0';
     p.style.fontFamily = "'IBM Plex Sans', sans-serif";
     p.style.marginBottom = "6px";
+    /*
     p.textContent = message;
     p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios
+    */
+   //manejo del mensaje con marked
+    p.innerHTML = marked(message);
 
     const h4 = document.createElement('h4');
     h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
@@ -376,3 +381,29 @@ function loadInterviewer() {
         load();
     });
 }
+
+
+//que a la hora de cerrar la ventana pregunte si se desea salir
+window.addEventListener('beforeunload', function (event) {
+    // Mensaje que se mostrará en la ventana emergente
+    const url = 'https://api.cheetah-research.ai/analysis/stopS/';
+
+    axios.post(url, { hash: hash }, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    }).then((response) => {
+        const data = response.data;
+    }).catch((error) => {
+        console.log('Error:', error);
+    });
+
+
+    const confirmationMessage = "¿Estás seguro que deseas salir? No se guardarán los cambios.";
+
+    // Establece el mensaje de confirmación
+    (event || window.event).returnValue = confirmationMessage; // Para navegadores modernos
+    return confirmationMessage; // Para navegadores más antiguos
+
+    // Nota: Los navegadores modernos pueden ignorar el mensaje y mostrar un texto genérico.
+});
