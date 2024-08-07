@@ -292,37 +292,35 @@ function getMessage(message, imageSrc) {
     */
    //manejo del mensaje con marked*/
 
-    let coso = marked(message);
+   let coso = marked(message);
+   const messageDiv = document.createElement('div');
+   messageDiv.className = 'text-start'; // Alineación a la izquierda
+   messageDiv.innerHTML = coso;
+   cardBody.appendChild(messageDiv);
 
-    const h4 = document.createElement('h4');
-    h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
-    h4.style.marginTop = '0px';
-    h4.style.color = '#555155';
-    h4.style.fontFamily = 'League Spartan';
-    h4.textContent = new Intl.DateTimeFormat('es-419', options).format(new Date());
-    h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
+   const h4 = document.createElement('h4');
+   h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
+   h4.style.marginTop = '0px';
+   h4.style.color = '#555155';
+   h4.style.fontFamily = "'League Spartan', sans-serif";
+   h4.textContent = new Intl.DateTimeFormat('es-419', options).format(new Date());
+   h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
 
-    BotIMG_Cont.appendChild(BotIMG);
+   BotIMG_Cont.appendChild(BotIMG);
+   BotIMG_Div.appendChild(BotIMG_Cont);
+   cardBody.appendChild(h4);
+   card.appendChild(cardBody);
+   li.appendChild(BotIMG_Div);
+   li.appendChild(card);
+   messageList.appendChild(li);
 
-    BotIMG_Div.appendChild(BotIMG_Cont);
+   // Scroll automático hacia abajo cuando se envía un mensaje nuevo
+   const scrollPanel = document.getElementById('Feed-BG');
+   scrollPanel.scrollTop = scrollPanel.scrollHeight;
 
-    cardBody.appendChild(document.createElement('div')).innerHTML = coso;
-
-    cardBody.appendChild(h4);
-    card.appendChild(cardBody);
-
-    li.appendChild(BotIMG_Div);
-    li.appendChild(card);
-
-    messageList.appendChild(li);
-
-    //Scroll automático hacia abajo cuando se envía un mensaje nuevo
-    const scrollPanel = document.getElementById('Feed-BG');
-    scrollPanel.scrollTop = scrollPanel.scrollHeight;
-
-    //Mensaje de espera de respuesta queda abajo
-    let loadingMsg = document.getElementById('Typing-Msg');
-    messageList.insertBefore(loadingMsg, null);
+   // Mensaje de espera de respuesta queda abajo
+   let loadingMsg = document.getElementById('Typing-Msg');
+   messageList.insertBefore(loadingMsg, null);
 }
 
 //Funciones cambiar colores de botones al soltar botón (móviles)
