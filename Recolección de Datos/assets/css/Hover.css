@@ -11,7 +11,7 @@
 }
 
 #btSend {
-  color: var(--bs-gray-dark);
+  color: var(--bs-gray);
   transition: 0.2s ease-in-out;
 }
 

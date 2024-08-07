@@ -90,9 +90,9 @@ document.getElementById('btSend').addEventListener('click', function () {
         } else {
             sendMessage(message, null);
         }
-        this.value = '';
-        this.style.height = `100%`;
-        this.style.transform = `translateY(0px)`;
+        messageInput.value = '';
+        messageInput.style.height = `100%`;
+        messageInput.style.transform = `translateY(0px)`;
     }
 });
 
