@@ -281,7 +281,7 @@ function getMessage(message, imageSrc) {
         cardBody.appendChild(img);
     }
 
-    const p = document.createElement('p');
+   /* const p = document.createElement('p');
     p.className = 'text-break text-start d-flex order-2 card-text';
     p.style.color = '#f0f0f0';
     p.style.fontFamily = "IBM Plex Sans";
@@ -290,8 +290,9 @@ function getMessage(message, imageSrc) {
     p.textContent = message;
     p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios
     */
-   //manejo del mensaje con marked
-    p.innerHTML = marked(message);
+   //manejo del mensaje con marked*/
+
+   let coso = marked(message);
 
     const h4 = document.createElement('h4');
     h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
@@ -305,7 +306,7 @@ function getMessage(message, imageSrc) {
 
     BotIMG_Div.appendChild(BotIMG_Cont);
 
-    cardBody.appendChild(p);
+    cardBody.appendChild(coso);
     cardBody.appendChild(h4);
     card.appendChild(cardBody);
 
