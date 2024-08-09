@@ -209,7 +209,6 @@ function sendMessage(message, imageSrc) {
             loadingMsg.style.display = 'none';
             endChat();
         } else {
-            
             getMessage(data.response, null);
             loadingMsg.style.display = 'none';
         }

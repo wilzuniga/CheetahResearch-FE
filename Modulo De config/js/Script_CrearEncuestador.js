@@ -48,26 +48,33 @@ function createSurveyerFormReadOnly() {
         const data = response.data;
         formContainer.innerHTML = `
             <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;">Encuestador</h2>
-            <form class="p-3 p-xl-4
-            " method="post" style="font-family: 'hedliner', sans-serif;">
+            <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Imagen</p>
                     <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
-                    </div>
+                </div>
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Nombre del Encuestador</p>
-                    <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" placeholder="Nombre" value="${data.interviewerName}" disabled>
+                    <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" placeholder="Nombre" value="${data.interviewerName}" style = "font-family: 'IBM Plex Sans'">
                 </div>
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Tono Encuestador</p>
-                    <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" placeholder="Ingresa el tono en el cual hablará el encuestador" value="${data.interviewerTone}" disabled>
+                    <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" placeholder="Ingresa el tono en el cual hablará el encuestador" value="${data.interviewerTone}">
                 </div>
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Saludo</p>
-                    <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" placeholder="Ingresa el saludo del encuestador" disabled>${data.interviewerGreeting}</textarea>
+                    <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" placeholder="Ingresa el saludo del encuestador">${data.interviewerGreeting}</textarea>
+                </div>
+                <div style="width: 250px;">
+                    <button class="btn btn-primary d-block w-100" id="ActualizarEncuestadorBtn" type="button" style="font-weight: bold; font-size: 20px; border-radius: 10px;">Actualizar Encuestador</button>
                 </div>
             </form>
         `;
+
+        document.getElementById('ActualizarEncuestadorBtn').addEventListener('click', (event) => {
+            event.preventDefault();
+            updateSurveyerFormData();
+        });
     })
     .catch(error => {
         console.error(error);
@@ -78,6 +85,51 @@ function createSurveyerFormReadOnly() {
     return formContainer;
 }
 
+function updateSurveyerFormData() {
+    const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
+    const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
+    const saludoEncuestador = document.getElementById('SaludoEncuestadorTXT').value;
+    const fileInput = document.querySelector('input[type="file"]');
+    const observacionesImportantes = document.getElementById('ObservacionesImportantesTXT').value;
+
+    const url = 'https://api.cheetah-research.ai/configuration/updateInterviewer/';
+
+    const data = new FormData();
+    data.append('interviewerName', nombreEncuestador);
+    data.append('interviewerProfilePicture', fileInput.files[0]);
+    data.append('interviewerTone', tonoEncuestador);
+    data.append('interviewerGreeting', saludoEncuestador);
+    data.append('importantObservation', observacionesImportantes);
+    data.append('_id', localStorage.getItem('selectedStudyId'));
+
+    for (let pair of data.entries()) {
+        console.log(pair[0]+ ': ' + pair[1]);
+    }
+
+    axios.post(url, data, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+    .then(response => {
+
+        console.log(response);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+    // Guardar en localStorage
+    localStorage.setItem('nombreEncuestador', nombreEncuestador);
+    localStorage.setItem('tonoEncuestador', tonoEncuestador);
+    localStorage.setItem('observacionesImportantes', observacionesImportantes);
+    localStorage.setItem('saludoEncuestador', saludoEncuestador);
+
+    
+    CSrvyr_DeactivateNavBy();
+
+
+}
 
 
 
@@ -182,9 +234,7 @@ function captureSurveyerFormData() {
 
 window.onload = () => {
     CSrvyr_DeactivateNavBy();
-    appendSurveyerForm();
-
-    
+    appendSurveyerForm();  
 }
 
 
@@ -218,11 +268,14 @@ function enableNavItems() {
 }
 
 function CSrvyr_DeactivateNavBy(){
+    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('selectedStudyData')).title;
+
     console.log('Verificando si se activan los botones');
     if(localStorage.getItem('nombreEncuestador') != null){
         enableNavItems();
         console.log('Activando botones');
     }else{
+        disableNavItems();
         console.log('Desactivando botones');
     }
 }
