@@ -1,6 +1,52 @@
 let imgPP;
 let hash = 0;
 
+//Cambiar size del Type-Box con Input y Window resize
+document.addEventListener('DOMContentLoaded', (event) => {
+    const messageInput = document.getElementById('Message-Input');
+    let initHeight = messageInput.scrollHeight;
+    let maxHeight = initHeight * 2;
+
+    //Función cambiar size del Type-Box
+    function messageInput_resize() {
+        messageInput.style.height = initHeight + 'px';
+        if (messageInput.scrollHeight > initHeight) {
+            let newHeight = messageInput.scrollHeight;
+            //Calcular newHeight
+            if (newHeight > maxHeight) {//Limite maxHeight 
+                newHeight = maxHeight;
+            }
+            //Cambiar height
+            messageInput.style.height = newHeight + 'px';
+            messageInput.style.transform = `translateY(${initHeight - newHeight}px)`;//Crece hacia arriba 
+        } else if (messageInput.scrollHeight === initHeight) {
+            messageInput.style.transform = `translateY(0px)`;//Al vaciarse el Type-Box lo regresa a la normalidad
+        }
+    }
+
+    //Función cambiar size del Type-Box al cambiar size de Ventana
+    function messageInput_resizeWindow() {
+        //Re-calcular nuevos valores
+        initHeight = messageInput.parentElement.offsetHeight;
+        maxHeight = initHeight * 2;
+        messageInput.style.height = initHeight + 'px';
+        
+        let newHeight = messageInput.scrollHeight;
+        //Calcular newHeight
+        if (newHeight > maxHeight) {//El height no puede pasarse de maxHeight
+            newHeight = maxHeight;
+        }
+        //Cambiar height
+        messageInput.style.height = newHeight + 'px';
+        messageInput.style.transform = `translateY(${initHeight - newHeight}px)`;//Verifica la posición correcta del Type-Box
+    }
+    //Resize al escribir
+    messageInput.addEventListener('input', messageInput_resize);
+
+    //Resize al cambiar tamaño de Ventana
+    window.addEventListener('resize', messageInput_resizeWindow);
+});
+
 //Enviar mensaje al presionar enter
 document.getElementById('Message-Input').addEventListener('keydown', function (event) {
     const imageIcon = document.getElementById('imageIcon');
@@ -14,14 +60,15 @@ document.getElementById('Message-Input').addEventListener('keydown', function (e
         if (message || imageInput.style.display !== 'none') {
             if (imageInput.style.display !== 'none') {
                 sendMessage(message, imageSrc);
-                this.value = '';
                 imageInput.src = '';
                 imageIcon.style.display = 'flex';
                 imageInput.style.display = 'none';
             } else {
                 sendMessage(message, null);
-                this.value = '';
             }
+            this.value = '';
+            this.style.height = `100%`;
+            this.style.transform = `translateY(0px)`;
         }
     }
 });
@@ -37,14 +84,15 @@ document.getElementById('btSend').addEventListener('click', function () {
     if (message || imageInput.style.display !== 'none') {
         if (imageInput.style.display !== 'none') {
             sendMessage(message, imageSrc);
-            messageInput.value = '';
             imageInput.src = '';
             imageIcon.style.display = 'flex';
             imageInput.style.display = 'none';
         } else {
             sendMessage(message, null);
-            messageInput.value = '';
         }
+        messageInput.value = '';
+        messageInput.style.height = `100%`;
+        messageInput.style.transform = `translateY(0px)`;
     }
 });
 
@@ -73,11 +121,6 @@ document.getElementById('btIMG').addEventListener('click', function () {
 
 //Enviar un mensaje como entrevistador
 function sendMessage(message, imageSrc) {
-    // let messages = localStorage.getItem('preguntas');
-    // let preguntasArreglo = JSON.parse(messages);
-    // let sendApi = preguntasArreglo[contador] + '|' + message;
-    // contaWeight++;
-
     //Variables para display de Espera de Respuesta
     let loadingGif = document.getElementById('LoadingGif');
     let loadingMsg = document.getElementById('Typing-Msg');
@@ -128,7 +171,7 @@ function sendMessage(message, imageSrc) {
     h4.className = 'd-flex justify-content-end order-3 card-subtitle text-end';
     h4.style.marginTop = '0px';
     h4.style.color = '#5d647b';
-    h4.style.fontFamily = "'League Spartan', sans-serif";
+    h4.style.fontFamily = 'League Spartan';
     h4.textContent = new Intl.DateTimeFormat('es-419', options).format(new Date());
     h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
 
@@ -164,42 +207,16 @@ function sendMessage(message, imageSrc) {
 
             getMessage(farewellMessage, null);
             loadingMsg.style.display = 'none';
+            endChat();
         } else {
+            
             getMessage(data.response, null);
             loadingMsg.style.display = 'none';
-            console.log(data);
         }
 
     }).catch((error) => {
         console.log('Error:', error);
     });
-
-    //     headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //     }
-    // }).then((response) => {
-    //     const data = response.data;
-    //     console.log(data);
-    //     localStorage.setItem('preguntaAtcual', response.data.response);
-
-    //     let messageeee = localStorage.getItem('preguntaAtcual')
-    //     if (contaWeight == 3) {
-    //         contador++;
-    //         contaWeight = 0;
-    //         getMessage(messageeee, null);
-    //     }else{
-    //         if (messageeee.includes(preguntasArreglo[contador])) {
-    //             console.log('pregunta', preguntasArreglo[contador]);
-    //             let messageeee = preguntasArreglo[contador];
-    //             getMessage(messageeee, null);
-    //         }else{
-    //             getMessage(messageeee, null);
-    //         }
-    //     }
-
-    // }).catch((error) => {
-    //     console.log('Error:', error);
-    // });
 }
 
 //Función para recibir un mensaje de encuestador
@@ -264,42 +281,47 @@ function getMessage(message, imageSrc) {
         cardBody.appendChild(img);
     }
 
-    const p = document.createElement('p');
+   /* const p = document.createElement('p');
     p.className = 'text-break text-start d-flex order-2 card-text';
     p.style.color = '#f0f0f0';
-    p.style.fontFamily = "'IBM Plex Sans', sans-serif";
+    p.style.fontFamily = "IBM Plex Sans";
     p.style.marginBottom = "6px";
+    /*
     p.textContent = message;
     p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios
+    */
+   //manejo del mensaje con marked*/
 
-    const h4 = document.createElement('h4');
-    h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
-    h4.style.marginTop = '0px';
-    h4.style.color = '#555155';
-    h4.style.fontFamily = "'League Spartan', sans-serif";
-    h4.textContent = new Intl.DateTimeFormat('es-419', options).format(new Date());
-    h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
+   let coso = marked(message);
+   const messageDiv = document.createElement('div');
+   messageDiv.className = 'text-start card-text'; // Alineación a la izquierda
+   messageDiv.style.color = '#FFFFFF'; // Color del texto
+   messageDiv.innerHTML = coso;
+   cardBody.appendChild(messageDiv);
 
-    BotIMG_Cont.appendChild(BotIMG);
+   const h4 = document.createElement('h4');
+   h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
+   h4.style.marginTop = '0px';
+   h4.style.color = '#555155';
+   h4.style.fontFamily = "'League Spartan', sans-serif";
+   h4.textContent = new Intl.DateTimeFormat('es-419', options).format(new Date());
+   h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
 
-    BotIMG_Div.appendChild(BotIMG_Cont);
+   BotIMG_Cont.appendChild(BotIMG);
+   BotIMG_Div.appendChild(BotIMG_Cont);
+   cardBody.appendChild(h4);
+   card.appendChild(cardBody);
+   li.appendChild(BotIMG_Div);
+   li.appendChild(card);
+   messageList.appendChild(li);
 
-    cardBody.appendChild(p);
-    cardBody.appendChild(h4);
-    card.appendChild(cardBody);
+   // Scroll automático hacia abajo cuando se envía un mensaje nuevo
+   const scrollPanel = document.getElementById('Feed-BG');
+   scrollPanel.scrollTop = scrollPanel.scrollHeight;
 
-    li.appendChild(BotIMG_Div);
-    li.appendChild(card);
-
-    messageList.appendChild(li);
-
-    //Scroll automático hacia abajo cuando se envía un mensaje nuevo
-    const scrollPanel = document.getElementById('Feed-BG');
-    scrollPanel.scrollTop = scrollPanel.scrollHeight;
-
-    //Mensaje de espera de respuesta queda abajo
-    let loadingMsg = document.getElementById('Typing-Msg');
-    messageList.insertBefore(loadingMsg, null);
+   // Mensaje de espera de respuesta queda abajo
+   let loadingMsg = document.getElementById('Typing-Msg');
+   messageList.insertBefore(loadingMsg, null);
 }
 
 //Funciones cambiar colores de botones al soltar botón (móviles)
@@ -334,7 +356,9 @@ function load() {
         console.log(data);
 
         //Bot Status - Conectado
-        document.getElementById('Bot-Status').innerText = 'Conectado';
+        botStatus=document.getElementById('Bot-Status');
+        botStatus.innerText = 'Conectado';
+        botStatus.style.color = 'var(--bs-CR-orange-2)';
 
     }).catch((error) => {
         console.log('Error:', error);
@@ -376,3 +400,50 @@ function loadInterviewer() {
         load();
     });
 }
+
+
+//Función para deshabilitar Chat al terminarlo
+function endChat(){
+    const messageInput = document.getElementById("Message-Input");
+    const loadingMsg = document.getElementById("Typing-Msg");
+    const btSend = document.getElementById("btSend");
+    const btIMG = document.getElementById("btIMG");
+
+    messageInput.placeholder= "¡Gracias por responder esta encuesta!";
+    loadingMsg.style.display = 'none';
+    messageInput.disabled = true;
+    btSend.disabled = true;
+    btIMG.disabled = true;
+    
+    messageInput.parentElement.style.background = 'transparent';
+    messageInput.style.background = 'transparent';
+    messageInput.style.boxShadow = 'none';
+    btSend.style.color = 'var(--bs-CR-gray)';
+    btIMG.style.color = 'var(--bs-CR-gray)';
+}
+
+//que a la hora de cerrar la ventana pregunte si se desea salir
+window.addEventListener('beforeunload', function (event) {
+    // Mensaje que se mostrará en la ventana emergente
+    const url = 'https://api.cheetah-research.ai/analysis/stopS/';
+
+    axios.post(url, { hash: hash }, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    }).then((response) => {
+        const data = response.data;
+    }).catch((error) => {
+        console.log('Error:', error);
+    });
+
+
+    const confirmationMessage = "¿Estás seguro que deseas salir? No se guardarán los cambios.";
+
+    // Establece el mensaje de confirmación
+    (event || window.event).returnValue = confirmationMessage; // Para navegadores modernos
+    return confirmationMessage; // Para navegadores más antiguos
+
+    // Nota: Los navegadores modernos pueden ignorar el mensaje y mostrar un texto genérico.
+});
+

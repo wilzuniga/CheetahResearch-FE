@@ -9,6 +9,7 @@ function AgregarFiltros() {
             
             var data = response.data;
             Demographic_Filters = [];
+            Demographic_Filters.push('Seleccionar filtro');
             //ciclar la data a partir de la segunda section para ver la estructura del json en la consola
 
                 for(let category in data['general']){
@@ -546,6 +547,7 @@ const botonImportar = document.getElementById('botonImportar');
 botonImportar.addEventListener('click', () => {
     const fileChooser = document.createElement('input');
     fileChooser.type = 'file';
+    fileChooser.accept = '.pdf,.csv';
     fileChooser.multiple = true;
     fileChooser.addEventListener('change', (event) => {
         const files = event.target.files;
@@ -574,7 +576,3 @@ botonImportar.addEventListener('click', () => {
     });
     fileChooser.click();
 });
-
-
-
-

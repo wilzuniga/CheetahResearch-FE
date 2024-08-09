@@ -18,3 +18,13 @@ a:hover {
   color: #4dc0e3;
 }
 
+/* Nav Bar */
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #FFFFFF;
+}
+
+.nav-item:hover span {
+  color: var(--bs-CR-orange);
+  transition: 0.2s ease-in-out;
+}

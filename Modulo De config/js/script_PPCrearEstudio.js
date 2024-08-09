@@ -1,6 +1,3 @@
-
-
-
 function disableNavItems() {
     const navItems = [
         'CreacionDeEncuestadorLNK',
@@ -45,39 +42,39 @@ function CE_DeactivateNavBy(){
 
 //FORMULARIO DE CREACION DE ESTUDIO
 function createStudyForm() {
-    const title = '<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: \'hedliner\', sans-serif;">Creación de Estudio</h2>';
+    const title = '<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: hedliner;">Creación de Estudio</h2>';
 
     const tituloDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Titulo del Estudio</p>
+        <div class="mb-3">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Titulo del Estudio</p>
             <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" placeholder="Titulo" style="  border-radius: 3px">
         </div>`;
 
     const mercadoObjetivo = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Mercado Objetivo</p>
+        <div class="mb-3">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Mercado Objetivo</p>
             <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" placeholder="Mercado Objetivo" style=" border-radius: 3px">
         </div>`;
 
     const objetivosDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Objetivos del Estudio</p>
+        <div class="mb-3">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Objetivos del Estudio</p>
             <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" placeholder="Objetivos generales del estudio, separados por comas (&quot;,&quot;)" style=" border-radius: 3px">
         </div>`;
 
     const promptDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Prompt del Estudio</p>
-            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'hedliner', sans-serif; box-shadow: inset 5px 5px 9px 1px #6d6d6d; color: #072934; border-radius: 3px"></textarea>
+        <div class="mb-3">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Prompt del Estudio</p>
+            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: hedliner; box-shadow: inset 5px 5px 9px 1px #6d6d6d; color: #072934; border-radius: 3px"></textarea>
         </div>`;
 
     const submitButton = `
-        <div style="width: 250px;font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-primary d-block w-100" id="CrearEstudioBtn" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif;">Crear Estudio</button>
+        <div style="width: 250px;">
+            <button class="btn btn-primary d-block w-100" id="CrearEstudioBtn" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: hedliner;">Crear Estudio</button>
         </div>`;
 
     const form = `
-        <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
+        <form class="p-3 p-xl-4" method="post" style="font-family: IBM Plex Sans;">
             ${tituloDelEstudio}
             ${mercadoObjetivo}
             ${objetivosDelEstudio}
@@ -98,29 +95,29 @@ function createFilledStudyForm() {
         Resumen: studyData.prompt,
     };
 
-    const title = '<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: \'hedliner\', sans-serif;">Resumen del Estudio</h2>';
+    const title = '<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: hedliner, sans-serif;">Resumen del Estudio</h2>';
 
     const tituloDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Titulo del Estudio</p>
+        <div class="mb-3">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Titulo del Estudio</p>
             <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" placeholder="Titulo" style=" " value="${selectedStudyData.tituloDelEstudio}" readonly>
         </div>`;
 
     const mercadoObjetivo = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Mercado Objetivo</p>
+        <div class="mb-3">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Mercado Objetivo</p>
             <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" placeholder="Mercado Objetivo" style=" " value="${selectedStudyData.mercadoObjetivo}" readonly>
         </div>`;
 
     const objetivosDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Objetivos del Estudio</p>
+        <div class="mb-3">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Objetivos del Estudio</p>
             <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" placeholder="Objetivos generales del estudio, separados por comas (&quot;,&quot;)" style=" " value="${selectedStudyData.objetivosDelEstudio}" readonly>
         </div>`;
 
     const promptDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Prompt del Estudio</p>
+        <div class="mb-3">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Prompt del Estudio</p>
             <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style=" " readonly>${selectedStudyData.Resumen}</textarea>
         </div>`;
 
@@ -128,7 +125,7 @@ function createFilledStudyForm() {
 
 
     const form = `
-        <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
+        <form class="p-3 p-xl-4" method="post" style="font-family: IBM Plex Sans;">
             ${tituloDelEstudio}
             ${mercadoObjetivo}
             ${objetivosDelEstudio}
@@ -136,8 +133,6 @@ function createFilledStudyForm() {
         </form>`;
 
     return title + form;
-
-
 }
 
 function appendStudyForm() {
@@ -266,21 +261,21 @@ function createStudyElement(study) {
     const a = document.createElement('a');
     a.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
     a.href = 'https://www.cheetah-research.ai/configuration/study/';
-    a.style.fontFamily = "'hedliner', sans-serif";
+    a.style.fontFamily = "hedliner";
 
     const div1 = document.createElement('div');
     div1.classList.add('d-flex', 'w-100', 'justify-content-between');
 
     const h5 = document.createElement('h5');
     h5.classList.add('mb-1');
-    h5.style.fontFamily = "'hedliner', sans-serif";
+    h5.style.fontFamily = "hedliner";
+    h5.style.fontWeight = "bold";
     h5.textContent = study.title;
 
     const span = document.createElement('span');
-    span.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
-    span.style.fontFamily = "'hedliner', sans-serif";
-    span.style.borderRadius = '2px';
-    //COLOR DE LA ETIQUETA HEX C0601C
+    span.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');//bg-primary COLOR DE LA ETIQUETA HEX C0601C
+    span.style.fontFamily = "hedliner";
+    span.style.borderRadius = '2px';    
     span.style.color = '#FFFFFF';
     span.textContent = study.marketTarget;
 
@@ -290,13 +285,14 @@ function createStudyElement(study) {
 
     const p = document.createElement('p');
     p.classList.add('mb-1');
-    p.style.fontFamily = "'hedliner', sans-serif";
+    p.style.fontFamily = "IBM Plex Sans";
     p.textContent = study.studyObjectives;
     a.appendChild(p);
 
     const small = document.createElement('small');
     small.classList.add('text-muted');
-    small.style.fontFamily = "'hedliner', sans-serif";
+    small.style.fontFamily = "hedliner";
+
     // Formatear la fecha
     const studyDate = new Date(study.studyDate);
     const formattedDate = `${studyDate.toLocaleDateString()} ${studyDate.toLocaleTimeString()}`;
