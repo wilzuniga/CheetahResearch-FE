@@ -9,11 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const anexoPreguntaURL = document.getElementById('AnexoPreguntaURL');
     const listGroup = document.querySelector('.list-group');
 
-    
-
-    
-
-
     agregarPreguntaBtn.addEventListener('click', (event) => {
         event.preventDefault();
         
@@ -21,32 +16,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const peso = pesoTXT.value;
         const anexo = anexoPregunta.files.length > 0 ? anexoPregunta.files[0].name : anexoPreguntaURL.value;
 
-
-
-
-
         if (pregunta && peso) {
             const newListItem = document.createElement('div');
             newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
-            newListItem.style.fontFamily = "'hedliner', sans-serif";
+            newListItem.style.fontFamily = "hedliner";
 
             const newDiv = document.createElement('div');
             newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
-            newDiv.style.fontFamily = "'hedliner', sans-serif";
+            newDiv.style.fontFamily = "hedliner";
 
             const newH5 = document.createElement('h5');
             newH5.classList.add('mb-1');
-            newH5.style.fontFamily = "'hedliner', sans-serif";
+            newH5.style.fontFamily = "IBM Plex Sans";
             newH5.textContent = pregunta;
 
             const newSpan = document.createElement('span');
             newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
-            newSpan.style.fontFamily = "'hedliner', sans-serif";
+            newSpan.style.fontFamily = "hedliner";
             newSpan.textContent = peso;
 
             const newSmall = document.createElement('small');
             newSmall.classList.add('text-muted');
-            newSmall.style.fontFamily = "'hedliner', sans-serif";
+            newSmall.style.fontFamily = "hedliner";
             newSmall.textContent = anexo;
 
             const followQuestionList = document.createElement('ul');
@@ -91,9 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const overlay = document.getElementById('overlay');
                 overlay.innerHTML = `
                     <div id="overlayContent">
-                        <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: 'hedliner', sans-serif;" />
-                        <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: 'hedliner' ">Agregar pregunta</button>
-                        <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: 'hedliner'">Cerrar</button>
+                        <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
+                        <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner ">Agregar pregunta</button>
+                        <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner">Cerrar</button>
                     </div>
                 `;
             
@@ -233,7 +224,6 @@ function CE_DeactivateNavBy(){
     document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('selectedStudyData')).title;
     questions = [];
 
-
     const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId') ;
     axios.get(url)
     .then(response => {
@@ -246,25 +236,25 @@ function CE_DeactivateNavBy(){
             //AGREGAR PREGUNTAS AL LISTADO DE PREGUNTAS
             console.log("pregunta entra 11");
     
-    
             const listGroup = document.querySelector('.list-group');
     
             listGroup.innerHTML = '';
     
             questions.forEach((pregunta, index) => {
                 console.log("pregunta entra");
-                
     
                 const newListItem = document.createElement('div');
                 newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
-                newListItem.style.fontFamily = "'hedliner', sans-serif";
+                newListItem.style.fontFamily = "hedliner";
                 
                 const newDiv = document.createElement('div');
                 newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
     
                 const newH5 = document.createElement('h5');
                 newH5.classList.add('mb-1');
+                newH5.style.fontFamily = "IBM Plex Sans";
                 newH5.textContent = pregunta.question;
+
     
                 const newSpan = document.createElement('span');
                 newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
@@ -323,9 +313,9 @@ function CE_DeactivateNavBy(){
                     const overlay = document.getElementById('overlay');
                     overlay.innerHTML = `
                         <div id="overlayContent">
-                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: 'hedliner', sans-serif;" />
-                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: 'hedliner'">Agregar pregunta</button>
-                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: 'hedliner'" ">Cerrar</button>
+                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
+                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: hedliner">Agregar pregunta</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" ">Cerrar</button>
                         </div>
                     `;
     

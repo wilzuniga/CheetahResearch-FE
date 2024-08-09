@@ -576,7 +576,3 @@ botonImportar.addEventListener('click', () => {
     });
     fileChooser.click();
 });
-
-
-
-

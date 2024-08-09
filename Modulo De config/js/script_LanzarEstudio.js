@@ -53,6 +53,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
 
             const filtroSpan = document.createElement('span');
             filtroSpan.innerText = filtroTxt;
+            filtroSpan.style.fontFamily = 'IBM Plex Sans';
             filtroItem.appendChild(filtroSpan);
 
             const eliminarBtn = document.createElement('button');
@@ -86,6 +87,7 @@ agregarModuloBtn.addEventListener('click', (e) => {
 
         const moduloSpan = document.createElement('span');
         moduloSpan.innerText = moduloTxt;
+        moduloSpan.style.fontFamily = 'IBM Plex Sans';
         moduloItem.appendChild(moduloSpan);
 
         const eliminarBtn = document.createElement('button');
@@ -115,7 +117,7 @@ agregarModuloBtn.addEventListener('click', (e) => {
         copiarIcono.classList.add('fa', 'fa-copy');
         copiarIcono.style.cursor = 'pointer';
         copiarIcono.style.marginLeft = '10px';
-        copiarIcono.style.color = '#eb7e20';
+        copiarIcono.style.color = 'var(--bs-CR-orange-2)';
 
         copiarIcono.addEventListener('click', () => {
             navigator.clipboard.writeText(moduloElement.innerText).then(() => {
