@@ -8,7 +8,7 @@ async function eliminarEstudio(){
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ study: selectedStudy })
+                body: JSON.stringify({ study_id: selectedStudy })
             });
             if (response.ok) {
                 alert('Estudio eliminado con éxito');
