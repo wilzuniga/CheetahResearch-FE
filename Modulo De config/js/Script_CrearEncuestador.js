@@ -223,7 +223,6 @@ function CSrvyr_DeactivateNavBy(){
         enableNavItems();
         console.log('Activando botones');
     }else{
-        disableNavItems();
         console.log('Desactivando botones');
     }
 }
