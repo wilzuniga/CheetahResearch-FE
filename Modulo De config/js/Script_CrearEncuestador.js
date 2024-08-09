@@ -182,9 +182,7 @@ function captureSurveyerFormData() {
 
 window.onload = () => {
     CSrvyr_DeactivateNavBy();
-    appendSurveyerForm();
-
-    
+    appendSurveyerForm();  
 }
 
 
@@ -223,6 +221,7 @@ function CSrvyr_DeactivateNavBy(){
         enableNavItems();
         console.log('Activando botones');
     }else{
+        disableNavItems();
         console.log('Desactivando botones');
     }
 }
