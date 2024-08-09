@@ -19,7 +19,7 @@ function initializePage() {
 }
 
 function AgregarFiltros(study) {
-    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + study;
+    let url = "https://api.cheetah-research.ai/configuration/get_filters/" + study;
 
     axios.get(url)
         .then(function (response) {
@@ -27,6 +27,8 @@ function AgregarFiltros(study) {
             var data = response.data;
             Demographic_Filters = [];
             Demographic_Filters.push('Seleccionar filtro');
+            Demographic_Filters.push('General');
+
             //ciclar la data a partir de la segunda section para ver la estructura del json en la consola
 
                 for(let filter in data['general']){

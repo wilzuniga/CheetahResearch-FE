@@ -72,6 +72,7 @@ function createSurveyerFormReadOnly() {
         `;
 
         document.getElementById('ActualizarEncuestadorBtn').addEventListener('click', (event) => {
+            console.log('Actualizando encuestador');
             event.preventDefault();
             updateSurveyerFormData();
         });
@@ -268,7 +269,7 @@ function enableNavItems() {
 }
 
 function CSrvyr_DeactivateNavBy(){
-    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('selectedStudyData')).title;
+    document.getElementById('nombreProyectoLbl').innerText = localStorage.getItem('tituloDelEstudio');
 
     console.log('Verificando si se activan los botones');
     if(localStorage.getItem('nombreEncuestador') != null){

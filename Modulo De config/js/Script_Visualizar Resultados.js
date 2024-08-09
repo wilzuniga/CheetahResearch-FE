@@ -10,6 +10,7 @@ function AgregarFiltros() {
             var data = response.data;
             Demographic_Filters = [];
             Demographic_Filters.push('Seleccionar filtro');
+            Demographic_Filters.push('General');
             //ciclar la data a partir de la segunda section para ver la estructura del json en la consola
 
             for (var i = 1; i < data.length; i++) {
@@ -343,7 +344,9 @@ function LLenarResumenes(){
 
 // insertar lorem ipsilum en el div coon id ResumenGeneral al cargarlo 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('selectedStudyData')).title;
+    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('tituloDelEstudio'));
+    AgregarFiltros();
+    LLenarResumenes();
 
 });
 

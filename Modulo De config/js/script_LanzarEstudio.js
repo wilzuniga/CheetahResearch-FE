@@ -3,7 +3,7 @@ let modules = [];
 
 
 function load(){    // Actualizar el título del estudio desde localStorage
-    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('selectedStudyData')).title;
+    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('tituloDelEstudio'));
     const datos = localStorage.getItem('selectedStudyData');
     console.log(datos);
     if (datos) {
