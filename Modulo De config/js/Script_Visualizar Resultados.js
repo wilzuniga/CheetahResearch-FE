@@ -12,10 +12,9 @@ function AgregarFiltros() {
             Demographic_Filters.push('Seleccionar filtro');
             //ciclar la data a partir de la segunda section para ver la estructura del json en la consola
 
-                for(let filter in data['general']){
-                    console.log("-" + filter);
-                    Demographic_Filters.push(filter);                        
-                }
+            for (var i = 1; i < data.length; i++) {
+                Demographic_Filters.push(data[i].filter);
+            }
 
 
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');

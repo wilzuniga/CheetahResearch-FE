@@ -7,8 +7,10 @@ document.getElementById('LanzarEstudioBtn').addEventListener('click', (e) => {
         const linkText = `Recolección de Datos`;
         const linkTextAnalisis = `Analisis de Datos`;
         const nuevaULRanalisis = `https://www.cheetah-research.ai/analysis/home?id=${studioID}`;
-        document.getElementById('ModuloDeRecoleccionURL').innerHTML = `<a href="${nuevaURL}">${linkText}</a>`;
-        document.getElementById('ModuloDeAnalisisURL').innerHTML = `<a href="${nuevaULRanalisis}">${linkTextAnalisis}</a>`;
+        
+        // Añadir target="_blank" para abrir en una nueva pestaña
+        document.getElementById('ModuloDeRecoleccionURL').innerHTML = `<a href="${nuevaURL}" target="_blank">${linkText}</a>`;
+        document.getElementById('ModuloDeAnalisisURL').innerHTML = `<a href="${nuevaULRanalisis}" target="_blank">${linkTextAnalisis}</a>`;
 
         let coso = document.getElementById('test_Switch');
 

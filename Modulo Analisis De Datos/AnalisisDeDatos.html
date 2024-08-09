@@ -66,43 +66,42 @@
 
                     <div class="row" style="height: 95vh;">
                         <div class="col-lg-4" style="background: var(--bs-list-group-active-border-color); ">
-                            <div id="BAOColumn" class="d-xxl-flex justify-content-xxl-start align-items-xxl-center list-group" style="background: #000000;border-width: 20px;border-color: #C0601C ;height: 100%;padding-right: 10px;">
-                                <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" id="ResumenGeneralID" href="#ResumenGeneral" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner, sans-serif;font-weight: bold;">Resumen General</a>
-                                <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" id="ResumenIndividualID" href="#ResumenIndividual" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-weight: bold;font-family: 'hedliner', sans-serif;">Resumen Individual</a>
-                                <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" id="UserPersonaID" href="#UserPersona" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: 'hedliner', sans-serif;font-weight: bold;">User Persona</a>
-                                <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" id="AnalisisPsicograficosID" href="#AnalisisPsicograficos" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: 'hedliner', sans-serif;font-weight: bold;">Análisis Psicograficos</a>
+                            <div id="BAOColumn" class="d-xxl-flex justify-content-xxl-start align-items-xxl-center list-group" style="background: var(--bs-CR-black-dark);border-width: 20px;border-color: var(--bs-emphasis-color);height: 100%;padding-right: 10px;"><a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#ResumenGeneral" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner, sans-serif;font-weight: bold;">Resumen General</a><a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#ResumenIndividual" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-weight: bold;font-family: hedliner;">Resumen Individual</a><a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#UserPersona" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">User Persona</a><a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#AnalisisPsicograficos" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">Análisis Psicograficos</a><input type="text" id="PreguntaTXT-1" name="bservaciones Importantes" placeholder="Filtrar por..." style="width: 95%;height: 46px;margin: 10px;border-radius: 2px;border: 3px solid var(--bs-list-group-active-color);font-weight: bold;font-family: hedliner;">
+                                <div style="height: 95%;"></div>
+                                <div class="d-xxl-flex justify-content-xxl-start" style="background: var(--bs-body-bg);margin: 10px;border-radius: 2px;width: initial;padding: initial;"><button class="btn btn-primary" id="botonImportar" type="button" style="margin: 10px;font-weight: bold;font-family: hedliner;width: 50%; border-radius: 2px;">Importar</button><button class="btn btn-primary" type="button" style="margin: 10px;font-weight: bold;font-family: hedliner;width: 50%; border-radius: 2px;">Exportar</button></div>
                             </div>
                         </div>
                         <div class="col" style="overflow-x: hidden;overflow-y: auto;height: calc(95vh - 20px); ">
+    
                             <div class="tab-content">
+    
                                 <div id="ResumenGeneral" class="tab-pane fade" role="tabpanel">
-    
-                                    
-    
+                                    <h3>Resumen General</h3>
+                                    <p>En esta sección se muestra un resumen general de los resultados obtenidos. Puedes seleccionar un estilo de visualización y aplicar filtros para obtener información específica.</p>
                                     <label for="ComboBox_ResumenGeneralTy" style="font-family: hedliner;">Selecciona un estilo:</label>
                                     <select id="ComboBox_ResumenGeneralTy" style="font-family: hedliner;">
-                                        <!-- se agrgan opciones narrative y  facutual-->
+                                        <!-- se agregan opciones narrative y factual-->
                                         <option value="---" style="font-family: hedliner;">---</option>
                                         <option value="narrative" style="font-family: hedliner;">Narrativo</option>
                                         <option value="factual" style="font-family: hedliner;">Factual</option>
                                     </select>     
     
-                                    <label for="ComboBox_ResumenGeneral" style="font-family: hedliner;">    Selecciona un Filtro:</label>
+                                    <label for="ComboBox_ResumenGeneral" style="font-family: hedliner;">Selecciona un Filtro:</label>
                                     <select id="ComboBox_ResumenGeneral" style="font-family: hedliner;">
                                         <!-- Opciones se agregarán dinámicamente aquí -->
                                     </select>     
-                                    
+    
                                     <div id="ResumenGeneralContent">
     
-    
                                     </div>
-    
                                 </div>
-                                <div id="ResumenIndividual" class="tab-pane fade" role="tabpanel">
     
+                                <div id="ResumenIndividual" class="tab-pane fade" role="tabpanel">
+                                    <h3>Resumen Individual</h3>
+                                    <p>En esta sección se muestra un resumen individual por pregunta. Puedes seleccionar un estilo de visualización y aplicar filtros para obtener información específica.</p>
                                     <label for="ComboBox_ResumenIndividualTy" style="font-family: hedliner;">Selecciona un estilo:</label>
                                     <select id="ComboBox_ResumenIndividualTy" style="font-family: hedliner;">
-                                        <!-- se agrgan opciones narrative y  facutual-->
+                                        <!-- se agregan opciones narrative y factual-->
                                         <option value="---">---</option>
                                         <option value="narrative">Narrativo</option>
                                         <option value="percentage">Porcentual</option>
@@ -115,15 +114,12 @@
                                     
                                     <div id="ResumenIndividualContent">
     
-    
                                     </div>
-    
-    
-    
-    
-    
                                 </div>
+    
                                 <div id="UserPersona" class="tab-pane fade" role="tabpanel">
+                                    <h3>User Persona</h3>
+                                    <p>En esta sección se muestra información sobre el perfil del usuario objetivo, conocido como User Persona. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
                                     <label for="Combobox_UserPersona" style="font-family: hedliner;">Selecciona un Filtro:</label>
                                     <select id="Combobox_UserPersona" style="font-family: hedliner;">
                                         <!-- Opciones se agregarán dinámicamente aquí -->
@@ -131,81 +127,95 @@
     
                                     <div id="UserPersonaContent">
     
-    
                                     </div>
-    
-                                    
                                 </div>
+                                
                                 <div id="AnalisisPsicograficos" class="tab-pane fade" role="tabpanel">
-                                    <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group"><a class="list-group-item list-group-item-action" href="#AP_Ekman" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: 'hedliner', sans-serif;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">EKMAN</a><a class="list-group-item list-group-item-action" href="#AP_RasgosDePersonalidad" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: 'hedliner', sans-serif;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Rasgos de Personalidad</a><a class="list-group-item list-group-item-action" href="#AP_SegmentosPsicograficos" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: 'hedliner', sans-serif;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Segmentos Psicograficos</a><a class="list-group-item list-group-item-action" href="#AP_NPS" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: 'hedliner', sans-serif;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">NPS</a><a class="list-group-item list-group-item-action" href="#AP_EstiloDeComunicacion" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: 'hedliner', sans-serif;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Estilo de Comunicacion</a></div>
+                                    <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group"><a class="list-group-item list-group-item-action" href="#AP_Ekman" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">EKMAN</a><a class="list-group-item list-group-item-action" href="#AP_RasgosDePersonalidad" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Rasgos de Personalidad</a><a class="list-group-item list-group-item-action" href="#AP_SegmentosPsicograficos" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Segmentos Psicograficos</a><a class="list-group-item list-group-item-action" href="#AP_NPS" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">NPS</a><a class="list-group-item list-group-item-action" href="#AP_EstiloDeComunicacion" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Estilo de Comunicacion</a></div>
                                     <div class="row">
                                         <div class="col">
                                             <div class="tab-content">
                                                 <div id="AP_Ekman" class="tab-pane fade" role="tabpanel">
+                                                    <h3>Análisis Psicográfico - Ekman</h3>
+                                                    <p>En esta sección se presenta un análisis psicográfico basado en las respuestas escritas, utilizando el modelo de Ekman. Este análisis se desglosa en los siguientes aspectos:</p>
+                                                    <ul>
+                                                        <li><strong>Emociones Básicas:</strong> Se identifican y clasifican las emociones primarias reflejadas en el contenido textual.</li>
+                                                        <li><strong>Referencias a Expresiones Faciales:</strong> Se examinan las menciones o descripciones de expresiones faciales en las respuestas para inferir el estado emocional.</li>
+                                                        <li><strong>Lenguaje Corporal Implícito:</strong> Se interpretan indicios de lenguaje corporal sugeridos por el tono y la elección de palabras en las respuestas.</li>
+                                                        <li><strong>Microexpresiones Textuales:</strong> Se detectan y analizan sutiles indicios emocionales que podrían estar presentes en la redacción, similares a las microexpresiones faciales.</li>
+                                                    </ul>
+    
+    
                                                     <label for="Combobox_EKMAN" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                                        <select id="Combobox_EKMAN" style="font-family: hedliner;">
-                                                            <!-- Opciones se agregarán dinámicamente aquí -->
-                                                        </select>     
+                                                    <select id="Combobox_EKMAN" style="font-family: hedliner;">
+                                                        <!-- Opciones se agregarán dinámicamente aquí -->
+                                                    </select>     
     
-                                                        <div id="EKMANContent">
+                                                    <div id="EKMANContent">
     
-    
-                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div id="AP_RasgosDePersonalidad" class="tab-pane fade" role="tabpanel">
-    
+                                                    <h3>Análisis de Rasgos de Personalidad</h3>
+                                                    <p>En esta sección se lleva a cabo un análisis exhaustivo de los rasgos de personalidad reflejados en las respuestas escritas, identificando y clasificando estos rasgos para obtener una visión más detallada del perfil del usuario objetivo.</p>
+                                                
                                                     <label for="Combobox_RasgosDePersonalidad" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                                        <select id="Combobox_RasgosDePersonalidad" style="font-family: hedliner;">
-                                                            <!-- Opciones se agregarán dinámicamente aquí -->
-                                                        </select>     
-    
-                                                        <div id="RasgosDePersonalidadContent">
-    
-    
-                                                        </div>
-    
+                                                    <select id="Combobox_RasgosDePersonalidad" style="font-family: hedliner;">
+                                                        <!-- Las opciones se agregarán dinámicamente aquí -->
+                                                    </select>     
+                                                
+                                                    <div id="RasgosDePersonalidadContent">
+                                                        <!-- El contenido relacionado con los rasgos de personalidad se mostrará aquí -->
+                                                    </div>
                                                 </div>
+                                                
                                                 <div id="AP_SegmentosPsicograficos" class="tab-pane fade" role="tabpanel">
-                                                        
-                                                        <label for="Combobox_SegmentosPsicograficos" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                                            <select id="Combobox_SegmentosPsicograficos" style="font-family: hedliner;">
-                                                                <!-- Opciones se agregarán dinámicamente aquí -->
-                                                            </select>     
-        
-                                                            <div id="SegmentosPsicograficosContent">
-    
-                                                            </div>
-    
+                                                    <h3>Análisis de Segmentos Psicográficos</h3>
+                                                    <p>En esta sección se realiza un análisis detallado de los segmentos psicográficos a partir de las respuestas escritas, con el objetivo de identificar y clasificar diferentes perfiles de usuarios en función de sus características psicológicas, comportamientos, valores y estilos de vida. Los segmentos incluyen perfiles como usuarios leales, indistintos y críticos.</p>
+                                                    
+                                                    <label for="Combobox_SegmentosPsicograficos" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                    <select id="Combobox_SegmentosPsicograficos" style="font-family: hedliner;">
+                                                        <!-- Las opciones se agregarán dinámicamente aquí -->
+                                                    </select>     
+                                                
+                                                    <div id="SegmentosPsicograficosContent">
+                                                        <!-- El contenido relacionado con los segmentos psicográficos se mostrará aquí -->
+                                                    </div>
                                                 </div>
+                                                
                                                 <div id="AP_NPS" class="tab-pane fade" role="tabpanel">
-    
+                                                    <h3>Análisis de NPS</h3>
+                                                    <p>En esta sección se realiza un análisis del Net Promoter Score (NPS) a partir de las respuestas escritas. El NPS es una métrica utilizada para medir la lealtad de los clientes y su disposición a recomendar un producto o servicio.</p>
+                                                    
                                                     <label for="Combobox_NPS" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                                        <select id="Combobox_NPS" style="font-family: hedliner;">
-                                                            <!-- Opciones se agregarán dinámicamente aquí -->
-                                                        </select>     
-    
-                                                        <div id="NPSContent">
-    
-                                                        </div>
-    
+                                                    <select id="Combobox_NPS" style="font-family: hedliner;">
+                                                        <!-- Opciones se agregarán dinámicamente aquí -->
+                                                    </select>     
+                                                    
+                                                    <div id="NPSContent">
+                                                        <!-- El contenido relacionado con el análisis de NPS se mostrará aquí -->
+                                                    </div>
                                                 </div>
                                                 <div id="AP_EstiloDeComunicacion" class="tab-pane fade" role="tabpanel">
-    
+                                                    <h3>Análisis de Estilos de Comunicación</h3>
+                                                    <p>En esta sección se realiza un análisis de los estilos de comunicación de los encuestados, categorizándolos en Reveladores, Factuales, Informativos y Buscadores de Acción. Estos estilos se determinan en base a cómo los encuestados expresan sus opiniones y preferencias.</p>
+                                                    
                                                     <label for="Combobox_EstiloDeComunicacion" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                                        <select id="Combobox_EstiloDeComunicacion" style="font-family: hedliner;">
-                                                            <!-- Opciones se agregarán dinámicamente aquí -->
-                                                        </select>     
+                                                    <select id="Combobox_EstiloDeComunicacion" style="font-family: hedliner;">
+                                                        <!-- Opciones se agregarán dinámicamente aquí -->
+                                                    </select>     
     
-                                                        <div id="EstiloDeComunicacionContent">
+                                                    <div id="EstiloDeComunicacionContent">
     
-                                                        </div>
-                                                        
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+    
+    
                         </div>
                     </div>
 
