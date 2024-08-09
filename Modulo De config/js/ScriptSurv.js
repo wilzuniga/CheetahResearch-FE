@@ -105,6 +105,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
                 addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
                 addFollowQuestionBTN.style.marginRight = '10px';
+                addFollowQuestionBTN.addEventListener('click', (event) => {
+                    event.preventDefault();  // Prevent the default form submit behavior
+
+                    const overlay = document.getElementById('overlay');
+                    overlay.innerHTML = `
+                        <div id="overlayContent">
+                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
+                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner ">Agregar pregunta</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner">Cerrar</button>
+                        </div>
+                    `;
+
+                    // Mostrar el overlay
+                    overlay.style.display = 'flex';
+
+                    // Añadir evento para cerrar el overlay
+                    document.getElementById('CerrarOverlay').addEventListener('click', () => {
+                        overlay.style.display = 'none'; // Ocultar el overlay
+                    });
+
+                    // Añadir evento para agregar la pregunta de seguimiento
+                    document.getElementById('AgregarPreguntaOverlay').addEventListener('click', () => {
+                        const followUpQuestion = document.getElementById('FollowUpQuestionTXT').value;
+                        if (followUpQuestion) {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = followUpQuestion;
+                            followQuestionList.appendChild(listItem);
+                            document.getElementById('FollowUpQuestionTXT').value = ''; // Limpiar el campo de texto
+                            overlay.style.display = 'none'; // Ocultar el overlay
+                        } else {
+                            alert('Por favor, ingresa una pregunta de seguimiento.');
+                        }
+                    });
+                });
                 buttonsDiv.appendChild(addFollowQuestionBTN);
 
                 newDiv.appendChild(newH5);
@@ -113,18 +147,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 newListItem.appendChild(followQuestionList);
                 newListItem.appendChild(newSmall);
                 newListItem.appendChild(buttonsDiv);
-                
+
                 listGroup.appendChild(newListItem);
 
                 // Añadir la pregunta al array
-                if(anexoPregunta.files.length > 0){
+                if (anexoPregunta.files.length > 0) {
                     const file = anexoPregunta.files[0];
                     questions.push({ question: pregunta, weight: peso });
-                    questionsImg.push({index: questions.length - 1 , file: file});
+                    questionsImg.push({ index: questions.length - 1, file: file });
                 } else {
-                    if(anexoPreguntaURL.value != ''){
+                    if (anexoPreguntaURL.value != '') {
                         questions.push({ question: pregunta, weight: peso, url: anexo });
-                    }else{
+                    } else {
                         questions.push({ question: pregunta, weight: peso });
                     }
                 }
@@ -140,6 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+
 
 
 

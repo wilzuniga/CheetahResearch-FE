@@ -37,6 +37,8 @@ function load(){    // Actualizar el título del estudio desde localStorage
             console.error('Error al enviar los datos:', error);
         });
 
+    AgregarFiltros();
+    AgregarModulos();
     // Manejar el evento del botón de agregar filtro
     const agregarFiltroBtn = document.getElementById('AgregarFiltroBTN');
     const filtrosLST = document.getElementById('FiltrosLST');
@@ -74,6 +76,76 @@ function load(){    // Actualizar el título del estudio desde localStorage
     const agregarModuloBtn = document.getElementById('AgregarModuloBTN');
 const modulosLST = document.getElementById('ModulesLST');
 const comboboxModules = document.getElementById('Combobox_Modules');
+
+function AgregarFiltros() {
+    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + localStorage.getItem('selectedStudyId');
+    axios.get(url)
+        .then(response => {
+            console.log(response.data);
+            const data = response.data;
+            data.forEach(filtro => {
+                filtros.push(filtro);
+                const filtroItem = document.createElement('li');
+                filtroItem.classList.add('list-group-item');
+                filtroItem.style.display = 'flex';
+                filtroItem.style.justifyContent = 'space-between';
+                filtroItem.style.alignItems = 'center';
+
+                const filtroSpan = document.createElement('span');
+                filtroSpan.innerText = filtro;
+                filtroSpan.style.fontFamily = 'IBM Plex Sans';
+                filtroItem.appendChild(filtroSpan);
+
+                const eliminarBtn = document.createElement('button');
+                eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+                eliminarBtn.innerText = 'Eliminar';
+                eliminarBtn.addEventListener('click', () => {
+                    filtroItem.remove();
+                });
+                filtroItem.appendChild(eliminarBtn);
+
+                filtrosLST.appendChild(filtroItem);
+            });
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        });
+}
+
+function AgregarModulos() {
+    const url = "https://api.cheetah-research.ai/configuration/get_modules/" + localStorage.getItem('selectedStudyId');
+    axios.get(url)
+        .then(response => {
+            console.log(response.data);
+            const data = response.data;
+            data.forEach(modulo => {
+                modules.push(modulo);
+                const moduloItem = document.createElement('li');
+                moduloItem.classList.add('list-group-item');
+                moduloItem.style.display = 'flex';
+                moduloItem.style.justifyContent = 'space-between';
+                moduloItem.style.alignItems = 'center';
+
+                const moduloSpan = document.createElement('span');
+                moduloSpan.innerText = modulo;
+                moduloSpan.style.fontFamily = 'IBM Plex Sans';
+                moduloItem.appendChild(moduloSpan);
+
+                const eliminarBtn = document.createElement('button');
+                eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+                eliminarBtn.innerText = 'Eliminar';
+                eliminarBtn.addEventListener('click', () => {
+                    moduloItem.remove();
+                });
+                moduloItem.appendChild(eliminarBtn);
+
+                modulosLST.appendChild(moduloItem);
+            });
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        });
+}
 
 agregarModuloBtn.addEventListener('click', (e) => {
     e.preventDefault();

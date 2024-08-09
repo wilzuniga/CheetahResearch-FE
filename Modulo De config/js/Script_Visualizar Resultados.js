@@ -2,7 +2,7 @@ let Demographic_Filters = [];
 let ResumenGeneral, ResumenIndividual, AnalisisPsicograficos;
 
 function AgregarFiltros() {
-    const url = "https://api.cheetah-research.ai/configuration/filters/" + localStorage.getItem('selectedStudyId');
+    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + localStorage.getItem('selectedStudyId');
 
     axios.get(url)
         .then(function (response) {

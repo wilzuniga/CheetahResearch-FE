@@ -19,7 +19,7 @@ function initializePage() {
 }
 
 function AgregarFiltros(study) {
-    const url = "https://api.cheetah-research.ai/configuration/filters/" + study;
+    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + study;
 
     axios.get(url)
         .then(function (response) {
@@ -73,7 +73,7 @@ function AgregarFiltros(study) {
         //ciclar a travez de los modules activos y hacer un if para verificar si tiene adentro alguno de los modulos en este arreglo ["general, "individual_questions", "psicographic_questions" , "user_personas"]
         //si tiene alguno de estos modulos activos, display el boton con el nombre del modulo 
         //si no tiene ninguno de estos modulos activos, no display el boton
-        url = "https://api.cheetah-research.ai/configuration/modules/" + study;
+        url = "https://api.cheetah-research.ai/configuration/get_modules/" + study;
         axios.get(url)
         .then(function (response) {
             var data = response.data;
