@@ -264,7 +264,7 @@ function enableNavItems() {
 }
 
 function CE_DeactivateNavBy(){
-    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('selectedStudyData')).title;
+    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('tituloDelEstudio'));
     questions = [];
 
     const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId') ;
@@ -278,42 +278,42 @@ function CE_DeactivateNavBy(){
         if(questions.length > 0){
             //AGREGAR PREGUNTAS AL LISTADO DE PREGUNTAS
             console.log("pregunta entra 11");
-    
+
             const listGroup = document.querySelector('.list-group');
-    
+
             listGroup.innerHTML = '';
-    
+
             questions.forEach((pregunta, index) => {
                 console.log("pregunta entra");
-    
+
                 const newListItem = document.createElement('div');
                 newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
                 newListItem.style.fontFamily = "hedliner";
                 
                 const newDiv = document.createElement('div');
                 newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
-    
+
                 const newH5 = document.createElement('h5');
                 newH5.classList.add('mb-1');
                 newH5.style.fontFamily = "IBM Plex Sans";
                 newH5.textContent = pregunta.question;
 
-    
+
                 const newSpan = document.createElement('span');
                 newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
                 newSpan.textContent = pregunta.weight;
-    
+
                 const newSmall = document.createElement('small');
                 newSmall.classList.add('text-muted');
                 newSmall.textContent = pregunta.url;
-    
+
                 const followQuestionList = document.createElement('ul');
                 followQuestionList.style.color = '#000000';
                 followQuestionList.id = 'FollowQuestionList';
-    
+
                 const buttonsDiv = document.createElement('div');
                 buttonsDiv.style.marginTop = '10px';
-    
+
                 const eliminarBtn = document.createElement('button');
                 eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
                 eliminarBtn.innerText = 'Eliminar';
@@ -322,20 +322,26 @@ function CE_DeactivateNavBy(){
                     newListItem.remove();
                 });
                 buttonsDiv.appendChild(eliminarBtn);
-    
+
                 const addFollowQuestionBTN = document.createElement('button');
                 addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
                 addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
                 addFollowQuestionBTN.style.marginRight = '10px';
                 buttonsDiv.appendChild(addFollowQuestionBTN);
-    
+
+                const editQuestionBTN = document.createElement('button');
+                editQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
+                editQuestionBTN.innerText = 'Editar pregunta';
+                editQuestionBTN.style.marginRight = '10px';
+                buttonsDiv.appendChild(editQuestionBTN);
+
                 newDiv.appendChild(newH5);
                 newDiv.appendChild(newSpan);
                 newListItem.appendChild(newDiv);
                 newListItem.appendChild(followQuestionList);
                 newListItem.appendChild(newSmall);
                 newListItem.appendChild(buttonsDiv);
-    
+
                 listGroup.appendChild(newListItem);
 
                 if(pregunta.feedback_questions != null){
@@ -346,13 +352,13 @@ function CE_DeactivateNavBy(){
                         listItem.textContent = followUpQuestion;
                         followQuestionList.appendChild(listItem);
                     });
-        
+
                 }
-    
+
                 addFollowQuestionBTN.addEventListener('click', (event) => {
-    
+
                     event.preventDefault();  // Prevent the default form submit behavior
-    
+
                     const overlay = document.getElementById('overlay');
                     overlay.innerHTML = `
                         <div id="overlayContent">
@@ -361,15 +367,15 @@ function CE_DeactivateNavBy(){
                             <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" ">Cerrar</button>
                         </div>
                     `;
-    
+
                     // Mostrar el overlay
                     overlay.style.display = 'flex';
-    
+
                     // Añadir evento para cerrar el overlay
                     document.getElementById('CerrarOverlay').addEventListener('click', () => {
                         overlay.style.display = 'none'; // Ocultar el overlay
                     });
-    
+
                     // Añadir evento para agregar la pregunta de seguimiento
                     document.getElementById('AgregarPreguntaOverlay').addEventListener('click', () => {
                         const followUpQuestion = document.getElementById('FollowUpQuestionTXT').value;
@@ -385,7 +391,40 @@ function CE_DeactivateNavBy(){
                     });
                 }
                 );
-    
+
+                editQuestionBTN.addEventListener('click', (event) => {
+                    event.preventDefault();  // Prevent the default form submit behavior
+
+                    const overlay = document.getElementById('overlay');
+                    overlay.innerHTML = `
+                        <div id="overlayContent">
+                            <input id="EditQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%; font-family: hedliner;" />
+                            <button id="EditarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: hedliner">Editar pregunta</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" ">Cerrar</button>
+                        </div>
+                    `;
+
+                    // Mostrar el overlay
+                    overlay.style.display = 'flex';
+
+                    // Añadir evento para cerrar el overlay
+                    document.getElementById('CerrarOverlay').addEventListener('click', () => {
+                        overlay.style.display = 'none'; // Ocultar el overlay
+                    });
+
+                    // Añadir evento para editar la pregunta
+                    document.getElementById('EditarPreguntaOverlay').addEventListener('click', () => {
+                        const editedQuestion = document.getElementById('EditQuestionTXT').value;
+                        if (editedQuestion) {
+                            newH5.textContent = editedQuestion;
+                            document.getElementById('EditQuestionTXT').value = ''; // Limpiar el campo de texto
+                            overlay.style.display = 'none'; // Ocultar el overlay
+                        } else {
+                            alert('Por favor, ingresa una pregunta.');
+                        }
+                    });
+                });
+
             });
             console.log('Preguntas guardadas');
             enableNavItems();
@@ -398,11 +437,6 @@ function CE_DeactivateNavBy(){
     .catch(error => {
         console.error('Error al obtener los datos:', error);
     });
-
-
-
-
-    
 }
 
 document.getElementById('GuardarEncuestaBtn').addEventListener('click', (event) => {
