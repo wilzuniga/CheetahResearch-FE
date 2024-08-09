@@ -4,6 +4,14 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) */
 
 :root, [data-bs-theme=light] {
+  --bs-CR-orange: #C0601C;
+  --bs-CR-orange-2: #eb7e20;
+  --bs-CR-black: #1d1d1d;
+  --bs-CR-black-dark: #000000;
+  --bs-CR-gray: #404040;
+  --bs-CR-gray-dark: #242424;
+  --bs-CR-white: #e0e0e0;
+  
   --bs-blue: #4e73df;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
