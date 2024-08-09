@@ -230,6 +230,7 @@ function enableNavItems() {
 }
 
 function CE_DeactivateNavBy(){
+    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('selectedStudyData')).title;
     questions = [];
 
 

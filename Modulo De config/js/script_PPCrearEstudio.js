@@ -34,6 +34,7 @@ function enableNavItems() {
 }
 
 function CE_DeactivateNavBy(){
+    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('selectedStudyData')).title;
     console.log('Verificando si se activan los botones');
     if(localStorage.getItem('selectedStudyId') != null){
         console.log('Study id:', localStorage.getItem('selectedStudyId'));
