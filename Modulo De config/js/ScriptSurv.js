@@ -109,13 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     event.preventDefault();  // Prevent the default form submit behavior
 
                     const overlay = document.getElementById('overlay');
-                    overlay.innerHTML = 
+                    overlay.innerHTML = `
                         <div id="overlayContent">
                             <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
                             <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner ">Agregar pregunta</button>
                             <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner">Cerrar</button>
                         </div>
-                    ;
+                    `;
 
                     // Mostrar el overlay
                     overlay.style.display = 'flex';
