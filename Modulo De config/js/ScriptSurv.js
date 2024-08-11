@@ -258,7 +258,6 @@ function CE_DeactivateNavBy() {
     // Definir los elementos aquí
     const preguntaTXT = document.getElementById('PreguntaTXT');
     const pesoTXT = document.getElementById('PesoTXT');
-    const anexoPregunta = document.getElementById('AnexoPregunta');
     const anexoPreguntaURL = document.getElementById('AnexoPreguntaURL');
     const agregarPreguntaBtn = document.getElementById('AgregarPreguntaBtn');
     const listGroup = document.querySelector('.list-group');
@@ -307,6 +306,7 @@ function CE_DeactivateNavBy() {
                 const buttonsDiv = document.createElement('div');
                 buttonsDiv.style.marginTop = '10px';
 
+                // Botón de eliminar
                 const eliminarBtn = document.createElement('button');
                 eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
                 eliminarBtn.innerText = 'Eliminar';
@@ -316,12 +316,14 @@ function CE_DeactivateNavBy() {
                 });
                 buttonsDiv.appendChild(eliminarBtn);
 
+                // Botón de agregar pregunta de seguimiento
                 const addFollowQuestionBTN = document.createElement('button');
                 addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
                 addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
                 addFollowQuestionBTN.style.marginRight = '10px';
                 buttonsDiv.appendChild(addFollowQuestionBTN);
 
+                // Botón de editar pregunta
                 const editQuestionBTN = document.createElement('button');
                 editQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
                 editQuestionBTN.innerText = 'Editar pregunta';
@@ -355,6 +357,7 @@ function CE_DeactivateNavBy() {
                     });
                 }
 
+                // Lógica para agregar preguntas de seguimiento
                 addFollowQuestionBTN.addEventListener('click', (event) => {
                     event.preventDefault();  // Prevent the default form submit behavior
 
@@ -398,6 +401,7 @@ function CE_DeactivateNavBy() {
         console.error('Error al obtener los datos:', error);
     });
 }
+
 
 
 document.getElementById('GuardarEncuestaBtn').addEventListener('click', (event) => {
