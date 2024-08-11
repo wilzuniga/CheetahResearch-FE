@@ -309,6 +309,22 @@ function CE_DeactivateNavBy() {
                 });
                 buttonsDiv.appendChild(eliminarBtn);
 
+                const editarBtn = document.createElement('button');
+                editarBtn.classList.add('btn', 'btn-warning', 'btn-sm');
+                editarBtn.innerText = 'Editar';
+                editarBtn.style.marginRight = '10px';
+                editarBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    preguntaTXT.value = pregunta;
+                    pesoTXT.value = peso;
+                    anexoPreguntaURL.value = anexo;
+
+                    agregarPreguntaBtn.innerText = 'Actualizar pregunta';
+                    isEditing = true;
+                    currentListItem = newListItem;
+                });
+                buttonsDiv.appendChild(editarBtn);
+                
                 // Botón de agregar pregunta de seguimiento
                 const addFollowQuestionBTN = document.createElement('button');
                 addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
@@ -346,23 +362,6 @@ function CE_DeactivateNavBy() {
                     });
                 });
                 buttonsDiv.appendChild(addFollowQuestionBTN);
-
-                // Botón de editar pregunta
-                const editQuestionBTN = document.createElement('button');
-                editQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
-                editQuestionBTN.innerText = 'Editar pregunta';
-                editQuestionBTN.style.marginRight = '10px';
-                editQuestionBTN.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    preguntaTXT.value = pregunta.question;
-                    pesoTXT.value = pregunta.weight;
-                    anexoPreguntaURL.value = pregunta.url;
-
-                    agregarPreguntaBtn.innerText = 'Actualizar pregunta';
-                    isEditing = true;
-                    currentListItem = newListItem;
-                });
-                buttonsDiv.appendChild(editQuestionBTN);
 
                 newDiv.appendChild(newH5);
                 newDiv.appendChild(newSpan);
