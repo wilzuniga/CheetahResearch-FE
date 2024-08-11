@@ -122,25 +122,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function guardarPreguntas() {
+    //agarrar las preguntas del listado para ver si tienen preguntas de seguimiento y guardarlas en el array de preguntas en la pregunta correspondiente siendo que existen la misma cantidad en las dos cosas. 
+
     const listGroup = document.querySelector('.list-group');    
     const listItems = listGroup.querySelectorAll('.list-group-item');
 
     listItems.forEach((listItem, index) => {
-        const followQuestionList = listItem.querySelector(`#FollowQuestionList_${index}`);
+        const followQuestionList = listItem.querySelector('#FollowQuestionList');
         const followQuestions = followQuestionList.querySelectorAll('li');
+        if(followQuestions.length === 0){
 
-        const pregunta = questions[index];
-        pregunta.feedback_questions = [];
+        }else{
+            const pregunta = questions[index];
+            pregunta.feedback_questions = [];
 
-        followQuestions.forEach((followQuestion) => {
-            pregunta.feedback_questions.push(followQuestion.textContent);
-        });
-    });
+            followQuestions.forEach((followQuestion) => {
+                pregunta.feedback_questions.push(followQuestion.textContent);
+            });
+        }
+    }
+    );
 
-    enviarDatos(pregunta);
-    console.log(pregunta);
+    enviarDatos(questions);
+    console.log(questions);
     questions = [];
-    questionsImg = [];
+    questionsImg = [];;
 }
 
 
@@ -197,7 +203,6 @@ function CE_DeactivateNavBy() {
     const listGroup = document.querySelector('.list-group');
 
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
-    let questions = [];
 
     const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId');
     axios.get(url)
