@@ -198,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
 function guardarPreguntas() {
     //agarrar las preguntas del listado para ver si tienen preguntas de seguimiento y guardarlas en el array de preguntas en la pregunta correspondiente siendo que existen la misma cantidad en las dos cosas. 
 
