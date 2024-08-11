@@ -119,14 +119,6 @@ function createFilledStudyForm() {
             ${promptDelEstudio}
             ${submitButton}
         </form>`;
-
-    //actualizar el selectedStudyData con los datos del estudio actualizado
-    selectedStudyData.tituloDelEstudio = document.getElementById('TituloDelEstudioTXT').value;
-    selectedStudyData.mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
-    selectedStudyData.objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
-    selectedStudyData.Resumen = document.getElementById('PromptGeneralTXT').value;
-    //guardar en local storage
-    localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
     
     return title + form;
 
