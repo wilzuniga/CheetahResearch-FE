@@ -78,7 +78,7 @@ function createSurveyerFormReadOnly() {
         document.getElementById('ActualizarEncuestadorBtn').addEventListener('click', (event) => {
             console.log('Actualizando encuestador');
             event.preventDefault();
-            updateSurveyerFormData();
+            updateSurveyerFormData(data);
         });
     })
     .catch(error => {
@@ -90,8 +90,9 @@ function createSurveyerFormReadOnly() {
     return formContainer;
 }
 
-function updateSurveyerFormData() {
-    const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
+function updateSurveyerFormData(data) {
+    
+    const nombreEncuestador = data.interviewerProfilePicture;
     const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
     const saludoEncuestador = document.getElementById('SaludoEncuestadorTXT').value;
     const fileInput = document.querySelector('input[type="file"]');
