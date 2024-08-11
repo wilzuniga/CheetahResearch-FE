@@ -99,7 +99,7 @@ function createFilledStudyForm() {
         Resumen: studyData.prompt,
     };
 
-    document.getElementById('nombreProyectoLbl').innerText = tituloDelEstudio;
+    document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
 
     const title = '<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: \'hedliner\', sans-serif;">Resumen del Estudio</h2>';
 
