@@ -59,7 +59,11 @@ function createSurveyerFormReadOnly() {
                         </div>
                         <div class="mb-3">
                             <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Tono Encuestador</p>
-                            <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" placeholder="Ingresa el tono en el cual hablará el encuestador" value="${data.interviewerTone}">
+                            <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" placeholder="Ingresa el tono en el cual hablará el encuestador" value="${data.interviewerTone}" style="font-family: 'IBM Plex Sans'">
+                        </div>
+                        <div class="mb-3">
+                            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Observaciones importantes</p>
+                            <input class="form-control" type="text" id="ObservacionesImportantesTXT" name="Observaciones Importantes" placeholder="Observaciones importantes al Encuestador" value="${data.importantObservation}" style="font-family: 'IBM Plex Sans'">
                         </div>
                         <div class="mb-3">
                             <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Saludo</p>
