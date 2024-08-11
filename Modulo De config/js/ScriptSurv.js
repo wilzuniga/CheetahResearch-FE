@@ -264,7 +264,15 @@ function enableNavItems() {
 }
 
 function CE_DeactivateNavBy(){
-    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('tituloDelEstudio'));
+    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    const selectedStudyData = {
+        tituloDelEstudio: studyData.title,
+        mercadoObjetivo: studyData.marketTarget,
+        objetivosDelEstudio: studyData.studyObjectives,
+        Resumen: studyData.prompt,
+    };
+
+    document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
     questions = [];
 
     const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId') ;

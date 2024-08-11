@@ -344,7 +344,15 @@ function LLenarResumenes(){
 
 // insertar lorem ipsilum en el div coon id ResumenGeneral al cargarlo 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('tituloDelEstudio'));
+    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    const selectedStudyData = {
+        tituloDelEstudio: studyData.title,
+        mercadoObjetivo: studyData.marketTarget,
+        objetivosDelEstudio: studyData.studyObjectives,
+        Resumen: studyData.prompt,
+    };
+
+    document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
     AgregarFiltros();
     LLenarResumenes();
 

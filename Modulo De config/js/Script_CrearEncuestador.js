@@ -269,8 +269,17 @@ function enableNavItems() {
 }
 
 function CSrvyr_DeactivateNavBy(){
-    document.getElementById('nombreProyectoLbl').innerText = localStorage.getItem('tituloDelEstudio');
+    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    const selectedStudyData = {
+        tituloDelEstudio: studyData.title,
+        mercadoObjetivo: studyData.marketTarget,
+        objetivosDelEstudio: studyData.studyObjectives,
+        Resumen: studyData.prompt,
+    };
 
+    document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
+
+    
     console.log('Verificando si se activan los botones');
     if(localStorage.getItem('nombreEncuestador') != null){
         enableNavItems();

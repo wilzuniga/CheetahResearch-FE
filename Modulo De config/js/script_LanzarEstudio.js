@@ -3,7 +3,15 @@ let modules = [];
 
 
 function load(){    // Actualizar el título del estudio desde localStorage
-    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('tituloDelEstudio'));
+    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    const selectedStudyData = {
+        tituloDelEstudio: studyData.title,
+        mercadoObjetivo: studyData.marketTarget,
+        objetivosDelEstudio: studyData.studyObjectives,
+        Resumen: studyData.prompt,
+    };
+
+    document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
     const datos = localStorage.getItem('selectedStudyData');
     console.log(datos);
     if (datos) {
