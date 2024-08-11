@@ -278,7 +278,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }else{
             const formContainer = document.getElementById('form-containerStudy');
             formContainer.innerHTML = createFilledStudyForm();       
-
             appendFilledStudyForm();  
         }
     }else if(window.location.href.includes('home')){

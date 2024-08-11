@@ -22,7 +22,6 @@ function contenido(study) {
     axios.post(url, formData)
         .then(function (response) {
             var data = response.data;
-            ResumenIndividual = data;
             const coso = marked(data);      
             div.innerHTML = coso;                      
 
