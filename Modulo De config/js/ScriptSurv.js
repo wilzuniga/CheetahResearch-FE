@@ -128,7 +128,7 @@ function guardarPreguntas() {
     const listItems = listGroup.querySelectorAll('.list-group-item');
 
     listItems.forEach((listItem, index) => {
-        const followQuestionList = listItem.querySelector('#FollowQuestionList');
+        const followQuestionList = listItem.querySelector(`#FollowQuestionList_${index}`);
         const followQuestions = followQuestionList.querySelectorAll('li');
         if(followQuestions.length === 0){
 
