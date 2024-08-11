@@ -12,22 +12,29 @@ function initializePage() {
 }
 
 function contenido(study) {
-    var contenedor = document.getElementById("contentCard_PaginaOverview");
+    var div = document.getElementById("contentCard_PaginaOverview");
 
-    const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study; 
-
-    axios.get(url)
+    formData = new FormData();
+    formData.append('filter', 'General');
+    formData.append('module', 'general');
+    formData.append('sub_module', 'narrative');
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+    axios.post(url, formData)
         .then(function (response) {
-    
             var data = response.data;
-            ResumenGeneral = data['general']['narrative']['General'];
+            ResumenIndividual = data;
+            const coso = marked(data);      
+            div.innerHTML = coso;                      
 
-            coso = marked(ResumenGeneral);
-            contenedor.innerHTML = coso;
-
+            console.log(data);
+        })
+        .catch(function (error) {
+            div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+            console.log(error);
+        })
+        .then(function () {
+            // always executed
         });
-
-
 }
 
 
