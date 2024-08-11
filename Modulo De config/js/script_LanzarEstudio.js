@@ -10,8 +10,8 @@ function load(){    // Actualizar el título del estudio desde localStorage
         objetivosDelEstudio: studyData.studyObjectives,
         Resumen: studyData.prompt,
     };
-
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
+    
     const datos = localStorage.getItem('selectedStudyData');
     console.log(datos);
     if (datos) {
