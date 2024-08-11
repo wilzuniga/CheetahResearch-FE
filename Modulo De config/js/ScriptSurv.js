@@ -168,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     questions[index].url = anexo;
                 }
 
+                // Reiniciar el estado de edición
                 agregarPreguntaBtn.innerText = 'Agregar pregunta';
                 isEditing = false;
                 currentListItem = null;
@@ -186,15 +187,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // Reiniciar campos de entrada después de agregar o actualizar
             preguntaTXT.value = '';
             pesoTXT.value = '';
             anexoPreguntaURL.value = '';
             anexoPregunta.value = '';
+
+            // Reiniciar estado de edición
+            isEditing = false;
+            currentListItem = null;
         } else {
             alert('Por favor, ingresa tanto la pregunta como el peso.');
         }
     });
 });
+
 
 
 
