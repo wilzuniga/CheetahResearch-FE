@@ -122,31 +122,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function guardarPreguntas() {
-    //agarrar las preguntas del listado para ver si tienen preguntas de seguimiento y guardarlas en el array de preguntas en la pregunta correspondiente siendo que existen la misma cantidad en las dos cosas. 
-
     const listGroup = document.querySelector('.list-group');    
     const listItems = listGroup.querySelectorAll('.list-group-item');
 
     listItems.forEach((listItem, index) => {
         const followQuestionList = listItem.querySelector(`#FollowQuestionList_${index}`);
         const followQuestions = followQuestionList.querySelectorAll('li');
-        if(followQuestions.length === 0){
 
-        }else{
-            const pregunta = questions[index];
-            pregunta.feedback_questions = [];
+        const pregunta = questions[index];
+        pregunta.feedback_questions = [];
 
-            followQuestions.forEach((followQuestion) => {
-                pregunta.feedback_questions.push(followQuestion.textContent);
-            });
-        }
-    }
-    );
+        followQuestions.forEach((followQuestion) => {
+            pregunta.feedback_questions.push(followQuestion.textContent);
+        });
+    });
 
-    enviarDatos(questions);
-    console.log(questions);
+    enviarDatos(pregunta);
+    console.log(pregunta);
     questions = [];
-    questionsImg = [];;
+    questionsImg = [];
 }
 
 
