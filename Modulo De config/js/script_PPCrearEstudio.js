@@ -2,35 +2,11 @@
 
 
 function disableNavItems() {
-    const navItems = [
-        'CreacionDeEncuestadorLNK',
-        'CreacionDeEncuestaLNK',
-        'LanzarEncuestaLNK',
-        'InformacionDeEstudioLNK',
-        'VisualizacionDeResultadosLNK'
-        ];
 
-    navItems.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.classList.add('disabled');
-        }
-    });
 }
 
 function enableNavItems() {
-    const navItems = [
-        'CreacionDeEncuestadorLNK',
-        'InformacionDeEstudioLNK',
-        ];
 
-    navItems.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.classList.remove('disabled');
-            element.classList.add('enabled');
-        }
-    });
 }
 
 function CE_DeactivateNavBy(){
@@ -144,6 +120,14 @@ function createFilledStudyForm() {
             ${submitButton}
         </form>`;
 
+    //actualizar el selectedStudyData con los datos del estudio actualizado
+    selectedStudyData.tituloDelEstudio = document.getElementById('TituloDelEstudioTXT').value;
+    selectedStudyData.mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
+    selectedStudyData.objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
+    selectedStudyData.Resumen = document.getElementById('PromptGeneralTXT').value;
+    //guardar en local storage
+    localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
+    
     return title + form;
 
 

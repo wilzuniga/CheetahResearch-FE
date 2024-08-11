@@ -240,32 +240,11 @@ window.onload = () => {
 
 
 function disableNavItems() {
-    const navItems = [
-        'CreacionDeEncuestaLNK',
-        'LanzarEncuestaLNK',
-        'VisualizacionDeResultadosLNK',
-        ];
 
-    navItems.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.classList.add('disabled');
-        }
-    });
 }
 
 function enableNavItems() {
-    const navItems = [
-        'CreacionDeEncuestaLNK',
-        ];
 
-    navItems.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.classList.remove('disabled');
-            element.classList.add('enabled');
-        }
-    });
 }
 
 function CSrvyr_DeactivateNavBy(){
