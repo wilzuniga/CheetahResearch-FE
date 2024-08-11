@@ -177,11 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
-
-
-
-
 function guardarPreguntas() {
     //agarrar las preguntas del listado para ver si tienen preguntas de seguimiento y guardarlas en el array de preguntas en la pregunta correspondiente siendo que existen la misma cantidad en las dos cosas. 
 
@@ -272,13 +267,9 @@ function CE_DeactivateNavBy() {
         questions = response.data.questions;
 
         if (questions.length > 0) {
-            console.log("pregunta entra 11");
-
             listGroup.innerHTML = '';
 
             questions.forEach((pregunta, index) => {
-                console.log("pregunta entra");
-
                 const newListItem = document.createElement('div');
                 newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
                 newListItem.style.fontFamily = "hedliner";
@@ -301,7 +292,7 @@ function CE_DeactivateNavBy() {
 
                 const followQuestionList = document.createElement('ul');
                 followQuestionList.style.color = '#000000';
-                followQuestionList.id = 'FollowQuestionList';
+                followQuestionList.id = `FollowQuestionList_${index}`;
 
                 const buttonsDiv = document.createElement('div');
                 buttonsDiv.style.marginTop = '10px';
@@ -313,6 +304,8 @@ function CE_DeactivateNavBy() {
                 eliminarBtn.style.marginRight = '10px';
                 eliminarBtn.addEventListener('click', () => {
                     newListItem.remove();
+                    // Eliminar la pregunta del array
+                    questions.splice(index, 1);
                 });
                 buttonsDiv.appendChild(eliminarBtn);
 
@@ -321,6 +314,37 @@ function CE_DeactivateNavBy() {
                 addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
                 addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
                 addFollowQuestionBTN.style.marginRight = '10px';
+                addFollowQuestionBTN.addEventListener('click', (event) => {
+                    event.preventDefault();
+
+                    const overlay = document.getElementById('overlay');
+                    overlay.innerHTML = `
+                        <div id="overlayContent">
+                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
+                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: hedliner">Agregar pregunta</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0; font-family: hedliner">Cerrar</button>
+                        </div>
+                    `;
+
+                    overlay.style.display = 'flex';
+
+                    document.getElementById('CerrarOverlay').addEventListener('click', () => {
+                        overlay.style.display = 'none';
+                    });
+
+                    document.getElementById('AgregarPreguntaOverlay').addEventListener('click', () => {
+                        const followUpQuestion = document.getElementById('FollowUpQuestionTXT').value;
+                        if (followUpQuestion) {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = followUpQuestion;
+                            followQuestionList.appendChild(listItem);
+                            document.getElementById('FollowUpQuestionTXT').value = '';
+                            overlay.style.display = 'none';
+                        } else {
+                            alert('Por favor, ingresa una pregunta de seguimiento.');
+                        }
+                    });
+                });
                 buttonsDiv.appendChild(addFollowQuestionBTN);
 
                 // Botón de editar pregunta
@@ -356,39 +380,6 @@ function CE_DeactivateNavBy() {
                         followQuestionList.appendChild(listItem);
                     });
                 }
-
-                // Lógica para agregar preguntas de seguimiento
-                addFollowQuestionBTN.addEventListener('click', (event) => {
-                    event.preventDefault();  // Prevent the default form submit behavior
-
-                    const overlay = document.getElementById('overlay');
-                    overlay.innerHTML = `
-                        <div id="overlayContent">
-                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
-                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: hedliner">Agregar pregunta</button>
-                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0; font-family: hedliner">Cerrar</button>
-                        </div>
-                    `;
-
-                    overlay.style.display = 'flex';
-
-                    document.getElementById('CerrarOverlay').addEventListener('click', () => {
-                        overlay.style.display = 'none'; // Ocultar el overlay
-                    });
-
-                    document.getElementById('AgregarPreguntaOverlay').addEventListener('click', () => {
-                        const followUpQuestion = document.getElementById('FollowUpQuestionTXT').value;
-                        if (followUpQuestion) {
-                            const listItem = document.createElement('li');
-                            listItem.textContent = followUpQuestion;
-                            followQuestionList.appendChild(listItem);
-                            document.getElementById('FollowUpQuestionTXT').value = ''; // Limpiar el campo de texto
-                            overlay.style.display = 'none'; // Ocultar el overlay
-                        } else {
-                            alert('Por favor, ingresa una pregunta de seguimiento.');
-                        }
-                    });
-                });
             });
             console.log('Preguntas guardadas');
             enableNavItems();
@@ -401,6 +392,7 @@ function CE_DeactivateNavBy() {
         console.error('Error al obtener los datos:', error);
     });
 }
+
 
 
 
