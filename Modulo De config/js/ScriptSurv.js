@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const peso = pesoTXT.value;
         const anexo = anexoPregunta.files.length > 0 ? anexoPregunta.files[0].name : anexoPreguntaURL.value;
 
+        
         if (pregunta && peso) {
             if (isEditing && currentListItem) {
                 // Actualizar la pregunta existente en la interfaz
@@ -236,34 +237,13 @@ function enviarDatos(preguntas) {
 
 
 function disableNavItems() {
-    const navItems = [
-        'LanzarEncuestaLNK',
-        'VisualizacionDeResultadosLNK'
-        ];
 
-    navItems.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.classList.add('disabled');
-        }
-    });
 }
 
 function enableNavItems() {
-    const navItems = [
-        'LanzarEncuestaLNK',
-        ];
-
-    navItems.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.classList.remove('disabled');
-            element.classList.add('enabled');
-        }
-    });
 }
 
-function CE_DeactivateNavBy(){
+function CE_DeactivateNavBy() {
     const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
         tituloDelEstudio: studyData.title,
@@ -272,28 +252,24 @@ function CE_DeactivateNavBy(){
         Resumen: studyData.prompt,
     };
 
+    let isEditing = false;
+    let currentListItem = null;
+
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
     questions = [];
 
-    const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId') ;
+    const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId');
     axios.get(url)
-    .then(response => {
-        console.log(response.data);
-        response.data.questions.forEach((pregunta) => {
-            questions.push(pregunta);
-        });
-
-        if(questions.length > 0){
-            //AGREGAR PREGUNTAS AL LISTADO DE PREGUNTAS
-            console.log("pregunta entra 11");
+        .then(response => {
+            console.log(response.data);
+            response.data.questions.forEach((pregunta) => {
+                questions.push(pregunta);
+            });
 
             const listGroup = document.querySelector('.list-group');
-
             listGroup.innerHTML = '';
 
             questions.forEach((pregunta, index) => {
-                console.log("pregunta entra");
-
                 const newListItem = document.createElement('div');
                 newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
                 newListItem.style.fontFamily = "hedliner";
@@ -305,7 +281,6 @@ function CE_DeactivateNavBy(){
                 newH5.classList.add('mb-1');
                 newH5.style.fontFamily = "IBM Plex Sans";
                 newH5.textContent = pregunta.question;
-
 
                 const newSpan = document.createElement('span');
                 newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
@@ -335,28 +310,54 @@ function CE_DeactivateNavBy(){
                 addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
                 addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
                 addFollowQuestionBTN.style.marginRight = '10px';
+                addFollowQuestionBTN.addEventListener('click', (event) => {
+                    event.preventDefault();
+
+                    const overlay = document.getElementById('overlay');
+                    overlay.innerHTML = `
+                        <div id="overlayContent">
+                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
+                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: hedliner">Agregar pregunta</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0; font-family: hedliner">Cerrar</button>
+                        </div>
+                    `;
+
+                    overlay.style.display = 'flex';
+
+                    document.getElementById('CerrarOverlay').addEventListener('click', () => {
+                        overlay.style.display = 'none';
+                    });
+
+                    document.getElementById('AgregarPreguntaOverlay').addEventListener('click', () => {
+                        const followUpQuestion = document.getElementById('FollowUpQuestionTXT').value;
+                        if (followUpQuestion) {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = followUpQuestion;
+                            followQuestionList.appendChild(listItem);
+                            document.getElementById('FollowUpQuestionTXT').value = '';
+                            overlay.style.display = 'none';
+                        } else {
+                            alert('Por favor, ingresa una pregunta de seguimiento.');
+                        }
+                    });
+                });
                 buttonsDiv.appendChild(addFollowQuestionBTN);
 
                 const editQuestionBTN = document.createElement('button');
                 editQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
                 editQuestionBTN.innerText = 'Editar pregunta';
                 editQuestionBTN.style.marginRight = '10px';
-
-                editQuestionBTN.classList.add('btn', 'btn-warning', 'btn-sm');
-                editQuestionBTN.innerText = 'Editar';
-                editQuestionBTN.style.marginRight = '10px';
                 editQuestionBTN.addEventListener('click', (e) => {
                     e.preventDefault();
-                    preguntaTXT.value = pregunta;
-                    pesoTXT.value = peso;
-                    anexoPreguntaURL.value = anexo;
+                    preguntaTXT.value = pregunta.question;
+                    pesoTXT.value = pregunta.weight;
+                    anexoPreguntaURL.value = pregunta.url;
 
                     agregarPreguntaBtn.innerText = 'Actualizar pregunta';
                     isEditing = true;
                     currentListItem = newListItem;
                 });
                 buttonsDiv.appendChild(editQuestionBTN);
-
 
                 newDiv.appendChild(newH5);
                 newDiv.appendChild(newSpan);
@@ -367,68 +368,21 @@ function CE_DeactivateNavBy(){
 
                 listGroup.appendChild(newListItem);
 
-                if(pregunta.feedback_questions != null){
-
-                    feedback_questions_add = pregunta.feedback_questions;
-                    feedback_questions_add.forEach((followUpQuestion) => {
+                if (pregunta.feedback_questions != null) {
+                    pregunta.feedback_questions.forEach((followUpQuestion) => {
                         const listItem = document.createElement('li');
                         listItem.textContent = followUpQuestion;
                         followQuestionList.appendChild(listItem);
                     });
-
                 }
+            });
 
-                addFollowQuestionBTN.addEventListener('click', (event) => {
-
-                    event.preventDefault();  // Prevent the default form submit behavior
-
-                    const overlay = document.getElementById('overlay');
-                    overlay.innerHTML = `
-                        <div id="overlayContent">
-                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
-                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: hedliner">Agregar pregunta</button>
-                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" ">Cerrar</button>
-                        </div>
-                    `;
-
-                    // Mostrar el overlay
-                    overlay.style.display = 'flex';
-
-                    // Añadir evento para cerrar el overlay
-                    document.getElementById('CerrarOverlay').addEventListener('click', () => {
-                        overlay.style.display = 'none'; // Ocultar el overlay
-                    });
-
-                    // Añadir evento para agregar la pregunta de seguimiento
-                    document.getElementById('AgregarPreguntaOverlay').addEventListener('click', () => {
-                        const followUpQuestion = document.getElementById('FollowUpQuestionTXT').value;
-                        if (followUpQuestion) {
-                            const listItem = document.createElement('li');
-                            listItem.textContent = followUpQuestion;
-                            followQuestionList.appendChild(listItem);
-                            document.getElementById('FollowUpQuestionTXT').value = ''; // Limpiar el campo de texto
-                            overlay.style.display = 'none'; // Ocultar el overlay
-                        } else {
-                            alert('Por favor, ingresa una pregunta de seguimiento.');
-                        }
-                    });
-                }
-                );
-
-
-
-       });
             console.log('Preguntas guardadas');
             enableNavItems();
-        }else{
-            console.log('No hay preguntas guardadas');
-            disableNavItems();
-        }
-    }
-    )
-    .catch(error => {
-        console.error('Error al obtener los datos:', error);
-    });
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos:', error);
+        });
 }
 
 document.getElementById('GuardarEncuestaBtn').addEventListener('click', (event) => {
