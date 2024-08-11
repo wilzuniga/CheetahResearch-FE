@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 agregarPreguntaBtn.innerText = 'Agregar pregunta';
                 isEditing = false;
                 currentListItem = null;
+                ActualizarPreguntas();
             } else {
                 // Agregar una nueva pregunta
                 const newListItem = document.createElement('div');
@@ -202,7 +203,7 @@ function guardarPreguntas() {
 function ActualizarPreguntas() {
     questions = [];
     questionsImg = [];;
-    
+
     const listGroup = document.querySelector('.list-group');    
     const listItems = listGroup.querySelectorAll('.list-group-item');
 
@@ -300,6 +301,7 @@ function CE_DeactivateNavBy() {
                 agregarPreguntaBtn.innerText = 'Agregar pregunta';
                 isEditing = false;
                 currentListItem = null;
+                ActualizarPreguntas();
             }
             else {
                 listGroup.innerHTML = '';
