@@ -34,7 +34,6 @@ function enableNavItems() {
 }
 
 function CE_DeactivateNavBy(){
-    document.getElementById('nombreProyectoLbl').innerText = (localStorage.getItem('tituloDelEstudio'));
     console.log('Verificando si se activan los botones');
     if(localStorage.getItem('selectedStudyId') != null){
         console.log('Study id:', localStorage.getItem('selectedStudyId'));
@@ -90,6 +89,7 @@ function createStudyForm() {
 }
 
 function createFilledStudyForm() {
+
 //crear u¿el formulario lleno sin el boton de crear estudio y en vez de que sea el prompt que sea el  resumen del estudio. Todo con el localstorage selectedStudyData. Solo lectura
     const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
@@ -98,6 +98,8 @@ function createFilledStudyForm() {
         objetivosDelEstudio: studyData.studyObjectives,
         Resumen: studyData.prompt,
     };
+
+    document.getElementById('nombreProyectoLbl').innerText = tituloDelEstudio;
 
     const title = '<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: \'hedliner\', sans-serif;">Resumen del Estudio</h2>';
 
@@ -277,7 +279,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
             appendStudyForm();
         }else{
             const formContainer = document.getElementById('form-containerStudy');
-            formContainer.innerHTML = createFilledStudyForm();       
+            
+            formContainer.innerHTML = appendFilledStudyForm();       
         }
     }else if(window.location.href.includes('home')){
 

@@ -398,7 +398,7 @@ function CE_DeactivateNavBy(){
                     const overlay = document.getElementById('overlay');
                     overlay.innerHTML = `
                         <div id="overlayContent">
-                            <input id="EditQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%; font-family: hedliner;" />
+                            <input id="EditQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%; font-family: hedliner;" value="${newH5.textContent}" />
                             <button id="EditarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: hedliner">Editar pregunta</button>
                             <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" ">Cerrar</button>
                         </div>
