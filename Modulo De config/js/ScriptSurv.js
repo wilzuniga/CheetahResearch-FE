@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const newSmall = document.createElement('small');
             newSmall.classList.add('text-muted');
             newSmall.style.fontFamily = "hedliner";
-            newSmall.textContent = anexo || 'No tiene anexo';
+            newSmall.textContent = anexo || '';
 
             const followQuestionList = document.createElement('ul');
             followQuestionList.style.color = '#000000';
@@ -128,17 +128,16 @@ function guardarPreguntas() {
     const listItems = listGroup.querySelectorAll('.list-group-item');
 
     listItems.forEach((listItem, index) => {
-        const followQuestionList = listItem.querySelector('#FollowQuestionList');
-        const followQuestions = followQuestionList.querySelectorAll('li');
-        if(followQuestions.length === 0){
+        const followQuestionList = listItem.querySelector(`#FollowQuestionList_${index}`);
 
-        }else{
-            const pregunta = questions[index];
-            pregunta.feedback_questions = [];
+        if (followQuestionList) {  // Verificar si followQuestionList no es null
+            const followQuestions = followQuestionList.querySelectorAll('li');
 
             followQuestions.forEach((followQuestion) => {
                 pregunta.feedback_questions.push(followQuestion.textContent);
             });
+        } else {
+            console.warn(`No se encontró la lista de preguntas de seguimiento para el índice ${index}`);
         }
     }
     );
