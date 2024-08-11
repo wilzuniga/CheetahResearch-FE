@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const peso = pesoTXT.value;
         const anexo = anexoPregunta.files.length > 0 ? anexoPregunta.files[0].name : anexoPreguntaURL.value;
 
-        
         if (pregunta && peso) {
             if (isEditing && currentListItem) {
                 // Actualizar la pregunta existente en la interfaz
@@ -110,13 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     event.preventDefault();  // Prevent the default form submit behavior
 
                     const overlay = document.getElementById('overlay');
-                    overlay.innerHTML = `
+                    overlay.innerHTML = 
                         <div id="overlayContent">
                             <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
                             <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner ">Agregar pregunta</button>
                             <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner">Cerrar</button>
                         </div>
-                    `;
+                    ;
 
                     // Mostrar el overlay
                     overlay.style.display = 'flex';
@@ -315,9 +314,9 @@ function CE_DeactivateNavBy() {
                 editarBtn.style.marginRight = '10px';
                 editarBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    preguntaTXT.value = pregunta;
-                    pesoTXT.value = peso;
-                    anexoPreguntaURL.value = anexo;
+                    preguntaTXT.value = pregunta.question;
+                    pesoTXT.value = pregunta.weight;
+                    anexoPreguntaURL.value = pregunta.url;
 
                     agregarPreguntaBtn.innerText = 'Actualizar pregunta';
                     isEditing = true;
