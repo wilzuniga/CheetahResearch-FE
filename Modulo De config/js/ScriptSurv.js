@@ -255,25 +255,35 @@ function CE_DeactivateNavBy() {
     let isEditing = false;
     let currentListItem = null;
 
+    // Definir los elementos aquí
+    const preguntaTXT = document.getElementById('PreguntaTXT');
+    const pesoTXT = document.getElementById('PesoTXT');
+    const anexoPregunta = document.getElementById('AnexoPregunta');
+    const anexoPreguntaURL = document.getElementById('AnexoPreguntaURL');
+    const agregarPreguntaBtn = document.getElementById('AgregarPreguntaBtn');
+    const listGroup = document.querySelector('.list-group');
+
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
-    questions = [];
+    let questions = [];
 
     const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId');
     axios.get(url)
-        .then(response => {
-            console.log(response.data);
-            response.data.questions.forEach((pregunta) => {
-                questions.push(pregunta);
-            });
+    .then(response => {
+        console.log(response.data);
+        questions = response.data.questions;
 
-            const listGroup = document.querySelector('.list-group');
+        if (questions.length > 0) {
+            console.log("pregunta entra 11");
+
             listGroup.innerHTML = '';
 
             questions.forEach((pregunta, index) => {
+                console.log("pregunta entra");
+
                 const newListItem = document.createElement('div');
                 newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
                 newListItem.style.fontFamily = "hedliner";
-                
+
                 const newDiv = document.createElement('div');
                 newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
 
@@ -310,37 +320,6 @@ function CE_DeactivateNavBy() {
                 addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
                 addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
                 addFollowQuestionBTN.style.marginRight = '10px';
-                addFollowQuestionBTN.addEventListener('click', (event) => {
-                    event.preventDefault();
-
-                    const overlay = document.getElementById('overlay');
-                    overlay.innerHTML = `
-                        <div id="overlayContent">
-                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
-                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: hedliner">Agregar pregunta</button>
-                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0; font-family: hedliner">Cerrar</button>
-                        </div>
-                    `;
-
-                    overlay.style.display = 'flex';
-
-                    document.getElementById('CerrarOverlay').addEventListener('click', () => {
-                        overlay.style.display = 'none';
-                    });
-
-                    document.getElementById('AgregarPreguntaOverlay').addEventListener('click', () => {
-                        const followUpQuestion = document.getElementById('FollowUpQuestionTXT').value;
-                        if (followUpQuestion) {
-                            const listItem = document.createElement('li');
-                            listItem.textContent = followUpQuestion;
-                            followQuestionList.appendChild(listItem);
-                            document.getElementById('FollowUpQuestionTXT').value = '';
-                            overlay.style.display = 'none';
-                        } else {
-                            alert('Por favor, ingresa una pregunta de seguimiento.');
-                        }
-                    });
-                });
                 buttonsDiv.appendChild(addFollowQuestionBTN);
 
                 const editQuestionBTN = document.createElement('button');
@@ -368,22 +347,58 @@ function CE_DeactivateNavBy() {
 
                 listGroup.appendChild(newListItem);
 
-                if (pregunta.feedback_questions != null) {
+                if (pregunta.feedback_questions) {
                     pregunta.feedback_questions.forEach((followUpQuestion) => {
                         const listItem = document.createElement('li');
                         listItem.textContent = followUpQuestion;
                         followQuestionList.appendChild(listItem);
                     });
                 }
-            });
 
+                addFollowQuestionBTN.addEventListener('click', (event) => {
+                    event.preventDefault();  // Prevent the default form submit behavior
+
+                    const overlay = document.getElementById('overlay');
+                    overlay.innerHTML = `
+                        <div id="overlayContent">
+                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
+                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: hedliner">Agregar pregunta</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0; font-family: hedliner">Cerrar</button>
+                        </div>
+                    `;
+
+                    overlay.style.display = 'flex';
+
+                    document.getElementById('CerrarOverlay').addEventListener('click', () => {
+                        overlay.style.display = 'none'; // Ocultar el overlay
+                    });
+
+                    document.getElementById('AgregarPreguntaOverlay').addEventListener('click', () => {
+                        const followUpQuestion = document.getElementById('FollowUpQuestionTXT').value;
+                        if (followUpQuestion) {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = followUpQuestion;
+                            followQuestionList.appendChild(listItem);
+                            document.getElementById('FollowUpQuestionTXT').value = ''; // Limpiar el campo de texto
+                            overlay.style.display = 'none'; // Ocultar el overlay
+                        } else {
+                            alert('Por favor, ingresa una pregunta de seguimiento.');
+                        }
+                    });
+                });
+            });
             console.log('Preguntas guardadas');
             enableNavItems();
-        })
-        .catch(error => {
-            console.error('Error al obtener los datos:', error);
-        });
+        } else {
+            console.log('No hay preguntas guardadas');
+            disableNavItems();
+        }
+    })
+    .catch(error => {
+        console.error('Error al obtener los datos:', error);
+    });
 }
+
 
 document.getElementById('GuardarEncuestaBtn').addEventListener('click', (event) => {
     event.preventDefault();
