@@ -341,7 +341,22 @@ function CE_DeactivateNavBy(){
                 editQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
                 editQuestionBTN.innerText = 'Editar pregunta';
                 editQuestionBTN.style.marginRight = '10px';
+
+                editQuestionBTN.classList.add('btn', 'btn-warning', 'btn-sm');
+                editQuestionBTN.innerText = 'Editar';
+                editQuestionBTN.style.marginRight = '10px';
+                editQuestionBTN.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    preguntaTXT.value = pregunta;
+                    pesoTXT.value = peso;
+                    anexoPreguntaURL.value = anexo;
+
+                    agregarPreguntaBtn.innerText = 'Actualizar pregunta';
+                    isEditing = true;
+                    currentListItem = newListItem;
+                });
                 buttonsDiv.appendChild(editQuestionBTN);
+
 
                 newDiv.appendChild(newH5);
                 newDiv.appendChild(newSpan);
@@ -400,40 +415,9 @@ function CE_DeactivateNavBy(){
                 }
                 );
 
-                editQuestionBTN.addEventListener('click', (event) => {
-                    event.preventDefault();  // Prevent the default form submit behavior
 
-                    const overlay = document.getElementById('overlay');
-                    overlay.innerHTML = `
-                        <div id="overlayContent">
-                            <input id="EditQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%; font-family: hedliner;" value="${newH5.textContent}" />
-                            <button id="EditarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: hedliner">Editar pregunta</button>
-                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" ">Cerrar</button>
-                        </div>
-                    `;
 
-                    // Mostrar el overlay
-                    overlay.style.display = 'flex';
-
-                    // Añadir evento para cerrar el overlay
-                    document.getElementById('CerrarOverlay').addEventListener('click', () => {
-                        overlay.style.display = 'none'; // Ocultar el overlay
-                    });
-
-                    // Añadir evento para editar la pregunta
-                    document.getElementById('EditarPreguntaOverlay').addEventListener('click', () => {
-                        const editedQuestion = document.getElementById('EditQuestionTXT').value;
-                        if (editedQuestion) {
-                            newH5.textContent = editedQuestion;
-                            document.getElementById('EditQuestionTXT').value = ''; // Limpiar el campo de texto
-                            overlay.style.display = 'none'; // Ocultar el overlay
-                        } else {
-                            alert('Por favor, ingresa una pregunta.');
-                        }
-                    });
-                });
-
-            });
+       });
             console.log('Preguntas guardadas');
             enableNavItems();
         }else{
