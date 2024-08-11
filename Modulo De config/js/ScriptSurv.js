@@ -128,7 +128,7 @@ function guardarPreguntas() {
     const listItems = listGroup.querySelectorAll('.list-group-item');
 
     listItems.forEach((listItem, index) => {
-        const followQuestionList = listItem.querySelector(`#FollowQuestionList_${index}`);
+        const followQuestionList = listItem.querySelector('#FollowQuestionList');
         const followQuestions = followQuestionList.querySelectorAll('li');
         if(followQuestions.length === 0){
 
@@ -203,7 +203,6 @@ function CE_DeactivateNavBy() {
     const listGroup = document.querySelector('.list-group');
 
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
-    let questions = [];
 
     const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId');
     axios.get(url)
