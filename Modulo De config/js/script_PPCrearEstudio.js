@@ -161,8 +161,6 @@ function appendStudyForm() {
 }
 
 function appendFilledStudyForm() {
-    const formContainer = document.getElementById('form-containerStudy');
-    formContainer.innerHTML = createFilledStudyForm();
 
     document.getElementById('UpdateEstudio').addEventListener('click', () => {
         const studyData = UpdateAndPostformdta();
@@ -279,8 +277,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
             appendStudyForm();
         }else{
             const formContainer = document.getElementById('form-containerStudy');
-            
-            formContainer.innerHTML = appendFilledStudyForm();       
+            appendFilledStudyForm();  
+            formContainer.innerHTML = createFilledStudyForm();       
         }
     }else if(window.location.href.includes('home')){
 
