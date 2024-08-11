@@ -117,7 +117,7 @@ function LLenarResumenes(){
                 const selectedValue = event.target.value; //el filtro seleccionado
                 formData = new FormData();
                 formData.append('filter', selectedValue);
-                formData.append('module', 'individual');
+                formData.append('module', 'individual_questions');
                 formData.append('sub_module', StyleSelectedOption.value);
                 const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
@@ -162,7 +162,7 @@ function LLenarResumenes(){
 
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
-                formData.append('module', 'user_persona');
+                formData.append('module', 'user_personas');
                 const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
@@ -189,7 +189,7 @@ function LLenarResumenes(){
 
 
                 // Obtener el div donde se mostrará el contenido
-                var div = document.getElementById('EkmanContent');
+                var div = document.getElementById('EKMANContent');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 

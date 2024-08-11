@@ -182,7 +182,7 @@ function LLenarResumenes(study) {
         const selectedValue = event.target.value; //el filtro seleccionado
         formData = new FormData();
         formData.append('filter', selectedValue);
-        formData.append('module', 'individual');
+        formData.append('module', 'individual_questions');
         formData.append('sub_module', StyleSelectedOption.value);
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
         axios.post(url, formData)
@@ -227,7 +227,7 @@ function LLenarResumenes(study) {
 
         formData = new FormData();     
         formData.append('filter', selectedValue);
-        formData.append('module', 'user_persona');
+        formData.append('module', 'user_personas');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
         axios.post(url, formData)
             .then(function (response) {
