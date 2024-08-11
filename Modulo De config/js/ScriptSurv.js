@@ -11,133 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isEditing = false;
     let currentListItem = null;
-    let questions = [];
-    let questionsImg = [];
 
-    // Función para crear un nuevo elemento en la lista
-    function createListItem(pregunta, peso, anexo, seguimiento = []) {
-        const newListItem = document.createElement('div');
-        newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
-        newListItem.style.fontFamily = "hedliner";
-
-        const newDiv = document.createElement('div');
-        newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
-        newDiv.style.fontFamily = "hedliner";
-
-        const newH5 = document.createElement('h5');
-        newH5.classList.add('mb-1');
-        newH5.style.fontFamily = "IBM Plex Sans";
-        newH5.textContent = pregunta;
-
-        const newSpan = document.createElement('span');
-        newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
-        newSpan.style.fontFamily = "hedliner";
-        newSpan.textContent = peso;
-
-        const newSmall = document.createElement('small');
-        newSmall.classList.add('text-muted');
-        newSmall.style.fontFamily = "hedliner";
-        newSmall.textContent = anexo;
-
-        const followQuestionList = document.createElement('ul');
-        followQuestionList.style.color = '#000000';
-        seguimiento.forEach((seguimientoPregunta) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = seguimientoPregunta;
-            followQuestionList.appendChild(listItem);
-        });
-
-        const buttonsDiv = document.createElement('div');
-        buttonsDiv.style.marginTop = '10px';
-
-        const eliminarBtn = document.createElement('button');
-        eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-        eliminarBtn.innerText = 'Eliminar';
-        eliminarBtn.style.marginRight = '10px';
-        eliminarBtn.addEventListener('click', () => {
-            newListItem.remove();
-            const index = Array.from(listGroup.children).indexOf(newListItem);
-            questions.splice(index, 1);
-            questionsImg.splice(index, 1);
-        });
-        buttonsDiv.appendChild(eliminarBtn);
-
-        const editarBtn = document.createElement('button');
-        editarBtn.classList.add('btn', 'btn-warning', 'btn-sm');
-        editarBtn.innerText = 'Editar';
-        editarBtn.style.marginRight = '10px';
-        editarBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            preguntaTXT.value = pregunta;
-            pesoTXT.value = peso;
-            anexoPreguntaURL.value = anexo;
-
-            agregarPreguntaBtn.innerText = 'Actualizar pregunta';
-            isEditing = true;
-            currentListItem = newListItem;
-        });
-        buttonsDiv.appendChild(editarBtn);
-
-        const addFollowQuestionBTN = document.createElement('button');
-        addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
-        addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
-        addFollowQuestionBTN.style.marginRight = '10px';
-        addFollowQuestionBTN.addEventListener('click', (event) => {
-            event.preventDefault();
-            openOverlay(followQuestionList);
-        });
-        buttonsDiv.appendChild(addFollowQuestionBTN);
-
-        newDiv.appendChild(newH5);
-        newDiv.appendChild(newSpan);
-        newListItem.appendChild(newDiv);
-        newListItem.appendChild(followQuestionList);
-        newListItem.appendChild(newSmall);
-        newListItem.appendChild(buttonsDiv);
-
-        listGroup.appendChild(newListItem);
-    }
-
-    // Función para manejar el overlay de preguntas de seguimiento
-    function openOverlay(followQuestionList) {
-        const overlay = document.getElementById('overlay');
-        overlay.innerHTML = `
-            <div id="overlayContent">
-                <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
-                <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner ">Agregar pregunta</button>
-                <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner">Cerrar</button>
-            </div>
-        `;
-
-        overlay.style.display = 'flex';
-
-        document.getElementById('CerrarOverlay').addEventListener('click', () => {
-            overlay.style.display = 'none';
-        });
-
-        document.getElementById('AgregarPreguntaOverlay').addEventListener('click', () => {
-            const followUpQuestion = document.getElementById('FollowUpQuestionTXT').value;
-            if (followUpQuestion) {
-                const listItem = document.createElement('li');
-                listItem.textContent = followUpQuestion;
-                followQuestionList.appendChild(listItem);
-                document.getElementById('FollowUpQuestionTXT').value = '';
-
-                // Actualizar el array de preguntas de seguimiento en la pregunta principal
-                const index = Array.from(listGroup.children).indexOf(currentListItem);
-                if (!questions[index].seguimiento) {
-                    questions[index].seguimiento = [];
-                }
-                questions[index].seguimiento.push(followUpQuestion);
-
-                overlay.style.display = 'none';
-            } else {
-                alert('Por favor, ingresa una pregunta de seguimiento.');
-            }
-        });
-    }
-
-    // Manejador del botón principal
     agregarPreguntaBtn.addEventListener('click', (event) => {
         event.preventDefault();
 
@@ -147,8 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (pregunta && peso) {
             if (isEditing && currentListItem) {
-                const index = Array.from(listGroup.children).indexOf(currentListItem);
-
                 // Actualizar la pregunta existente en la interfaz
                 const newH5 = currentListItem.querySelector('h5');
                 const newSpan = currentListItem.querySelector('span');
@@ -158,7 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 newSpan.textContent = peso;
                 newSmall.textContent = anexo;
 
-                // Actualizar la pregunta en el array de preguntas
+                // Actualizar la pregunta en el array de preguntas si es necesario
+                const index = Array.from(listGroup.children).indexOf(currentListItem);
                 questions[index].question = pregunta;
                 questions[index].weight = peso;
                 if (anexoPregunta.files.length > 0) {
@@ -168,39 +41,140 @@ document.addEventListener('DOMContentLoaded', () => {
                     questions[index].url = anexo;
                 }
 
-                // Reiniciar el estado de edición
                 agregarPreguntaBtn.innerText = 'Agregar pregunta';
                 isEditing = false;
                 currentListItem = null;
             } else {
-                createListItem(pregunta, peso, anexo);
-                
+                // Agregar una nueva pregunta
+                const newListItem = document.createElement('div');
+                newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
+                newListItem.style.fontFamily = "hedliner";
+
+                const newDiv = document.createElement('div');
+                newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
+                newDiv.style.fontFamily = "hedliner";
+
+                const newH5 = document.createElement('h5');
+                newH5.classList.add('mb-1');
+                newH5.style.fontFamily = "IBM Plex Sans";
+                newH5.textContent = pregunta;
+
+                const newSpan = document.createElement('span');
+                newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
+                newSpan.style.fontFamily = "hedliner";
+                newSpan.textContent = peso;
+
+                const newSmall = document.createElement('small');
+                newSmall.classList.add('text-muted');
+                newSmall.style.fontFamily = "hedliner";
+                newSmall.textContent = anexo;
+
+                const followQuestionList = document.createElement('ul');
+                followQuestionList.style.color = '#000000';
+                followQuestionList.id = 'FollowQuestionList';
+
+                const buttonsDiv = document.createElement('div');
+                buttonsDiv.style.marginTop = '10px';
+
+                const eliminarBtn = document.createElement('button');
+                eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+                eliminarBtn.innerText = 'Eliminar';
+                eliminarBtn.style.marginRight = '10px';
+                eliminarBtn.addEventListener('click', () => {
+                    newListItem.remove();
+                });
+                buttonsDiv.appendChild(eliminarBtn);
+
+                const editarBtn = document.createElement('button');
+                editarBtn.classList.add('btn', 'btn-warning', 'btn-sm');
+                editarBtn.innerText = 'Editar';
+                editarBtn.style.marginRight = '10px';
+                editarBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    preguntaTXT.value = pregunta;
+                    pesoTXT.value = peso;
+                    anexoPreguntaURL.value = anexo;
+
+                    agregarPreguntaBtn.innerText = 'Actualizar pregunta';
+                    isEditing = true;
+                    currentListItem = newListItem;
+                });
+                buttonsDiv.appendChild(editarBtn);
+
+                const addFollowQuestionBTN = document.createElement('button');
+                addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
+                addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
+                addFollowQuestionBTN.style.marginRight = '10px';
+                addFollowQuestionBTN.addEventListener('click', (event) => {
+                    event.preventDefault();  // Prevent the default form submit behavior
+
+                    const overlay = document.getElementById('overlay');
+                    overlay.innerHTML = `
+                        <div id="overlayContent">
+                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
+                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner ">Agregar pregunta</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner">Cerrar</button>
+                        </div>
+                    `;
+
+                    // Mostrar el overlay
+                    overlay.style.display = 'flex';
+
+                    // Añadir evento para cerrar el overlay
+                    document.getElementById('CerrarOverlay').addEventListener('click', () => {
+                        overlay.style.display = 'none'; // Ocultar el overlay
+                    });
+
+                    // Añadir evento para agregar la pregunta de seguimiento
+                    document.getElementById('AgregarPreguntaOverlay').addEventListener('click', () => {
+                        const followUpQuestion = document.getElementById('FollowUpQuestionTXT').value;
+                        if (followUpQuestion) {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = followUpQuestion;
+                            followQuestionList.appendChild(listItem);
+                            document.getElementById('FollowUpQuestionTXT').value = ''; // Limpiar el campo de texto
+                            overlay.style.display = 'none'; // Ocultar el overlay
+                        } else {
+                            alert('Por favor, ingresa una pregunta de seguimiento.');
+                        }
+                    });
+                });
+                buttonsDiv.appendChild(addFollowQuestionBTN);
+
+                newDiv.appendChild(newH5);
+                newDiv.appendChild(newSpan);
+                newListItem.appendChild(newDiv);
+                newListItem.appendChild(followQuestionList);
+                newListItem.appendChild(newSmall);
+                newListItem.appendChild(buttonsDiv);
+
+                listGroup.appendChild(newListItem);
+
                 // Añadir la pregunta al array
-                const questionData = { question: pregunta, weight: peso, seguimiento: [] };
                 if (anexoPregunta.files.length > 0) {
                     const file = anexoPregunta.files[0];
-                    questions.push(questionData);
+                    questions.push({ question: pregunta, weight: peso });
                     questionsImg.push({ index: questions.length - 1, file: file });
                 } else {
-                    questionData.url = anexo;
-                    questions.push(questionData);
+                    if (anexoPreguntaURL.value != '') {
+                        questions.push({ question: pregunta, weight: peso, url: anexo });
+                    } else {
+                        questions.push({ question: pregunta, weight: peso });
+                    }
                 }
             }
 
-            // Reiniciar campos de entrada después de agregar o actualizar
+            // Limpiar campos de entrada
             preguntaTXT.value = '';
             pesoTXT.value = '';
             anexoPreguntaURL.value = '';
             anexoPregunta.value = '';
-
-            // Reiniciar estado de edición
-            isEditing = false;
-            currentListItem = null;
         } else {
             alert('Por favor, ingresa tanto la pregunta como el peso.');
         }
     });
 });
+
 
 
 
