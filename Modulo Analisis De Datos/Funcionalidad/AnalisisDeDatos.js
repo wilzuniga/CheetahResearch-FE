@@ -214,7 +214,7 @@ function LLenarResumenes(study) {
 
 
         // Obtener el div donde se mostrará el contenido
-        var div = document.getElementById('EkmanContent');
+        var div = document.getElementById('EKMANContent');
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
 
