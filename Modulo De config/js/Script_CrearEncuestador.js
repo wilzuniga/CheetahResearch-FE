@@ -102,7 +102,6 @@ function updateSurveyerFormData(data) {
 
     const data0 = new FormData();
     data0.append('interviewerName', nombreEncuestador);
-    data0.append('interviewerProfilePicture', fileInput);
     data0.append('interviewerTone', tonoEncuestador);
     data0.append('interviewerGreeting', saludoEncuestador);
     data0.append('importantObservation', observacionesImportantes);
