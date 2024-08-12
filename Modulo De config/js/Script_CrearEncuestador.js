@@ -100,19 +100,19 @@ function updateSurveyerFormData(data) {
 
     const url = 'https://api.cheetah-research.ai/configuration/updateInterviewer/';
 
-    const data = new FormData();
-    data.append('interviewerName', nombreEncuestador);
-    data.append('interviewerProfilePicture', fileInput.files[0]);
-    data.append('interviewerTone', tonoEncuestador);
-    data.append('interviewerGreeting', saludoEncuestador);
-    data.append('importantObservation', observacionesImportantes);
-    data.append('_id', localStorage.getItem('selectedStudyId'));
+    const data0 = new FormData();
+    data0.append('interviewerName', nombreEncuestador);
+    data0.append('interviewerProfilePicture', fileInput.files[0]);
+    data0.append('interviewerTone', tonoEncuestador);
+    data0.append('interviewerGreeting', saludoEncuestador);
+    data0.append('importantObservation', observacionesImportantes);
+    data0.append('_id', localStorage.getItem('selectedStudyId'));
 
-    for (let pair of data.entries()) {
+    for (let pair of data0.entries()) {
         console.log(pair[0]+ ': ' + pair[1]);
     }
 
-    axios.post(url, data, {
+    axios.post(url, data0, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
