@@ -92,10 +92,10 @@ function createSurveyerFormReadOnly() {
 
 function updateSurveyerFormData(data) {
     
-    const nombreEncuestador = data.interviewerProfilePicture;
+    const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
     const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
     const saludoEncuestador = document.getElementById('SaludoEncuestadorTXT').value;
-    const fileInput = document.querySelector('input[type="file"]');
+    const fileInput = data.interviewerProfilePicture;
     const observacionesImportantes = document.getElementById('ObservacionesImportantesTXT').value;
 
     const url = 'https://api.cheetah-research.ai/configuration/updateInterviewer/';
