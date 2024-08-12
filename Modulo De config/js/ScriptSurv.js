@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const newSmall = document.createElement('small');
             newSmall.classList.add('text-muted');
-            newSmall.style.fontFamily = "hedliner";
+            newSmall.style.fontFamily = "IBM Plex Sans";
             newSmall.textContent = anexo;
 
             const followQuestionList = document.createElement('ul');
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const overlay = document.getElementById('overlay');
                 overlay.innerHTML = `
                     <div id="overlayContent">
-                        <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
+                        <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: IBM Plex Sans;" />
                         <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner ">Agregar pregunta</button>
                         <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner">Cerrar</button>
                     </div>
@@ -193,31 +193,11 @@ function enviarDatos(preguntas) {
 
 
 function disableNavItems() {
-    const navItems = [
-        'LanzarEncuestaLNK',
-        'VisualizacionDeResultadosLNK'
-        ];
 
-    navItems.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.classList.add('disabled');
-        }
-    });
 }
 
 function enableNavItems() {
-    const navItems = [
-        'LanzarEncuestaLNK',
-        ];
 
-    navItems.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.classList.remove('disabled');
-            element.classList.add('enabled');
-        }
-    });
 }
 
 function CE_DeactivateNavBy(){
@@ -313,7 +293,7 @@ function CE_DeactivateNavBy(){
                     overlay.innerHTML = `
                         <div id="overlayContent">
                             <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
-                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: hedliner">Agregar pregunta</button>
+                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: IBM Plex Sans">Agregar pregunta</button>
                             <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" ">Cerrar</button>
                         </div>
                     `;
