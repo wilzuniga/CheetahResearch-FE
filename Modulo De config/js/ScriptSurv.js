@@ -108,6 +108,87 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             });
+
+            //boton editar
+            const editBtn = document.createElement('button');
+            editBtn.classList.add('btn', 'btn-primary', 'btn-sm');
+            editBtn.innerText = 'Editar';
+            editBtn.style.marginRight = '10px';
+            buttonsDiv.appendChild(editBtn);
+
+            editBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                const overlay = document.getElementById('overlay');
+                //que en el overlay se pueda editar la pregunta, el peso y el anexo ya sea archivo o url
+                overlay.innerHTML = `
+                    <div id="overlayContent">
+                        <input id="EditPreguntaTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                        <input id="EditPesoTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa el peso" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                        <input id="EditAnexoPregunta" class="form-control" type="file" name="Nombre" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                        <input id="EditAnexoPreguntaURL" class="form-control" type="text" name="Nombre" placeholder="Ingresa la URL del anexo" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                        <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; margin-bottom: 5px;">Guardar</button>
+                        <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner; margin-bottom: 5px;">Cerrar</button>
+                    </div>
+                `;
+
+                // Mostrar el overlay
+                overlay.style.display = 'flex';
+                document.getElementById('EditPreguntaTXT').value = pregunta;
+                document.getElementById('EditPesoTXT').value = peso;
+                //verificar el tipo de anexo de la pregunta(archivo o url) y agregarlo al overlay
+                if(anexoPregunta.files.length > 0){
+                    document.getElementById('EditAnexoPregunta').value = anexo;
+                }else if(anexoPreguntaURL.value != ''){
+                    document.getElementById('EditAnexoPreguntaURL').value = anexo;
+                }
+
+                // Añadir evento para cerrar el overlay
+                document.getElementById('CerrarOverlay').addEventListener('click', () => {
+                    overlay.style.display = 'none'; // Ocultar el overlay
+                });
+
+                // Añadir evento para guardar los cambios
+                document.getElementById('GuardarEdit').addEventListener('click', () => {
+                    const editPregunta = document.getElementById('EditPreguntaTXT').value;
+                    const editPeso = document.getElementById('EditPesoTXT').value;
+                    const editAnexo = document.getElementById('EditAnexoPregunta').files.length > 0 ? document.getElementById('EditAnexoPregunta').files[0].name : document.getElementById('EditAnexoPreguntaURL').value;
+                    if (editPregunta && editPeso) {
+                        //actualizar la pregunta en el array de preguntas
+                        questions[questions.length - 1].question = editPregunta;
+                        questions[questions.length - 1].weight = editPeso;
+                        if(editAnexo != ''){
+                            if(document.getElementById('EditAnexoPregunta').files.length > 0){
+                                const file = document.getElementById('EditAnexoPregunta').files[0];
+                                questionsImg.push({index: questions.length - 1 , file: file});
+                            }else{
+                                questions[questions.length - 1].url = editAnexo;
+                            }
+                        }
+                        //actualizar la pregunta en el listado de preguntas
+                        newH5.textContent = editPregunta;
+                        newSpan.textContent = editPeso;
+                        newSmall.textContent = editAnexo;
+                        overlay.style.display = 'none'; // Ocultar el overlay
+                    } else {
+                        alert('Por favor, ingresa tanto la pregunta como el peso.');
+                    }
+                });
+
+            });
+
+            //eliminar todas las preguntas de seguimiento
+            const deleteFollowQuestionsBtn = document.createElement('button');
+            deleteFollowQuestionsBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+            deleteFollowQuestionsBtn.innerText = 'Eliminar preguntas de seguimiento';
+            deleteFollowQuestionsBtn.style.marginRight = '10px';
+            buttonsDiv.appendChild(deleteFollowQuestionsBtn);
+
+            deleteFollowQuestionsBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                followQuestionList.innerHTML = '';
+                questions[questions.length - 1].feedback_questions = [];
+            });
+
             
             // AGREGAR PREGUNTA AL ARRAY DE PREGUNTAS, verificar si el anexo es un archivo o una URL, en caso de ser archivo guardarlo como picture
             if(anexoPregunta.files.length > 0){
@@ -335,7 +416,7 @@ function CE_DeactivateNavBy(){
                     const overlay = document.getElementById('overlay');
                     overlay.innerHTML = `
                         <div id="overlayContent">
-                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: hedliner;" />
+                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: IBM Plex Sans;" />
                             <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: IBM Plex Sans">Agregar pregunta</button>
                             <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" ">Cerrar</button>
                         </div>
