@@ -72,9 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
             listGroup.appendChild(newListItem);
 
             // Clear input fields
-            preguntaTXT.value = '';
-            pesoTXT.value = '';
-            anexoPreguntaURL.value = '';
+            
 
             addFollowQuestionBTN.addEventListener('click', (event) => {
                 event.preventDefault();  // Prevent the default form submit behavior
@@ -119,13 +117,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 questionsImg.push({index: questions.length - 1 , file: file});
                 anexoPregunta.value = '';
             }else{
-                anexoPregunta.value = '';
                 if(anexoPreguntaURL.value != ''){
                     questions.push({ question: pregunta, weight: peso, url: anexo });
                 }else{
                     questions.push({ question: pregunta, weight: peso });
                 }
+                anexoPregunta.value = '';
             }
+
+            preguntaTXT.value = '';
+            pesoTXT.value = '';
+            anexoPreguntaURL.value = '';
             
             
 
@@ -248,9 +250,18 @@ function CE_DeactivateNavBy(){
                 newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
                 newSpan.textContent = pregunta.weight;
     
+                //verificar si la pregunta tiene anexo, url o ninguno y agregarlo
                 const newSmall = document.createElement('small');
                 newSmall.classList.add('text-muted');
-                newSmall.textContent = pregunta.url;
+                newSmall.style.fontFamily = "IBM Plex Sans";
+                if(pregunta.url != null){
+                    newSmall.textContent = pregunta.url;
+                }else if(pregunta.file_path != null){
+                    newSmall.textContent = pregunta.file_path;
+                }else{
+                    newSmall.textContent = '';
+                }
+
     
                 const followQuestionList = document.createElement('ul');
                 followQuestionList.style.color = '#000000';
@@ -335,8 +346,44 @@ function CE_DeactivateNavBy(){
                             alert('Por favor, ingresa una pregunta de seguimiento.');
                         }
                     });
-                }
-                );
+                });
+
+
+                //boton editar
+                const editBtn = document.createElement('button');
+                editBtn.classList.add('btn', 'btn-primary', 'btn-sm');
+                editBtn.innerText = 'Editar';
+                editBtn.style.marginRight = '10px';
+                buttonsDiv.appendChild(editBtn);
+
+                editBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const overlay = document.getElementById('overlay');
+                    //que en el overlay se pueda editar la pregunta, el peso y el anexo ya sea archivo o url
+                    overlay.innerHTML = `
+                        <div id="overlayContent">
+                            <input id="EditPreguntaTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%; font-family: IBM Plex Sans;" />
+                            <input id="EditPesoTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa el peso" style="width: 100%; font-family: IBM Plex Sans;" />
+                            <input id="EditAnexoPregunta" class="form-control" type="file" name="Nombre" style="width: 100%; font-family: IBM Plex Sans;" />
+                            <input id="EditAnexoPreguntaURL" class="form-control" type="text" name="Nombre" placeholder="Ingresa la URL del anexo" style="width: 100%; font-family: IBM Plex Sans;" />
+                            <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner ">Guardar</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner">Cerrar</button>
+                        </div>
+                    `;
+
+                    // Mostrar el overlay
+                    overlay.style.display = 'flex';
+                    document.getElementById('EditPreguntaTXT').value = pregunta.question;
+                    document.getElementById('EditPesoTXT').value = pregunta.weight;
+                    //verificar el tipo de anexo de la pregunta(archivo o url) y agregarlo al overlay
+                    if(pregunta.url != null){
+                        document.getElementById('EditAnexoPreguntaURL').value = pregunta.url;
+                    }else if(pregunta.picture != null){
+                        document.getElementById('EditAnexoPregunta').value = pregunta.picture;
+                    }
+                    
+                });
+                
     
             });
             console.log('Preguntas guardadas');
