@@ -133,7 +133,8 @@ function appendStudyForm() {
         const studyData = CaptureAndPostformdta();
         console.log(studyData);
         alert('Estudio creado exitosamente');
-        appendFilledStudyForm();
+        //guardar en localsotrage el estudio creado
+        localStorage.setItem('selectedStudyData', JSON.stringify(studyData));
     });
 }
 
