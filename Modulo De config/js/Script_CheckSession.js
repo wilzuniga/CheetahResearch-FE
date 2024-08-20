@@ -15,7 +15,6 @@ async function checkSession(){
     } catch (error) {
         console.log('error check session', error);
     }
-
 }
 
 document.addEventListener('DOMContentLoaded', function() {

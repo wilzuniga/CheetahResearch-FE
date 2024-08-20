@@ -133,6 +133,7 @@ function appendStudyForm() {
         const studyData = CaptureAndPostformdta();
         console.log(studyData);
         alert('Estudio creado exitosamente');
+        appendFilledStudyForm();
     });
 }
 
