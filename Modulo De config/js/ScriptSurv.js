@@ -362,12 +362,12 @@ function CE_DeactivateNavBy(){
                     //que en el overlay se pueda editar la pregunta, el peso y el anexo ya sea archivo o url
                     overlay.innerHTML = `
                         <div id="overlayContent">
-                            <input id="EditPreguntaTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%; font-family: IBM Plex Sans;" />
-                            <input id="EditPesoTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa el peso" style="width: 100%; font-family: IBM Plex Sans;" />
-                            <input id="EditAnexoPregunta" class="form-control" type="file" name="Nombre" style="width: 100%; font-family: IBM Plex Sans;" />
-                            <input id="EditAnexoPreguntaURL" class="form-control" type="text" name="Nombre" placeholder="Ingresa la URL del anexo" style="width: 100%; font-family: IBM Plex Sans;" />
-                            <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner ">Guardar</button>
-                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner">Cerrar</button>
+                            <input id="EditPreguntaTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                            <input id="EditPesoTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa el peso" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                            <input id="EditAnexoPregunta" class="form-control" type="file" name="Nombre" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                            <input id="EditAnexoPreguntaURL" class="form-control" type="text" name="Nombre" placeholder="Ingresa la URL del anexo" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                            <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; margin-bottom: 5px;">Guardar</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner; margin-bottom: 5px;">Cerrar</button>
                         </div>
                     `;
 
@@ -381,6 +381,43 @@ function CE_DeactivateNavBy(){
                     }else if(pregunta.picture != null){
                         document.getElementById('EditAnexoPregunta').value = pregunta.picture;
                     }
+
+                    // Añadir evento para cerrar el overlay
+                    document.getElementById('CerrarOverlay').addEventListener('click', () => {
+                        overlay.style.display = 'none'; // Ocultar el overlay
+                    });
+
+                    // Añadir evento para guardar los cambios
+                    document.getElementById('GuardarEdit').addEventListener('click', () => {
+                        const editPregunta = document.getElementById('EditPreguntaTXT').value;
+                        const editPeso = document.getElementById('EditPesoTXT').value;
+                        const editAnexo = document.getElementById('EditAnexoPregunta').files.length > 0 ? document.getElementById('EditAnexoPregunta').files[0].name : document.getElementById('EditAnexoPreguntaURL').value;
+                        if (editPregunta && editPeso) {
+                            //actualizar la pregunta en el array de preguntas
+                            questions[index].question = editPregunta;
+                            questions[index].weight = editPeso;
+                            if(editAnexo != ''){
+                                if(document.getElementById('EditAnexoPregunta').files.length > 0){
+                                    questionsImg.forEach((questionImg, indexImg) => {
+                                        if(questionImg.index === index){
+                                            questionsImg.splice(indexImg, 1);
+                                        }
+                                    });
+                                    const file = document.getElementById('EditAnexoPregunta').files[0];
+                                    questionsImg.push({index: index , file: file});
+                                }else{
+                                    questions[index].url = editAnexo;
+                                }
+                            }
+                            //actualizar la pregunta en el listado de preguntas
+                            newH5.textContent = editPregunta;
+                            newSpan.textContent = editPeso;
+                            newSmall.textContent = editAnexo;
+                            overlay.style.display = 'none'; // Ocultar el overlay
+                        } else {
+                            alert('Por favor, ingresa tanto la pregunta como el peso.');
+                        }
+                    });
                     
                 });
                 
