@@ -188,6 +188,22 @@ function enviarDatos(preguntas) {
         console.error('Error al enviar los datos:', error);
     });
 
+    //formdata con el siguiente formato study_id
+    const url2 = 'https://api.cheetah-research.ai/chatbot/updateLogs/' 
+    const formData2 = new FormData();
+    formData2.append('study_id', localStorage.getItem('selectedStudyId'));
+    axios.post(url2, formData2, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+    .then(response => {
+        console.log(response.data);
+    })
+    .catch(error => {
+        console.error('Error al enviar los datos:', error);
+    });
+
 }
 
 
@@ -379,7 +395,7 @@ function CE_DeactivateNavBy(){
                     if(pregunta.url != null){
                         document.getElementById('EditAnexoPreguntaURL').value = pregunta.url;
                     }else if(pregunta.picture != null){
-                        document.getElementById('EditAnexoPregunta').value = pregunta.picture;
+                        document.getElementById('EditAnexoPregunta').value = pregunta.file_path;
                     }
 
                     // Añadir evento para cerrar el overlay
@@ -398,11 +414,6 @@ function CE_DeactivateNavBy(){
                             questions[index].weight = editPeso;
                             if(editAnexo != ''){
                                 if(document.getElementById('EditAnexoPregunta').files.length > 0){
-                                    questionsImg.forEach((questionImg, indexImg) => {
-                                        if(questionImg.index === index){
-                                            questionsImg.splice(indexImg, 1);
-                                        }
-                                    });
                                     const file = document.getElementById('EditAnexoPregunta').files[0];
                                     questionsImg.push({index: index , file: file});
                                 }else{
@@ -419,6 +430,19 @@ function CE_DeactivateNavBy(){
                         }
                     });
                     
+                });
+
+                //eliminar todas las preguntas de seguimiento
+                const deleteFollowQuestionsBtn = document.createElement('button');
+                deleteFollowQuestionsBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+                deleteFollowQuestionsBtn.innerText = 'Eliminar preguntas de seguimiento';
+                deleteFollowQuestionsBtn.style.marginRight = '10px';
+                buttonsDiv.appendChild(deleteFollowQuestionsBtn);
+
+                deleteFollowQuestionsBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    followQuestionList.innerHTML = '';
+                    questions[index].feedback_questions = [];
                 });
                 
     
