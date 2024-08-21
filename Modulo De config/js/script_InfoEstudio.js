@@ -37,8 +37,9 @@ function llenar() {
         const downloadLogsButton = document.getElementById('DescargarTranscrptBtn');
         if (downloadLogsButton) {
             downloadLogsButton.href = response.data.url;
-            //downloadLogsButton.setAttribute('download', 'transcript.txt'); agregar transcript_nombredel estudio
-            
+            downloadLogsButton.setAttribute('download', 'transcript_' + selectedStudyData.tituloDelEstudio + '.txt');
+
+
         } else {
             console.error('Elemento con ID "DescargarTranscrptBtn" no encontrado.');
         }
