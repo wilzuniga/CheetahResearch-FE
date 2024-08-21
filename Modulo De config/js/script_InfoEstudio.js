@@ -38,10 +38,13 @@ function llenar() {
             axios.post(url, formData)
             .then((response) => {
                 const downloadUrl = response.data.url;
+                // Sanitizar el nombre del archivo
+                const sanitizedTitle = selectedStudyData.tituloDelEstudio.replace(/\s+/g, '_').replace(/[\/\\?*:|"<>]/g, '');
+                const filename = 'transcript_' + sanitizedTitle + '.csv';
                 // Crear un enlace temporal para la descarga
                 const tempLink = document.createElement('a');
                 tempLink.href = downloadUrl;
-                tempLink.download = 'transcript_' + selectedStudyData.tituloDelEstudio + '.txt';
+                tempLink.download = filename; // Usar el nombre sanitizado
                 tempLink.style.display = 'none'; // Ocultar el enlace
                 document.body.appendChild(tempLink);
                 tempLink.click();
