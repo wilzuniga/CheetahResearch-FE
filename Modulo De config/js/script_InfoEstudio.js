@@ -31,23 +31,29 @@ function llenar() {
     }
     formData.append('study_id', studyId);
 
-    axios.post(url, formData)
-    .then((response) => {
-        console.log(response.data);
-        const downloadLogsButton = document.getElementById('DescargarTranscrptBtn');
-        if (downloadLogsButton) {
-            downloadLogsButton.href = response.data.url;
-            downloadLogsButton.setAttribute('download', 'transcript_' + selectedStudyData.tituloDelEstudio + '.txt');
-
-
-        } else {
-            console.error('Elemento con ID "DescargarTranscrptBtn" no encontrado.');
-        }
-    })
-    .catch((error) => {
-        console.error('Error al realizar la solicitud:', error);
-    });
-
+    // Evento para manejar la descarga cuando se hace clic en el botón
+    const downloadLogsButton = document.getElementById('DescargarTranscrptBtn');
+    if (downloadLogsButton) {
+        downloadLogsButton.addEventListener('click', () => {
+            axios.post(url, formData)
+            .then((response) => {
+                const downloadUrl = response.data.url;
+                // Crear un enlace temporal para la descarga
+                const tempLink = document.createElement('a');
+                tempLink.href = downloadUrl;
+                tempLink.download = 'transcript_' + selectedStudyData.tituloDelEstudio + '.txt';
+                tempLink.style.display = 'none'; // Ocultar el enlace
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
+            })
+            .catch((error) => {
+                console.error('Error al realizar la solicitud:', error);
+            });
+        });
+    } else {
+        console.error('Elemento con ID "DescargarTranscrptBtn" no encontrado.');
+    }
 }
 
 window.onload = llenar;
