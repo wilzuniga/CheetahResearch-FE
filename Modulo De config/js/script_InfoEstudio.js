@@ -1,28 +1,52 @@
-function llenar(){
-    study = localStorage.getItem('selectedStudyData');
+function llenar() {
+    const studyDataJSON = localStorage.getItem('selectedStudyData');
+    
+    if (!studyDataJSON) {
+        console.error('No se encontró el estudio seleccionado en localStorage.');
+        return;
+    }
 
-    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    const studyData = JSON.parse(studyDataJSON);
+
     const selectedStudyData = {
-        tituloDelEstudio: studyData.title,
-        mercadoObjetivo: studyData.marketTarget,
-        objetivosDelEstudio: studyData.studyObjectives,
-        Resumen: studyData.prompt,
+        tituloDelEstudio: studyData.title || 'Título no disponible',
+        mercadoObjetivo: studyData.marketTarget || 'Mercado no disponible',
+        objetivosDelEstudio: studyData.studyObjectives || 'Objetivos no disponibles',
+        Resumen: studyData.prompt || 'Resumen no disponible',
     };
 
-    document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
+    const nombreProyectoLbl = document.getElementById('nombreProyectoLbl');
+    if (nombreProyectoLbl) {
+        nombreProyectoLbl.innerText = selectedStudyData.tituloDelEstudio;
+    } else {
+        console.error('Elemento con ID "nombreProyectoLbl" no encontrado.');
+    }
 
     const url = 'https://api.cheetah-research.ai/chatbot/download_logs/';
     const formData = new FormData();
-    formData.append('study_id', localStorage.getItem('selectedStudyId'));
+    const studyId = localStorage.getItem('selectedStudyId');
+    if (!studyId) {
+        console.error('No se encontró "selectedStudyId" en localStorage.');
+        return;
+    }
+    formData.append('study_id', studyId);
 
     axios.post(url, formData)
     .then((response) => {
         console.log(response.data);
         const downloadLogsButton = document.getElementById('DescargarTranscrptBtn');
-        downloadLogsButton.href = response.data.url;
+        if (downloadLogsButton) {
+            downloadLogsButton.href = response.data.url;
+            //downloadLogsButton.setAttribute('download', 'transcript.txt'); agregar transcript_nombredel estudio
+            
+        } else {
+            console.error('Elemento con ID "DescargarTranscrptBtn" no encontrado.');
+        }
     })
     .catch((error) => {
-        console.error(error);
+        console.error('Error al realizar la solicitud:', error);
     });
 
 }
+
+window.onload = llenar;
