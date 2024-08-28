@@ -550,5 +550,8 @@ document.getElementById('GuardarEncuestaBtn').addEventListener('click', (event) 
     event.preventDefault();
     guardarPreguntas(); 
     alert('Encuesta guardada exitosamente');
+    //recargar la pagina
+    location.reload();
+
 
 });
