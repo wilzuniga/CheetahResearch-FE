@@ -170,6 +170,7 @@ function sendMessage(message, imageSrc) {
 
     const img = document.createElement('img');
     if (imageSrc) {
+
         img.className = 'img-fluid d-flex order-1 mx-auto mb-2'
         img.src = imageSrc;
         img.style.maxHeight = '18rem';
@@ -313,9 +314,10 @@ function getMessage(message, imageSrc, link) {
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
 
     if (imageSrc) {
+        ruta = "https://cheetahresearch.s3.amazonaws.com/" + imageSrc;
         const img = document.createElement('img');
         img.className = 'img-fluid d-flex order-1 mx-auto mb-2'
-        img.src = imageSrc;
+        img.src = ruta;
         img.style.maxHeight = '18rem';
         img.style.height = 'auto';
         img.style.minHeight = '9rem';
