@@ -130,6 +130,12 @@ document.getElementById('btIMG').addEventListener('click', function () {
 
 //Enviar un mensaje como entrevistador
 function sendMessage(message, imageSrc) {
+    //BUSCAR SI INCLUYE LA PALABRA "LISTO" Y REEMPLAZARLA POR PERFECTO
+    message = message.replace(/LISTO/g, 'Perfecto');
+    message = message.replace(/listo/g, 'perfecto');
+    message = message.replace(/Listo/g, 'Perfecto');
+
+    
     //Variables para display de Espera de Respuesta
     let loadingGif = document.getElementById('LoadingGif');
     let loadingMsg = document.getElementById('Typing-Msg');
