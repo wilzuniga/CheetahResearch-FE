@@ -63,7 +63,7 @@ function llenar() {
     const downloadLogsButtonBckup = document.getElementById('DescargarTranscrptBtnBckup');
     if (downloadLogsButtonBckup) {
         downloadLogsButtonBckup.addEventListener('click', () => {
-            axios.post('https://api.cheetah-research.ai/chatbot/download_logs_bckup/', formData)
+            axios.post('https://api.cheetah-research.ai/chatbot/download_logs_backup/', formData)
             .then((response) => {
                 const downloadUrl = response.data.url;
                 // Sanitizar el nombre del archivo
