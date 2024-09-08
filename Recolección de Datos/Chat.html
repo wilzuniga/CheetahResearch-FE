@@ -48,6 +48,17 @@
             word-wrap: break-word; /* Permite que el texto haga salto de línea */
             word-break: break-word; /* O también puedes usar word-break: break-all; */
         }
+
+        /* Que el div "overlayContent" se ancho y las letras se modifiquen cuando se haga display en celulares */
+        @media (max-width: 768px) {
+            #overlayContent {
+                width: 90%;
+            }
+
+            #overlayContent p {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 
