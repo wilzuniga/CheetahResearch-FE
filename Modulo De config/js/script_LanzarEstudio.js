@@ -90,7 +90,8 @@ function AgregarFiltros() {
     axios.get(url)
         .then(response => {
             console.log(response.data);
-            const data = response.data;
+            const data = response.data.filters;
+            //ciclar por la data
             data.forEach(filtro => {
                 filtros.push(filtro);
                 const filtroItem = document.createElement('li');
@@ -114,6 +115,7 @@ function AgregarFiltros() {
 
                 filtrosLST.appendChild(filtroItem);
             });
+
         })
         .catch(error => {
             console.error('Error al enviar los datos:', error);
