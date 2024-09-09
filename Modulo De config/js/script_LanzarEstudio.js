@@ -153,7 +153,7 @@ function AgregarModulos() {
             });
         })
         .catch(error => {
-            console.error('Error al enviar los datos:', error);
+            console.error('Error al enviar los datos de los modulos :', error);
         });
 }
 
