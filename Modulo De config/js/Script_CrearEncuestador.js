@@ -207,9 +207,12 @@ function captureSurveyerFormData() {
     })
     .then(response => {
         console.log(response);
+        //enviar mensaje para confirmar que se creo el encuestador
+        alert('Encuestador creado exitosamente');
     })
     .catch(error => {
         console.error(error);
+        alert('Error al crear el encuestador');
     });
 
     // Guardar en localStorage
