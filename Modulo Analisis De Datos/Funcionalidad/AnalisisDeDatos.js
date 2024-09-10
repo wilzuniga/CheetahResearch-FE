@@ -109,19 +109,12 @@ function LLenarResumenes(study) {
         axios.post(url, formData)
             .then(function (response) {
                 var data = response.data;
-                ResumenGeneral = data;
-                const coso = marked(data);    
-                if (coso.startsWith("```")) {
-                    coso = coso.slice(3);
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
                 }
-                if (coso.endsWith("```")) {
-                    coso = coso.slice(0, -3);
-                }
-                if (coso.startsWith("markdown")) {
-                    coso = coso.slice(8);
-                }  
+                const coso = marked(data);                          
                 div.innerHTML = coso;                      
-
                 console.log(data);
             })
             .catch(function (error) {
@@ -155,19 +148,12 @@ function LLenarResumenes(study) {
         axios.post(url, formData)
             .then(function (response) {
                 var data = response.data;
-                ResumenIndividual = data;
-                const coso = marked(data);    
-                if (coso.startsWith("```")) {
-                    coso = coso.slice(3);
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
                 }
-                if (coso.endsWith("```")) {
-                    coso = coso.slice(0, -3);
-                }
-                if (coso.startsWith("markdown")) {
-                    coso = coso.slice(8);
-                }  
+                const coso = marked(data);                          
                 div.innerHTML = coso;                      
-
                 console.log(data);
             })
             .catch(function (error) {
@@ -208,18 +194,12 @@ function LLenarResumenes(study) {
         axios.post(url, formData)
             .then(function (response) {
                 var data = response.data;
-                const coso = marked(data);   
-                if (coso.startsWith("```")) {
-                    coso = coso.slice(3);
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
                 }
-                if (coso.endsWith("```")) {
-                    coso = coso.slice(0, -3);
-                }
-                if (coso.startsWith("markdown")) {
-                    coso = coso.slice(8);
-                }   
+                const coso = marked(data);                          
                 div.innerHTML = coso;                      
-
                 console.log(data);
             })
             .catch(function (error) {
@@ -251,18 +231,12 @@ function LLenarResumenes(study) {
         axios.post(url, formData)
             .then(function (response) {
                 var data = response.data;
-                const coso = marked(data);  
-                if (coso.startsWith("```")) {
-                    coso = coso.slice(3);
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
                 }
-                if (coso.endsWith("```")) {
-                    coso = coso.slice(0, -3);
-                }
-                if (coso.startsWith("markdown")) {
-                    coso = coso.slice(8);
-                }    
+                const coso = marked(data);                          
                 div.innerHTML = coso;                      
-
                 console.log(data);
             })
             .catch(function (error) {
@@ -295,18 +269,12 @@ function LLenarResumenes(study) {
         axios.post(url, formData)
             .then(function (response) {
                 var data = response.data;
-                const coso = marked(data); 
-                if (coso.startsWith("```")) {
-                    coso = coso.slice(3);
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
                 }
-                if (coso.endsWith("```")) {
-                    coso = coso.slice(0, -3);
-                }
-                if (coso.startsWith("markdown")) {
-                    coso = coso.slice(8);
-                }     
+                const coso = marked(data);                          
                 div.innerHTML = coso;                      
-
                 console.log(data);
             })
             .catch(function (error) {
@@ -335,18 +303,12 @@ function LLenarResumenes(study) {
         axios.post(url, formData)
             .then(function (response) {
                 var data = response.data;
-                const coso = marked(data); 
-                if (coso.startsWith("```")) {
-                    coso = coso.slice(3);
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
                 }
-                if (coso.endsWith("```")) {
-                    coso = coso.slice(0, -3);
-                }
-                if (coso.startsWith("markdown")) {
-                    coso = coso.slice(8);
-                }     
+                const coso = marked(data);                          
                 div.innerHTML = coso;                      
-
                 console.log(data);
             })
             .catch(function (error) {
@@ -375,18 +337,12 @@ function LLenarResumenes(study) {
         axios.post(url, formData)
             .then(function (response) {
                 var data = response.data;
-                const coso = marked(data);  
-                if (coso.startsWith("```")) {
-                    coso = coso.slice(3);
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
                 }
-                if (coso.endsWith("```")) {
-                    coso = coso.slice(0, -3);
-                }
-                if (coso.startsWith("markdown")) {
-                    coso = coso.slice(8);
-                }    
+                const coso = marked(data);                          
                 div.innerHTML = coso;                      
-
                 console.log(data);
             })
             .catch(function (error) {
@@ -413,18 +369,12 @@ function LLenarResumenes(study) {
         axios.post(url, formData)
             .then(function (response) {
                 var data = response.data;
-                const coso = marked(data);    
-                //verificar que coso no haya quedado entre ```, en caso de que si, eliminarlos del principio y del final. Recordar eliminar la palabra markdown del inicio del string
-                if (coso.startsWith("```")) {
-                    coso = coso.slice(3);
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
                 }
-                if (coso.endsWith("```")) {
-                    coso = coso.slice(0, -3);
-                }
-                if (coso.startsWith("markdown")) {
-                    coso = coso.slice(8);
-                }
-                div.innerHTML = coso;
+                const coso = marked(data);                          
+                div.innerHTML = coso;                      
                 console.log(data);
             })
             .catch(function (error) {
