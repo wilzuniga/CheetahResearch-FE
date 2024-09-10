@@ -24,17 +24,15 @@ function AgregarFiltros(study) {
     axios.get(url)
         .then(function (response) {
             
-            var data = response.data;
+            const data = response.data.filters;
             Demographic_Filters = [];
             Demographic_Filters.push('Seleccionar filtro');
             Demographic_Filters.push('General');
 
             //ciclar la data a partir de la segunda section para ver la estructura del json en la consola
-
-                for(let filter in data['general']){
-                    console.log("-" + filter);
-                    Demographic_Filters.push(filter);                        
-                }
+            data.forEach(filtro => {
+                Demographic_Filters.push(filtro);
+            });
 
 
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');
@@ -352,9 +350,18 @@ function LLenarResumenes(study) {
         axios.post(url, formData)
             .then(function (response) {
                 var data = response.data;
-                const coso = marked(data);      
-                div.innerHTML = coso;                      
-
+                const coso = marked(data);    
+                //verificar que coso no haya quedado entre ```, en caso de que si, eliminarlos del principio y del final. Recordar eliminar la palabra markdown del inicio del string
+                if (coso.startsWith("```")) {
+                    coso = coso.slice(3);
+                }
+                if (coso.endsWith("```")) {
+                    coso = coso.slice(0, -3);
+                }
+                if (coso.startsWith("markdown")) {
+                    coso = coso.slice(8);
+                }
+                div.innerHTML = coso;
                 console.log(data);
             })
             .catch(function (error) {

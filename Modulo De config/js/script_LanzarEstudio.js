@@ -72,6 +72,11 @@ function load(){    // Actualizar el título del estudio desde localStorage
             eliminarBtn.innerText = 'Eliminar';
             eliminarBtn.addEventListener('click', () => {
                 filtroItem.remove();
+                //eliminar el filtro del arreglo
+                const index = filtros.indexOf(filtroTxt);
+                if (index > -1) {
+                    filtros.splice(index, 1);
+                }
             });
             filtroItem.appendChild(eliminarBtn);
 
@@ -112,7 +117,6 @@ function AgregarFiltros() {
                     filtroItem.remove();
                 });
                 filtroItem.appendChild(eliminarBtn);
-
                 filtrosLST.appendChild(filtroItem);
             });
 
@@ -252,7 +256,8 @@ guardarFitroBTN.addEventListener('click', (e) => {
         }
     })
         .then(response => {
-            console.log(response.data);
+            //alert 
+            alert('Filtros guardados correctamente');
         })
         .catch(error => {
             console.error('Error al enviar los datos:', error);
