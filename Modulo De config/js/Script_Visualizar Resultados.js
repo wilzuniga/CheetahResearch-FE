@@ -86,11 +86,11 @@ function LLenarResumenes(){
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
-                        const coso = marked(data);  
-                        if (!coso.startsWith("<")) {
-                            coso = marked(coso);
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
                         }
-                        
+                        const coso = marked(data);                          
                         div.innerHTML = coso;                      
                         console.log(data);
                     })
@@ -125,11 +125,11 @@ function LLenarResumenes(){
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
-                        const coso = marked(data);  
-                        if (!coso.startsWith("<")) {
-                            coso = marked(coso);
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
                         }
-                        
+                        const coso = marked(data);                          
                         div.innerHTML = coso;                      
                         console.log(data);
                     })
@@ -171,11 +171,11 @@ function LLenarResumenes(){
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
-                        const coso = marked(data);  
-                        if (!coso.startsWith("<")) {
-                            coso = marked(coso);
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
                         }
-                        
+                        const coso = marked(data);                          
                         div.innerHTML = coso;                      
                         console.log(data);
                     })
@@ -208,11 +208,11 @@ function LLenarResumenes(){
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
-                        const coso = marked(data);  
-                        if (!coso.startsWith("<")) {
-                            coso = marked(coso);
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
                         }
-                        
+                        const coso = marked(data);                          
                         div.innerHTML = coso;                      
                         console.log(data);
                     })
@@ -246,11 +246,11 @@ function LLenarResumenes(){
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
-                        const coso = marked(data);  
-                        if (!coso.startsWith("<")) {
-                            coso = marked(coso);
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
                         }
-                        
+                        const coso = marked(data);                          
                         div.innerHTML = coso;                      
                         console.log(data);
                     })
@@ -280,11 +280,11 @@ function LLenarResumenes(){
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
-                        const coso = marked(data);  
-                        if (!coso.startsWith("<")) {
-                            coso = marked(coso);
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
                         }
-                        
+                        const coso = marked(data);                          
                         div.innerHTML = coso;                      
                         console.log(data);
                     })
@@ -313,11 +313,11 @@ function LLenarResumenes(){
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
-                        const coso = marked(data);  
-                        if (!coso.startsWith("<")) {
-                            coso = marked(coso);
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
                         }
-                        
+                        const coso = marked(data);                          
                         div.innerHTML = coso;                      
                         console.log(data);
                     })
@@ -345,11 +345,11 @@ function LLenarResumenes(){
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
-                        const coso = marked(data);  
-                        if (!coso.startsWith("<")) {
-                            coso = marked(coso);
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
                         }
-                        
+                        const coso = marked(data);                          
                         div.innerHTML = coso;                      
                         console.log(data);
                     })
