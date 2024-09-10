@@ -115,6 +115,10 @@ function AgregarFiltros() {
                 eliminarBtn.innerText = 'Eliminar';
                 eliminarBtn.addEventListener('click', () => {
                     filtroItem.remove();
+                    const index = filtros.indexOf(filtroTxt);
+                if (index > -1) {
+                    filtros.splice(index, 1);
+                }
                 });
                 filtroItem.appendChild(eliminarBtn);
                 filtrosLST.appendChild(filtroItem);
