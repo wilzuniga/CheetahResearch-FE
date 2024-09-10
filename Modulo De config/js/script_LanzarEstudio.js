@@ -251,6 +251,14 @@ guardarFitroBTN
 guardarFitroBTN.addEventListener('click', (e) => {
     e.preventDefault();
     const formData = new FormData();
+    //que al guardar se cicle por FiltrosLST y se guarde en el arreglo de filtros
+    const filtrosLST = document.getElementById('FiltrosLST');
+    const filtrosItems = filtrosLST.getElementsByTagName('li');
+    filtros = [];
+    for (let i = 0; i < filtrosItems.length; i++) {
+        const filtroTxt = filtrosItems[i].getElementsByTagName('span')[0].innerText;
+        filtros.push(filtroTxt);
+    }
     const filtrosString = JSON.stringify(filtros);
     formData.append('filters', filtrosString);
 
