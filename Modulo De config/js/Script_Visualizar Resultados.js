@@ -361,7 +361,8 @@ function LLenarResumenes(){
                         if (coso.startsWith("markdown")) {
                             coso = coso.slice(8);
                         }    
-                        div.innerHTML = coso;                      
+                        const cosocoso = marked(coso);
+                        div.innerHTML = coscosocosoo;                      
 
                         console.log(data);
                     })
