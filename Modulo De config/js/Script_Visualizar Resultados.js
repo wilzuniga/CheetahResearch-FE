@@ -7,15 +7,15 @@ function AgregarFiltros() {
     axios.get(url)
         .then(function (response) {
             
-            var data = response.data;
+            const data = response.data.filters;
             Demographic_Filters = [];
             Demographic_Filters.push('Seleccionar filtro');
             Demographic_Filters.push('General');
             //ciclar la data a partir de la segunda section para ver la estructura del json en la consola
 
-            for (var i = 1; i < data.length; i++) {
-                Demographic_Filters.push(data[i].filter);
-            }
+            data.forEach(filtro => {
+                Demographic_Filters.push(filtro);
+            });
 
 
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');
@@ -391,4 +391,19 @@ botonImportar.addEventListener('click', () => {
         console.log(files);
     });
     fileChooser.click();
+});
+
+// LLAMAR A /configuration/forzar/<study_id> para forzar el analisis al presionarl el boton botonForzarA
+const botonForzarA = document.getElementById('botonForzarA');
+botonForzarA.addEventListener('click', () => {
+    const url = "https://api.cheetah-research.ai/configuration/forzar/" + localStorage.getItem('selectedStudyId');
+
+    axios.get(url)
+        .then(response => {
+            console.log(response.data);
+            alert('Análisis forzado exitosamente');
+        })
+        .catch(error => {
+            console.error('Error al forzar el análisis:', error);
+        });
 });
