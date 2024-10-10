@@ -119,6 +119,9 @@ function updateSurveyerFormData(data) {
     .then(response => {
 
         console.log(response);
+        //Alert coso guardado
+        alert('Encuestador actualizado  exitosamente');
+
     })
     .catch(error => {
         console.error(error);
