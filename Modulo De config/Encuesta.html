@@ -105,8 +105,8 @@
         </nav>
 
         
-        <div class="d-flex flex-column" id="content-wrapper" style="overflow-y: hidden;">
-            <div class="card" id="contentCard_PaginaOverview" style="margin: 0px;height: calc(100vh - 1px);padding: 10px;border-radius: 0px;overflow-y: scroll;">
+        <div class="d-flex flex-column" id="content-wrapper" style="overflow-y: hidden; position: relative;">
+            <div class="card" id="contentCard_PaginaOverview" style="margin: 0px;height: calc(100vh - 1px);padding: 10px;border-radius: 0px;overflow-y: scroll; ">
                 <div id="overlay" style="display: none;">
                     
                 </div>
@@ -129,8 +129,15 @@
                     <div class="mb-3" style="font-family: IBM Plex Sans;"></div>
                     <div style="width: 250px;font-family: hedliner;"><button class="btn btn-primary d-block w-100" id="GuardarEncuestaBtn" type="submit" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-top: 10px;font-family: hedliner;">Guardar Encuesta</button></div>
                 </form>
+
+                
             </div>
+            <div style="position: absolute; bottom: 0; left: 0; text-align: center; width: 100%;">
+                <p><strong>Cheetah Research</strong> es una marca registrada de <strong>Marketing Total S.A.</strong>. Todos los derechos reservados.</p>
+            </div>
+
         </div>
+        
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
