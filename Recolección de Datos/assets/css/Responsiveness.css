@@ -376,51 +376,52 @@
 
 /* Copyright Legend Text */
 
-.Copyright-Legend, p {
+.Copyright-Legend {
   font-size: 0.45rem;
 }
 
 @media (min-width: 400px) {
-  .Copyright-Legend, p {
+  .Copyright-Legend {
     font-size: 0.5rem;
   }
 }
 
 @media (min-width: 500px) {
-  .Copyright-Legend, p {
+  .Copyright-Legend {
     font-size: 0.6rem;
   }
 }
 
 @media (min-width: 600px) {
-  .Copyright-Legend, p {
+  .Copyright-Legend {
     font-size: 0.7rem;
   }
 }
 
 @media (min-width: 700px) {
-  .Copyright-Legend, p {
+  .Copyright-Legend {
     font-size: 0.8rem;
   }
 }
 
 @media (min-height: 1000px) and (max-width: 500px) {
-  .Copyright-Legend, p {
+  .Copyright-Legend {
     font-size: 0.45rem;
   }
 }
 
 @media (min-height: 1000px) and (min-width: 500px) {
-  .Copyright-Legend, p {
+  .Copyright-Legend {
     font-size: 0.6rem;
   }
 }
 
 @media (min-height: 1000px) and (min-width: 700px) {
-  .Copyright-Legend, p {
+  .Copyright-Legend {
     font-size: 0.7rem;
   }
 }
+
 
 /* Other */
 
