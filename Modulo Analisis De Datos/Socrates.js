@@ -294,6 +294,8 @@ function getMessage(message, imageSrc) {
    let coso = marked(message);
    const messageDiv = document.createElement('div');
    messageDiv.className = 'text-start card-text'; // Alineación a la izquierda
+   messageDiv.style.fontSize = '16px'; // Ajuste del tamaño de fuente
+   messageDiv.style.lineHeight = '1.5'; // Espaciado entre líneas para mejor legibilidad
    messageDiv.style.color = '#FFFFFF'; // Color del texto
    messageDiv.innerHTML = coso;
    cardBody.appendChild(messageDiv);
