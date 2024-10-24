@@ -250,6 +250,8 @@ function sendMessage(message, imageSrc) {
             });
 
         } else {
+            //eliminar todo el contenido entre [] en el mensaje
+            data.response = data.response.replace(/\[.*?\]/g, '');
             if ('file_path' in data) {
                 if ('url' in data) {
                     getMessage(data.response, data.file_path, data.url);
