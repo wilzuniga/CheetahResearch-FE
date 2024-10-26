@@ -280,17 +280,20 @@ function loadStudies() {
         .then(response => {
             console.log(response.data);
             const studies = response.data;
+    
+            // Invertir el orden de los estudios
+            const reversedStudies = studies.reverse();
+            
             const listGroup = document.getElementById('listgrouptudies');
-        
-
-            studies.forEach(study => {
+    
+            reversedStudies.forEach(study => {
                 const studyElement = createStudyElement(study);
                 listGroup.appendChild(studyElement);
             });
         })
         .catch(error => {
             console.error('Error al cargar los estudios:', error);
-        });
+        });    
 }
 
 function createStudyElement(study) {
