@@ -131,7 +131,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
         cambiarEstadoBTN2.addEventListener('click', (e) => {
             e.preventDefault();
             if(studyStatus == 0 || studyStatus == 2){
-                url = 'https://api.cheetah-research.ai/configuration/activateCollection/' + localStorage.getItem('selectedStudyId') + '/';
+                url = 'https://api.cheetah-research.ai/configuration/activateCollection/';
                 formData = new FormData();
                 formData.append('study_id', localStorage.getItem('selectedStudyId'));
                 axios.post(url, formData, {
@@ -154,7 +154,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                         console.error('Error al enviar los datos:', error);
                     });
             }else if(studyStatus == 3 || studyStatus == 1){ 
-                url = 'https://api.cheetah-research.ai/configuration/deactivateCollection/' + localStorage.getItem('selectedStudyId') + '/';
+                url = 'https://api.cheetah-research.ai/configuration/deactivateCollection/';
                 formData = new FormData();
                 formData.append('study_id', localStorage.getItem('selectedStudyId'));
                 axios.post(url, formData, {
