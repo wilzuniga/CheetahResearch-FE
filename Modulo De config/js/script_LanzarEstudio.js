@@ -77,8 +77,14 @@ function load(){    // Actualizar el título del estudio desde localStorage
         cambiarEstadoBTN.addEventListener('click', (e) => {
             e.preventDefault();
             if(studyStatus == 0 || studyStatus == 1){
-                url = 'https://api.cheetah-research.ai/configuration/activateAnalisis/' + localStorage.getItem('selectedStudyId')+ '/';
-                axios.post(url)
+                url = 'https://api.cheetah-research.ai/configuration/activateAnalisis/';
+                formData = new FormData();
+                formData.append('study_id', localStorage.getItem('selectedStudyId'));
+                axios.post(url ,formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                })
                     .then(response => {
                         console.log(response.data);
                         const data = response.data;
@@ -90,23 +96,30 @@ function load(){    // Actualizar el título del estudio desde localStorage
                             location.reload();
                         }
                     }
-                    ) 
+                    )
                     .catch(error => {
                         console.error('Error al enviar los datos:', error);
                     });
+
+                    
             }else if(studyStatus == 3 || studyStatus == 2){ 
-                url = 'https://api.cheetah-research.ai/configuration/deactivateAnalisis/' + localStorage.getItem('selectedStudyId') + '/';
-                axios.post(url)
+                url = 'https://api.cheetah-research.ai/configuration/deactivateAnalisis/';
+                formData = new FormData();
+                formData.append('study_id', localStorage.getItem('selectedStudyId'));
+                axios.post(url, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                })
                     .then(response => {
                         console.log(response.data);
                         const data = response.data;
                         if(data.status == 'success'){
                             document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
-                            studyStatus = 2;
+                            studyStatus = 1;
                             //reiniciar la pagina
                             alert('El módulo de análisis de datos ha sido desactivado');
                             location.reload();
-                            
                         }
                     }
                     )
@@ -122,31 +135,43 @@ function load(){    // Actualizar el título del estudio desde localStorage
             e.preventDefault();
             if(studyStatus == 0 || studyStatus == 2){
                 url = 'https://api.cheetah-research.ai/configuration/activateRecoleccion/' + localStorage.getItem('selectedStudyId') + '/';
-                axios.post(url)
+                formData = new FormData();
+                formData.append('study_id', localStorage.getItem('selectedStudyId'));
+                axios.post(url, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                })
                     .then(response => {
                         console.log(response.data);
                         const data = response.data;
                         if(data.status == 'success'){
                             document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - Activo';
-                            studyStatus = 3;
+                            studyStatus = 2;
                             //reiniciar la pagina
                             alert('El módulo de recolección de datos ha sido activado');
                             location.reload();
                         }
                     }
-                    ) 
+                    )
                     .catch(error => {
                         console.error('Error al enviar los datos:', error);
                     });
             }else if(studyStatus == 3 || studyStatus == 1){ 
                 url = 'https://api.cheetah-research.ai/configuration/deactivateRecoleccion/' + localStorage.getItem('selectedStudyId') + '/';
-                axios.post(url)
+                formData = new FormData();
+                formData.append('study_id', localStorage.getItem('selectedStudyId'));
+                axios.post(url, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                })
                     .then(response => {
                         console.log(response.data);
                         const data = response.data;
                         if(data.status == 'success'){
                             document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
-                            studyStatus = 1;
+                            studyStatus = 0;
                             //reiniciar la pagina
                             alert('El módulo de recolección de datos ha sido desactivado');
                             location.reload();
@@ -155,8 +180,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                     )
                     .catch(error => {
                         console.error('Error al enviar los datos:', error);
-                    }
-                    );
+                    });
             }
         }
         );
