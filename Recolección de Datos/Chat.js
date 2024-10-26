@@ -4,7 +4,6 @@ let hash = 0;
 //Función inicializar Chat
 function initializePage() {
     const study_id = new URLSearchParams(window.location.search).get('id');
-
     if (study_id) {
         console.log('ID de estudio:', study_id);
         loadInterviewer(study_id);
@@ -383,6 +382,12 @@ function getMessage(message, imageSrc, link) {
     //Mensaje de espera de respuesta queda abajo
     let loadingMsg = document.getElementById('Typing-Msg');
     messageList.insertBefore(loadingMsg, null);
+}
+
+function verificarLink() {
+    //verificar si el link esta activo
+    //hacer llamado a este link https://api.cheetah-research.ai/configuration/info_study/{study_id}
+    // si studyStatus es 0
 }
 
 //Funciones cambiar colores de botones al soltar botón (móviles)

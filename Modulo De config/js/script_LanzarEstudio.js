@@ -1,5 +1,6 @@
 let filtros = [];
 let modules = [];
+let studyStatus = 0;
 
 
 function load(){    // Actualizar el título del estudio desde localStorage
@@ -44,6 +45,123 @@ function load(){    // Actualizar el título del estudio desde localStorage
         .catch(error => {
             console.error('Error al enviar los datos:', error);
         });
+
+    url = 'https://api.cheetah-research.ai/configuration/info_study/' + localStorage.getItem('selectedStudyId');
+    //{"status": "success", "studyDate": "2024-08-04T21:07:30.632822-06:00", "studyStatus": 0}
+    axios.get(url)
+        .then(response => {
+            console.log(response.data);
+            const data = response.data;
+            studyStatus = data.studyStatus;
+            if(data.studyStatus == 0){
+                document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
+                document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
+            }else if(data.studyStatus == 1){
+                document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
+                document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - Activo';
+            }else if(data.studyStatus == 2){
+                document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
+                document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
+            }else if(data.studyStatus == 3){
+                document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
+                document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - Activo';
+            }
+        }
+        ) 
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        });
+
+        //Agregar el event listener para el boton de cambio de estado de los links
+        const cambiarEstadoBTN = document.getElementById('StatusBtn_Analisis');
+        cambiarEstadoBTN.addEventListener('click', (e) => {
+            e.preventDefault();
+            if(studyStatus == 0 || studyStatus == 1){
+                url = 'https://api.cheetah-research.ai/configuration/activateAnalisis/' + localStorage.getItem('selectedStudyId');
+                axios.get(url)
+                    .then(response => {
+                        console.log(response.data);
+                        const data = response.data;
+                        if(data.status == 'success'){
+                            document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
+                            studyStatus = 3;
+                            //reiniciar la pagina
+                            alert('El módulo de análisis de datos ha sido activado');
+                            location.reload();
+                        }
+                    }
+                    ) 
+                    .catch(error => {
+                        console.error('Error al enviar los datos:', error);
+                    });
+            }else if(studyStatus == 3 || studyStatus == 2){ 
+                url = 'https://api.cheetah-research.ai/configuration/deactivateAnalisis/' + localStorage.getItem('selectedStudyId');
+                axios.get(url)
+                    .then(response => {
+                        console.log(response.data);
+                        const data = response.data;
+                        if(data.status == 'success'){
+                            document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
+                            studyStatus = 2;
+                            //reiniciar la pagina
+                            alert('El módulo de análisis de datos ha sido desactivado');
+                            location.reload();
+                            
+                        }
+                    }
+                    )
+                    .catch(error => {
+                        console.error('Error al enviar los datos:', error);
+                    }
+                    );
+            }
+        });
+
+        const cambiarEstadoBTN2 = document.getElementById('StatusBtn_Recoleccion');
+        cambiarEstadoBTN2.addEventListener('click', (e) => {
+            e.preventDefault();
+            if(studyStatus == 0 || studyStatus == 2){
+                url = 'https://api.cheetah-research.ai/configuration/activateRecoleccion/' + localStorage.getItem('selectedStudyId');
+                axios.get(url)
+                    .then(response => {
+                        console.log(response.data);
+                        const data = response.data;
+                        if(data.status == 'success'){
+                            document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - Activo';
+                            studyStatus = 3;
+                            //reiniciar la pagina
+                            alert('El módulo de recolección de datos ha sido activado');
+                            location.reload();
+                        }
+                    }
+                    ) 
+                    .catch(error => {
+                        console.error('Error al enviar los datos:', error);
+                    });
+            }else if(studyStatus == 3 || studyStatus == 1){ 
+                url = 'https://api.cheetah-research.ai/configuration/deactivateRecoleccion/' + localStorage.getItem('selectedStudyId');
+                axios.get(url)
+                    .then(response => {
+                        console.log(response.data);
+                        const data = response.data;
+                        if(data.status == 'success'){
+                            document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
+                            studyStatus = 1;
+                            //reiniciar la pagina
+                            alert('El módulo de recolección de datos ha sido desactivado');
+                            location.reload();
+                        }
+                    }
+                    )
+                    .catch(error => {
+                        console.error('Error al enviar los datos:', error);
+                    }
+                    );
+            }
+        }
+        );
+
+
 
     AgregarFiltros();
     AgregarModulos();
