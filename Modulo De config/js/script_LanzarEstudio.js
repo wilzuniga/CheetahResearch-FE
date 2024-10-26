@@ -77,7 +77,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
         cambiarEstadoBTN.addEventListener('click', (e) => {
             e.preventDefault();
             if(studyStatus == 0 || studyStatus == 1){
-                url = 'https://api.cheetah-research.ai/configuration/activateAnalisis/' + localStorage.getItem('selectedStudyId');
+                url = 'https://api.cheetah-research.ai/configuration/activateAnalisis/' + localStorage.getItem('selectedStudyId')+ '/';
                 axios.post(url)
                     .then(response => {
                         console.log(response.data);
@@ -95,7 +95,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                         console.error('Error al enviar los datos:', error);
                     });
             }else if(studyStatus == 3 || studyStatus == 2){ 
-                url = 'https://api.cheetah-research.ai/configuration/deactivateAnalisis/' + localStorage.getItem('selectedStudyId');
+                url = 'https://api.cheetah-research.ai/configuration/deactivateAnalisis/' + localStorage.getItem('selectedStudyId') + '/';
                 axios.post(url)
                     .then(response => {
                         console.log(response.data);
@@ -121,7 +121,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
         cambiarEstadoBTN2.addEventListener('click', (e) => {
             e.preventDefault();
             if(studyStatus == 0 || studyStatus == 2){
-                url = 'https://api.cheetah-research.ai/configuration/activateRecoleccion/' + localStorage.getItem('selectedStudyId');
+                url = 'https://api.cheetah-research.ai/configuration/activateRecoleccion/' + localStorage.getItem('selectedStudyId') + '/';
                 axios.post(url)
                     .then(response => {
                         console.log(response.data);
@@ -139,7 +139,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                         console.error('Error al enviar los datos:', error);
                     });
             }else if(studyStatus == 3 || studyStatus == 1){ 
-                url = 'https://api.cheetah-research.ai/configuration/deactivateRecoleccion/' + localStorage.getItem('selectedStudyId');
+                url = 'https://api.cheetah-research.ai/configuration/deactivateRecoleccion/' + localStorage.getItem('selectedStudyId') + '/';
                 axios.post(url)
                     .then(response => {
                         console.log(response.data);
