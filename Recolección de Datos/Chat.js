@@ -454,7 +454,7 @@ function verificarLink() {
                 document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
                 document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
                 return false
-            }else if(data.studyStatus == 2){
+            }else if(data.studyStatus == 2 || data.studyStatus == 3){
                 document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
                 document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
                 return false
