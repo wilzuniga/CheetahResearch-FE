@@ -438,8 +438,8 @@ function load(study_id) {
     });
 }
 
-function verificarLink() {
-    const VerifURL = 'https://api.cheetah-research.ai/configuration/info_study/' + localStorage.getItem('selectedStudyId');
+function verificarLink(study_id) {
+    const VerifURL = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
     
     return axios.get(VerifURL)
         .then(response => {
@@ -464,7 +464,7 @@ function verificarLink() {
 
 //Función Cargar Entrevistador
 async function loadInterviewer(study_id) {
-    const linkDisponible = await verificarLink();
+    const linkDisponible = await verificarLink(study_id);
 
     if (linkDisponible) {
         const url = "https://api.cheetah-research.ai/configuration/getInterviewer/";

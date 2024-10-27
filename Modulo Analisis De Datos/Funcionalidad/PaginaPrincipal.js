@@ -1,12 +1,33 @@
 // agregarCard.js
 
+function verificarLink(study_id) {
+    const VerifURL = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
+    
+    return axios.get(VerifURL)
+        .then(response => {
+            console.log(response.data);
+            const data = response.data;
+            let studyStatus = data.studyStatus;
+            
+            if(studyStatus == 0) {
+                return false;
+            } else if(studyStatus == 1) {
+                return false;
+            } else {
+                return true;
+            }
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+            return false;
+        });
+}
+
 function initializePage() {
     console.log('Page initialized');
     const study_id = new URLSearchParams(window.location.search).get('id');
     if (study_id) {
         console.log('ID de estudio:', study_id);
-        hideOverlay();
-
         contenido(study_id);
     } else {
         console.error('No se encontró el parámetro id en la URL.');
@@ -15,29 +36,35 @@ function initializePage() {
     }
 }
 
-function contenido(study) {
-    var div = document.getElementById("contentCard_PaginaOverview");
 
-    formData = new FormData();
-    formData.append('filter', 'General');
-    formData.append('module', 'general');
-    formData.append('sub_module', 'narrative');
-    const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
-    axios.post(url, formData)
-        .then(function (response) {
-            var data = response.data;
-            const coso = marked(data);      
-            div.innerHTML = coso;                      
+async function contenido(study) {
+    const linkDisponible = await verificarLink(study_id);
+    if (linkDisponible) {
+        var div = document.getElementById("contentCard_PaginaOverview");
 
-            console.log(data);
-        })
-        .catch(function (error) {
-            div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-            console.log(error);
-        })
-        .then(function () {
-            // always executed
-        });
+        formData = new FormData();
+        formData.append('filter', 'General');
+        formData.append('module', 'general');
+        formData.append('sub_module', 'narrative');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                const coso = marked(data);      
+                div.innerHTML = coso;                      
+
+                console.log(data);
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+    } else {
+        showOverlay();
+    }
 }
 
 //Link Desactivado
@@ -75,11 +102,6 @@ function removeLinks() {
     link2.removeAttribute('href');
     link3.removeAttribute('href');
     link4.removeAttribute('href');
-}
-
-function verificarLink() {
-    //verificar si el link esta activp
-    //si esta activo, 
 }
 
 
