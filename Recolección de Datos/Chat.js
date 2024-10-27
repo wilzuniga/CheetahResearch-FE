@@ -445,7 +445,7 @@ function load(study_id) {
 function verificarLink() {
     const VerifURL = 'https://api.cheetah-research.ai/configuration/info_study/' + localStorage.getItem('selectedStudyId');
     //{"status": "success", "studyDate": "2024-08-04T21:07:30.632822-06:00", "studyStatus": 0}
-    axios.get(url)
+    axios.get(VerifURL)
         .then(response => {
             console.log(response.data);
             const data = response.data;
