@@ -475,8 +475,9 @@ function verificarLink() {
 
 //Función Cargar Entrevistador
 function loadInterviewer(study_id) {
+    console.log(verificarLink());
 
-    if(verificarLink()){
+    if(verificarLink() ){
     
         const url = "https://api.cheetah-research.ai/configuration/getInterviewer/";
 
