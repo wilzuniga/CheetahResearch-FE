@@ -384,11 +384,7 @@ function getMessage(message, imageSrc, link) {
     messageList.insertBefore(loadingMsg, null);
 }
 
-function verificarLink() {
-    //verificar si el link esta activo
-    //hacer llamado a este link https://api.cheetah-research.ai/configuration/info_study/{study_id}
-    // si studyStatus es 0
-}
+
 
 //Funciones cambiar colores de botones al soltar botón (móviles)
 document.getElementById('btIMG-Cont').addEventListener('touchstart', function () {
@@ -444,34 +440,34 @@ function load(study_id) {
 
 function verificarLink() {
     const VerifURL = 'https://api.cheetah-research.ai/configuration/info_study/' + localStorage.getItem('selectedStudyId');
-    //{"status": "success", "studyDate": "2024-08-04T21:07:30.632822-06:00", "studyStatus": 0}
-    axios.get(VerifURL)
+    
+    return axios.get(VerifURL)
         .then(response => {
             console.log(response.data);
             const data = response.data;
-            studyStatus = data.studyStatus;
-            if(data.studyStatus == 0){
+            let studyStatus = data.studyStatus;
+            
+            if(studyStatus == 0) {
                 document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
                 document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
                 console.log('El enlace ya no está disponible 1');
-
-                return false
-            }else if(data.studyStatus == 2 || data.studyStatus == 3){
+                return false;
+            } else if(studyStatus == 2) {
                 document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
                 document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
                 console.log('El enlace ya no está disponible 2');
-
-                return false
-            }else{
+                return false;
+            } else {
                 console.log('El enlace está activo');
-                return true
+                return true;
             }
-        }
-        ) 
+        })
         .catch(error => {
             console.error('Error al enviar los datos:', error);
+            return false;
         });
 }
+
 
 //Función Cargar Entrevistador
 function loadInterviewer(study_id) {
