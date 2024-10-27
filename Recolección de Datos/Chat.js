@@ -448,17 +448,10 @@ function verificarLink() {
             let studyStatus = data.studyStatus;
             
             if(studyStatus == 0) {
-                document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
-                document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
-                console.log('El enlace ya no está disponible 1');
                 return false;
             } else if(studyStatus == 2) {
-                document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
-                document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
-                console.log('El enlace ya no está disponible 2');
                 return false;
             } else {
-                console.log('El enlace está activo');
                 return true;
             }
         })
@@ -470,11 +463,10 @@ function verificarLink() {
 
 
 //Función Cargar Entrevistador
-function loadInterviewer(study_id) {
-    console.log(verificarLink());
+async function loadInterviewer(study_id) {
+    const linkDisponible = await verificarLink();
 
-    if(verificarLink() ){
-    
+    if (linkDisponible) {
         const url = "https://api.cheetah-research.ai/configuration/getInterviewer/";
 
         axios.post(url, { study_id: study_id }, {
@@ -489,11 +481,9 @@ function loadInterviewer(study_id) {
             document.getElementById('Bot-Name').innerText = nombre;
             const formContainer = document.createElement('div');
 
-
-
             formContainer.innerHTML = `
             <div id="overlayContent" class="text-wrap">
-                <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
+                <img src="${imagen}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
                 <p id="greeting">
                 ${data.interviewerGreeting}
                 </p>
@@ -501,11 +491,9 @@ function loadInterviewer(study_id) {
             </div>
             `;
 
-            imgPP = data.interviewerProfilePicture;
-
-            //Imagen del Bot para Espera de Respuesta
-            let TM_BotIMG = document.getElementById('typingMessage_BotIMG');
-            TM_BotIMG.src = imgPP;
+            // Imagen del Bot para Espera de Respuesta
+            const TM_BotIMG = document.getElementById('typingMessage_BotIMG');
+            TM_BotIMG.src = imagen;
 
             document.getElementById('overlay').innerHTML = formContainer.innerHTML;
 
@@ -518,29 +506,18 @@ function loadInterviewer(study_id) {
         }).catch(error => {
             console.error(error);
         });
-    }else{
+    } else {
         const formContainer = document.createElement('div');
         formContainer.innerHTML = `
-            <div id="overlayContent" style="
-                height: auto;
-                background-color: white;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                border-radius: 25px;
-                text-align: center;
-                text-color: black;
-                padding: 20px;
-            ">
+            <div id="overlayContent">
                 <p>Parece que el enlace ya no está disponible. Si necesitas acceder a esta información, no dudes en contactarnos, ¡estamos aquí para ayudarte a resolverlo!</p>
             </div>
         `;
 
         document.getElementById('overlay').innerHTML = formContainer.innerHTML;
-
     }
 }
+
 
 //Función para deshabilitar Chat al terminarlo
 function endChat() {
