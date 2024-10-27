@@ -28,6 +28,7 @@ function initializePage() {
     const study_id = new URLSearchParams(window.location.search).get('id');
     if (study_id) {
         console.log('ID de estudio:', study_id);
+        hideOverlay();
         contenido(study_id);
     } else {
         console.error('No se encontró el parámetro id en la URL.');
