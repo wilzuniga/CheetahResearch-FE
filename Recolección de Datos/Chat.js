@@ -509,7 +509,7 @@ async function loadInterviewer(study_id) {
     } else {
         const formContainer = document.createElement('div');
         formContainer.innerHTML = `
-            <div id="overlayContent">
+            <div id="overlayContent" class="text-wrap">
                 <p>Parece que el enlace ya no está disponible. Si necesitas acceder a esta información, no dudes en contactarnos, ¡estamos aquí para ayudarte a resolverlo!</p>
             </div>
         `;
