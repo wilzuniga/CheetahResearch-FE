@@ -453,12 +453,17 @@ function verificarLink() {
             if(data.studyStatus == 0){
                 document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
                 document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
+                console.log('El enlace ya no está disponible 1');
+
                 return false
             }else if(data.studyStatus == 2 || data.studyStatus == 3){
                 document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
                 document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
+                console.log('El enlace ya no está disponible 2');
+
                 return false
             }else{
+                console.log('El enlace está activo');
                 return true
             }
         }
@@ -471,7 +476,7 @@ function verificarLink() {
 //Función Cargar Entrevistador
 function loadInterviewer(study_id) {
 
-    if(verificarLink() == true){
+    if(verificarLink()){
     
         const url = "https://api.cheetah-research.ai/configuration/getInterviewer/";
 
