@@ -452,7 +452,7 @@ function verificarLink() {
                 document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
                 console.log('El enlace ya no está disponible 1');
                 return false;
-            } else if(studyStatus == 2 || studyStatus == 3) {
+            } else if(studyStatus == 2) {
                 document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
                 document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
                 console.log('El enlace ya no está disponible 2');
