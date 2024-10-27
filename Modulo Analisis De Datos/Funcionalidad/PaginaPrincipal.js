@@ -38,7 +38,7 @@ function initializePage() {
 
 
 async function contenido(study) {
-    const linkDisponible = await verificarLink(study_id);
+    const linkDisponible = await verificarLink(study);
     if (linkDisponible) {
         var div = document.getElementById("contentCard_PaginaOverview");
 
