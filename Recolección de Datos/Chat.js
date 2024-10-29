@@ -175,7 +175,7 @@ function sendMessage(message, imageSrc) {
     if (imageSrc) {
 
         img.className = 'img-fluid d-flex order-1 mx-auto mb-2'
-        img.src = imageSrc;
+        img.src = imgPP;
         img.style.maxHeight = '18rem';
         img.style.height = 'auto';
         img.style.minHeight = '9rem';
@@ -328,7 +328,7 @@ function getMessage(message, imageSrc, link) {
         ruta = "https://cheetahresearch.s3.amazonaws.com/" + imageSrc;
         const img = document.createElement('img');
         img.className = 'img-fluid d-flex order-1 mx-auto mb-2'
-        img.src = ruta;
+        img.src = imgPP;
         img.style.maxHeight = '18rem';
         img.style.height = 'auto';
         img.style.minHeight = '9rem';
@@ -477,6 +477,7 @@ async function loadInterviewer(study_id) {
             const data = response.data;
             const nombre = data.interviewerName;
             const imagen = data.interviewerProfilePicture;
+            imgPP = imagen;
 
             document.getElementById('Bot-Name').innerText = nombre;
             const formContainer = document.createElement('div');
