@@ -175,7 +175,7 @@ function sendMessage(message, imageSrc) {
     if (imageSrc) {
 
         img.className = 'img-fluid d-flex order-1 mx-auto mb-2'
-        img.src = imgPP;
+        img.src = imageSrc;
         img.style.maxHeight = '18rem';
         img.style.height = 'auto';
         img.style.minHeight = '9rem';
@@ -328,7 +328,7 @@ function getMessage(message, imageSrc, link) {
         ruta = "https://cheetahresearch.s3.amazonaws.com/" + imageSrc;
         const img = document.createElement('img');
         img.className = 'img-fluid d-flex order-1 mx-auto mb-2'
-        img.src = imgPP;
+        img.src = ruta;
         img.style.maxHeight = '18rem';
         img.style.height = 'auto';
         img.style.minHeight = '9rem';
@@ -476,15 +476,14 @@ async function loadInterviewer(study_id) {
         }).then(response => {
             const data = response.data;
             const nombre = data.interviewerName;
-            const imagen = data.interviewerProfilePicture;
-            imgPP = imagen;
+            imgPP = data.interviewerProfilePicture;
 
             document.getElementById('Bot-Name').innerText = nombre;
             const formContainer = document.createElement('div');
 
             formContainer.innerHTML = `
             <div id="overlayContent" class="text-wrap">
-                <img src="${imagen}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
+                <img src="${imgPP}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
                 <p id="greeting">
                 ${data.interviewerGreeting}
                 </p>
@@ -494,7 +493,7 @@ async function loadInterviewer(study_id) {
 
             // Imagen del Bot para Espera de Respuesta
             const TM_BotIMG = document.getElementById('typingMessage_BotIMG');
-            TM_BotIMG.src = imagen;
+            TM_BotIMG.src = imgPP;
 
             document.getElementById('overlay').innerHTML = formContainer.innerHTML;
 
