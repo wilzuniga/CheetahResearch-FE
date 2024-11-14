@@ -419,9 +419,17 @@ guardarFitroBTN.addEventListener('click', (e) => {
 // Agregar un event listener para el botón de guardar módulos
 guardarModuloBTN.addEventListener('click', (e) => {
     e.preventDefault();
-    const modulesString = JSON.stringify(modules);
     const formData = new FormData();
-    formData.append('modules', modulesString);
+    //que al guardar se cicle por el coso de modulos y se guarde en el arreglo de modulos
+    const modulosLST = document.getElementById('ModulesLST');
+    const modulosItems = modulosLST.getElementsByTagName('li');
+    modules = [];
+    for (let i = 0; i < modulosItems.length; i++) {
+        const moduloTxt = modulosItems[i].getElementsByTagName('span')[0].innerText;
+        modules.push(moduloTxt);
+    }
+    const modulosString = JSON.stringify(modules);
+    formData.append('modules', modulosString);
 
     axios.post('https://api.cheetah-research.ai/configuration/modules/' + localStorage.getItem('selectedStudyId'), formData, {
         headers: {
@@ -429,11 +437,13 @@ guardarModuloBTN.addEventListener('click', (e) => {
         }
     })
         .then(response => {
-            console.log(response.data);
+            //alert 
+            alert('Módulos guardados correctamente');
         })
         .catch(error => {
             console.error('Error al enviar los datos:', error);
         });
+
 });
 
 
