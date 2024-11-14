@@ -184,6 +184,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
 
     AgregarFiltros();
     AgregarModulos();
+
     // Manejar el evento del botón de agregar filtro
     const agregarFiltroBtn = document.getElementById('AgregarFiltroBTN');
     const filtrosLST = document.getElementById('FiltrosLST');
@@ -272,7 +273,8 @@ function AgregarModulos() {
     axios.get(url)
         .then(response => {
             console.log(response.data);
-            const data = response.data;
+            const data = response.data.modules;
+
             data.forEach(modulo => {
                 modules.push(modulo);
                 const moduloItem = document.createElement('li');
