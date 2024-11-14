@@ -12,11 +12,68 @@ function initializePage() {
     if (study_id) {
         console.log('ID de estudio:', study_id);
         AgregarFiltros(study_id);
+        AgregarModulos(study_id);
         
     } else {
         console.error('No se encontró el parámetro id en la URL.');
     }
 }
+
+function AgregarModulos(study) {
+
+    let url = "https://api.cheetah-research.ai/configuration/get_modules/" + study;
+
+    axios.get(url)
+        .then(function (response) {
+            const data = response.data.modules;
+            ActiveModules = [];
+
+            //ciclar la data a partir de la segunda section para ver la estructura del json en la consola
+            data.forEach(modulo => {
+                ActiveModules.push(modulo);
+            });
+
+
+            //desactivar los botones de los modulos que no esten en la lista
+
+            const ResumenGeneralBtn = document.getElementById('ResumenGeneralBtn');
+            const ResumenIndividualBtn = document.getElementById('ResumenIndividualBtn');
+            const UserPersonaBtn = document.getElementById('UserPersonaBtn');
+            const AnalisisPsicograficosBtn = document.getElementById('AnalisisPsicograficosBtn');
+
+            ResumenGeneralBtn.style.display = 'none';
+            ResumenIndividualBtn.style.display = 'none';
+            UserPersonaBtn.style.display = 'none';
+            AnalisisPsicograficosBtn.style.display = 'none';
+
+            ActiveModules.forEach(modulo => {
+                if (modulo === 'Resumen General') {
+                    ResumenGeneralBtn.style.display = 'block';
+                } else if (modulo === 'Resumen Individual') {
+                    ResumenIndividualBtn.style.display = 'block';
+                } else if (modulo === 'User Persona') {
+                    UserPersonaBtn.style.display = 'block';
+                } else if (modulo === 'Análisis Psicograficos') {
+                    AnalisisPsicograficosBtn.style.display = 'block';
+                }
+
+            }
+            );
+
+        }
+
+        )
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        }
+        )
+        .then(function () {
+            // always executed
+        }
+        );
+}
+
 
 function AgregarFiltros(study) {
     let url = "https://api.cheetah-research.ai/configuration/get_filters/" + study;
