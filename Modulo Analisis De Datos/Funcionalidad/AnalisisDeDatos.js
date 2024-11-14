@@ -35,6 +35,19 @@ function AgregarModulos(study) {
 
 
             //desactivar los botones de los modulos que no esten en la lista
+            /*0
+: 
+"Modulo de Analisis Individual"
+1
+: 
+"Modulo de Analisis General"
+2
+: 
+"Modulo de Analisis Psicografico"
+3
+: 
+"Modulo de Users Personas"*/
+
 
             const ResumenGeneralBtn = document.getElementById('ResumenGeneralBtn');
             const ResumenIndividualBtn = document.getElementById('ResumenIndividualBtn');
@@ -47,13 +60,16 @@ function AgregarModulos(study) {
             AnalisisPsicograficosBtn.style.display = 'none';
 
             ActiveModules.forEach(modulo => {
-                if (modulo === 'Resumen General') {
+                if (modulo === 'Modulo de Analisis General') {
                     ResumenGeneralBtn.style.display = 'block';
-                } else if (modulo === 'Resumen Individual') {
+                }
+                if (modulo === 'Modulo de Analisis Individual') {
                     ResumenIndividualBtn.style.display = 'block';
-                } else if (modulo === 'User Persona') {
+                }
+                if (modulo === 'Modulo de Users Personas') {
                     UserPersonaBtn.style.display = 'block';
-                } else if (modulo === 'Análisis Psicograficos') {
+                }
+                if (modulo === 'Modulo de Analisis Psicografico') {
                     AnalisisPsicograficosBtn.style.display = 'block';
                 }
 
