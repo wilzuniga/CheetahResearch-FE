@@ -360,32 +360,7 @@ agregarModuloBtn.addEventListener('click', (e) => {
 };
 
 
-
-/*agregfar un event listwener que al tocar el boton de guardar filtros vacie el arreglo de filtros en la siguinte manera
-axios = require('axios');
-form = require('form-data');
-
-const filters = ["Genero Masculino", "Genero Femenino"]
-
-const formData = new form();
-formData.append('filters', filters);
-
-
-axios.post('http://localhost:8000/filters/66a3248d3839de61044a2a28', formData,{
-  headers: {
-    'Content-Type': 'multipart/form-data',
-  }
-})
-.then(response => {
-  console.log(response.data);
-})
-.catch(error => {
-  console.error('Error al enviar los datos:', error);
-});
-
-guardarFitroBTN
-
-*/
+// Agregar un event listener para el botón de guardar filtros
 
 guardarFitroBTN.addEventListener('click', (e) => {
     e.preventDefault();
