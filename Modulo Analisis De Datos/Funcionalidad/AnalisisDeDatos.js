@@ -48,6 +48,7 @@ function AgregarModulos(study) {
 : 
 "Modulo de Users Personas"*/
 
+            console.log(ActiveModules);
 
             const ResumenGeneralBtn = document.getElementById('ResumenGeneralBtn');
             const ResumenIndividualBtn = document.getElementById('ResumenIndividualBtn');
