@@ -23,6 +23,33 @@ function verificarLink(study_id) {
         });
 }
 
+function verificarOTP(study_id) {
+
+    const otpInput = document.getElementById('otpInput').value;
+    const url = 'https://api.cheetah-research.ai/configuration/validate-otp/'
+
+    formData = new FormData();
+    formData.append('mongo_studio_id', study_id);
+    formData.append('otp', otpInput);
+
+    axios.post(url, formData)
+        .then(response => {
+            console.log(response.data);
+            const data = response.data;
+            let status = data.status;
+            if(status == 'success') {
+                return true;
+            } else {
+                alert('Código incorrecto. Por favor, inténtalo de nuevo.');
+                return false;
+            }
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        });
+}
+
+
 function initializePage() {
     console.log('Page initialized');
     const study_id = new URLSearchParams(window.location.search).get('id');
@@ -40,7 +67,9 @@ function initializePage() {
 
 async function contenido(study) {
     const linkDisponible = await verificarLink(study);
-    if (linkDisponible) {
+    const otp = await otp(study);
+
+    if (linkDisponible && otp) {
         var div = document.getElementById("contentCard_PaginaOverview");
 
         formData = new FormData();
@@ -90,7 +119,43 @@ function linkDesactivado() {
     `;
 
     removeLinks();
-}   
+}  
+
+function otp(study_id) {
+    const overlay = document.getElementById('overlay');
+    overlay.innerHTML = `
+        <div id="overlayContent" style="
+            height: auto;
+            background-color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 25px;
+            text-align: center;
+            text-color: black;
+            padding: 20px;
+        ">
+            <p>Para acceder a esta información, necesitas un código de acceso. Por favor, ingresa el código de acceso que te proporcionaron.</p>
+            <input type="text" id="otpInput" style="
+                width: 50%;
+                padding: 10px;
+                border-radius: 10px;
+                margin: 10px;
+            ">
+            <button onclick="verificarOTP('${study_id}')" style="
+                padding: 10px;
+                border-radius: 10px;
+                margin: 10px;
+                background-color: #c0601c;
+                color: white;
+                border: none;
+                cursor: pointer;
+            ">Verificar</button>
+        </div>
+    `;
+}
+
 
 function removeLinks() {
     var link = document.getElementById('socrates-link');
