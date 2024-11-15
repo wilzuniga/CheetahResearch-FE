@@ -232,7 +232,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                 console.log(response.data);
                 const data = response.data;
                 let estatus = data.otp + " - " + data.expires_at;
-                document.getElementById('OTP_Analisis').innerText = data.otp;
+                document.getElementById('OTP_Analisis').innerText = estatus;
             }
             )
             .catch(error => {
