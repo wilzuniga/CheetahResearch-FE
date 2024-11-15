@@ -33,21 +33,6 @@ function AgregarModulos(study) {
                 ActiveModules.push(modulo);
             });
 
-
-            //desactivar los botones de los modulos que no esten en la lista
-            /*0
-: 
-"Modulo de Analisis Individual"
-1
-: 
-"Modulo de Analisis General"
-2
-: 
-"Modulo de Analisis Psicografico"
-3
-: 
-"Modulo de Users Personas"*/
-
             console.log(ActiveModules);
 
             const ResumenGeneralBtn = document.getElementById('ResumenGeneralBtn');
