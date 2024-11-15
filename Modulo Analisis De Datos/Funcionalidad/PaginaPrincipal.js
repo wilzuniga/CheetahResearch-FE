@@ -79,6 +79,8 @@ function verificarOTP(study_id) {
             if(status == 'success') {
                 otpValidado = true;
                 contenido(study_id);
+                //guardar en sesion que el otp fue validado
+                sessionStorage.setItem('otpValidado', true);
             } else {
                 alert('Código incorrecto. Por favor, inténtalo de nuevo.');
                 otpValidado = false;
@@ -87,6 +89,7 @@ function verificarOTP(study_id) {
         })
         .catch(error => {
             console.error('Error al enviar los datos:', error);
+            alert('Código incorrecto. Por favor, inténtalo de nuevo.');
         });
 }
 
@@ -107,11 +110,11 @@ function initializePage() {
 
 async function contenido(study) {
 
+
     const linkDisponible = await verificarLink(study);
 
     if (linkDisponible) {
-        await otp(study);
-        
+        otpValidado = sessionStorage.getItem('otpValidado');
         if(otpValidado) {
             hideOverlay();
 
@@ -138,8 +141,34 @@ async function contenido(study) {
                 // always executed
             });
         } else {
-            //Mostrar mensaje de error
-            console.log('Mostrar mensaje de error');
+            otp(study);
+            if(otpValidado) {
+                hideOverlay();
+
+                var div = document.getElementById("contentCard_PaginaOverview");
+
+                formData = new FormData();
+                formData.append('filter', 'General');
+                formData.append('module', 'general');
+                formData.append('sub_module', 'narrative');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+                axios.post(url, formData)
+                .then(function (response) {
+                    var data = response.data;
+                    const coso = marked(data);      
+                    div.innerHTML = coso;                      
+
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+                
+            }
         }        
     } else {
         showOverlay();
