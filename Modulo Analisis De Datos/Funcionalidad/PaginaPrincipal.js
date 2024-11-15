@@ -17,14 +17,14 @@ function otp(study_id) {
         ">
             <p>Para acceder a esta información, necesitas un código de acceso. Por favor, ingresa el código de acceso que te proporcionaron.</p>
             <input type="text" id="otpInput" style="
-                width: 50%;
+                width: 75%;
                 padding: 10px;
-                border-radius: 10px;
+                border-radius: 5px;
                 margin: 10px;
             ">
             <button onclick="verificarOTP('${study_id}')" style="
                 padding: 10px;
-                border-radius: 10px;
+                border-radius: 5px;
                 margin: 10px;
                 background-color: #c0601c;
                 color: white;
@@ -91,7 +91,6 @@ function initializePage() {
     const study_id = new URLSearchParams(window.location.search).get('id');
     if (study_id) {
         console.log('ID de estudio:', study_id);
-        hideOverlay();
         contenido(study_id);
     } else {
         console.error('No se encontró el parámetro id en la URL.');
@@ -108,6 +107,8 @@ async function contenido(study) {
     if (linkDisponible) {
         const otpValidado  = await otp(study);
         if(otpValidado) {
+            hideOverlay();
+
             var div = document.getElementById("contentCard_PaginaOverview");
 
             formData = new FormData();
