@@ -103,9 +103,9 @@ function initializePage() {
 
 async function contenido(study) {
     const linkDisponible = await verificarLink(study);
-    const otp = await otp(study);
+    const otpValidado  = await otp(study);
 
-    if (linkDisponible && otp) {
+    if (linkDisponible && otpValidado) {
         var div = document.getElementById("contentCard_PaginaOverview");
 
         formData = new FormData();
