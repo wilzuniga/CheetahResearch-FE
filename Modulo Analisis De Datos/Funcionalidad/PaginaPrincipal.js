@@ -1,5 +1,41 @@
 // agregarCard.js
 
+function otp(study_id) {
+    const overlay = document.getElementById('overlay');
+    overlay.innerHTML = `
+        <div id="overlayContent" style="
+            height: auto;
+            background-color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 25px;
+            text-align: center;
+            text-color: black;
+            padding: 20px;
+        ">
+            <p>Para acceder a esta información, necesitas un código de acceso. Por favor, ingresa el código de acceso que te proporcionaron.</p>
+            <input type="text" id="otpInput" style="
+                width: 50%;
+                padding: 10px;
+                border-radius: 10px;
+                margin: 10px;
+            ">
+            <button onclick="verificarOTP('${study_id}')" style="
+                padding: 10px;
+                border-radius: 10px;
+                margin: 10px;
+                background-color: #c0601c;
+                color: white;
+                border: none;
+                cursor: pointer;
+            ">Verificar</button>
+        </div>
+    `;
+}
+
+
 function verificarLink(study_id) {
     const VerifURL = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
     
@@ -121,40 +157,6 @@ function linkDesactivado() {
     removeLinks();
 }  
 
-function otp(study_id) {
-    const overlay = document.getElementById('overlay');
-    overlay.innerHTML = `
-        <div id="overlayContent" style="
-            height: auto;
-            background-color: white;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 25px;
-            text-align: center;
-            text-color: black;
-            padding: 20px;
-        ">
-            <p>Para acceder a esta información, necesitas un código de acceso. Por favor, ingresa el código de acceso que te proporcionaron.</p>
-            <input type="text" id="otpInput" style="
-                width: 50%;
-                padding: 10px;
-                border-radius: 10px;
-                margin: 10px;
-            ">
-            <button onclick="verificarOTP('${study_id}')" style="
-                padding: 10px;
-                border-radius: 10px;
-                margin: 10px;
-                background-color: #c0601c;
-                color: white;
-                border: none;
-                cursor: pointer;
-            ">Verificar</button>
-        </div>
-    `;
-}
 
 
 function removeLinks() {
