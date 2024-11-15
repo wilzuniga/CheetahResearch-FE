@@ -1,6 +1,6 @@
 // agregarCard.js
 
-const otpValidado  = false;
+otpValidado  = false;
 
 
 function otp(study_id) {
