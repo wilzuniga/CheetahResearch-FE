@@ -182,6 +182,71 @@ function load(){    // Actualizar el título del estudio desde localStorage
 
 
 
+    URLOTP = 'https://api.cheetah-research.ai/configuration/api/get-otp/'
+    formData = new FormData();
+    formData.append('mongo_studio_id', localStorage.getItem('selectedStudyId'));
+
+    //post 
+    /*
+    {
+    "otp": "YWYKKU",
+    "expires_at": "2024-11-17T02:57:16.117851Z",
+    "used": true
+    }
+    */ 
+    axios.post(URLOTP, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    }).then(response => {
+            console.log(response.data);
+            const data = response.data;
+            let estatus = data.otp + " - " + data.expires_at + " - " + data.used;
+            document.getElementById('OTP_Analisis').innerText = data.otp;
+            
+        }
+        )
+        .catch(error => {
+            if(error.response.data.error == 'No valid OTP found for this studio'){
+                document.getElementById('OTP_Analisis').innerText = 'OTP no generado';
+            }
+        });
+
+    URLOTP = 'https://api.cheetah-research.ai/configuration/api/generate-otp/'
+    //agregar un event listener para el boton OTPBtn_Analisis para generar el otp
+    /*
+    {
+    "otp": "AN4W1O",
+    "expires_at": "2024-11-17T04:11:15.309056Z"
+    }
+    */
+
+    const OTPBtn_Analisis = document.getElementById('OTPBtn_Analisis');
+    OTPBtn_Analisis.addEventListener('click', (e) => {
+        e.preventDefault();
+        axios.post(URLOTP, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then(response => {
+                console.log(response.data);
+                const data = response.data;
+                let estatus = data.otp + " - " + data.expires_at;
+                document.getElementById('OTP_Analisis').innerText = data.otp;
+            }
+            )
+            .catch(error => {
+                console.error('Error al enviar los datos:', error);
+            });
+    }
+    );
+
+
+
+    
+
+
+
     AgregarFiltros();
     AgregarModulos();
 
