@@ -62,7 +62,7 @@ function verificarLink(study_id) {
 function verificarOTP(study_id) {
 
     const otpInput = document.getElementById('otpInput').value;
-    const url = 'https://api.cheetah-research.ai/configuration/validate-otp/'
+    const url = 'https://api.cheetah-research.ai/configuration/api/validate-otp/'
 
     formData = new FormData();
     formData.append('mongo_studio_id', study_id);
