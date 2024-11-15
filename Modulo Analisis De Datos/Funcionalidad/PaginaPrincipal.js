@@ -1,5 +1,8 @@
 // agregarCard.js
 
+const otpValidado  = false;
+
+
 function otp(study_id) {
     const overlay = document.getElementById('overlay');
     overlay.innerHTML = `
@@ -74,10 +77,12 @@ function verificarOTP(study_id) {
             const data = response.data;
             let status = data.status;
             if(status == 'success') {
-                return true;
+                otpValidado = true;
+                contenido(study_id);
             } else {
                 alert('Código incorrecto. Por favor, inténtalo de nuevo.');
-                return false;
+                otpValidado = false;
+
             }
         })
         .catch(error => {
@@ -105,7 +110,8 @@ async function contenido(study) {
     const linkDisponible = await verificarLink(study);
 
     if (linkDisponible) {
-        const otpValidado  = await otp(study);
+        otp(study);
+        
         if(otpValidado) {
             hideOverlay();
 
