@@ -110,7 +110,7 @@ async function contenido(study) {
     const linkDisponible = await verificarLink(study);
 
     if (linkDisponible) {
-        otp(study);
+        await otp(study);
         
         if(otpValidado) {
             hideOverlay();
