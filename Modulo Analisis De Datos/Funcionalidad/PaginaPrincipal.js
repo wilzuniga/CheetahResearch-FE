@@ -102,19 +102,20 @@ function initializePage() {
 
 
 async function contenido(study) {
-    const otpValidado  = await otp(study);
 
     const linkDisponible = await verificarLink(study);
 
-    if (linkDisponible && otpValidado) {
-        var div = document.getElementById("contentCard_PaginaOverview");
+    if (linkDisponible) {
+        const otpValidado  = await otp(study);
+        if(otpValidado) {
+            var div = document.getElementById("contentCard_PaginaOverview");
 
-        formData = new FormData();
-        formData.append('filter', 'General');
-        formData.append('module', 'general');
-        formData.append('sub_module', 'narrative');
-        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
-        axios.post(url, formData)
+            formData = new FormData();
+            formData.append('filter', 'General');
+            formData.append('module', 'general');
+            formData.append('sub_module', 'narrative');
+            const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+            axios.post(url, formData)
             .then(function (response) {
                 var data = response.data;
                 const coso = marked(data);      
@@ -129,6 +130,10 @@ async function contenido(study) {
             .then(function () {
                 // always executed
             });
+        } else {
+            //Mostrar mensaje de error
+            console.log('Mostrar mensaje de error');
+        }        
     } else {
         showOverlay();
     }
