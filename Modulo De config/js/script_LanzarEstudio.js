@@ -201,7 +201,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
     }).then(response => {
             console.log(response.data);
             const data = response.data;
-            let estatus = data.otp + " - " + data.expires_at + " - " + data.used;
+            let estatus = data.otp + "      - " + data.expires_at + " - " + data.used;
             document.getElementById('OTP_Analisis').innerText = estatus;
             
         }
@@ -231,7 +231,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
         }).then(response => {
                 console.log(response.data);
                 const data = response.data;
-                let estatus = data.otp + " - " + data.expires_at;
+                let estatus = data.otp + "      - " + data.expires_at;
                 document.getElementById('OTP_Analisis').innerText = estatus;
             }
             )

@@ -80,7 +80,7 @@ function verificarOTP(study_id) {
                 otpValidado = true;
                 contenido(study_id);
                 //guardar en sesion que el otp fue validado
-                sessionStorage.setItem('otpValidado', true);
+                localStorage.setItem('otpValidado', true);
             } else {
                 alert('Código incorrecto. Por favor, inténtalo de nuevo.');
                 otpValidado = false;
@@ -109,13 +109,26 @@ function initializePage() {
 
 
 async function contenido(study) {
+    let linkDisponible = false;
 
-
-    const linkDisponible = await verificarLink(study);
+    //verificar si existe en localStorage la variable de sesion
+    otpValidado = localStorage.getItem('otpValidado');
+    if(otpValidado) {
+        linkDisponible = true;
+    } else {
+        linkDisponible = await verificarLink(study);
+    }
 
     if (linkDisponible) {
-        otpValidado = sessionStorage.getItem('otpValidado');
+        otpValidado = localStorage.getItem('otpValidado');
         if(otpValidado) {
+            //si es dia 30 del mes, se borra la variable de sesion
+            var d = new Date();
+            var dia = d.getDate();
+            if(dia == 30) {
+                localStorage.removeItem('otpValidado');
+            }
+
             hideOverlay();
 
             var div = document.getElementById("contentCard_PaginaOverview");
