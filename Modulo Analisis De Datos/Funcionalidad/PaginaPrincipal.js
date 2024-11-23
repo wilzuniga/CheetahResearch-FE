@@ -65,6 +65,8 @@ function verificarLink(study_id) {
 function verificarOTP(study_id) {
 
     const otpInput = document.getElementById('otpInput').value;
+    //quitarle los espacios a la cadena
+    otpInput = otpInput.replace(/\s/g, '');
     const url = 'https://api.cheetah-research.ai/configuration/api/validate-otp/'
 
     formData = new FormData();
