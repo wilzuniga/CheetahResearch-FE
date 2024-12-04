@@ -269,7 +269,7 @@ function sendMessage(message, imageSrc) {
 
     }).catch((error) => {
         console.log('Error:', error);
-        getMessage('Lo siento, no pude entender tu respuesta. Por favor, inténtalo de nuevo.', null);
+        getMessage('¿Deseas agregar algo mas a tu respuesta?.', null);
         loadingMsg.style.display = 'none';
     });
 }
