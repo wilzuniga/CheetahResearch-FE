@@ -216,7 +216,11 @@ function sendMessage(message, imageSrc) {
     message = message.replace(/LISTO/g, 'Perfecto');
     message = message.replace(/listo/g, 'perfecto');
     message = message.replace(/Listo/g, 'Perfecto');
-
+    message = message.replace(
+        "En agradecimiento por su participación se le hará entrega de un incentivo, el cual para ser acreedor al premio debe llegar hasta al final de la conversación.",
+        ""
+    );
+    
 
     //Procesar y Enviar Respuesta como Encuestador
     const url = 'https://api.cheetah-research.ai/chatbot/communicate/';
