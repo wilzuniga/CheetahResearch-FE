@@ -139,6 +139,7 @@ async function contenido(study) {
             axios.get(url)
                 .then(function (response) {
                     const data = response.data;
+                    console.log(data);
 
                     // Generar HTML dinámico usando los datos del objeto
                     const htmlContent = `
