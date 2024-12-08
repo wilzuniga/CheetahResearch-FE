@@ -134,27 +134,33 @@ async function contenido(study) {
             hideOverlay();
 
             const div = document.getElementById("contentCard_PaginaOverview");
-            const url = "https://api.cheetah-research.ai/configuration/info_study/" + study;
+            const url = "https://api.cheetah-research.ai/configuration/get_studies/";
 
             axios.get(url)
                 .then(function (response) {
-                    const data = response.data;
-                    console.log(data);
+                    const estudios = response.data;
 
-                    // Generar HTML dinámico usando los datos del objeto
-                    const htmlContent = `
-                        <h2>${data.title}</h2>
-                        <p><strong>Objetivo del Estudio:</strong> ${data.studyObjectives}</p>
-                        <p><strong>Mercado Objetivo:</strong> ${data.marketTarget}</p>
-                        <p><strong>Fecha del Estudio:</strong> ${new Date(data.studyDate).toLocaleDateString()}</p>
-                        <p><strong>Estatus del Estudio:</strong> ${data.studyStatus}</p>
-                        <p><strong>Resumen:</strong> ${data.prompt}</p>
-                    `;
+                    // Encontrar el estudio actual
+                    const estudioActual = estudios.find(estudio => estudio._id === study);
 
-                    div.innerHTML = htmlContent;
+                    if (estudioActual) {
+                        // Generar HTML dinámico usando los datos del objeto
+                        const htmlContent = `
+                            <h2>${estudioActual.title}</h2>
+                            <p><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
+                            <p><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
+                            <p><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
+                            <p><strong>Estatus del Estudio:</strong> ${estudioActual.studyStatus}</p>
+                            <p><strong>Resumen:</strong> ${estudioActual.prompt}</p>
+                        `;
+
+                        div.innerHTML = htmlContent;
+                    } else {
+                        div.innerHTML = "<p>No se encontró el estudio solicitado.</p>";
+                    }
                 })
                 .catch(function (error) {
-                    div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                    div.innerHTML = "<p>Ocurrió un error al cargar los estudios.</p>";
                     console.error(error);
                 });
         } else {
@@ -163,26 +169,33 @@ async function contenido(study) {
                 hideOverlay();
 
                 const div = document.getElementById("contentCard_PaginaOverview");
-                const url = "https://api.cheetah-research.ai/configuration/info_study/" + study;
+                const url = "https://api.cheetah-research.ai/configuration/get_studies/";
 
                 axios.get(url)
                     .then(function (response) {
-                        const data = response.data;
+                        const estudios = response.data;
 
-                        // Generar HTML dinámico usando los datos del objeto
-                        const htmlContent = `
-                            <h2>${data.title}</h2>
-                            <p><strong>Objetivo del Estudio:</strong> ${data.studyObjectives}</p>
-                            <p><strong>Mercado Objetivo:</strong> ${data.marketTarget}</p>
-                            <p><strong>Fecha del Estudio:</strong> ${new Date(data.studyDate).toLocaleDateString()}</p>
-                            <p><strong>Estatus del Estudio:</strong> ${data.studyStatus}</p>
-                            <p><strong>Resumen:</strong> ${data.prompt}</p>
-                        `;
+                        // Encontrar el estudio actual
+                        const estudioActual = estudios.find(estudio => estudio._id === study);
 
-                        div.innerHTML = htmlContent;
+                        if (estudioActual) {
+                            // Generar HTML dinámico usando los datos del objeto
+                            const htmlContent = `
+                                <h2>${estudioActual.title}</h2>
+                                <p><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
+                                <p><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
+                                <p><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
+                                <p><strong>Estatus del Estudio:</strong> ${estudioActual.studyStatus}</p>
+                                <p><strong>Resumen:</strong> ${estudioActual.prompt}</p>
+                            `;
+
+                            div.innerHTML = htmlContent;
+                        } else {
+                            div.innerHTML = "<p>No se encontró el estudio solicitado.</p>";
+                        }
                     })
                     .catch(function (error) {
-                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        div.innerHTML = "<p>Ocurrió un error al cargar los estudios.</p>";
                         console.error(error);
                     });
             }
