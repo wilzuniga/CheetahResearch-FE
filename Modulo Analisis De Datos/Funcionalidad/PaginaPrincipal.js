@@ -113,9 +113,9 @@ function initializePage() {
 async function contenido(study) {
     let linkDisponible = false;
 
-    //verificar si existe en localStorage la variable de sesion
+    // Verificar si existe en localStorage la variable de sesión
     otpValidado = localStorage.getItem('otpValidado');
-    if(otpValidado) {
+    if (otpValidado) {
         linkDisponible = true;
     } else {
         linkDisponible = await verificarLink(study);
@@ -123,72 +123,74 @@ async function contenido(study) {
 
     if (linkDisponible) {
         otpValidado = localStorage.getItem('otpValidado');
-        if(otpValidado) {
-            //si es dia 30 del mes, se borra la variable de sesion
-            var d = new Date();
-            var dia = d.getDate();
-            if(dia == 30) {
+        if (otpValidado) {
+            // Si es día 30 del mes, se borra la variable de sesión
+            const d = new Date();
+            const dia = d.getDate();
+            if (dia === 30) {
                 localStorage.removeItem('otpValidado');
             }
 
             hideOverlay();
 
-            var div = document.getElementById("contentCard_PaginaOverview");
+            const div = document.getElementById("contentCard_PaginaOverview");
+            const url = "https://api.cheetah-research.ai/configuration/info_study/" + study;
 
-            formData = new FormData();
-            formData.append('filter', 'General');
-            formData.append('module', 'general');
-            formData.append('sub_module', 'narrative');
-            const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
-            axios.post(url, formData)
-            .then(function (response) {
-                var data = response.data;
-                const coso = marked(data);      
-                div.innerHTML = coso;                      
-
-                console.log(data);
-            })
-            .catch(function (error) {
-                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
-            });
-        } else {
-            otp(study);
-            if(otpValidado) {
-                hideOverlay();
-
-                var div = document.getElementById("contentCard_PaginaOverview");
-
-                formData = new FormData();
-                formData.append('filter', 'General');
-                formData.append('module', 'general');
-                formData.append('sub_module', 'narrative');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
-                axios.post(url, formData)
+            axios.get(url)
                 .then(function (response) {
-                    var data = response.data;
-                    const coso = marked(data);      
-                    div.innerHTML = coso;                      
+                    const data = response.data;
 
-                    console.log(data);
+                    // Generar HTML dinámico usando los datos del objeto
+                    const htmlContent = `
+                        <h2>${data.title}</h2>
+                        <p><strong>Objetivo del Estudio:</strong> ${data.studyObjectives}</p>
+                        <p><strong>Mercado Objetivo:</strong> ${data.marketTarget}</p>
+                        <p><strong>Fecha del Estudio:</strong> ${new Date(data.studyDate).toLocaleDateString()}</p>
+                        <p><strong>Estatus del Estudio:</strong> ${data.studyStatus}</p>
+                        <p><strong>Resumen:</strong> ${data.prompt}</p>
+                    `;
+
+                    div.innerHTML = htmlContent;
                 })
                 .catch(function (error) {
                     div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                    console.log(error);
-                })
-                .then(function () {
-                    // always executed
+                    console.error(error);
                 });
-                
+        } else {
+            otp(study);
+            if (otpValidado) {
+                hideOverlay();
+
+                const div = document.getElementById("contentCard_PaginaOverview");
+                const url = "https://api.cheetah-research.ai/configuration/info_study/" + study;
+
+                axios.get(url)
+                    .then(function (response) {
+                        const data = response.data;
+
+                        // Generar HTML dinámico usando los datos del objeto
+                        const htmlContent = `
+                            <h2>${data.title}</h2>
+                            <p><strong>Objetivo del Estudio:</strong> ${data.studyObjectives}</p>
+                            <p><strong>Mercado Objetivo:</strong> ${data.marketTarget}</p>
+                            <p><strong>Fecha del Estudio:</strong> ${new Date(data.studyDate).toLocaleDateString()}</p>
+                            <p><strong>Estatus del Estudio:</strong> ${data.studyStatus}</p>
+                            <p><strong>Resumen:</strong> ${data.prompt}</p>
+                        `;
+
+                        div.innerHTML = htmlContent;
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.error(error);
+                    });
             }
-        }        
+        }
     } else {
         showOverlay();
     }
 }
+
 
 //Link Desactivado
 //poner un cuadrito pequeño con bordes redondeados que diga que el link está desactivado
