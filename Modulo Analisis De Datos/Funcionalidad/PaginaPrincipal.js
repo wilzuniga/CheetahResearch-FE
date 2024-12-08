@@ -109,7 +109,6 @@ function initializePage() {
     }
 }
 
-
 async function contenido(study) {
     let linkDisponible = false;
 
@@ -146,12 +145,30 @@ async function contenido(study) {
                     if (estudioActual) {
                         // Generar HTML dinámico usando los datos del objeto
                         const htmlContent = `
-                            <h2>${estudioActual.title}</h2>
-                            <p><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
-                            <p><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
-                            <p><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
-                            <p><strong>Estatus del Estudio:</strong> ${estudioActual.studyStatus}</p>
-                            <p><strong>Resumen:</strong> ${estudioActual.prompt}</p>
+                            <style>
+                                .study-title {
+                                    font-size: 2rem;
+                                    font-weight: bold;
+                                    margin-bottom: 10px;
+                                }
+                                .study-section {
+                                    font-size: 1.2rem;
+                                    margin-bottom: 8px;
+                                }
+                                .study-section strong {
+                                    font-size: 1.3rem;
+                                }
+                                .study-content {
+                                    margin-bottom: 15px;
+                                }
+                            </style>
+                            <div class="study-content">
+                                <h2 class="study-title">${estudioActual.title}</h2>
+                                <p class="study-section"><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
+                                <p class="study-section"><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
+                                <p class="study-section"><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
+                                <p class="study-section"><strong>Resumen:</strong> ${estudioActual.prompt}</p>
+                            </div>
                         `;
 
                         div.innerHTML = htmlContent;
@@ -181,12 +198,30 @@ async function contenido(study) {
                         if (estudioActual) {
                             // Generar HTML dinámico usando los datos del objeto
                             const htmlContent = `
-                                <h2>${estudioActual.title}</h2>
-                                <p><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
-                                <p><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
-                                <p><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
-                                <p><strong>Estatus del Estudio:</strong> ${estudioActual.studyStatus}</p>
-                                <p><strong>Resumen:</strong> ${estudioActual.prompt}</p>
+                                <style>
+                                    .study-title {
+                                        font-size: 2rem;
+                                        font-weight: bold;
+                                        margin-bottom: 10px;
+                                    }
+                                    .study-section {
+                                        font-size: 1.2rem;
+                                        margin-bottom: 8px;
+                                    }
+                                    .study-section strong {
+                                        font-size: 1.3rem;
+                                    }
+                                    .study-content {
+                                        margin-bottom: 15px;
+                                    }
+                                </style>
+                                <div class="study-content">
+                                    <h2 class="study-title">${estudioActual.title}</h2>
+                                    <p class="study-section"><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
+                                    <p class="study-section"><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
+                                    <p class="study-section"><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
+                                    <p class="study-section"><strong>Resumen:</strong> ${estudioActual.prompt}</p>
+                                </div>
                             `;
 
                             div.innerHTML = htmlContent;
