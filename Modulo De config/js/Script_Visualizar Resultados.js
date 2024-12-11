@@ -489,8 +489,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Alternar visibilidad del textarea
                 if (textarea.style.display === 'none' || textarea.style.display === '') {
                     textarea.style.display = 'block';
-                    //especificar que todavia falta el final de la funcionalidad, por lo cual los cambios hechos no seran guardados
-                    alert('Aún falta la funcionalidad para guardar los cambios en el servidor, por lo que los cambios realizados no serán guardados.');
                 } else {
                     textarea.style.display = 'none';
                 }
