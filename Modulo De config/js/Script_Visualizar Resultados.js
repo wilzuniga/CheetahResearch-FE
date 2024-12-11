@@ -457,6 +457,73 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const { jsPDF } = window.jspdf;
+
+    // Iterar sobre todos los botones "Exportar"
+    const exportButtons = document.querySelectorAll('button[id^="export_"]');
+
+    exportButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const parentTabPane = button.closest('.tab-pane');
+            const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
+
+            if (contentDiv) {
+                const doc = new jsPDF();
+                const pageHeight = doc.internal.pageSize.height; // Altura de la página en unidades de jsPDF
+                const margin = 10; // Margen en todas las direcciones
+                let y = margin; // Posición inicial vertical
+                const lineHeight = 10; // Altura de cada línea de texto
+
+                doc.setFontSize(10); // Tamaño de la fuente reducido a 10 puntos
+
+
+                const contentText = contentDiv.innerText;
+                const lines = doc.splitTextToSize(contentText, doc.internal.pageSize.width - 2 * margin);
+
+                // Agregar cada línea al PDF, manejando saltos de página si es necesario
+                lines.forEach(line => {
+                    if (y + lineHeight > pageHeight - margin) {
+                        doc.addPage(); // Agregar una nueva página si se supera la altura
+                        y = margin; // Reiniciar la posición vertical en la nueva página
+                    }
+                    doc.text(line, margin, y);
+                    y += lineHeight;
+                });
+
+                const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+                if(studyData){
+                    const selectedStudyData = {
+                        tituloDelEstudio: studyData.title,
+                        mercadoObjetivo: studyData.marketTarget,
+                        objetivosDelEstudio: studyData.studyObjectives,
+                        Resumen: studyData.prompt,
+                    };
+
+                    if (selectedStudyData.tituloDelEstudio) {
+                        const fileName = `tituloDelEstudio - ${parentTabPane.id || 'contenido'}.pdf`;
+                    doc.save(fileName);
+                    }else{
+                        const fileName = `${parentTabPane.id || 'contenido'}.pdf`;
+                    doc.save(fileName);
+    
+                    }
+                }else{
+                    const fileName = `${parentTabPane.id || 'contenido'}.pdf`;
+                    doc.save(fileName);
+                }
+
+                // Descargar el PDF con un nombre basado en el id del div
+                
+            }
+        });
+    });
+});
+
+
+
+
 // Abrir un filechooser con el botón e ingresar los archivos a un arreglo de archivos botonImportar
 const botonImportar = document.getElementById('botonImportar');
 botonImportar.addEventListener('click', () => {

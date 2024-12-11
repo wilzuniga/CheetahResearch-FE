@@ -20,6 +20,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="js/Script_Visualizar Resultados.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
     <style>
         /*media query para que desaparezca el img si el display no es hd+*/
         @media (max-width: 1080px) {
@@ -116,7 +118,8 @@
                             
                                     <!-- Botón para mostrar/ocultar el textarea -->
                                     <button id="toggle-textarea_ResumenGeneral" style="border-radius: 5px;">Editar</button>
-                                    <button id="save-textarea_ResumenGeneral" style="border-radius: 5px;">Guardar</button>
+                                    <button id="save-textarea_ResumenGeneral" style="border-radius: 5px;">Guardar Cambios</button>
+                                    <button id="export_ResumenGeneral" style="border-radius: 5px;">Exportar</button>
 
                                 </div>
                             
@@ -158,7 +161,9 @@
                                 
                                     <!-- Botón para mostrar/ocultar el textarea -->
                                     <button id="toggle-textarea_ResumenIndividual" style="border-radius: 5px;">Editar</button>
-                                    <button id="save-textarea_ResumenIndividual" style="border-radius: 5px;">Guardar</button>
+                                    <button id="save-textarea_ResumenIndividual" style="border-radius: 5px;">Guardar Cambios</button>
+                                    <button id="export_ResumenIndividual" style="border-radius: 5px;">Exportar</button>
+
                                 </div>
                                 
                                 <!-- Contenedor para el textarea y el resumen individual -->
@@ -190,7 +195,9 @@
                             
                                     <!-- Botón para mostrar/ocultar el textarea -->
                                     <button id="toggle-textarea_UserPersona" style="border-radius: 5px;">Editar</button>
-                                    <button id="save-textarea_UserPersona" style="border-radius: 5px;">Guardar</button>
+                                    <button id="save-textarea_UserPersona" style="border-radius: 5px;">Guardar Cambios</button>
+                                    <button id="export_UserPersona" style="border-radius: 5px;">Exportar</button>
+
 
                                 </div>
                                 
@@ -231,7 +238,9 @@
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
                                                     <button id="toggle-textarea_AP_Ekman" style="border-radius: 5px;">Editar</button>
-                                                    <button id="save-textarea_AP_Ekman" style="border-radius: 5px;">Guardar</button>
+                                                    <button id="save-textarea_AP_Ekman" style="border-radius: 5px;">Guardar Cambios</button>
+                                                    <button id="export_AP_Ekman" style="border-radius: 5px;">Exportar</button>
+
                                                 </div>
                                                 
                                                 <!-- Contenedor para el textarea y el contenido del Análisis Psicográfico -->
@@ -261,7 +270,9 @@
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
                                                     <button id="toggle-textarea_AP_RasgosDePersonalidad" style="border-radius: 5px;">Editar</button>
-                                                    <button id="save-textarea_AP_RasgosDePersonalidad" style="border-radius: 5px;">Guardar</button>
+                                                    <button id="save-textarea_AP_RasgosDePersonalidad" style="border-radius: 5px;">Guardar Cambios</button>
+                                                    <button id="export_AP_RasgosDePersonalidad" style="border-radius: 5px;">Exportar</button>
+
 
                                                 </div>
                                                 
@@ -293,7 +304,9 @@
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
                                                     <button id="toggle-textarea_AP_SegmentosPsicograficos" style="border-radius: 5px;">Editar</button>
-                                                    <button id="save-textarea_AP_SegmentosPsicograficos" style="border-radius: 5px;">Guardar</button>
+                                                    <button id="save-textarea_AP_SegmentosPsicograficos" style="border-radius: 5px;">Guardar Cambios</button>
+                                                    <button id="export_AP_SegmentosPsicograficos" style="border-radius: 5px;">Exportar</button>
+
 
                                                 </div>
                                                 
@@ -325,7 +338,8 @@
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
                                                     <button id="toggle-textarea_AP_NPS" style="border-radius: 5px;">Editar</button>
-                                                    <button id="save-textarea_AP_NPS" style="border-radius: 5px;">Guardar</button>
+                                                    <button id="save-textarea_AP_NPS" style="border-radius: 5px;">Guardar Cambios</button>
+                                                    <button id="export_AP_NPS" style="border-radius: 5px;">Exportar</button>
 
                                                 </div>
                                             
@@ -356,7 +370,8 @@
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
                                                     <button id="toggle-textarea_AP_EstiloDeComunicacion" style="border-radius: 5px;">Editar</button>
-                                                    <button id="save-textarea_AP_EstiloDeComunicacion" style="border-radius: 5px;">Guardar</button>
+                                                    <button id="save-textarea_AP_EstiloDeComunicacion" style="border-radius: 5px;">Guardar Cambios</button>
+                                                    <button id="export_AP_EstiloDeComunicacion" style="border-radius: 5px;">Exportar</button>
 
                                                 </div>
                                             
