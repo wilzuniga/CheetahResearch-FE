@@ -76,6 +76,8 @@ function LLenarResumenes(){
                 const StyleSelectedOption = document.getElementById('ComboBox_ResumenGeneralTy');
 
                 var div = document.getElementById('ResumenGeneralContent');
+                //textarea
+                var textArea = document.getElementById('ResumenGeneralTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value; //el filtro seleccionado
                 formData = new FormData();
@@ -91,7 +93,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;   
+                        textArea.value = data;                   
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -115,6 +118,7 @@ function LLenarResumenes(){
                 const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
 
                 var div = document.getElementById('ResumenIndividualContent');
+                var textArea = document.getElementById('ResumenIndividualTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value; //el filtro seleccionado
                 formData = new FormData();
@@ -130,7 +134,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;          
+                        textArea.value = data;            
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -160,6 +165,7 @@ function LLenarResumenes(){
 
                 // Obtener el div donde se mostrará el contenido
                 var div = document.getElementById('UserPersonaContent');
+                var textArea = document.getElementById('UserPersonaTextArea');
 
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
@@ -176,7 +182,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;          
+                        textArea.value = data;            
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -197,6 +204,7 @@ function LLenarResumenes(){
 
                 // Obtener el div donde se mostrará el contenido
                 var div = document.getElementById('EKMANContent');
+                var textArea = document.getElementById('EKMANTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 
@@ -213,7 +221,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;  
+                        textArea.value = data;                    
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -235,6 +244,7 @@ function LLenarResumenes(){
 
                 // Obtener el div donde se mostrará el contenido
                 var div = document.getElementById('RasgosDePersonalidadContent');
+                var textArea = document.getElementById('RasgosDePersonalidadTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 
@@ -251,7 +261,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;        
+                        textArea.value = data;              
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -269,6 +280,7 @@ function LLenarResumenes(){
                 console.log(event.target.value);
 
                 var div = document.getElementById('SegmentosPsicograficosContent');
+                var textArea = document.getElementById('SegmentosPsicograficosTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 
@@ -285,7 +297,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;      
+                        textArea.value = data;                
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -302,6 +315,7 @@ function LLenarResumenes(){
                 console.log(event.target.value);
 
                 var div = document.getElementById('NPSContent');
+                var textArea = document.getElementById('NPSTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 
@@ -318,7 +332,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;     
+                        textArea.value = data;                 
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -334,6 +349,7 @@ function LLenarResumenes(){
                 console.log(event.target.value);
 
                 var div = document.getElementById('EstiloDeComunicacionContent');
+                var textArea = document.getElementById('EstiloDeComunicacionTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 
@@ -350,7 +366,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;   
+                        textArea.value = data;                   
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -379,6 +396,66 @@ document.addEventListener('DOMContentLoaded', () => {
     LLenarResumenes();
 
 });
+
+//ocultar todos los text area 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        textarea.style.display = 'none';
+    });
+});
+
+//que al presionar los botones toggle-textarea_* aparezcan las text area 
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleButtons = document.querySelectorAll('[id^="toggle-textarea_"]');
+    
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            // Encontrar el textarea dentro de la misma sección del botón
+            const section = button.closest('.tab-pane');
+            const textarea = section.querySelector('textarea');
+            
+            if (textarea) {
+                // Alternar visibilidad del textarea
+                if (textarea.style.display === 'none' || textarea.style.display === '') {
+                    textarea.style.display = 'block';
+                    //especificar que todavia falta el final de la funcionalidad, por lo cual los cambios hechos no seran guardados
+                    alert('Aún falta la funcionalidad para guardar los cambios en el servidor, por lo que los cambios realizados no serán guardados.');
+                } else {
+                    textarea.style.display = 'none';
+                }
+            }
+        });
+    });
+});
+
+
+//mierda para visualizar los cambios en el markdown
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Seleccionar todos los textarea y contenedores de contenido relacionados
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    tabPanes.forEach(tabPane => {
+        const textarea = tabPane.querySelector('textarea');
+        const contentDiv = tabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
+
+        if (textarea && contentDiv) {
+            // Agregar evento 'input' para actualizar contenido dinámicamente
+            textarea.addEventListener('input', function () {
+
+                // Convertir el texto ingresado en HTML procesado, si es necesario
+                const processedContent = marked.parse(textarea.value); // Usa marked.js para Markdown a HTML
+
+                // Actualizar el contenido del div relacionado
+                contentDiv.innerHTML = processedContent;
+            });
+        }
+    });
+
+});
+
 
 // Abrir un filechooser con el botón e ingresar los archivos a un arreglo de archivos botonImportar
 const botonImportar = document.getElementById('botonImportar');
