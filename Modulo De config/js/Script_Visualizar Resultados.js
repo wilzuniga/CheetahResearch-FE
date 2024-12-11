@@ -65,6 +65,75 @@ function AgregarFiltros() {
         
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    // Seleccionar todos los botones que tienen id que empieza con "save-textarea_"
+    const saveButtons = document.querySelectorAll('button[id^="save-textarea_"]');
+
+    saveButtons.forEach(button => {
+        button.addEventListener('click', async function () {
+            // Identificar el contenedor principal del botón
+            const parentTabPane = button.closest('.tab-pane');
+            const textArea = parentTabPane.querySelector('textarea[id$="TextArea"]');
+            const filterComboBox = parentTabPane.querySelector('select[id^="ComboBox"]'); // Primer combobox para "filter"
+            const subFilterComboBox = parentTabPane.querySelector('select[id$="Ty"]'); // Segundo combobox opcional para "sub_module"
+
+            if (!textArea || !filterComboBox) {
+                console.error("No se encontró un textarea o combobox válido en el div.");
+                return;
+            }
+
+            // Obtener los valores del combobox "filter" y opcionalmente "sub_module"
+            const selectedFilter = filterComboBox.value;
+            const selectedSubModule = subFilterComboBox ? subFilterComboBox.value : null;
+
+            if (!selectedFilter || selectedFilter === "---") {
+                alert("Por favor selecciona un filtro antes de guardar.");
+                return;
+            }
+
+            if (subFilterComboBox && (!selectedSubModule || selectedSubModule === "---")) {
+                alert("Por favor selecciona un subfiltro antes de guardar.");
+                return;
+            }
+
+            // Crear un archivo .md a partir del contenido del textarea
+            const markdownContent = textArea.value;
+
+            if (!markdownContent.trim()) {
+                alert("El contenido del textarea está vacío. Por favor agrega texto antes de guardar.");
+                return;
+            }
+
+            // Crear FormData para la solicitud POST
+            const formData = new FormData();
+            formData.append('filter', selectedFilter);
+            formData.append('module', 'general'); // Módulo fijo como "general"
+            if (selectedSubModule) {
+                formData.append('sub_module', selectedSubModule); // Solo si hay un submódulo seleccionado
+            }
+            const blob = new Blob([markdownContent], { type: 'text/markdown' });
+            formData.append('file', blob, 'content.md'); // Archivo .md
+
+            // Construir la URL
+            const studyId = localStorage.getItem('selectedStudyId');
+            if (!studyId) {
+                alert("No se encontró el ID del estudio en el almacenamiento local.");
+                return;
+            }
+            const url = `https://api.cheetah-research.ai/configuration/upload_md/${studyId}`;
+
+            // Hacer la solicitud POST usando axios
+            try {
+                const response = await axios.post(url, formData);
+                alert("Archivo subido exitosamente.");
+                console.log("Respuesta del servidor:", response.data);
+            } catch (error) {
+                console.error("Error al subir el archivo:", error);
+                alert("Ocurrió un error al intentar subir el archivo. Revisa la consola para más detalles.");
+            }
+        });
+    });
+});
 
 
 function LLenarResumenes(){
@@ -458,10 +527,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    const { jsPDF } = window.jspdf;
 
-    // Iterar sobre todos los botones "Exportar"
+document.addEventListener('DOMContentLoaded', function () {
     const exportButtons = document.querySelectorAll('button[id^="export_"]');
 
     exportButtons.forEach(button => {
@@ -470,56 +537,20 @@ document.addEventListener('DOMContentLoaded', function () {
             const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
 
             if (contentDiv) {
-                const doc = new jsPDF();
-                const pageHeight = doc.internal.pageSize.height; // Altura de la página en unidades de jsPDF
-                const margin = 10; // Margen en todas las direcciones
-                let y = margin; // Posición inicial vertical
-                const lineHeight = 10; // Altura de cada línea de texto
-
-                doc.setFontSize(10); // Tamaño de la fuente reducido a 10 puntos
-
-
-                const contentText = contentDiv.innerText;
-                const lines = doc.splitTextToSize(contentText, doc.internal.pageSize.width - 2 * margin);
-
-                // Agregar cada línea al PDF, manejando saltos de página si es necesario
-                lines.forEach(line => {
-                    if (y + lineHeight > pageHeight - margin) {
-                        doc.addPage(); // Agregar una nueva página si se supera la altura
-                        y = margin; // Reiniciar la posición vertical en la nueva página
-                    }
-                    doc.text(line, margin, y);
-                    y += lineHeight;
-                });
-
-                const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
-                if(studyData){
-                    const selectedStudyData = {
-                        tituloDelEstudio: studyData.title,
-                        mercadoObjetivo: studyData.marketTarget,
-                        objetivosDelEstudio: studyData.studyObjectives,
-                        Resumen: studyData.prompt,
-                    };
-
-                    if (selectedStudyData.tituloDelEstudio) {
-                        const fileName = `${selectedStudyData.tituloDelEstudio} - ${parentTabPane.id || 'contenido'}.pdf`;
-                    doc.save(fileName);
-                    }else{
-                        const fileName = `${parentTabPane.id || 'contenido'}.pdf`;
-                    doc.save(fileName);
-    
-                    }
-                }else{
-                    const fileName = `${parentTabPane.id || 'contenido'}.pdf`;
-                    doc.save(fileName);
-                }
-
-                // Descargar el PDF con un nombre basado en el id del div
                 
+                const options = {
+                    margin: 1,
+                    filename: `${parentTabPane.id || 'contenido'}.pdf`,
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                };
+
+                html2pdf().set(options).from(contentDiv).save();
             }
         });
     });
 });
+
 
 
 
