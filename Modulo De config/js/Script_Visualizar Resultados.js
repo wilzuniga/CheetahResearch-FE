@@ -502,7 +502,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     };
 
                     if (selectedStudyData.tituloDelEstudio) {
-                        const fileName = `tituloDelEstudio - ${parentTabPane.id || 'contenido'}.pdf`;
+                        const fileName = `${selectedStudyData.tituloDelEstudio} - ${parentTabPane.id || 'contenido'}.pdf`;
                     doc.save(fileName);
                     }else{
                         const fileName = `${parentTabPane.id || 'contenido'}.pdf`;
