@@ -66,74 +66,63 @@ function AgregarFiltros() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Seleccionar todos los botones que tienen id que empieza con "save-textarea_"
-    const saveButtons = document.querySelectorAll('button[id^="save-textarea_"]');
+    // Asocia el evento a todos los botones save-textarea
+    document.querySelectorAll("button[id^='save-textarea_']").forEach(button => {
+        button.addEventListener('click', function () {
+            // Obtiene el ID del botón y del textarea correspondiente
+            const buttonId = button.id;
+            const textareaId = buttonId.replace('save-textarea_', 'ResumenGeneralTextArea_');
+            const textarea = document.getElementById(textareaId);
 
-    saveButtons.forEach(button => {
-        button.addEventListener('click', async function () {
-            // Identificar el contenedor principal del botón
-            const parentTabPane = button.closest('.tab-pane');
-            const textArea = parentTabPane.querySelector('textarea[id$="TextArea"]');
-            const filterComboBox = parentTabPane.querySelector('select[id^="ComboBox"]'); // Primer combobox para "filter"
-            const subFilterComboBox = parentTabPane.querySelector('select[id$="Ty"]'); // Segundo combobox opcional para "sub_module"
-
-            if (!textArea || !filterComboBox) {
-                console.error("No se encontró un textarea o combobox válido en el div.");
+            if (!textarea) {
+                console.error(`No se encontró el textarea correspondiente para el botón ${buttonId}`);
                 return;
             }
 
-            // Obtener los valores del combobox "filter" y opcionalmente "sub_module"
-            const selectedFilter = filterComboBox.value;
-            const selectedSubModule = subFilterComboBox ? subFilterComboBox.value : null;
+            // Encuentra los comboboxes asociados
+            const divId = buttonId.replace('save-textarea_', '');
+            const filterCombobox = document.querySelector(`#${divId} select`);
+            const subFilterCombobox = document.querySelector(`#${divId} select[id*='Ty']`);
 
-            if (!selectedFilter || selectedFilter === "---") {
-                alert("Por favor selecciona un filtro antes de guardar.");
+            if (!filterCombobox) {
+                console.error(`No se encontró el combobox de filtro para el div ${divId}`);
                 return;
             }
 
-            if (subFilterComboBox && (!selectedSubModule || selectedSubModule === "---")) {
-                alert("Por favor selecciona un subfiltro antes de guardar.");
-                return;
-            }
+            // Obtiene los valores seleccionados
+            const filterValue = filterCombobox.value;
+            const subFilterValue = subFilterCombobox ? subFilterCombobox.value : null;
 
-            // Crear un archivo .md a partir del contenido del textarea
-            const markdownContent = textArea.value;
+            // Genera el nombre del archivo
+            const fileName = subFilterValue ? `${subFilterValue}.md` : `${filterValue}.md`;
 
-            if (!markdownContent.trim()) {
-                alert("El contenido del textarea está vacío. Por favor agrega texto antes de guardar.");
-                return;
-            }
+            // Crea el archivo Markdown con el contenido del textarea
+            const fileContent = textarea.value;
+            const blob = new Blob([fileContent], { type: 'text/markdown' });
 
-            // Crear FormData para la solicitud POST
+            // Prepara el FormData
             const formData = new FormData();
-            formData.append('filter', selectedFilter);
-            formData.append('module', 'general'); // Módulo fijo como "general"
-            if (selectedSubModule) {
-                formData.append('sub_module', selectedSubModule); // Solo si hay un submódulo seleccionado
+            formData.append('filter', filterValue);
+            if (subFilterValue) {
+                formData.append('sub_module', subFilterValue);
             }
-            const blob = new Blob([markdownContent], { type: 'text/markdown' });
-            formData.append('file', blob, 'content.md'); // Archivo .md
+            formData.append('module', 'general');
+            formData.append('file', blob, fileName);
 
-            // Construir la URL
-            const studyId = localStorage.getItem('selectedStudyId');
-            if (!studyId) {
-                alert("No se encontró el ID del estudio en el almacenamiento local.");
-                return;
-            }
-            const url = `https://api.cheetah-research.ai/configuration/upload_md/${studyId}`;
+            // Envía el archivo al servidor
+            const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
 
-            // Hacer la solicitud POST usando axios
-            try {
-                const response = await axios.post(url, formData);
-                alert("Archivo subido exitosamente.");
-                console.log("Respuesta del servidor:", response.data);
-            } catch (error) {
-                console.error("Error al subir el archivo:", error);
-                alert("Ocurrió un error al intentar subir el archivo. Revisa la consola para más detalles.");
-            }
+            axios.post(url, formData)
+                .then(response => {
+                    console.log('Archivo subido exitosamente:', response.data);
+                })
+                .catch(error => {
+                    console.error('Error al subir el archivo:', error);
+                });
         });
     });
 });
+
 
 
 function LLenarResumenes(){
