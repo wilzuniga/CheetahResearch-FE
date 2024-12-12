@@ -69,9 +69,22 @@ document.addEventListener('DOMContentLoaded', function () {
     // Asocia el evento a todos los botones save-textarea
     document.querySelectorAll("button[id^='save-textarea_']").forEach(button => {
         button.addEventListener('click', function () {
-            // Obtiene el ID del botón y del textarea correspondiente
+            // Obtiene el ID del botón y mapea al textarea correspondiente
             const buttonId = button.id;
-            const textareaId = buttonId.replace('save-textarea_', 'ResumenGeneralTextArea_');
+
+            // Mapa de botones a textareas
+            const textareaMap = {
+                'save-textarea_ResumenGeneral': 'ResumenGeneralTextArea',
+                'save-textarea_ResumenIndividual': 'ResumenIndividualTextArea',
+                'save-textarea_UserPersona': 'UserPersonaTextArea',
+                'save-textarea_AP_EKMAN': 'EKMANTextArea',
+                'save-textarea_AP_RasgosDePersonalidad': 'RasgosDePersonalidadTextArea',
+                'save-textarea_AP_SegmentosPsicograficos': 'SegmentosPsicograficosTextArea',
+                'save-textarea_AP_NPS': 'NPSTextArea',
+                'save-textarea_AP_EstiloDeComunicacion': 'EstiloDeComunicacionTextArea'
+            };
+
+            const textareaId = textareaMap[buttonId];
             const textarea = document.getElementById(textareaId);
 
             if (!textarea) {
