@@ -19,6 +19,26 @@ function initializePage() {
     }
 }
 
+
+//ocultar los elementos con id UsserExperienceBtn UsserExperience
+document.addEventListener('DOMContentLoaded', function () {
+    const coso = document.getElementById('UsserExperienceBtn');
+    const coso2 = document.getElementById('UsserExperience');
+
+    coso.style.display = 'none';
+    coso2.style.display = 'none';
+
+    const study_id = new URLSearchParams(window.location.search).get('id');
+    
+    //si el id del estudio es 674f67fae552eefe841a191b entonces mostrar el boton y el div
+    if (study_id === '674f67fae552eefe841a191b') {
+        coso.style.display = 'block';
+        coso2.style.display = 'block';
+    }
+    
+});
+
+
 function AgregarModulos(study) {
 
     let url = "https://api.cheetah-research.ai/configuration/get_modules/" + study;

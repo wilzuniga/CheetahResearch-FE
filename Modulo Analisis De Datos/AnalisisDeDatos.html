@@ -68,6 +68,8 @@
                                 <a id="ResumenIndividualBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#ResumenIndividual" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-weight: bold;font-family: hedliner;">Resumen Individual</a>
                                 <a id="UserPersonaBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#UserPersona" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">User Persona</a>
                                 <a id="AnalisisPsicograficosBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#AnalisisPsicograficos" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">Análisis Psicograficos</a>
+                                
+                                <a id="UsserExperienceBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#UsserExperience" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">Experiencia de Usuario</a>
                                 <div style="height: 95%;"></div>
                             </div>
                         </div>
@@ -211,6 +213,261 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div id="UsserExperience" class="tab-pane fade" role="tabpanel">
+                                    <h3>Experiencia de Usuario</h3>
+                                    <p>En esta sección se evalúa las percepciones, emociones y comportamiento de los clientes en cada punto de interacción con una marca, para identificar áreas de mejora y fortalecer la satisfacción y fidelización. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
+                                    <label for="Combobox_UsserExperience" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                    <select id="Combobox_UsserExperience" style="font-family: hedliner;">
+                                        <option value="General">Narrativo</option>
+                                    </select>     
+    
+                                    <div id="UsserExperienceContent">
+                                        <div id="ResumenIndividualContent" style="flex: 1;">
+                                            <hr>
+                                            <h1 id="análisis-de-la-experiencia-del-cliente-en-chilis">Análisis de la Experiencia del Cliente en Chili's</h1>
+                                            <p>A continuación, se presenta el análisis de la experiencia del cliente en Chili's, basado en las calificaciones y comentarios proporcionados en encuestas y reseñas.</p>
+                                            <hr>
+                                            <h2 id="calificación-promedio-por-aspecto">Calificación Promedio por Aspecto</h2>
+                                            <p>Las siguientes calificaciones están basadas en una escala de 1 a 10:</p>
+                                            <h3 id="limpieza-y-orden-exterior-9210">Limpieza y Orden (Exterior): 9.2/10</h3>
+                                            <ul>
+                                            <li><strong>Puntos positivos:</strong><ul>
+                                            <li>Los clientes elogiaron la limpieza y el mantenimiento de las áreas exteriores, incluyendo jardines, fachadas y estacionamientos.</li>
+                                            <li>La decoración navideña fue destacada como un valor agregado.</li>
+                                            </ul>
+                                            </li>
+                                            <li><strong>Puntos de mejora:</strong><ul>
+                                            <li>Mejorar la señalización en el área de estacionamiento.</li>
+                                            </ul>
+                                            </li>
+                                            </ul>
+                                            <h3 id="limpieza-y-orden-interior-9110">Limpieza y Orden (Interior): 9.1/10</h3>
+                                            <ul>
+                                            <li><strong>Puntos positivos:</strong><ul>
+                                            <li>El interior del restaurante fue bien calificado por su orden y limpieza.</li>
+                                            </ul>
+                                            </li>
+                                            <li><strong>Puntos de mejora:</strong><ul>
+                                            <li>Algunos clientes reportaron baños sucios o con papel en el piso.</li>
+                                            <li>Un cliente mencionó que el aire acondicionado estaba demasiado frío, generando incomodidad.</li>
+                                            </ul>
+                                            </li>
+                                            </ul>
+                                            <h3 id="atención-del-personal-9410">Atención del Personal: 9.4/10</h3>
+                                            <ul>
+                                            <li><strong>Puntos positivos:</strong><ul>
+                                            <li>El personal fue reconocido por su amabilidad, rapidez y proactividad.</li>
+                                            <li>Los refills de bebidas y las preguntas constantes sobre la satisfacción del cliente fueron bien valorados.</li>
+                                            </ul>
+                                            </li>
+                                            <li><strong>Puntos de mejora:</strong><ul>
+                                            <li>Un cliente reportó un problema relacionado con el cobro incorrecto de su cuenta.</li>
+                                            </ul>
+                                            </li>
+                                            </ul>
+                                            <h3 id="menú-9410">Menú: 9.4/10</h3>
+                                            <ul>
+                                            <li><strong>Puntos positivos:</strong><ul>
+                                            <li>Los clientes destacaron la variedad, claridad y uso de imágenes en el menú.</li>
+                                            </ul>
+                                            </li>
+                                            <li><strong>Puntos de mejora:</strong><ul>
+                                            <li>Aumentar el tamaño de la letra en las descripciones para facilitar la lectura, especialmente para personas mayores.</li>
+                                            </ul>
+                                            </li>
+                                            </ul>
+                                            <h3 id="calidad-presentación-sabor-y-cantidad-de-la-comida-9610">Calidad, Presentación, Sabor y Cantidad de la Comida: 9.6/10</h3>
+                                            <ul>
+                                            <li><strong>Puntos positivos:</strong><ul>
+                                            <li>La comida recibió excelentes calificaciones por su calidad, presentación, sabor y cantidad.</li>
+                                            <li>Destacaron el sabor a chipotle de las alitas y la sazón de las hamburguesas.</li>
+                                            </ul>
+                                            </li>
+                                            <li><strong>Puntos de mejora:</strong><ul>
+                                            <li>Ajustar la cantidad de sal en algunos platillos.</li>
+                                            </ul>
+                                            </li>
+                                            </ul>
+                                            <hr>
+                                            <h2 id="análisis-de-mejores-y-peores-experiencias-por-buyer-persona">Análisis de Mejores y Peores Experiencias por Buyer Persona</h2>
+                                            <h3 id="jóvenes-19-24-años">Jóvenes (19-24 años)</h3>
+                                            <ul>
+                                            <li><strong>Mejor experiencia:</strong>  <ul>
+                                            <li>Ambiente moderno y vibrante, música actual, opciones de comida innovadoras y visualmente atractivas, buena conexión wifi, promociones y descuentos especiales.</li>
+                                            </ul>
+                                            </li>
+                                            <li><strong>Peor experiencia:</strong>  <ul>
+                                            <li>Servicio lento, falta de opciones vegetarianas/veganas o para dietas especiales, música demasiado alta o inapropiada, ambiente anticuado, falta de enchufes para cargar dispositivos.</li>
+                                            </ul>
+                                            </li>
+                                            <li><strong>Áreas de mejora:</strong>  <ul>
+                                            <li>Incorporar tendencias gastronómicas, ofrecer opciones de comida más saludables y personalizadas, crear un ambiente "instagrameable", mejorar la presencia en redes sociales.</li>
+                                            </ul>
+                                            </li>
+                                            </ul>
+                                            <h3 id="adultos-25-55-años">Adultos (25-55 años)</h3>
+                                            <ul>
+                                            <li><strong>Mejor experiencia:</strong>  <ul>
+                                            <li>Servicio eficiente y amable, ambiente cómodo y relajado, opciones de comida de calidad y porciones generosas, buen balance entre precio y calidad.</li>
+                                            </ul>
+                                            </li>
+                                            <li><strong>Peor experiencia:</strong>  <ul>
+                                            <li>Ruido excesivo, largas esperas, errores en la orden, falta de atención por parte del personal, precios elevados sin justificación.</li>
+                                            </ul>
+                                            </li>
+                                            <li><strong>Áreas de mejora:</strong>  <ul>
+                                            <li>Optimizar la gestión de reservas y el flujo de clientes, ofrecer menús ejecutivos o promociones para almuerzos de trabajo, garantizar la consistencia en la calidad del servicio.</li>
+                                            </ul>
+                                            </li>
+                                            </ul>
+                                            <h3 id="mayores-55-años">Mayores (55+ años)</h3>
+                                            <ul>
+                                            <li><strong>Mejor experiencia:</strong>  <ul>
+                                            <li>Ambiente tranquilo y accesible, menú fácil de leer con letra grande, opciones de comida familiar y tradicional, atención personalizada y paciente, facilidad para pagar en efectivo.</li>
+                                            </ul>
+                                            </li>
+                                            <li><strong>Peor experiencia:</strong>  <ul>
+                                            <li>Música alta o molesta, iluminación tenue, dificultad para acceder al restaurante o a los baños, menú confuso o con demasiadas opciones, presión para ordenar rápidamente.</li>
+                                            </ul>
+                                            </li>
+                                            <li><strong>Áreas de mejora:</strong>  <ul>
+                                            <li>Mejorar la iluminación y la acústica, ofrecer sillas cómodas, simplificar el menú y agrandar la letra, capacitar al personal para atender las necesidades de personas mayores.</li>
+                                            </ul>
+                                            </li>
+                                            </ul>
+                                            <hr>
+                                            <h2 id="tabla-de-puntuaciones-y-razones">Tabla de Puntuaciones y Razones</h2>
+                                            <table>
+                                            <thead>
+                                            <tr>
+                                            <th>Aspecto Evaluado</th>
+                                            <th>Puntuación</th>
+                                            <th>Razón Principal</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody><tr>
+                                            <td>Experiencia General</td>
+                                            <td>9</td>
+                                            <td>Encuentra todo lo que necesita y la comida es de calidad.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>10</td>
+                                            <td>Es rico. Frescura, buen precio y alta calidad.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>9</td>
+                                            <td>Calidad del pollo, sabor, precio, ubicaciones de sus restaurantes.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>10</td>
+                                            <td>Le gusta la comida.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>10</td>
+                                            <td>Le gusta mucho y es rápido.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>8</td>
+                                            <td>Papas fritas saben bastante natural y tienen buen sabor.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>9</td>
+                                            <td>Súper bien todo lo que se consume.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>10</td>
+                                            <td>Siempre tienen lo que necesita.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>10</td>
+                                            <td>Relación precio-calidad.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>8</td>
+                                            <td>Sabor y atención.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>9</td>
+                                            <td>Es muy accesible considerando la calidad.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>7</td>
+                                            <td>Precio y porque siempre olvidan algo o se equivocan en el pedido.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>8</td>
+                                            <td>Sabor, ubicación, locales limpios, precio.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>10</td>
+                                            <td>Sabrosa.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>10</td>
+                                            <td>Muy rico y muy bien elaborado.</td>
+                                            </tr>
+                                            <tr>
+                                            <td>Experiencia General</td>
+                                            <td>8</td>
+                                            <td>Hasta el momento buena experiencia.</td>
+                                            </tr>
+                                            </tbody></table>
+                                            <hr>
+                                            <h2 id="aspectos-destacados">Aspectos Destacados</h2>
+                                            <ol>
+                                            <li><p><strong>Calidad de la Comida:</strong><br>La comida recibió las mejores calificaciones (9.6/10), destacando por su sabor, presentación y cantidad. Esto indica que Chili's cumple con las expectativas de los clientes en su producto principal.</p>
+                                            </li>
+                                            <li><p><strong>Atención del Personal:</strong><br>La amabilidad, rapidez y proactividad del equipo (9.4/10) son un punto fuerte que mejora la experiencia general de los clientes.</p>
+                                            </li>
+                                            <li><p><strong>Limpieza y Orden:</strong><br>Tanto el interior como el exterior del establecimiento fueron evaluados positivamente, lo que refleja un esfuerzo por mantener un ambiente agradable y cuidado.</p>
+                                            </li>
+                                            <li><p><strong>Menú:</strong><br>La variedad y claridad del menú fueron bien recibidas, aunque existen oportunidades de mejora en el tamaño de la letra para ciertos segmentos de clientes.</p>
+                                            </li>
+                                            </ol>
+                                            <hr>
+                                            <h2 id="áreas-de-mejora">Áreas de Mejora</h2>
+                                            <ol>
+                                            <li><p><strong>Letra del Menú:</strong><br>La letra pequeña fue un problema recurrente mencionado, especialmente por personas mayores y estudiantes. Solucionar esto podría mejorar significativamente la experiencia para estos segmentos.</p>
+                                            </li>
+                                            <li><p><strong>Baños:</strong><br>Aunque la limpieza en general es bien valorada, los baños fueron mencionados como un área que requiere más atención.</p>
+                                            </li>
+                                            <li><p><strong>Errores de Facturación:</strong><br>Los problemas ocasionales al momento de cobrar pueden impactar negativamente la percepción de eficiencia del servicio. Fortalecer este proceso reducirá las experiencias negativas.</p>
+                                            </li>
+                                            </ol>
+                                            <hr>
+                                            <h2 id="recomendaciones">Recomendaciones</h2>
+                                            <ol>
+                                            <li><p><strong>Accesibilidad en el Menú:</strong><br>Incorporar menús con letra más grande o digitales que permitan ampliar la información puede beneficiar a clientes con dificultades de lectura.</p>
+                                            </li>
+                                            <li><p><strong>Mantenimiento Constante de los Baños:</strong><br>Implementar rondas de limpieza más frecuentes, especialmente en horarios de mayor afluencia, mejorará la percepción de este aspecto.</p>
+                                            </li>
+                                            <li><p><strong>Capacitación Continua del Personal:</strong><br>Reforzar las capacitaciones sobre procesos como facturación y manejo de quejas garantizará un servicio consistente.</p>
+                                            </li>
+                                            <li><p><strong>Seguimiento Activo a la Opinión del Cliente:</strong><br>Recolectar más datos demográficos y realizar encuestas más específicas permitirá identificar mejor las necesidades y preferencias de los diferentes buyer persona.</p>
+                                            </li>
+                                            </ol>
+                                            <hr>
+                                            <h2 id="conclusión-general">Conclusión General</h2>
+                                            <p>Chili's destaca como una opción sólida para sus clientes, con altos niveles de satisfacción en la mayoría de los aspectos evaluados. Enfocarse en solucionar las áreas de mejora mencionadas permitirá no solo mantener las calificaciones actuales, sino también posicionar la marca como líder en experiencia del cliente dentro de su sector.</p>
+                                    </div>
+                                </div>
+
+
                             </div>
     
     
