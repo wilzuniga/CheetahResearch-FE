@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('EditPreguntaTXT').value = pregunta;
                 document.getElementById('EditPesoTXT').value = peso;
                 //verificar el tipo de anexo de la pregunta(archivo o url) y agregarlo al overlay
-                if(anexoPregunta.files.length > 0){
+                if(anexoPregunta.files.length > 0){                    
                     document.getElementById('EditAnexoPregunta').value = anexo;
                 }else if(anexoPreguntaURL.value != ''){
                     document.getElementById('EditAnexoPreguntaURL').value = anexo;
@@ -545,6 +545,15 @@ function CE_DeactivateNavBy(){
 
     
 }
+
+//no deja subir imagenes muy grandes a una pregunta
+document.getElementById('AnexoPregunta').addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file.size > 524288 ) {
+        alert('La imagen es muy grande, por favor selecciona una imagen de menos de 0.5 MB (500 kb).');
+        event.target.value = '';
+    }
+});
 
 document.getElementById('GuardarEncuestaBtn').addEventListener('click', (event) => {
     event.preventDefault();

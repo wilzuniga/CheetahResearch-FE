@@ -19,6 +19,31 @@ function initializePage() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const exportButtons = document.querySelectorAll('button[id^="export_"]');
+
+    exportButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const parentTabPane = button.closest('.tab-pane');
+            const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
+
+            if (contentDiv) {
+                
+                const options = {
+                    margin: 1,
+                    filename: `${parentTabPane.id || 'contenido'}.pdf`,
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                };
+
+                html2pdf().set(options).from(contentDiv).save();
+            }
+        });
+    });
+});
+
+
+
 
 //ocultar los elementos con id UsserExperienceBtn UsserExperience
 document.addEventListener('DOMContentLoaded', function () {

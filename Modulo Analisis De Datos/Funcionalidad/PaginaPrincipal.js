@@ -38,6 +38,53 @@ function otp(study_id) {
     `;
 }
 
+async function LegalDisclaimer(study_id) {
+    /*
+    const overlay = document.getElementById('overlay');
+    overlay.innerHTML = `
+        <div id="overlayContent" style="
+            height: auto;
+            background-color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+            text-align: center;
+            color: black;
+            padding: 20px;
+        ">
+            <p>Probando función.</p>
+            
+            <button id="verifyButton" style="
+                padding: 10px;
+                border-radius: 5px;
+                margin: 10px;
+                background-color: #c0601c;
+                color: white;
+                border: none;
+                cursor: pointer;
+            ">Verificar</button>
+        </div>
+    `;
+
+    // Esperar a que el botón sea presionado
+    await new Promise(resolve => {
+        const button = document.getElementById('verifyButton');
+        button.addEventListener('click', () => {
+            resolve(); // Resuelve la promesa cuando se hace clic en el botón
+            contenido(study_id);
+        });
+    });
+
+    console.log("El botón fue presionado, continuando...");
+    */
+
+    contenido(study_id);
+}
+
+
+
 
 function verificarLink(study_id) {
     const VerifURL = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
@@ -96,18 +143,21 @@ function verificarOTP(study_id) {
 }
 
 
-function initializePage() {
+async function initializePage() {
     console.log('Page initialized');
     const study_id = new URLSearchParams(window.location.search).get('id');
+
     if (study_id) {
         console.log('ID de estudio:', study_id);
-        contenido(study_id);
+        await LegalDisclaimer(study_id);
+
     } else {
         console.error('No se encontró el parámetro id en la URL.');
-        //show overlay
+        // Muestra overlay si no hay study_id
         showOverlay();
     }
 }
+
 
 async function contenido(study) {
     let linkDisponible = false;
@@ -253,7 +303,7 @@ function linkDesactivado() {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border-radius: 25px;
+            border-radius: 10px;
             text-align: center;
             text-color: black;
             padding: 20px;
