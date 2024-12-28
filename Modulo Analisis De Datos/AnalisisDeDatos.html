@@ -15,6 +15,13 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
     <script src="Funcionalidad/AnalisisDeDatos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/plugins/html.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+
+
     <style>
         @media (max-width: 1000px) {
             img {
@@ -80,57 +87,101 @@
                                 <div id="ResumenGeneral" class="tab-pane fade" role="tabpanel">
                                     <h3>Resumen General</h3>
                                     <p>En esta sección se muestra un resumen general de los resultados obtenidos. Puedes seleccionar un estilo de visualización y aplicar filtros para obtener información específica.</p>
-                                    <label for="ComboBox_ResumenGeneralTy" style="font-family: hedliner;">Selecciona un estilo:</label>
-                                    <select id="ComboBox_ResumenGeneralTy" style="font-family: hedliner;">
-                                        <!-- se agregan opciones narrative y factual-->
-                                        <option value="---" style="font-family: hedliner;">---</option>
-                                        <option value="narrative" style="font-family: hedliner;">Narrativo</option>
-                                        <option value="factual" style="font-family: hedliner;">Factual</option>
-                                    </select>     
-    
-                                    <label for="ComboBox_ResumenGeneral" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                    <select id="ComboBox_ResumenGeneral" style="font-family: hedliner;">
-                                        <!-- Opciones se agregarán dinámicamente aquí -->
-                                    </select>     
-    
-                                    <div id="ResumenGeneralContent">
+                                    
+                                    <!-- Comboboxes y botón en una fila -->
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                        <!-- Combobox para seleccionar estilo -->
+                                        <div>
+                                            <label for="ComboBox_ResumenGeneralTy" style="font-family: hedliner;">Selecciona un estilo:</label>
+                                            <select id="ComboBox_ResumenGeneralTy" style="font-family: hedliner;">
+                                                <option value="---" style="font-family: hedliner;">---</option>
+                                                <option value="narrative" style="font-family: hedliner;">Narrativo</option>
+                                                <option value="factual" style="font-family: hedliner;">Factual</option>
+                                            </select>
+                                        </div>
+                                
+                                        <!-- Combobox para seleccionar filtro -->
+                                        <div>
+                                            <label for="ComboBox_ResumenGeneral" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                            <select id="ComboBox_ResumenGeneral" style="font-family: hedliner;">
+                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                            </select>
+                                        </div>
+                                
+                                        
+                                        <button id="export_ResumenGeneral" style="border-radius: 5px;">Exportar</button>
     
                                     </div>
+                                
+                                
+                                        <div id="ResumenGeneralContent" style="flex: 1;">
+                                        </div>
                                 </div>
+                                
     
                                 <div id="ResumenIndividual" class="tab-pane fade" role="tabpanel">
                                     <h3>Resumen Individual</h3>
                                     <p>En esta sección se muestra un resumen individual por pregunta. Puedes seleccionar un estilo de visualización y aplicar filtros para obtener información específica.</p>
-                                    <label for="ComboBox_ResumenIndividualTy" style="font-family: hedliner;">Selecciona un estilo:</label>
-                                    <select id="ComboBox_ResumenIndividualTy" style="font-family: hedliner;">
-                                        <!-- se agregan opciones narrative y factual-->
-                                        <option value="---">---</option>
-                                        <option value="individual_narrative">Narrativo</option>
-                                        <option value="percentage">Porcentual</option>
-                                    </select>     
-    
-                                    <label for="ComboBox_ResumenIndividual" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                    <select id="ComboBox_ResumenIndividual" style="font-family: hedliner;">
-                                        <!-- Opciones se agregarán dinámicamente aquí -->
-                                    </select>     
                                     
-                                    <div id="ResumenIndividualContent">
+                                    <!-- Comboboxes y botón en una fila -->
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                        <!-- Combobox para seleccionar estilo -->
+                                        <div>
+                                            <label for="ComboBox_ResumenIndividualTy" style="font-family: hedliner;">Selecciona un estilo:</label>
+                                            <select id="ComboBox_ResumenIndividualTy" style="font-family: hedliner;">
+                                                <option value="---">---</option>
+                                                <option value="individual_narrative">Narrativo</option>
+                                                <option value="percentage">Porcentual</option>
+                                            </select>
+                                        </div>
+                                    
+                                        <!-- Combobox para seleccionar filtro -->
+                                        <div>
+                                            <label for="ComboBox_ResumenIndividual" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                            <select id="ComboBox_ResumenIndividual" style="font-family: hedliner;">
+                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                            </select>
+                                        </div>
+                                    
+                          
+                                        <button id="export_ResumenIndividual" style="border-radius: 5px;">Exportar</button>
     
                                     </div>
+                                    
+                                    
+                                        <!-- Contenido del resumen individual -->
+                                        <div id="ResumenIndividualContent" style="flex: 1;">
+                                        </div>
                                 </div>
+                                
+                                
     
                                 <div id="UserPersona" class="tab-pane fade" role="tabpanel">
                                     <h3>User Persona</h3>
                                     <p>En esta sección se muestra información sobre el perfil del usuario objetivo, conocido como User Persona. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
-                                    <label for="Combobox_UserPersona" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                    <select id="Combobox_UserPersona" style="font-family: hedliner;">
-                                        <!-- Opciones se agregarán dinámicamente aquí -->
-                                    </select>     
+                                    
+                                    <!-- Comboboxes y botón en una fila -->
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                        <!-- Combobox para seleccionar filtro -->
+                                        <div>
+                                            <label for="Combobox_UserPersona" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                            <select id="Combobox_UserPersona" style="font-family: hedliner;">
+                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                            </select>
+                                        </div>
+                                
+                                  
+                                        <button id="export_UserPersona" style="border-radius: 5px;">Exportar</button>
     
-                                    <div id="UserPersonaContent">
     
                                     </div>
+                                    
+                                    
+                                        <!-- Contenido del User Persona -->
+                                        <div id="UserPersonaContent" style="flex: 1;">
+                                        </div>
                                 </div>
+                                
                                 
                                 <div id="AnalisisPsicograficos" class="tab-pane fade" role="tabpanel">
                                     <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group"><a class="list-group-item list-group-item-action" href="#AP_Ekman" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">EKMAN</a><a class="list-group-item list-group-item-action" href="#AP_RasgosDePersonalidad" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Rasgos de Personalidad</a><a class="list-group-item list-group-item-action" href="#AP_SegmentosPsicograficos" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Segmentos Psicograficos</a><a class="list-group-item list-group-item-action" href="#AP_NPS" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">NPS</a><a class="list-group-item list-group-item-action" href="#AP_EstiloDeComunicacion" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Estilo de Comunicacion</a></div>
@@ -144,71 +195,134 @@
                                                         <li><strong>Emociones Básicas:</strong> Se identifican y clasifican las emociones primarias reflejadas en el contenido textual.</li>
                                                         <li><strong>Microexpresiones Textuales:</strong> Se detectan y analizan sutiles indicios emocionales que podrían estar presentes en la redacción, similares a las microexpresiones faciales.</li>
                                                     </ul>
-    
-    
-                                                    <label for="Combobox_EKMAN" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                                    <select id="Combobox_EKMAN" style="font-family: hedliner;">
-                                                        <!-- Opciones se agregarán dinámicamente aquí -->
-                                                    </select>     
-    
-                                                    <div id="EKMANContent">
+                                                
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                                        <!-- Combobox para seleccionar filtro -->
+                                                        <div>
+                                                            <label for="Combobox_EKMAN" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_EKMAN" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+                                                        </div>
+                                                
+                                                        
+                                                        <button id="export_AP_Ekman" style="border-radius: 5px;">Exportar</button>
     
                                                     </div>
+                                                    
+                                                   
+                                                        <!-- Contenido del Análisis Psicográfico -->
+                                                        <div id="EKMANContent" style="flex: 1;">
+                                                        </div>
                                                 </div>
+                                                
                                                 <div id="AP_RasgosDePersonalidad" class="tab-pane fade" role="tabpanel">
                                                     <h3>Análisis de Rasgos de Personalidad</h3>
                                                     <p>En esta sección se lleva a cabo un análisis exhaustivo de los rasgos de personalidad reflejados en las respuestas escritas, identificando y clasificando estos rasgos para obtener una visión más detallada del perfil del usuario objetivo.</p>
                                                 
-                                                    <label for="Combobox_RasgosDePersonalidad" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                                    <select id="Combobox_RasgosDePersonalidad" style="font-family: hedliner;">
-                                                        <!-- Las opciones se agregarán dinámicamente aquí -->
-                                                    </select>     
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                                        <!-- Combobox para seleccionar filtro -->
+                                                        <div>
+                                                            <label for="Combobox_RasgosDePersonalidad" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_RasgosDePersonalidad" style="font-family: hedliner;">
+                                                                <!-- Las opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+                                                        </div>
                                                 
-                                                    <div id="RasgosDePersonalidadContent">
-                                                        <!-- El contenido relacionado con los rasgos de personalidad se mostrará aquí -->
+                                                        
+                                                        <button id="export_AP_RasgosDePersonalidad" style="border-radius: 5px;">Exportar</button>
+    
+    
                                                     </div>
+                                                    
+                                                    <!-- Contenedor para el textarea y el contenido del análisis -->
+                                                        <div id="RasgosDePersonalidadContent" style="flex: 1;">
+                                                        </div>
                                                 </div>
+                                                
                                                 
                                                 <div id="AP_SegmentosPsicograficos" class="tab-pane fade" role="tabpanel">
                                                     <h3>Análisis de Segmentos Psicográficos</h3>
                                                     <p>En esta sección se realiza un análisis detallado de los segmentos psicográficos a partir de las respuestas escritas, con el objetivo de identificar y clasificar diferentes perfiles de usuarios en función de sus características psicológicas, comportamientos, valores y estilos de vida. Los segmentos incluyen perfiles como usuarios leales, indistintos y críticos.</p>
-                                                    
-                                                    <label for="Combobox_SegmentosPsicograficos" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                                    <select id="Combobox_SegmentosPsicograficos" style="font-family: hedliner;">
-                                                        <!-- Las opciones se agregarán dinámicamente aquí -->
-                                                    </select>     
                                                 
-                                                    <div id="SegmentosPsicograficosContent">
-                                                        <!-- El contenido relacionado con los segmentos psicográficos se mostrará aquí -->
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                                        <!-- Combobox para seleccionar filtro -->
+                                                        <div>
+                                                            <label for="Combobox_SegmentosPsicograficos" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_SegmentosPsicograficos" style="font-family: hedliner;">
+                                                                <!-- Las opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+                                                        </div>
+                                                
+                                                        <!-- Botón para mostrar/ocultar el textarea -->
+                                                        <button id="export_AP_SegmentosPsicograficos" style="border-radius: 5px;">Exportar</button>
+    
+    
                                                     </div>
+                                                    
+                                                    <!-- Contenedor para el textarea y el contenido del análisis -->
+                                                    
+                                                        <div id="SegmentosPsicograficosContent" style="flex: 1;">
+                                                        </div>
                                                 </div>
+                                                
                                                 
                                                 <div id="AP_NPS" class="tab-pane fade" role="tabpanel">
                                                     <h3>Análisis de NPS</h3>
                                                     <p>En esta sección se realiza un análisis del Net Promoter Score (NPS) a partir de las respuestas escritas. El NPS es una métrica utilizada para medir la lealtad de los clientes y su disposición a recomendar un producto o servicio.</p>
-                                                    
-                                                    <label for="Combobox_NPS" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                                    <select id="Combobox_NPS" style="font-family: hedliner;">
-                                                        <!-- Opciones se agregarán dinámicamente aquí -->
-                                                    </select>     
-                                                    
-                                                    <div id="NPSContent">
-                                                        <!-- El contenido relacionado con el análisis de NPS se mostrará aquí -->
+                                                
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                                        <!-- Combobox para seleccionar filtro -->
+                                                        <div>
+                                                            <label for="Combobox_NPS" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_NPS" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+                                                        </div>
+                                                
+                                                        <!-- Botón para mostrar/ocultar el textarea -->
+                                                        
+                                                        <button id="export_AP_NPS" style="border-radius: 5px;">Exportar</button>
+    
                                                     </div>
+                                                
+                                                    <!-- Contenedor para el textarea y el contenido del análisis -->
+                                                    
+                                                        <div id="NPSContent" style="flex: 1;">
+                                                        </div>
+                                                    
                                                 </div>
+                                                
                                                 <div id="AP_EstiloDeComunicacion" class="tab-pane fade" role="tabpanel">
                                                     <h3>Análisis de Estilos de Comunicación</h3>
                                                     <p>En esta sección se realiza un análisis de los estilos de comunicación de los encuestados, categorizándolos en Reveladores, Factuales, Informativos y Buscadores de Acción. Estos estilos se determinan en base a cómo los encuestados expresan sus opiniones y preferencias.</p>
-                                                    
-                                                    <label for="Combobox_EstiloDeComunicacion" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                                    <select id="Combobox_EstiloDeComunicacion" style="font-family: hedliner;">
-                                                        <!-- Opciones se agregarán dinámicamente aquí -->
-                                                    </select>     
-    
-                                                    <div id="EstiloDeComunicacionContent">
+                                                
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                                        <!-- Combobox para seleccionar filtro -->
+                                                        <div>
+                                                            <label for="Combobox_EstiloDeComunicacion" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_EstiloDeComunicacion" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+                                                        </div>
+                                                
+                                                        <!-- Botón para mostrar/ocultar el textarea -->
+                                                        <button id="export_AP_EstiloDeComunicacion" style="border-radius: 5px;">Exportar</button>
     
                                                     </div>
+                                                
+                                                    
+                                                        <!-- Contenido del análisis de estilo de comunicación -->
+                                                        <div id="EstiloDeComunicacionContent" style="flex: 1;">
+                                                        </div>
+                                                    
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -217,10 +331,19 @@
                                 <div id="UsserExperience" class="tab-pane fade" role="tabpanel">
                                     <h3>Experiencia de Usuario</h3>
                                     <p>En esta sección se evalúa las percepciones, emociones y comportamiento de los clientes en cada punto de interacción con una marca, para identificar áreas de mejora y fortalecer la satisfacción y fidelización. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
-                                    <label for="Combobox_UsserExperience" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                    <select id="Combobox_UsserExperience" style="font-family: hedliner;">
-                                        <option value="General">Narrativo</option>
-                                    </select>     
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+
+                                        <label for="Combobox_UsserExperience" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                        <div>                                    
+                                            <select id="Combobox_UsserExperience" style="font-family: hedliner;">
+                                                <option value="General">Narrativo</option>
+                                            </select>  
+                                        </div>
+
+                                        <button id="export_UsserExperience" style="border-radius: 5px;">Exportar</button>
+   
+                                    </div>
+
     
                                     <div id="UsserExperienceContent">
                                         <div id="ResumenIndividualContent" style="flex: 1;">
