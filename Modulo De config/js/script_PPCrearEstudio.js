@@ -248,7 +248,7 @@ function UpdateAndPostformdta() {
 
 // Llama a la función cuando la página se carga completamente
 window.addEventListener('DOMContentLoaded', (event) => {
-    /*if(window.location.href.includes('https://www.cheetah-research.ai/configuration/study/')){
+    if(window.location.href.includes('https://www.cheetah-research.ai/configuration/study/')){
         if(localStorage.getItem('selectedStudyId') == null){
             console.log('Study id:', localStorage.getItem('selectedStudyId'));
             CE_DeactivateNavBy();
@@ -262,7 +262,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         console.log('Study id:', localStorage.getItem('selectedStudyId'));
         loadStudies();
-    }*/
+    }
 });
 
 function ApendStudies(){
