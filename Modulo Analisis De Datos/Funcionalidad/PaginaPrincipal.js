@@ -39,7 +39,7 @@ function otp(study_id) {
 }
 
 async function LegalDisclaimer(study_id) {
-    /*
+    
     const overlay = document.getElementById('overlay');
     overlay.innerHTML = `
         <div id="overlayContent" style="
@@ -54,8 +54,25 @@ async function LegalDisclaimer(study_id) {
             color: black;
             padding: 20px;
         ">
-            <p>Probando función.</p>
-            
+             <p><strong>Sobre el Contenido:</strong></p>
+                <p>
+                    Los datos recopilados y presentados en este estudio son confidenciales y propiedad exclusiva del cliente. 
+                    El acceso está restringido por un código distribuido solo a usuarios autorizados. 
+                    Cualquier reproducción total o parcial, distribución a terceros o modificación de este contenido fuera de esta plataforma será responsabilidad del cliente.
+                </p>
+                
+                <p><strong>Sobre la Plataforma:</strong></p>
+                <p>
+                    Todos los elementos metodológicos, análisis, diseño, estructura y presentación de resultados en la plataforma Cheetah Research 
+                    son propiedad intelectual de Marketing Total y protegidos por la ley de Derechos de Autor y Derechos Conexos. 
+                    No deben ser objeto de plagio, reproducción, muestra o utilización por otro proveedor, ejecutor, contratista, 
+                    ni transmisión a terceros o cualquier otro uso no previsto.
+                </p>
+                
+                <p>
+                    Al acceder al reporte, los usuarios aceptan cumplir con estas condiciones y dan por entendidas las responsabilidades 
+                    de cualquier infracción que pueda surgir del uso indebido de la información o la plataforma.
+                </p>
             <button id="verifyButton" style="
                 padding: 10px;
                 border-radius: 5px;
@@ -64,7 +81,7 @@ async function LegalDisclaimer(study_id) {
                 color: white;
                 border: none;
                 cursor: pointer;
-            ">Verificar</button>
+            ">Acceder Al Reporte</button>
         </div>
     `;
 
@@ -78,7 +95,7 @@ async function LegalDisclaimer(study_id) {
     });
 
     console.log("El botón fue presionado, continuando...");
-    */
+    
 
     contenido(study_id);
 }
