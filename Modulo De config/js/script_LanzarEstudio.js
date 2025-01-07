@@ -394,6 +394,7 @@ agregarModuloBtn.addEventListener('click', (e) => {
         moduloItem.appendChild(eliminarBtn);
 
         modulosLST.appendChild(moduloItem);
+        
     }
 });
 
