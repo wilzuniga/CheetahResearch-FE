@@ -438,6 +438,7 @@ function LLenarResumenes(){
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBoxCE = document.getElementById('Combobox_CostumerExperience');
 
             //User Persona, perfecto
             comboBoxUP.addEventListener('change', (event) => {
