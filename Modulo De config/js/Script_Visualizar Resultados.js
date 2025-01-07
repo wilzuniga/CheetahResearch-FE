@@ -26,7 +26,7 @@ function AgregarFiltros() {
             const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBox7 = document.getElementById('Combobox_NPS');
             const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
-            const comboBox9 = document.getElementById('Combobox_CostumerExperience');
+            const comboBox9 = document.getElementById('Combobox_customerExperience');
 
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'save-textarea_AP_SegmentosPsicograficos': 'SegmentosPsicograficosTextArea',
                 'save-textarea_AP_NPS': 'NPSTextArea',
                 'save-textarea_AP_EstiloDeComunicacion': 'EstiloDeComunicacionTextArea',
-                'save-textarea_CostumerExperience': 'CostumerExperienceTextArea'
+                'save-textarea_customerExperience': 'customerExperienceTextArea'
             };
 
             //conseguir los comboboxes de cada seccion
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
-            const comboBoxCE = document.getElementById('Combobox_CostumerExperience');
+            const comboBoxCE = document.getElementById('Combobox_customerExperience');
 
             //conseguir el combobox seleccionado de cada seccion
             const StyleSelectedOptionRG = comboBoxRG.options[comboBoxRG.selectedIndex];
@@ -318,13 +318,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     break;
 
-                case 'save-textarea_CostumerExperience':
+                case 'save-textarea_customerExperience':
                     {
                     //enviar el texto del textarea al backend
                     const formDataCE = new FormData();
                     formDataCE.append('filter', StyleSelectedOptionCEValue);
-                    formDataCE.append('module', 'psicographic_questions');
-                    formDataCE.append('sub_module', 'costumer_experience');
+                    formDataCE.append('module', 'customer_experience');
                     const fileContent = textarea.value;
                     const blob = new Blob([fileContent], { type: 'text/markdown' });
                     const filename = StyleSelectedOptionCEValue + '.md';
@@ -438,7 +437,7 @@ function LLenarResumenes(){
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
-            const comboBoxCE = document.getElementById('Combobox_CostumerExperience');
+            const comboBoxCE = document.getElementById('Combobox_customerExperience');
 
             //User Persona, perfecto
             comboBoxUP.addEventListener('change', (event) => {
@@ -481,18 +480,18 @@ function LLenarResumenes(){
 
             });
 
-            //Costumer Experience, perfecto
+            //customer Experience, perfecto
             comboBoxCE.addEventListener('change', (event) => {
                 console.log(event.target.value);
 
-                var div = document.getElementById('CostumerExperienceContent');
-                var textArea = document.getElementById('CostumerExperienceTextArea');
+                var div = document.getElementById('customerExperienceContent');
+                var textArea = document.getElementById('customerExperienceTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
-                formData.append('module', 'costumer_experience');
+                formData.append('module', 'customer_experience');
                 const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
