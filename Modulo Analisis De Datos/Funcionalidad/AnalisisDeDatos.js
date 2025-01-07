@@ -337,7 +337,7 @@ function LLenarResumenes(study) {
                 console.log(data);
             })
             .catch(function (error) {
-                div.innerHTML = "<p>Caracteristica en desarrollo.</p>";
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
                 console.log(error);
             })
             .then(function () {
