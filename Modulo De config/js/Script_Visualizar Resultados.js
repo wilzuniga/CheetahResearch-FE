@@ -26,6 +26,8 @@ function AgregarFiltros() {
             const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBox7 = document.getElementById('Combobox_NPS');
             const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBox9 = document.getElementById('Combobox_CostumerExperience');
+
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
             comboBox3.innerHTML = '';
@@ -34,6 +36,7 @@ function AgregarFiltros() {
             comboBox6.innerHTML = '';
             comboBox7.innerHTML = '';
             comboBox8.innerHTML = '';
+            comboBox9.innerHTML = '';
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -48,6 +51,7 @@ function AgregarFiltros() {
             comboBox6.appendChild(option.cloneNode(true));
             comboBox7.appendChild(option.cloneNode(true));
             comboBox8.appendChild(option.cloneNode(true));
+            comboBox9.appendChild(option.cloneNode(true));
 
         });
         }
@@ -81,7 +85,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 'save-textarea_AP_RasgosDePersonalidad': 'RasgosDePersonalidadTextArea',
                 'save-textarea_AP_SegmentosPsicograficos': 'SegmentosPsicograficosTextArea',
                 'save-textarea_AP_NPS': 'NPSTextArea',
-                'save-textarea_AP_EstiloDeComunicacion': 'EstiloDeComunicacionTextArea'
+                'save-textarea_AP_EstiloDeComunicacion': 'EstiloDeComunicacionTextArea',
+                'save-textarea_CostumerExperience': 'CostumerExperienceTextArea'
             };
 
             //conseguir los comboboxes de cada seccion
@@ -94,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBoxCE = document.getElementById('Combobox_CostumerExperience');
 
             //conseguir el combobox seleccionado de cada seccion
             const StyleSelectedOptionRG = comboBoxRG.options[comboBoxRG.selectedIndex];
@@ -104,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionSP = comboBoxSP.options[comboBoxSP.selectedIndex];
             const StyleSelectedOptionNPS = comboBoxNPS.options[comboBoxNPS.selectedIndex];
             const StyleSelectedOptionEC = comboBoxEC.options[comboBoxEC.selectedIndex];
+            const StyleSelectedOptionCE = comboBoxCE.options[comboBoxCE.selectedIndex];
 
             //conseguir el valor del combobox seleccionado de cada seccion
             const StyleSelectedOptionRGValue = StyleSelectedOptionRG.value;
@@ -114,6 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionSPValue = StyleSelectedOptionSP.value;
             const StyleSelectedOptionNPSValue = StyleSelectedOptionNPS.value;
             const StyleSelectedOptionECValue = StyleSelectedOptionEC.value;
+            const StyleSelectedOptionCEValue = StyleSelectedOptionCE.value;
 
             //en el caso de el resumen general y el resumen individual, conseguir los subfiltros 
             const StyleSelectedOptionRGSub = document.getElementById('ComboBox_ResumenGeneralTy');
@@ -309,6 +317,30 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                     }
                     break;
+
+                case 'save-textarea_CostumerExperience':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataCE = new FormData();
+                    formDataCE.append('filter', StyleSelectedOptionCEValue);
+                    formDataCE.append('module', 'psicographic_questions');
+                    formDataCE.append('sub_module', 'costumer_experience');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionCEValue + '.md';
+
+                    formDataCE.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataCE)
+                        .then(function (response) {
+                            console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
                 default:
                     break;
             }
@@ -447,6 +479,42 @@ function LLenarResumenes(){
                     });
 
             });
+
+            //Costumer Experience, perfecto
+            comboBoxCE.addEventListener('change', (event) => {
+                console.log(event.target.value);
+
+                var div = document.getElementById('CostumerExperienceContent');
+                var textArea = document.getElementById('CostumerExperienceTextArea');
+                // Supongamos que `event.target.value` es el valor del combobox
+                const selectedValue = event.target.value;
+
+                formData = new FormData();     
+                formData.append('filter', selectedValue);
+                formData.append('module', 'psicographic_questions');
+                formData.append('sub_module', 'costumer_experience');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        const coso = marked(data);                          
+                        div.innerHTML = coso;          
+                        textArea.value = data;            
+                        console.log(data);
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            });
+
 
             //ekman, perfecto
             comboBoxEK.addEventListener('change', (event) => {
