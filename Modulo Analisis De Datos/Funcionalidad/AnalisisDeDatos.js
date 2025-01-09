@@ -323,7 +323,7 @@ function LLenarResumenes(study) {
         formData = new FormData();     
         formData.append('filter', selectedValue);
         formData.append('module', 'customer_experience');
-        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
         axios.post(url, formData)
             .then(function (response) {
                 var data = response.data;

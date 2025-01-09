@@ -13,12 +13,9 @@
     <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
     <link rel="stylesheet" href="assets/css/Features-Small-Icons-icons.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
-
     <link rel="stylesheet" href="assets/assets_accounts/css/Hover.css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <link rel="stylesheet" href="assets/assets_accounts/css/Hover.css">
 
     <style>
@@ -122,10 +119,7 @@
                             <p id="TituloDelEstudio" style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Titulo del Estudio</p>
                             <p id="TituloEstudioLBL" style="font-size: 17px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: IBM Plex Sans;">Titulo del Estudio</p>
                         </div>
-                        <div class="mb-3">
-                            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Prompt del estudio</p>
-                            <p id="ResumenEstudioLBL" style="font-size: 17px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: IBM Plex Sans;">Resumen del estudio</p>
-                        </div>
+                        
                         <div class="mb-3">
                             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Filtros</p>
                             <input class="form-control" type="text" id="FiltrosTXT" name="bservaciones Importantes" placeholder="Agrega filtros para el modulo de Analisis" style="font-family: IBM Plex Sans;">
@@ -134,6 +128,17 @@
 
                         </div>
                         <ul class="list-group" id="FiltrosLST" style="font-family: hedliner;">
+                            
+                        </ul>
+
+                        <div class="mb-3">
+                            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Dominios Autorizados</p>
+                            <input class="form-control" type="text" id="DominiosTXT" name="bservaciones Importantes" placeholder="Agrega dominios autorizados para el modulo de Analisis" style="font-family: IBM Plex Sans;">
+                            <button class="btn btn-primary" id="AgregarDominioBTN" style="margin-top: 10px;font-family: hedliner; margin-right: 10px; ">Agregar</button>
+                            <button class="btn btn-primary" id="guardarDominioBTN" style="margin-top: 10px;font-family: hedliner;">Guardar</button>
+
+                        </div>
+                        <ul class="list-group" id="DominiosLST" style="font-family: hedliner;">
                             
                         </ul>
 
