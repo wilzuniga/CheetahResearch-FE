@@ -34,9 +34,69 @@ function otp(study_id) {
                 border: none;
                 cursor: pointer;
             ">Verificar</button>
+            <button onclick="solicitarOTP('${study_id}')" style="
+                padding: 10px;
+                border-radius: 5px;
+                margin: 10px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                cursor: pointer;
+            ">Solicitar OTP</button>
         </div>
     `;
 }
+
+
+function solicitarOTP(study_id) {
+    const overlay = document.getElementById('overlay');
+    overlay.innerHTML = `
+        <div id="overlayContent" style="
+            height: auto;
+            background-color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+            text-align: center;
+            text-color: black;
+            padding: 20px;
+        ">
+            <p>Por favor, ingresa tu correo electrónico para solicitar el OTP.</p>
+            <input type="email" id="emailInput" placeholder="Correo electrónico" style="
+                width: 75%;
+                padding: 10px;
+                border-radius: 5px;
+                margin: 10px;
+            ">
+            <button onclick="enviarOTP('${study_id}')" style="
+                padding: 10px;
+                border-radius: 5px;
+                margin: 10px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                cursor: pointer;
+            ">Solicitar</button>
+        </div>
+    `;
+}
+
+function enviarOTP(study_id) {
+    const email = document.getElementById('emailInput').value;
+    if (email) {
+        alert('OTP seleccionado');
+        setTimeout(() => {
+            otp(study_id);
+        }, 1000); // Llama a la función otp después de 1 segundo
+    } else {
+        alert('Por favor, ingresa un correo electrónico válido.');
+    }
+}
+
+
+
 
 async function LegalDisclaimer(study_id) {
     

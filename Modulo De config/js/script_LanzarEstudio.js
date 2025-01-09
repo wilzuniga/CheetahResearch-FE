@@ -1,5 +1,6 @@
 let filtros = [];
 let modules = [];
+let dominios = [];s
 let studyStatus = 0;
 
 
@@ -249,6 +250,8 @@ function load(){    // Actualizar el título del estudio desde localStorage
 
     AgregarFiltros();
     AgregarModulos();
+    AgregarDominios();
+    
 
     // Manejar el evento del botón de agregar filtro
     const agregarFiltroBtn = document.getElementById('AgregarFiltroBTN');
@@ -288,10 +291,49 @@ function load(){    // Actualizar el título del estudio desde localStorage
         }
     });
 
+    const agregarDominioBtn = document.getElementById('AgregarDominioBTN');
+    const dominiosLST = document.getElementById('DominiosLST');
+
+    agregarDominioBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const dominioTxt = document.getElementById('DominiosTXT').value;
+        if (dominioTxt) {
+            dominios.push(dominioTxt);
+            const dominioItem = document.createElement('li');
+            dominioItem.classList.add('list-group-item');
+            dominioItem.style.display = 'flex';
+            dominioItem.style.justifyContent = 'space-between';
+            dominioItem.style.alignItems = 'center';
+
+            const dominioSpan = document.createElement('span');
+            dominioSpan.innerText = dominioTxt;
+            dominioSpan.style.fontFamily = 'IBM Plex Sans';
+            dominioItem.appendChild(dominioSpan);
+
+            const eliminarBtn = document.createElement('button');
+            eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+            eliminarBtn.innerText = 'Eliminar';
+            eliminarBtn.addEventListener('click', () => {
+                dominioItem.remove();
+                //eliminar el filtro del arreglo
+                const index = dominios.indexOf(dominioTxt);
+                if (index > -1) {
+                    dominios.splice(index, 1);
+                }
+            });
+            dominioItem.appendChild(eliminarBtn);
+
+            dominiosLST.appendChild(dominioItem);
+            document.getElementById('DominiosTXT').value = ''; // Limpiar el campo de texto
+        }
+    });
+
+
     // manejar el evento del boton agregar modulo
     const agregarModuloBtn = document.getElementById('AgregarModuloBTN');
-const modulosLST = document.getElementById('ModulesLST');
-const comboboxModules = document.getElementById('Combobox_Modules');
+    const modulosLST = document.getElementById('ModulesLST');
+    const comboboxModules = document.getElementById('Combobox_Modules');
 
 function AgregarFiltros() {
     const url = "https://api.cheetah-research.ai/configuration/get_filters/" + localStorage.getItem('selectedStudyId');
@@ -325,6 +367,46 @@ function AgregarFiltros() {
                 });
                 filtroItem.appendChild(eliminarBtn);
                 filtrosLST.appendChild(filtroItem);
+            });
+
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        });
+}
+
+function AgregarDominios() {
+    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + localStorage.getItem('selectedStudyId');
+    axios.get(url)
+        .then(response => {
+            console.log(response.data);
+            const data = response.data.filters;
+            //ciclar por la data
+            data.forEach(dominio => {
+                dominios.push(dominio);
+                const dominioItem = document.createElement('li');
+                dominioItem.classList.add('list-group-item');
+                dominioItem.style.display = 'flex';
+                dominioItem.style.justifyContent = 'space-between';
+                dominioItem.style.alignItems = 'center';
+
+                const dominioSpan = document.createElement('span');
+                dominioSpan.innerText = dominio;
+                dominioSpan.style.fontFamily = 'IBM Plex Sans';
+                dominioItem.appendChild(dominioSpan);
+
+                const eliminarBtn = document.createElement('button');
+                eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+                eliminarBtn.innerText = 'Eliminar';
+                eliminarBtn.addEventListener('click', () => {
+                    dominioItem.remove();
+                    const index = dominios.indexOf(dominioTxt);
+                if (index > -1) {
+                    dominios.splice(index, 1);
+                }
+                });
+                dominioItem.appendChild(eliminarBtn);
+                dominiosLST.appendChild(dominioItem);
             });
 
         })
@@ -427,7 +509,6 @@ agregarModuloBtn.addEventListener('click', (e) => {
 
 
 // Agregar un event listener para el botón de guardar filtros
-
 guardarFitroBTN.addEventListener('click', (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -450,6 +531,35 @@ guardarFitroBTN.addEventListener('click', (e) => {
         .then(response => {
             //alert 
             alert('Filtros guardados correctamente');
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        });
+}
+);
+
+guardarDominioBTN.addEventListener('click', (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    //que al guardar se cicle por DominiosLST y se guarde en el arreglo de dominios
+    const dominiosLST = document.getElementById('DominiosLST');
+    const dominiosItems = dominiosLST.getElementsByTagName('li');
+    dominios = [];
+    for (let i = 0; i < dominiosItems.length; i++) {
+        const dominioTxt = dominiosItems[i].getElementsByTagName('span')[0].innerText;
+        dominios.push(dominioTxt);
+    }
+    const dominiosString = JSON.stringify(dominios);
+    formData.append('filters', dominiosString);
+
+    axios.post('https://api.cheetah-research.ai/configuration/filters/' + localStorage.getItem('selectedStudyId') , formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+        .then(response => {
+            //alert 
+            alert('Dominios guardados correctamente');
         })
         .catch(error => {
             console.error('Error al enviar los datos:', error);
