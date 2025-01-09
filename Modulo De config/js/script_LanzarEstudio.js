@@ -26,7 +26,6 @@ function load(){    // Actualizar el título del estudio desde localStorage
         // Insertar el HTML en el div
 
         document.getElementById('TituloEstudioLBL').innerText = estudio.title;
-        document.getElementById('ResumenEstudioLBL').innerText = coso;
     }
 
     url = 'https://api.cheetah-research.ai/configuration/test/' + localStorage.getItem('selectedStudyId');
