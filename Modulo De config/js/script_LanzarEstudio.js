@@ -1,6 +1,6 @@
 let filtros = [];
 let modules = [];
-let dominios = [];s
+let dominios = [];
 let studyStatus = 0;
 
 
