@@ -34,7 +34,15 @@ function otp(study_id) {
                 border: none;
                 cursor: pointer;
             ">Verificar</button>
-            <button onclick="solicitarOTP('${study_id}')" style="
+           
+
+
+
+        </div>
+    `;
+
+    /**
+     *  <button onclick="solicitarOTP('${study_id}')" style="
                 padding: 10px;
                 border-radius: 5px;
                 margin: 10px;
@@ -43,8 +51,7 @@ function otp(study_id) {
                 border: none;
                 cursor: pointer;
             ">Solicitar OTP</button>
-        </div>
-    `;
+     */
 }
 
 
