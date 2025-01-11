@@ -121,6 +121,7 @@ async function LegalDisclaimer(study_id) {
             color: black;
             padding: 20px;
         ">
+             <h1>AVISO LEGAL</h1>
              <p><strong>Sobre el Contenido:</strong></p>
                 <p>
                     Los datos recopilados y presentados en este estudio son confidenciales y propiedad exclusiva del cliente. 
