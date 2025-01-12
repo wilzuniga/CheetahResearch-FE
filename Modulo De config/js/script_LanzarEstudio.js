@@ -296,7 +296,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
     agregarDominioBtn.addEventListener('click', (e) => {
         e.preventDefault();
 
-        const dominioTxt = document.getElementById('DominiosTXT').value;
+        let dominioTxt = document.getElementById('DominiosTXT').value;
         //eliminar caracter @ de dominioTXT
         dominioTxt = dominioTxt.replace('@', '');
 
