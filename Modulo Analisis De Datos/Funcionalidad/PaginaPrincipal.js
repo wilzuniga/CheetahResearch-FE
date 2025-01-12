@@ -34,15 +34,8 @@ function otp(study_id) {
                 border: none;
                 cursor: pointer;
             ">Verificar</button>
-           
 
-
-
-        </div>
-    `;
-
-    /**
-     *  <button onclick="solicitarOTP('${study_id}')" style="
+           <button onclick="solicitarOTP('${study_id}')" style="
                 padding: 10px;
                 border-radius: 5px;
                 margin: 10px;
@@ -51,7 +44,13 @@ function otp(study_id) {
                 border: none;
                 cursor: pointer;
             ">Solicitar OTP</button>
-     */
+
+
+
+        </div>
+    `;
+
+
 }
 
 
@@ -93,10 +92,36 @@ function solicitarOTP(study_id) {
 function enviarOTP(study_id) {
     const email = document.getElementById('emailInput').value;
     if (email) {
-        alert('OTP seleccionado');
-        setTimeout(() => {
-            otp(study_id);
-        }, 1000); // Llama a la función otp después de 1 segundo
+        //            otp(study_id);
+        /*URL: http://127.0.0.1:8000/configuration/api/generate-otp-withmail/
+Método: POST
+Body esperado:
+json
+{
+  "mongo_studio_id": "string",
+  "recipients": ["email1@example.com", "email2@example.com"]
+}
+*/
+        const url = 'https://api.cheetah-research.ai/configuration/api/generate-otp-withmail/';
+        const formData = new FormData();
+        formData.append('mongo_studio_id', study_id);
+        formData.append('recipients', email);
+
+        axios.post(url, formData)
+            .then(response => {
+                console.log(response.data);
+                const data = response.data;
+                let status = data.status;
+                if (status == 'exitoso') {
+                    alert('El código OTP ha sido enviado a tu correo electrónico.');
+                } else {
+                    alert('Ocurrió un error al enviar el código OTP. Por favor, inténtalo de nuevo.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al enviar los datos:', error);
+                alert('Ocurrió un error al enviar el código OTP. Por favor, inténtalo de nuevo.');
+            });
     } else {
         alert('Por favor, ingresa un correo electrónico válido.');
     }
