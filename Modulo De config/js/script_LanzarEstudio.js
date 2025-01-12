@@ -418,7 +418,7 @@ function AgregarDominios() {
     )
         .then(response => {
             console.log(response.data);
-            const data = response.data.filters;
+            const data = response.data.domains;
             //ciclar por la data
             data.forEach(dominio => {
                 dominios.push(dominio);
@@ -596,7 +596,7 @@ guardarDominioBTN.addEventListener('click', (e) => {
     const enviarFiltro = (dominio) => {
         const formData = new FormData();
         formData.append('study_id', studyId);
-        formData.append('filter', dominio);
+        formData.append('domain', dominio);
 
         return axios.post(apiUrl, formData, {
             headers: {
