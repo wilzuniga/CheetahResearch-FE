@@ -252,7 +252,15 @@ function sendMessage(message, imageSrc) {
                 console.log('Error:', error);
             });
 
-        } else {
+        }if (data.response.includes('NO SIRVE')) {
+            const farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
+            
+            getMessage(farewellMessage, null);
+            loadingMsg.style.display = 'none';
+            endChat()
+
+        
+        }else {
             //eliminar todo el contenido entre [] en el mensaje
             data.response = data.response.replace(/\[.*?\]/g, '');
             if ('file_path' in data) {
