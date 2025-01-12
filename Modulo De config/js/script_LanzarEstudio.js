@@ -320,6 +320,8 @@ function load(){    // Actualizar el título del estudio desde localStorage
                 if (index > -1) {
                     dominios.splice(index, 1);
                 }
+
+                eliminarDominio(dominioTxt);
             });
             dominioItem.appendChild(eliminarBtn);
 
@@ -374,8 +376,35 @@ function AgregarFiltros() {
         });
 }
 
+
+
+function eliminarDominio(dominio) {
+    const studyId = localStorage.getItem('selectedStudyId');
+    const formData = new FormData();
+    formData.append('study_id', studyId);
+    formData.append('domain', dominio);
+
+    axios.delete("https://api.cheetah-research.ai/configuration/api/delete-domain/", {
+        data: formData,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+        .then(response => {
+            console.log('Dominio eliminado correctamente:', response.data);
+            alert('Dominio eliminado correctamente');
+        })
+        .catch(error => {
+            console.error('Error al eliminar el dominio:', error);
+            alert('Ocurrió un error al eliminar el dominio. Revisa la consola para más detalles.');
+        });
+}
+
+
+
+
 function AgregarDominios() {
-    const url = "https://api.cheetah-research.ai/configuration/get-list-domains/"
+    const url = "https://api.cheetah-research.ai/configuration/api/get-list-domains/"
 
     formData = new FormData();
     formData.append('study_id', localStorage.getItem('selectedStudyId'));
@@ -413,6 +442,9 @@ function AgregarDominios() {
                 if (index > -1) {
                     dominios.splice(index, 1);
                 }
+                eliminarDominio(dominioTxt);
+
+
                 });
                 dominioItem.appendChild(eliminarBtn);
                 dominiosLST.appendChild(dominioItem);
@@ -549,32 +581,43 @@ guardarFitroBTN.addEventListener('click', (e) => {
 
 guardarDominioBTN.addEventListener('click', (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    //que al guardar se cicle por DominiosLST y se guarde en el arreglo de dominios
     const dominiosLST = document.getElementById('DominiosLST');
     const dominiosItems = dominiosLST.getElementsByTagName('li');
-    dominios = [];
+    const dominios = [];
+
     for (let i = 0; i < dominiosItems.length; i++) {
         const dominioTxt = dominiosItems[i].getElementsByTagName('span')[0].innerText;
         dominios.push(dominioTxt);
     }
-    const dominiosString = JSON.stringify(dominios);
-    formData.append('filters', dominiosString);
 
-    axios.post('https://api.cheetah-research.ai/configuration/filters/' + localStorage.getItem('selectedStudyId') , formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        }
-    })
-        .then(response => {
-            //alert 
-            alert('Dominios guardados correctamente');
+    // Ciclar los dominios y enviarlos uno por uno
+    const studyId = localStorage.getItem('selectedStudyId');
+    const apiUrl = `https://api.cheetah-research.ai/configuration/api/add-domain/`;
+    const enviarFiltro = (dominio) => {
+        const formData = new FormData();
+        formData.append('study_id', studyId);
+        formData.append('filter', dominio);
+
+        return axios.post(apiUrl, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+    };
+
+    // Enviar cada dominio individualmente
+    const requests = dominios.map(enviarFiltro);
+
+    Promise.all(requests)
+        .then(() => {
+            alert('Todos los dominios se han guardado correctamente');
         })
         .catch(error => {
             console.error('Error al enviar los datos:', error);
+            alert('Ocurrió un error al guardar los dominios. Revisa la consola para más detalles.');
         });
-}
-);
+});
+
 
 // Agregar un event listener para el botón de guardar módulos
 guardarModuloBTN.addEventListener('click', (e) => {
