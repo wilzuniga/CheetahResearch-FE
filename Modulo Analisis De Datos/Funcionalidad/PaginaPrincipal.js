@@ -76,7 +76,11 @@ function solicitarOTP(study_id) {
                 border-radius: 5px;
                 margin: 10px;
             ">
-            <button onclick="enviarOTP('${study_id}')" style="
+            
+        </div>
+    `;
+    /*
+    <button onclick="enviarOTP('${study_id}')" style="
                 padding: 10px;
                 border-radius: 5px;
                 margin: 10px;
@@ -85,8 +89,7 @@ function solicitarOTP(study_id) {
                 border: none;
                 cursor: pointer;
             ">Solicitar</button>
-        </div>
-    `;
+    */
 }
 
 function enviarOTP(study_id) {
