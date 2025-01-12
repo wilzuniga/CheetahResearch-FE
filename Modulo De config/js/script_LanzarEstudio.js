@@ -430,6 +430,7 @@ function AgregarDominios() {
 
                 const dominioSpan = document.createElement('span');
                 dominioSpan.innerText = dominio;
+                dominioTxt = dominio;
                 dominioSpan.style.fontFamily = 'IBM Plex Sans';
                 dominioItem.appendChild(dominioSpan);
 
