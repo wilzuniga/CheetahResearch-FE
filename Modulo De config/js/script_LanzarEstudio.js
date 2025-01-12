@@ -375,8 +375,18 @@ function AgregarFiltros() {
 }
 
 function AgregarDominios() {
-    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + localStorage.getItem('selectedStudyId');
-    axios.get(url)
+    const url = "https://api.cheetah-research.ai/configuration/get-list-domains/"
+
+    formData = new FormData();
+    formData.append('study_id', localStorage.getItem('selectedStudyId'));
+
+
+    axios.post(url, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    }
+    )
         .then(response => {
             console.log(response.data);
             const data = response.data.filters;
