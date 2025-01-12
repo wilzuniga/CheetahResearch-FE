@@ -430,6 +430,7 @@ function AgregarDominios() {
 
                 const dominioSpan = document.createElement('span');
                 dominioSpan.innerText = dominio;
+                const dominioTxt = dominio;  
                 dominioSpan.style.fontFamily = 'IBM Plex Sans';
                 dominioItem.appendChild(dominioSpan);
 
@@ -439,13 +440,12 @@ function AgregarDominios() {
                 eliminarBtn.addEventListener('click', () => {
                     dominioItem.remove();
                     const index = dominios.indexOf(dominioTxt);
-                if (index > -1) {
-                    dominios.splice(index, 1);
-                }
-                eliminarDominio(dominioTxt);
-
-
+                    if (index > -1) {
+                        dominios.splice(index, 1);  
+                    }
+                    eliminarDominio(dominioTxt);  
                 });
+                
                 dominioItem.appendChild(eliminarBtn);
                 dominiosLST.appendChild(dominioItem);
             });
