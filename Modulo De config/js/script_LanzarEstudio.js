@@ -297,7 +297,10 @@ function load(){    // Actualizar el título del estudio desde localStorage
         e.preventDefault();
 
         const dominioTxt = document.getElementById('DominiosTXT').value;
-        if (dominioTxt) {
+        //eliminar caracter @ de dominioTXT
+        dominioTxt = dominioTxt.replace('@', '');
+
+        if (dominioTxt && !dominios.includes("@")) {
             dominios.push(dominioTxt);
             const dominioItem = document.createElement('li');
             dominioItem.classList.add('list-group-item');
@@ -327,6 +330,8 @@ function load(){    // Actualizar el título del estudio desde localStorage
 
             dominiosLST.appendChild(dominioItem);
             document.getElementById('DominiosTXT').value = ''; // Limpiar el campo de texto
+        }else{
+            alert('Dominio invalido, recuerda que no debe contener el caracter "@"');
         }
     });
 
