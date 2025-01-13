@@ -76,11 +76,8 @@ function solicitarOTP(study_id) {
                 border-radius: 5px;
                 margin: 10px;
             ">
-            
-        </div>
-    `;
-    /*
-    <button onclick="enviarOTP('${study_id}')" style="
+
+            <button onclick="enviarOTP('${study_id}')" style="
                 padding: 10px;
                 border-radius: 5px;
                 margin: 10px;
@@ -89,46 +86,50 @@ function solicitarOTP(study_id) {
                 border: none;
                 cursor: pointer;
             ">Solicitar</button>
+            
+        </div>
+    `;
+    /*
+    
     */
 }
 
 function enviarOTP(study_id) {
     const email = document.getElementById('emailInput').value;
     if (email) {
-        //            otp(study_id);
-        /*URL: http://127.0.0.1:8000/configuration/api/generate-otp-withmail/
-Método: POST
-Body esperado:
-json
-{
-  "mongo_studio_id": "string",
-  "recipients": ["email1@example.com", "email2@example.com"]
-}
-*/
         const url = 'https://api.cheetah-research.ai/configuration/api/generate-otp-withmail/';
-        const formData = new FormData();
-        formData.append('mongo_studio_id', study_id);
-        formData.append('recipients', email);
+        
+        // Preparar el cuerpo de la solicitud como un objeto JSON
+        const body = {
+            mongo_studio_id: study_id,
+            recipients: [email] // Convertir a un arreglo, ya que el endpoint espera un array
+        };
 
-        axios.post(url, formData)
-            .then(response => {
-                console.log(response.data);
-                const data = response.data;
-                let status = data.status;
-                if (status == 'exitoso') {
-                    alert('El código OTP ha sido enviado a tu correo electrónico.');
-                } else {
-                    alert('Ocurrió un error al enviar el código OTP. Por favor, inténtalo de nuevo.');
-                }
-            })
-            .catch(error => {
-                console.error('Error al enviar los datos:', error);
+        // Usar axios para enviar la solicitud con el encabezado adecuado
+        axios.post(url, body, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+            const data = response.data;
+            let status = data.status;
+            if (status === 'exitoso') {
+                alert('El código OTP ha sido enviado a tu correo electrónico.');
+            } else {
                 alert('Ocurrió un error al enviar el código OTP. Por favor, inténtalo de nuevo.');
-            });
+            }
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+            alert('Ocurrió un error al enviar el código OTP. Por favor, inténtalo de nuevo.');
+        });
     } else {
         alert('Por favor, ingresa un correo electrónico válido.');
     }
 }
+
 
 
 
