@@ -115,10 +115,12 @@ function enviarOTP(study_id) {
             console.log(response.data);
             const data = response.data;
             let status = data.status;
-            if (status === 'exitoso') {
+            if (status === 'OTP email sent successfully') {
                 alert('El código OTP ha sido enviado a tu correo electrónico.');
+                otp(study_id);
             } else {
                 alert('Ocurrió un error al enviar el código OTP. Por favor, inténtalo de nuevo.');
+                otp(study_id);
             }
         })
         .catch(error => {
