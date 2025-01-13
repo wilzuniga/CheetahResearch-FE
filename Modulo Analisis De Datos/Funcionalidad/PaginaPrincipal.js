@@ -114,7 +114,7 @@ function enviarOTP(study_id) {
         .then(response => {
             console.log(response.data);
             const data = response.data;
-            let status = data.status;
+            let status = data.success;
             if (status === 'OTP email sent successfully') {
                 alert('El código OTP ha sido enviado a tu correo electrónico.');
                 otp(study_id);
