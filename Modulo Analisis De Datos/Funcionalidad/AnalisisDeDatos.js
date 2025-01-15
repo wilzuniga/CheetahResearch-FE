@@ -316,7 +316,6 @@ function LLenarResumenes(study) {
         console.log(event.target.value);
 
         var div = document.getElementById('customerExperienceContent');
-        var textArea = document.getElementById('customerExperienceTextArea');
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
 
@@ -333,7 +332,6 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);                          
                 div.innerHTML = coso;          
-                textArea.value = data;            
                 console.log(data);
             })
             .catch(function (error) {
