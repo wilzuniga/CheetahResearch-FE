@@ -253,7 +253,7 @@ function sendMessage(message, imageSrc) {
             });
 
         }if (data.response.includes('NO SIRVE')) {
-            const farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
+            const farewellMessage = `¡Lo sentimos no cumples con los requisitos para este estudio!\n\n¡Muchas Gracias !\n\n¡Que tengas un excelente día!`;
             
             getMessage(farewellMessage, null);
             loadingMsg.style.display = 'none';
