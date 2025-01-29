@@ -18,7 +18,7 @@ function otp(study_id) {
             text-color: black;
             padding: 20px;
         ">
-            <p>Para acceder a esta información, necesitas un código de acceso. Por favor, ingresa el código de acceso que te proporcionaron.</p>
+            <p>Para acceder a esta información, necesitas un código de acceso. Por favor, ingresa el código de acceso que te proporcionaron. Si no posees un OTP, selecciona el botón "Solicitar OTP" para obtener uno.</p>
             <input type="text" id="otpInput" style="
                 width: 75%;
                 padding: 10px;
