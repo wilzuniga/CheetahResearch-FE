@@ -20,45 +20,7 @@
     <link rel="stylesheet" href="assets/css/Responsiveness.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        #overlay {
-            position: fixed; /* Posiciona el overlay de manera fija */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            backdrop-filter: blur(3px); /* Filtro de desenfoque */ 
-            display: flex;
-            align-items: center; /* Centra verticalmente */
-            justify-content: center; /* Centra horizontalmente */
-            z-index: 1000; /* Asegura que el overlay esté por encima del contenido */
-            display: none; /* Ocultar por defecto */
-        }
 
-        #overlayContent {
-            background: var(--bs-CR-white);
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 50%;
-            max-width: 600px; /* Opcional: limita el ancho máximo */
-            box-sizing: border-box; /* Incluye el padding en el ancho total */
-        }
-
-        .card-body {
-            word-wrap: break-word; /* Permite que el texto haga salto de línea */
-            word-break: break-word; /* O también puedes usar word-break: break-all; */
-        }
-
-        /* Que el div "overlayContent" se ancho y las letras se modifiquen cuando se haga display en celulares */
-        @media (max-width: 768px) {
-            #overlayContent {
-                width: 90%;
-            }
-
-            #overlayContent p {
-                font-size: 1rem;
-            }
-        }
     </style>
 </head>
 
@@ -116,7 +78,7 @@
                 </div>
             </div>
         </div>
-        <div class="row text-wrap justify-content-center align-items-center align-content-center order-4" id="Copyright-Legend" style="margin-top: 5px;margin-bottom: -10px;text-align: center;width: 100%;color: var(--bs-CR-white)">
+        <div class="row text-wrap justify-content-center align-items-center align-content-center order-4" id="Copyright-Legend" style="margin-top: 5px;text-align: center;width: 100%;color: var(--bs-CR-white)">
             <p><strong>Cheetah Research</strong> es una marca registrada de <strong>Marketing Total S.A.</strong>. Todos los derechos reservados.</p>
         </div>
     </div>

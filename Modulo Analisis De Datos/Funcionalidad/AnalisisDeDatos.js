@@ -12,11 +12,104 @@ function initializePage() {
     if (study_id) {
         console.log('ID de estudio:', study_id);
         AgregarFiltros(study_id);
+        AgregarModulos(study_id);
         
     } else {
         console.error('No se encontró el parámetro id en la URL.');
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const exportButtons = document.querySelectorAll('button[id^="export_"]');
+
+    exportButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const parentTabPane = button.closest('.tab-pane');
+            const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
+
+            if (contentDiv) {
+                
+                const options = {
+                    margin: 1,
+                    filename: `${parentTabPane.id || 'contenido'}.pdf`,
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                };
+
+                html2pdf().set(options).from(contentDiv).save();
+            }
+        });
+    });
+});
+
+
+
+
+
+
+
+function AgregarModulos(study) {
+
+    let url = "https://api.cheetah-research.ai/configuration/get_modules/" + study;
+
+    axios.get(url)
+        .then(function (response) {
+            const data = response.data.modules;
+            ActiveModules = [];
+
+            //ciclar la data a partir de la segunda section para ver la estructura del json en la consola
+            data.forEach(modulo => {
+                ActiveModules.push(modulo);
+            });
+
+            console.log(ActiveModules);
+
+            const ResumenGeneralBtn = document.getElementById('ResumenGeneralBtn');
+            const ResumenIndividualBtn = document.getElementById('ResumenIndividualBtn');
+            const UserPersonaBtn = document.getElementById('UserPersonaBtn');
+            const AnalisisPsicograficosBtn = document.getElementById('AnalisisPsicograficosBtn');
+            const CustomerEcperienceBtn = document.getElementById('customerExperienceBtn');
+
+            ResumenGeneralBtn.style.display = 'none';
+            ResumenIndividualBtn.style.display = 'none';
+            UserPersonaBtn.style.display = 'none';
+            AnalisisPsicograficosBtn.style.display = 'none';
+            CustomerEcperienceBtn.style.display = 'none';
+
+            ActiveModules.forEach(modulo => {
+                if (modulo === 'Modulo de Analisis General') {
+                    ResumenGeneralBtn.style.display = 'block';
+                }
+                if (modulo === 'Modulo de Analisis Individual') {
+                    ResumenIndividualBtn.style.display = 'block';
+                }
+                if (modulo === 'Modulo de Users Personas') {
+                    UserPersonaBtn.style.display = 'block';
+                }
+                if (modulo === 'Modulo de Analisis Psicografico') {
+                    AnalisisPsicograficosBtn.style.display = 'block';
+                }
+                if (modulo === 'Modulo customer Experience') {
+                    CustomerEcperienceBtn.style.display = 'block';
+                }
+
+            }
+            );
+
+        }
+
+        )
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        }
+        )
+        .then(function () {
+            // always executed
+        }
+        );
+}
+
 
 function AgregarFiltros(study) {
     let url = "https://api.cheetah-research.ai/configuration/get_filters/" + study;
@@ -43,6 +136,8 @@ function AgregarFiltros(study) {
             const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBox7 = document.getElementById('Combobox_NPS');
             const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBox9 = document.getElementById('Combobox_customerExperience');
+
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
             comboBox3.innerHTML = '';
@@ -51,6 +146,8 @@ function AgregarFiltros(study) {
             comboBox6.innerHTML = '';
             comboBox7.innerHTML = '';
             comboBox8.innerHTML = '';
+            comboBox9.innerHTML = '';
+
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -65,7 +162,7 @@ function AgregarFiltros(study) {
             comboBox6.appendChild(option.cloneNode(true));
             comboBox7.appendChild(option.cloneNode(true));
             comboBox8.appendChild(option.cloneNode(true));
-
+            comboBox9.appendChild(option.cloneNode(true));
         });
 
         LLenarResumenes(study);
@@ -173,6 +270,7 @@ function LLenarResumenes(study) {
     const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
     const comboBoxNPS = document.getElementById('Combobox_NPS');
     const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
+    const comboBoxCE = document.getElementById('Combobox_customerExperience');
 
     //User Persona, perfecto
     comboBoxUP.addEventListener('change', (event) => {
@@ -211,6 +309,38 @@ function LLenarResumenes(study) {
                 // always executed
             });
 
+    });
+
+    //customer Experience, perfecto
+    comboBoxCE.addEventListener('change', (event) => {
+        console.log(event.target.value);
+
+        var div = document.getElementById('customerExperienceContent');
+        // Supongamos que `event.target.value` es el valor del combobox
+        const selectedValue = event.target.value;
+
+        formData = new FormData();     
+        formData.append('filter', selectedValue);
+        formData.append('module', 'customer_experience');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                const coso = marked(data);                          
+                div.innerHTML = coso;          
+                console.log(data);
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
     });
 
     //ekman, perfecto

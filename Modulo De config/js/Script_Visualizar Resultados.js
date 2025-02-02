@@ -26,6 +26,8 @@ function AgregarFiltros() {
             const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBox7 = document.getElementById('Combobox_NPS');
             const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBox9 = document.getElementById('Combobox_customerExperience');
+
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
             comboBox3.innerHTML = '';
@@ -34,6 +36,7 @@ function AgregarFiltros() {
             comboBox6.innerHTML = '';
             comboBox7.innerHTML = '';
             comboBox8.innerHTML = '';
+            comboBox9.innerHTML = '';
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -48,6 +51,7 @@ function AgregarFiltros() {
             comboBox6.appendChild(option.cloneNode(true));
             comboBox7.appendChild(option.cloneNode(true));
             comboBox8.appendChild(option.cloneNode(true));
+            comboBox9.appendChild(option.cloneNode(true));
 
         });
         }
@@ -65,6 +69,284 @@ function AgregarFiltros() {
         
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    // Asocia el evento a todos los botones save-textarea
+    document.querySelectorAll("button[id^='save-textarea_']").forEach(button => {
+        button.addEventListener('click', function () {
+            // Obtiene el ID del botón y mapea al textarea correspondiente
+            const buttonId = button.id;
+
+            // Mapa de botones a textareas
+            const textareaMap = {
+                'save-textarea_ResumenGeneral': 'ResumenGeneralTextArea',
+                'save-textarea_ResumenIndividual': 'ResumenIndividualTextArea',
+                'save-textarea_UserPersona': 'UserPersonaTextArea',
+                'save-textarea_AP_Ekman': 'EKMANTextArea',
+                'save-textarea_AP_RasgosDePersonalidad': 'RasgosDePersonalidadTextArea',
+                'save-textarea_AP_SegmentosPsicograficos': 'SegmentosPsicograficosTextArea',
+                'save-textarea_AP_NPS': 'NPSTextArea',
+                'save-textarea_AP_EstiloDeComunicacion': 'EstiloDeComunicacionTextArea',
+                'save-textarea_customerExperience': 'customerExperienceTextArea'
+            };
+
+            //conseguir los comboboxes de cada seccion
+
+            const comboBoxRG = document.getElementById('ComboBox_ResumenGeneral');
+            const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+            const comboBoxUP = document.getElementById('Combobox_UserPersona');
+            const comboBoxEK = document.getElementById('Combobox_EKMAN');
+            const comboBoxRP = document.getElementById('Combobox_RasgosDePersonalidad');
+            const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
+            const comboBoxNPS = document.getElementById('Combobox_NPS');
+            const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBoxCE = document.getElementById('Combobox_customerExperience');
+
+            //conseguir el combobox seleccionado de cada seccion
+            const StyleSelectedOptionRG = comboBoxRG.options[comboBoxRG.selectedIndex];
+            const StyleSelectedOptionRI = comboBoxRI.options[comboBoxRI.selectedIndex];
+            const StyleSelectedOptionUP = comboBoxUP.options[comboBoxUP.selectedIndex];
+            const StyleSelectedOptionEK = comboBoxEK.options[comboBoxEK.selectedIndex];
+            const StyleSelectedOptionRP = comboBoxRP.options[comboBoxRP.selectedIndex];
+            const StyleSelectedOptionSP = comboBoxSP.options[comboBoxSP.selectedIndex];
+            const StyleSelectedOptionNPS = comboBoxNPS.options[comboBoxNPS.selectedIndex];
+            const StyleSelectedOptionEC = comboBoxEC.options[comboBoxEC.selectedIndex];
+            const StyleSelectedOptionCE = comboBoxCE.options[comboBoxCE.selectedIndex];
+
+            //conseguir el valor del combobox seleccionado de cada seccion
+            const StyleSelectedOptionRGValue = StyleSelectedOptionRG.value;
+            const StyleSelectedOptionRIValue = StyleSelectedOptionRI.value;
+            const StyleSelectedOptionUPValue = StyleSelectedOptionUP.value;
+            const StyleSelectedOptionEKValue = StyleSelectedOptionEK.value;
+            const StyleSelectedOptionRPValue = StyleSelectedOptionRP.value;
+            const StyleSelectedOptionSPValue = StyleSelectedOptionSP.value;
+            const StyleSelectedOptionNPSValue = StyleSelectedOptionNPS.value;
+            const StyleSelectedOptionECValue = StyleSelectedOptionEC.value;
+            const StyleSelectedOptionCEValue = StyleSelectedOptionCE.value;
+
+            //en el caso de el resumen general y el resumen individual, conseguir los subfiltros 
+            const StyleSelectedOptionRGSub = document.getElementById('ComboBox_ResumenGeneralTy');
+            const StyleSelectedOptionRISub = document.getElementById('ComboBox_ResumenIndividualTy');
+
+            //conseguir el valor del subfiltro seleccionado
+            const StyleSelectedOptionRGSubValue = StyleSelectedOptionRGSub.value;
+            const StyleSelectedOptionRISubValue = StyleSelectedOptionRISub.value;
+
+            //conseguir el textarea correspondiente
+            const textarea = document.getElementById(textareaMap[buttonId]);
+
+            //al estar harcodeado los valorsespecificos de cada seccion, se debe de hacer un switch case para cada seccion
+            switch (buttonId) {
+                case 'save-textarea_ResumenGeneral':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataRG = new FormData();
+                    formDataRG.append('filter', StyleSelectedOptionRGValue);
+                    formDataRG.append('module', 'general');
+                    formDataRG.append('sub_module', StyleSelectedOptionRGSubValue);
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionRGValue + '.md';
+
+                    formDataRG.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataRG)
+                        .then(function (response) {
+                            console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+                case 'save-textarea_ResumenIndividual':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataRI = new FormData();
+                    formDataRI.append('filter', StyleSelectedOptionRIValue);
+                    formDataRI.append('module', 'individual_questions');
+                    formDataRI.append('sub_module', StyleSelectedOptionRISubValue);
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionRIValue + '.md';
+
+                    formDataRI.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataRI)
+                        .then(function (response) {
+                            console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+                case 'save-textarea_UserPersona':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataUP = new FormData();
+                    formDataUP.append('filter', StyleSelectedOptionUPValue);
+                    formDataUP.append('module', 'user_personas');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionUPValue + '.md';
+
+                    formDataUP.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataUP)
+                        .then(function (response) {
+                            console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+                case 'save-textarea_AP_Ekman':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataEK = new FormData();
+                    formDataEK.append('filter', StyleSelectedOptionEKValue);
+                    formDataEK.append('module', 'psicographic_questions');
+                    formDataEK.append('sub_module', 'ekman');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionEKValue + '.md';
+
+                    formDataEK.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataEK)
+                        .then(function (response) {
+                            console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+                case 'save-textarea_AP_RasgosDePersonalidad':{
+                    //enviar el texto del textarea al backend
+                    const formDataRP = new FormData();
+                    formDataRP.append('filter', StyleSelectedOptionRPValue);
+                    formDataRP.append('module', 'psicographic_questions');
+                    formDataRP.append('sub_module', 'personality');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionRPValue + '.md';
+
+                    formDataRP.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataRP)
+                        .then(function (response) {
+                            console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+                case 'save-textarea_AP_SegmentosPsicograficos':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataSP = new FormData();
+                    formDataSP.append('filter', StyleSelectedOptionSPValue);
+                    formDataSP.append('module', 'psicographic_questions');
+                    formDataSP.append('sub_module', 'segmentos');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionSPValue + '.md';
+
+                    formDataSP.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataSP)
+                        .then(function (response) {
+                            console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+                case 'save-textarea_AP_NPS':{
+                    //enviar el texto del textarea al backend
+                    const formDataNPS = new FormData();
+                    formDataNPS.append('filter', StyleSelectedOptionNPSValue);
+                    formDataNPS.append('module', 'psicographic_questions');
+                    formDataNPS.append('sub_module', 'nps');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionNPSValue + '.md';
+
+                    formDataNPS.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataNPS)
+                        .then(function (response) {
+                            console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+                case 'save-textarea_AP_EstiloDeComunicacion':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataEC = new FormData();
+                    formDataEC.append('filter', StyleSelectedOptionECValue);
+                    formDataEC.append('module', 'psicographic_questions');
+                    formDataEC.append('sub_module', 'estilo');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionECValue + '.md';
+
+                    formDataEC.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataEC)
+                        .then(function (response) {
+                            console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+
+                case 'save-textarea_customerExperience':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataCE = new FormData();
+                    formDataCE.append('filter', StyleSelectedOptionCEValue);
+                    formDataCE.append('module', 'customer_experience');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionCEValue + '.md';
+
+                    formDataCE.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataCE)
+                        .then(function (response) {
+                            console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+    });
+});
+
 
 
 function LLenarResumenes(){
@@ -76,6 +358,8 @@ function LLenarResumenes(){
                 const StyleSelectedOption = document.getElementById('ComboBox_ResumenGeneralTy');
 
                 var div = document.getElementById('ResumenGeneralContent');
+                //textarea
+                var textArea = document.getElementById('ResumenGeneralTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value; //el filtro seleccionado
                 formData = new FormData();
@@ -91,7 +375,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;   
+                        textArea.value = data;                   
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -115,6 +400,7 @@ function LLenarResumenes(){
                 const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
 
                 var div = document.getElementById('ResumenIndividualContent');
+                var textArea = document.getElementById('ResumenIndividualTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value; //el filtro seleccionado
                 formData = new FormData();
@@ -130,7 +416,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;          
+                        textArea.value = data;            
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -150,6 +437,7 @@ function LLenarResumenes(){
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBoxCE = document.getElementById('Combobox_customerExperience');
 
             //User Persona, perfecto
             comboBoxUP.addEventListener('change', (event) => {
@@ -160,6 +448,7 @@ function LLenarResumenes(){
 
                 // Obtener el div donde se mostrará el contenido
                 var div = document.getElementById('UserPersonaContent');
+                var textArea = document.getElementById('UserPersonaTextArea');
 
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
@@ -176,7 +465,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;          
+                        textArea.value = data;            
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -190,6 +480,41 @@ function LLenarResumenes(){
 
             });
 
+            //customer Experience, perfecto
+            comboBoxCE.addEventListener('change', (event) => {
+                console.log(event.target.value);
+
+                var div = document.getElementById('customerExperienceContent');
+                var textArea = document.getElementById('customerExperienceTextArea');
+                // Supongamos que `event.target.value` es el valor del combobox
+                const selectedValue = event.target.value;
+
+                formData = new FormData();     
+                formData.append('filter', selectedValue);
+                formData.append('module', 'customer_experience');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        const coso = marked(data);                          
+                        div.innerHTML = coso;          
+                        textArea.value = data;            
+                        console.log(data);
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            });
+
+
             //ekman, perfecto
             comboBoxEK.addEventListener('change', (event) => {
                 console.log(event.target.value);
@@ -197,6 +522,7 @@ function LLenarResumenes(){
 
                 // Obtener el div donde se mostrará el contenido
                 var div = document.getElementById('EKMANContent');
+                var textArea = document.getElementById('EKMANTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 
@@ -213,7 +539,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;  
+                        textArea.value = data;                    
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -235,6 +562,7 @@ function LLenarResumenes(){
 
                 // Obtener el div donde se mostrará el contenido
                 var div = document.getElementById('RasgosDePersonalidadContent');
+                var textArea = document.getElementById('RasgosDePersonalidadTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 
@@ -251,7 +579,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;        
+                        textArea.value = data;              
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -269,6 +598,7 @@ function LLenarResumenes(){
                 console.log(event.target.value);
 
                 var div = document.getElementById('SegmentosPsicograficosContent');
+                var textArea = document.getElementById('SegmentosPsicograficosTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 
@@ -285,7 +615,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;      
+                        textArea.value = data;                
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -302,6 +633,7 @@ function LLenarResumenes(){
                 console.log(event.target.value);
 
                 var div = document.getElementById('NPSContent');
+                var textArea = document.getElementById('NPSTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 
@@ -318,7 +650,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;     
+                        textArea.value = data;                 
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -334,6 +667,7 @@ function LLenarResumenes(){
                 console.log(event.target.value);
 
                 var div = document.getElementById('EstiloDeComunicacionContent');
+                var textArea = document.getElementById('EstiloDeComunicacionTextArea');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value;
 
@@ -350,7 +684,8 @@ function LLenarResumenes(){
                             data = data.substring(0, data.length - 3);
                         }
                         const coso = marked(data);                          
-                        div.innerHTML = coso;                      
+                        div.innerHTML = coso;   
+                        textArea.value = data;                   
                         console.log(data);
                     })
                     .catch(function (error) {
@@ -379,6 +714,94 @@ document.addEventListener('DOMContentLoaded', () => {
     LLenarResumenes();
 
 });
+
+//ocultar todos los text area 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        textarea.style.display = 'none';
+    });
+});
+
+//que al presionar los botones toggle-textarea_* aparezcan las text area 
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleButtons = document.querySelectorAll('[id^="toggle-textarea_"]');
+    
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            // Encontrar el textarea dentro de la misma sección del botón
+            const section = button.closest('.tab-pane');
+            const textarea = section.querySelector('textarea');
+            
+            if (textarea) {
+                // Alternar visibilidad del textarea
+                if (textarea.style.display === 'none' || textarea.style.display === '') {
+                    textarea.style.display = 'block';
+                } else {
+                    textarea.style.display = 'none';
+                }
+            }
+        });
+    });
+});
+
+
+//mierda para visualizar los cambios en el markdown
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Seleccionar todos los textarea y contenedores de contenido relacionados
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    tabPanes.forEach(tabPane => {
+        const textarea = tabPane.querySelector('textarea');
+        const contentDiv = tabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
+
+        if (textarea && contentDiv) {
+            // Agregar evento 'input' para actualizar contenido dinámicamente
+            textarea.addEventListener('input', function () {
+
+                // Convertir el texto ingresado en HTML procesado, si es necesario
+                const processedContent = marked.parse(textarea.value); // Usa marked.js para Markdown a HTML
+
+                // Actualizar el contenido del div relacionado
+                contentDiv.innerHTML = processedContent;
+            });
+        }
+    });
+
+});
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const exportButtons = document.querySelectorAll('button[id^="export_"]');
+
+    exportButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const parentTabPane = button.closest('.tab-pane');
+            const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
+
+            if (contentDiv) {
+                
+                const options = {
+                    margin: 1,
+                    filename: `${parentTabPane.id || 'contenido'}.pdf`,
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                };
+
+                html2pdf().set(options).from(contentDiv).save();
+            }
+        });
+    });
+});
+
+
+
+
 
 // Abrir un filechooser con el botón e ingresar los archivos a un arreglo de archivos botonImportar
 const botonImportar = document.getElementById('botonImportar');

@@ -4,7 +4,6 @@ let hash = 0;
 //Función inicializar Chat
 function initializePage() {
     const study_id = new URLSearchParams(window.location.search).get('id');
-
     if (study_id) {
         console.log('ID de estudio:', study_id);
         loadInterviewer(study_id);
@@ -217,7 +216,11 @@ function sendMessage(message, imageSrc) {
     message = message.replace(/LISTO/g, 'Perfecto');
     message = message.replace(/listo/g, 'perfecto');
     message = message.replace(/Listo/g, 'Perfecto');
-
+    message = message.replace(
+        "En agradecimiento por su participación se le hará entrega de un incentivo, el cual para ser acreedor al premio debe llegar hasta al final de la conversación.",
+        ""
+    );
+    
 
     //Procesar y Enviar Respuesta como Encuestador
     const url = 'https://api.cheetah-research.ai/chatbot/communicate/';
@@ -249,7 +252,17 @@ function sendMessage(message, imageSrc) {
                 console.log('Error:', error);
             });
 
-        } else {
+        }if (data.response.includes('NO SIRVE')) {
+            const farewellMessage = `¡Lo sentimos no cumples con los requisitos para este estudio!\n\n¡Muchas Gracias !\n\n¡Que tengas un excelente día!`;
+            
+            getMessage(farewellMessage, null);
+            loadingMsg.style.display = 'none';
+            endChat()
+
+        
+        }else {
+            //eliminar todo el contenido entre [] en el mensaje
+            data.response = data.response.replace(/\[.*?\]/g, '');
             if ('file_path' in data) {
                 if ('url' in data) {
                     getMessage(data.response, data.file_path, data.url);
@@ -268,7 +281,7 @@ function sendMessage(message, imageSrc) {
 
     }).catch((error) => {
         console.log('Error:', error);
-        getMessage('Lo siento, no pude entender tu respuesta. Por favor, inténtalo de nuevo.', null);
+        getMessage('¿Deseas agregar algo mas a tu respuesta?.', null);
         loadingMsg.style.display = 'none';
     });
 }
@@ -383,6 +396,8 @@ function getMessage(message, imageSrc, link) {
     messageList.insertBefore(loadingMsg, null);
 }
 
+
+
 //Funciones cambiar colores de botones al soltar botón (móviles)
 document.getElementById('btIMG-Cont').addEventListener('touchstart', function () {
     this.style.background = 'var(--bs-CR-orange-2)';
@@ -435,57 +450,86 @@ function load(study_id) {
     });
 }
 
+function verificarLink(study_id) {
+    const VerifURL = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
+    
+    return axios.get(VerifURL)
+        .then(response => {
+            console.log(response.data);
+            const data = response.data;
+            let studyStatus = data.studyStatus;
+            
+            if(studyStatus == 0) {
+                return false;
+            } else if(studyStatus == 2) {
+                return false;
+            } else {
+                return true;
+            }
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+            return false;
+        });
+}
+
+
 //Función Cargar Entrevistador
-function loadInterviewer(study_id) {
-    const url = "https://api.cheetah-research.ai/configuration/getInterviewer/";
+async function loadInterviewer(study_id) {
+    const linkDisponible = await verificarLink(study_id);
 
-    axios.post(url, { study_id: study_id }, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        }
-    }).then(response => {
-        const data = response.data;
-        const nombre = data.interviewerName;
-        const imagen = data.interviewerProfilePicture;
+    if (linkDisponible) {
+        const url = "https://api.cheetah-research.ai/configuration/getInterviewer/";
 
+        axios.post(url, { study_id: study_id }, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then(response => {
+            const data = response.data;
+            const nombre = data.interviewerName;
+            imgPP = data.interviewerProfilePicture;
 
-        const formContainerI = document.getElementById('overlay');
+            document.getElementById('Bot-Name').innerText = nombre;
+            const formContainer = document.createElement('div');
 
+            formContainer.innerHTML = `
+            <div id="overlayContent" class="text-wrap">
+                <img src="${imgPP}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
+                <p id="greeting">
+                ${data.interviewerGreeting}
+                </p>
+                <button id="AceptarChat" class="btn" style="margin: 10px 10px 0 0;background: var(--bs-CR-black);">Iniciar Chat</button>
+            </div>
+            `;
 
+            // Imagen del Bot para Espera de Respuesta
+            const TM_BotIMG = document.getElementById('typingMessage_BotIMG');
+            TM_BotIMG.src = imgPP;
 
-        document.getElementById('Bot-Name').innerText = nombre;
+            document.getElementById('overlay').innerHTML = formContainer.innerHTML;
+
+            document.getElementById('AceptarChat').addEventListener('click', (event) => {
+                event.preventDefault();
+                document.getElementById('overlay').style.display = 'none';
+                load(study_id);
+            });
+
+        }).catch(error => {
+            console.error(error);
+        });
+    } else {
         const formContainer = document.createElement('div');
-
-
-
         formContainer.innerHTML = `
-        <div id="overlayContent" class="text-wrap">
-            <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
-            <p id="greeting">
-            ${data.interviewerGreeting}
-            </p>
-            <button id="AceptarChat" class="btn" style="margin: 10px 10px 0 0;background: var(--bs-CR-black);">Iniciar Chat</button>
-        </div>
+            <div id="overlayContent" class="text-wrap">
+                <p>Parece que el enlace ya no está disponible. Si necesitas acceder a esta información, no dudes en contactarnos, ¡estamos aquí para ayudarte a resolverlo!</p>
+            </div>
         `;
 
-        imgPP = data.interviewerProfilePicture;
-
-        //Imagen del Bot para Espera de Respuesta
-        let TM_BotIMG = document.getElementById('typingMessage_BotIMG');
-        TM_BotIMG.src = imgPP;
-
         document.getElementById('overlay').innerHTML = formContainer.innerHTML;
-
-        document.getElementById('AceptarChat').addEventListener('click', (event) => {
-            event.preventDefault();
-            document.getElementById('overlay').style.display = 'none';
-            load(study_id);
-        });
-
-    }).catch(error => {
-        console.error(error);
-    });
+    }
 }
+
 
 //Función para deshabilitar Chat al terminarlo
 function endChat() {

@@ -13,12 +13,9 @@
     <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
     <link rel="stylesheet" href="assets/css/Features-Small-Icons-icons.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
-
     <link rel="stylesheet" href="assets/assets_accounts/css/Hover.css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <link rel="stylesheet" href="assets/assets_accounts/css/Hover.css">
 
     <style>
@@ -122,18 +119,26 @@
                             <p id="TituloDelEstudio" style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Titulo del Estudio</p>
                             <p id="TituloEstudioLBL" style="font-size: 17px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: IBM Plex Sans;">Titulo del Estudio</p>
                         </div>
-                        <div class="mb-3">
-                            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Prompt del estudio</p>
-                            <p id="ResumenEstudioLBL" style="font-size: 17px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: IBM Plex Sans;">Resumen del estudio</p>
-                        </div>
+                        
                         <div class="mb-3">
                             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Filtros</p>
                             <input class="form-control" type="text" id="FiltrosTXT" name="bservaciones Importantes" placeholder="Agrega filtros para el modulo de Analisis" style="font-family: IBM Plex Sans;">
-                            <button class="btn btn-primary" id="AgregarFiltroBTN" style="margin-top: 10px;font-family: hedliner;">Agregar</button>
+                            <button class="btn btn-primary" id="AgregarFiltroBTN" style="margin-top: 10px;font-family: hedliner; margin-right: 10px; ">Agregar</button>
                             <button class="btn btn-primary" id="guardarFitroBTN" style="margin-top: 10px;font-family: hedliner;">Guardar</button>
 
                         </div>
                         <ul class="list-group" id="FiltrosLST" style="font-family: hedliner;">
+                            
+                        </ul>
+
+                        <div class="mb-3">
+                            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Dominios Autorizados</p>
+                            <input class="form-control" type="text" id="DominiosTXT" name="bservaciones Importantes" placeholder="unitec.edu" style="font-family: IBM Plex Sans;">
+                            <button class="btn btn-primary" id="AgregarDominioBTN" style="margin-top: 10px;font-family: hedliner; margin-right: 10px; ">Agregar</button>
+                            <button class="btn btn-primary" id="guardarDominioBTN" style="margin-top: 10px;font-family: hedliner;">Guardar</button>
+
+                        </div>
+                        <ul class="list-group" id="DominiosLST" style="font-family: hedliner;">
                             
                         </ul>
 
@@ -145,6 +150,7 @@
                                 <option value="individual_questions">Modulo de Analisis Individual</option>
                                 <option value="psicographic_questions">Modulo de Analisis Psicografico</option>
                                 <option value="user_personas">Modulo de Users Personas</option>
+                                <option value="customer_experience">Modulo customer Experience</option>
                             </select>    
 
                             <ul class="list-group" id="ModulesLST" style="font-family: IBM Plex Sans;">
@@ -166,23 +172,36 @@
 
                         
 
-                        <div class="card mb-4" style="margin-top: 24px;font-family: hedliner;">
+                        <div class="card mb-4" >
                             <div class="card-header py-3">
-                                <h6 class="m-0" style="color: rgb(0,0,0);font-family: hedliner;">Modulo de Recolección de Datos</h6>
+                                <h6 id="HeaderPrincipalRecoleccion" class="m-0" style="color: rgb(0,0,0);font-family: hedliner;">Modulo de Recolección de Datos</h6>
                             </div>
                             <div class="card-body">
                                 <p id="ModuloDeRecoleccionURL" class="m-0" style="font-family: IBM Plex Sans;">LinkModuloRecoleccionDeDatos.com</p>
+                                <button id="StatusBtn_Recoleccion" class="btn btn-primary" style="margin-top: 10px;">Cambiar Estado</button>
+
                             </div>
+                            
                         </div>
 
                         <div class="card mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0" style="color: var(--bs-CR-black-dark);font-family: hedliner;">Modulo de Análisis de Datos</h6>
+                                <h6 id="HeaderPrincipalAnalisis" class="m-0" style="color: var(--bs-CR-black-dark); font-family: hedliner;">Módulo de Análisis de Datos</h6>
+
+                                <h6 id="OTP_Analisis" class="m-0" style="color: var(--bs-CR-black-dark); font-family: hedliner; margin: 10px"></h6>
+
                             </div>
                             <div class="card-body">
-                                <p id="ModuloDeAnalisisURL" class="m-0" style="font-family: IBM Plex Sans;">LinkModuloRecoleccionDeDatos.com</p>
+                                <p id="ModuloDeAnalisisURL" class="m-0" style="font-family: IBM Plex Sans;">
+                                    LinkModuloRecoleccionDeDatos.com
+                                </p>
+                        
+                                <button id="StatusBtn_Analisis" class="btn btn-primary" style="margin-top: 10px; margin-right: 10px;">Cambiar Estado</button>
+                                <button id="OTPBtn_Analisis" class="btn btn-primary" style="margin-top: 10px;">Generar OTP</button>
                             </div>
                         </div>
+                        
+                        
 
                         <div style="width: 250px;">
                             <button class="btn btn-primary d-block w-100" id="LanzarEstudioBtn" type="submit" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-top: 10px;font-family: hedliner;">Lanzar Estudio</button>
