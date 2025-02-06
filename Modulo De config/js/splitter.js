@@ -29,58 +29,63 @@ export function splitMarkdown(markdownText) {
 // utils.js
 
 export function generateCharts(data) {
-    const container = document.getElementById('charts-container');
-    container.innerHTML = ''; // Limpiar cualquier contenido previo del contenedor
-
     const colors = [
         '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
         '#FFB74D', '#FFA726', '#D35400', '#FF6F00', '#F57C00', '#E64A19', '#FF8F00', '#FF5722'
     ];
 
-    // Añadir transparencia a los colores (80 = 50% de opacidad)
     const translucentColors = colors.map(color => color + '90');
 
+    let chartsHTML = '';
+
     data.forEach((section, index) => {
-        const chartContainer = document.createElement('div');
-        chartContainer.classList.add('chart-box');
-        
-        chartContainer.innerHTML = `
-            <h3>${section.pregunta}</h3>
-            <canvas id="chart${index}"></canvas>
+        chartsHTML += `
+            <div class="chart-box">
+                <h3>${section.pregunta}</h3>
+                <canvas id="chart${index}"></canvas>
+            </div>
         `;
-        
-        container.appendChild(chartContainer);
+    });
 
-        const ctx = document.getElementById(`chart${index}`).getContext('2d');
+    // Insertar el HTML generado en el contenedor
+    const container = document.getElementById('charts-containerResumenIndividual');
+    if (container) {
+        container.innerHTML = chartsHTML; // Insertar todos los gráficos en el contenedor de una vez
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: section.respuestas.map(r => r.respuesta),
-                datasets: [{
-                    data: section.respuestas.map(r => r.porcentaje),
-                    backgroundColor: section.respuestas.map((_, i) => translucentColors[i % translucentColors.length]),
-                    borderColor: section.respuestas.map((_, i) => colors[i % colors.length]), // Bordes sin transparencia
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+        // Crear los gráficos después de insertar el HTML
+        data.forEach((section, index) => {
+            const ctx = document.getElementById(`chart${index}`).getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: section.respuestas.map(r => r.respuesta),
+                    datasets: [{
+                        data: section.respuestas.map(r => r.porcentaje),
+                        backgroundColor: section.respuestas.map((_, i) => translucentColors[i % translucentColors.length]),
+                        borderColor: section.respuestas.map((_, i) => colors[i % colors.length]), // Bordes sin transparencia
+                        borderWidth: 1
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
                     },
-                    x: {
-                        display: false
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        },
+                        x: {
+                            display: false
+                        }
                     }
                 }
-            }
+            });
         });
-    });
+    } else {
+        console.error("El contenedor de gráficos no se encontró.");
+    }
 }
