@@ -721,6 +721,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
     //charts-containerResumenIndividual ocultar
     document.getElementById('charts-containerResumenIndividual').style.display = 'none';
+    document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
     AgregarFiltros();
     LLenarResumenes();
 
@@ -891,4 +892,18 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
         resumenIndividualContent.style.display = 'none';
         resumenIndividualTextArea.style.display = 'none';
     }
+});
+
+document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change', function(event) {
+    const selectedValue = event.target.value; // Obtiene el valor seleccionado
+
+    // al seleccionar percentage que muestre ComboBox_ResumenIndividualDS, de lo contrario se mantiene oculto
+    const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
+    if (selectedValue === 'percentage') {
+        comboBoxResumenIndividualDS.style.display = 'block';
+    } else {
+        comboBoxResumenIndividualDS.style.display = 'none';
+    }
+
+
 });
