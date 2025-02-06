@@ -1,5 +1,6 @@
 let Demographic_Filters = [];
-let ResumenGeneral, ResumenIndividual, AnalisisPsicograficos;
+let formData = new FormData();  // Asegúrate de que esta línea está presente donde se necesita
+
 
 import { splitMarkdown, generateCharts } from './splitter.js';
 
@@ -424,7 +425,7 @@ function LLenarResumenes(){
                         div.innerHTML = coso;          
                         textArea.value = data;     
                         graphDta = splitMarkdown(coso);    
-                        graphs.innerHTML = generateCharts(graphDta);   
+                        graphs.innerHTML = generateCharts(graphDta);Y   
 
                         console.log(data);
                     })
@@ -859,4 +860,33 @@ botonForzarA.addEventListener('click', () => {
         .catch(error => {
             console.error('Error al forzar el análisis:', error);
         });
+});
+
+
+
+document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change', function(event) {
+    const selectedValue = event.target.value; // Obtiene el valor seleccionado
+
+    // Elementos a mostrar/ocultar
+    const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
+    const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
+    const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividual');
+
+    // Condicional para manejar la visualización
+    if (selectedValue === 'individual_Cat') {
+        // Mostrar el contenedor de charts y ocultar el resto
+        chartsContainerResumenIndividual.style.display = 'block';
+        resumenIndividualContent.style.display = 'none';
+        resumenIndividualTextArea.style.display = 'none';
+    } else if (selectedValue === 'percentage_nonCat') {
+        // Mostrar el contenido y ocultar el contenedor de charts
+        chartsContainerResumenIndividual.style.display = 'none';
+        resumenIndividualContent.style.display = 'block';
+        resumenIndividualTextArea.style.display = 'block';
+    } else {
+        // Si no se selecciona ninguna opción válida, ocultar todo
+        chartsContainerResumenIndividual.style.display = 'none';
+        resumenIndividualContent.style.display = 'none';
+        resumenIndividualTextArea.style.display = 'none';
+    }
 });
