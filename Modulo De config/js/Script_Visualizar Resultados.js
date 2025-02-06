@@ -882,7 +882,7 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
         // Mostrar el contenido y ocultar el contenedor de charts
         chartsContainerResumenIndividual.style.display = 'none';
         resumenIndividualContent.style.display = 'block';
-        resumenIndividualTextArea.style.display = 'block';
+        resumenIndividualTextArea.style.display = 'none';
     } else {
         // Si no se selecciona ninguna opción válida, ocultar todo
         chartsContainerResumenIndividual.style.display = 'none';
