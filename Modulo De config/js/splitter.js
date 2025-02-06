@@ -85,6 +85,7 @@ export function generateCharts(data) {
                 }
             });
         });
+        console.log("Gráficos generados correctamente.");
     } else {
         console.error("El contenedor de gráficos no se encontró.");
     }
