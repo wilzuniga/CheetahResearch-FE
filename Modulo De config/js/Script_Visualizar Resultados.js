@@ -424,7 +424,7 @@ function LLenarResumenes(){
                         const coso = marked(data);                          
                         div.innerHTML = coso;          
                         textArea.value = data;     
-                        const graphDta = splitMarkdown(coso);    
+                        let graphDta = splitMarkdown(coso);    
                         graphs.innerHTML = generateCharts(graphDta);
 
                         console.log(data);
