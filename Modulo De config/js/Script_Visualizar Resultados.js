@@ -424,7 +424,7 @@ function LLenarResumenes(){
                         const coso = marked(data);                          
                         div.innerHTML = coso;          
                         textArea.value = data;     
-                        let graphDta = splitMarkdown(coso);    
+                        let graphDta = splitMarkdown(data);    
                         generateCharts(graphDta);
 
                         console.log(data);
@@ -719,6 +719,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
+    //charts-containerResumenIndividual ocultar
+    document.getElementById('charts-containerResumenIndividual').style.display = 'none';
     AgregarFiltros();
     LLenarResumenes();
 
