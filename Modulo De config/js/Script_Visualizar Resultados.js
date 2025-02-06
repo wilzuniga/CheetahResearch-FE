@@ -1,6 +1,10 @@
 let Demographic_Filters = [];
 let ResumenGeneral, ResumenIndividual, AnalisisPsicograficos;
 
+import { splitMarkdown, generateCharts } from './splitter.js';
+
+
+
 function AgregarFiltros() {
     const url = "https://api.cheetah-research.ai/configuration/get_filters/" + localStorage.getItem('selectedStudyId');
 
@@ -401,6 +405,7 @@ function LLenarResumenes(){
 
                 var div = document.getElementById('ResumenIndividualContent');
                 var textArea = document.getElementById('ResumenIndividualTextArea');
+                var graphs = document.getElementById('charts-containerResumenIndividual');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value; //el filtro seleccionado
                 formData = new FormData();
@@ -417,7 +422,10 @@ function LLenarResumenes(){
                         }
                         const coso = marked(data);                          
                         div.innerHTML = coso;          
-                        textArea.value = data;            
+                        textArea.value = data;     
+                        graphDta = splitMarkdown(coso);    
+                        graphs.innerHTML = generateCharts(graphDta);   
+
                         console.log(data);
                     })
                     .catch(function (error) {

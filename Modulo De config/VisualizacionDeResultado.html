@@ -170,15 +170,31 @@
                                     <button id="export_ResumenIndividual" style="border-radius: 5px;">Exportar</button>
 
                                 </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                    <!-- Combobox para seleccionar display style -->
+                                    <div>
+                                        <label for="ComboBox_ResumenIndividualDS" style="font-family: hedliner;">Selecciona visualizacion:</label>
+                                        <select id="ComboBox_ResumenIndividualDS" style="font-family: hedliner;">
+                                            <option value="---">---</option>
+                                            <option value="individual_Cat">Visualización categórica</option>
+                                            <option value="percentage_nonCat">Visualización no categórica</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 
                                 <!-- Contenedor para el textarea y el resumen individual -->
                                 <div style="display: flex; gap: 20px;">
+
                                     <!-- Textarea -->
                                     <textarea id="ResumenIndividualTextArea" style="flex: 1;"></textarea>
                                 
                                     <!-- Contenido del resumen individual -->
                                     <div id="ResumenIndividualContent" style="flex: 1;">
                                     </div>
+
+                                    <div id="charts-containerResumenIndividual"></div>
                                 </div>
                             </div>
                             
@@ -242,6 +258,7 @@
                                 
                                 <!-- Contenedor para el textarea y el contenido del User Persona -->
                                 <div style="display: flex; gap: 20px;">
+
                                     <!-- Textarea -->
                                     <textarea id="customerExperienceTextArea" style="flex: 1;"></textarea>
                             
