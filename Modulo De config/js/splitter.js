@@ -44,6 +44,7 @@ export function generateCharts(data) {
                 <h3>${section.pregunta}</h3>
                 <canvas id="chart${index}"></canvas>
             </div>
+            <hr>
         `;
     });
 

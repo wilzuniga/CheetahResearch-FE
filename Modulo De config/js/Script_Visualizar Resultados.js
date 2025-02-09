@@ -722,7 +722,8 @@ document.addEventListener('DOMContentLoaded', () => {
     //charts-containerResumenIndividual ocultar
     document.getElementById('charts-containerResumenIndividual').style.display = 'none';
     document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
-    
+    document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
+
     AgregarFiltros();
     LLenarResumenes();
 
@@ -900,10 +901,13 @@ document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change
 
     // al seleccionar percentage que muestre ComboBox_ResumenIndividualDS, de lo contrario se mantiene oculto
     const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
+    const comboBoxResumenIndividualDSLBL = document.getElementById('ComboBox_ResumenIndividualDSLBL');
     if (selectedValue === 'percentage') {
         comboBoxResumenIndividualDS.style.display = 'block';
+        comboBoxResumenIndividualDSLBL.style.display = 'block';
     } else {
         comboBoxResumenIndividualDS.style.display = 'none';
+        comboBoxResumenIndividualDSLBL.style.display = 'none';
     }
 
 
