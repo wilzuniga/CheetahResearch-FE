@@ -720,7 +720,6 @@ function CE_DeactivateNavBy(){
 
         const target = event.target;
         if (draggedItem !== target && target.classList.contains('list-group-item')) {
-            const listGroup = document.querySelector('.list-group');
             const items = [...listGroup.querySelectorAll('.list-group-item')];
             const draggedIndex = items.indexOf(draggedItem);
             const targetIndex = items.indexOf(target);
@@ -730,6 +729,21 @@ function CE_DeactivateNavBy(){
             } else {
                 listGroup.insertBefore(draggedItem, target.nextSibling);
             }
+
+            //Actualiza el array de preguntas
+            const newQuestionsOrder = [];
+            const newQuestionsImgOrder = [];
+            items.forEach((item, index) => {
+                const questionIndex = items.indexOf(item);
+                newQuestionsOrder.push(questions[questionIndex]);
+                const questionImg = questionsImg.find(img => img.index === questionIndex);
+                if (questionImg) {
+                    newQuestionsImgOrder.push({ index: index, file: questionImg.file });
+                }
+            });
+
+            questions = newQuestionsOrder;
+            questionsImg = newQuestionsImgOrder;
         }
 
         event.dataTransfer.clearData();
