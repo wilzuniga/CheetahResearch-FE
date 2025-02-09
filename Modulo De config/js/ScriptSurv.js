@@ -419,7 +419,6 @@ function CE_DeactivateNavBy(){
             console.log("pregunta entra 11");
     
             const listGroup = document.querySelector('.list-group');
-    
             listGroup.innerHTML = '';
     
             questions.forEach((pregunta, index) => {
@@ -706,6 +705,7 @@ function CE_DeactivateNavBy(){
 
         const target = event.target;
         if (draggedItem !== target && target.classList.contains('list-group-item')) {
+            const listGroup = document.querySelector('.list-group');
             const items = [...listGroup.querySelectorAll('.list-group-item')];
             const draggedIndex = items.indexOf(draggedItem);
             const targetIndex = items.indexOf(target);
