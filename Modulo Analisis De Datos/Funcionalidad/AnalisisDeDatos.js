@@ -1,6 +1,8 @@
 // agregarCard.js
 let Demographic_Filters = [];
 let ActiveModules = [];
+let formData = new FormData();  
+
 import { splitMarkdown, generateCharts } from './splitter.js';
 
 function initializePage() {
