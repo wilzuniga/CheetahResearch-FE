@@ -296,6 +296,21 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 listGroup.insertBefore(draggedItem, target.nextSibling);
             }
+
+            //Actualiza el array de preguntas
+            const newQuestionsOrder = [];
+            const newQuestionsImgOrder = [];
+            items.forEach((item, index) => {
+                const questionIndex = items.indexOf(item);
+                newQuestionsOrder.push(questions[questionIndex]);
+                const questionImg = questionsImg.find(img => img.index === questionIndex);
+                if (questionImg) {
+                    newQuestionsImgOrder.push({ index: index, file: questionImg.file });
+                }
+            });
+
+            questions = newQuestionsOrder;
+            questionsImg = newQuestionsImgOrder;
         }
 
         event.dataTransfer.clearData();
