@@ -787,7 +787,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
 document.addEventListener('DOMContentLoaded', function () {
     const exportButtons = document.querySelectorAll('button[id^="export_"]');
 
@@ -809,6 +808,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
                 };
 
+                // Exportar todos los canvas dentro del chartsContainer
                 html2pdf().set(options).from(chartsContainer).save();
             } else if (contentDiv) {
                 // Si no hay gráficos, pero sí contenido normal
@@ -826,6 +826,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
 
 
 
