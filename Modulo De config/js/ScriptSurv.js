@@ -254,63 +254,63 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-        //Drag & Drop: handle functions
-        let draggedItem = null;
-    
-        function handleDragStart(event) {
-            draggedItem = event.target;
-            event.dataTransfer.effectAllowed = 'move';
-            event.dataTransfer.setData('text/html', event.target.innerHTML);
-            draggedItem.classList.add('dragging');
+    //Drag & Drop: handle functions
+    let draggedItem = null;
+
+    function handleDragStart(event) {
+        draggedItem = event.target;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/html', event.target.innerHTML);
+        draggedItem.classList.add('dragging');
+    }
+
+    function handleDragOver(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+
+        const target = event.target;
+        const items = document.querySelectorAll('.list-group-item');
+
+        //Efecto visual: Placeholder Anaranjado
+        items.forEach(item => {
+            if (item !== target) {
+                item.classList.remove('over');
+            }
+        });
+        if (target && target !== draggedItem && target.classList.contains('list-group-item')) {
+            target.classList.add('over');
         }
-    
-        function handleDragOver(event) {
-            event.preventDefault();
-            event.dataTransfer.dropEffect = 'move';
-    
-            const target = event.target;
-            const items = document.querySelectorAll('.list-group-item');
-    
-            //Efecto visual: Placeholder Anaranjado
-            items.forEach(item => {
-                if (item !== target) {
-                    item.classList.remove('over');
-                }
-            });
-            if (target && target !== draggedItem && target.classList.contains('list-group-item')) {
-                target.classList.add('over');
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+
+        const target = event.target;
+        if (draggedItem !== target && target.classList.contains('list-group-item')) {
+            const items = [...listGroup.querySelectorAll('.list-group-item')];
+            const draggedIndex = items.indexOf(draggedItem);
+            const targetIndex = items.indexOf(target);
+
+            if (draggedIndex > targetIndex) {
+                listGroup.insertBefore(draggedItem, target);
+            } else {
+                listGroup.insertBefore(draggedItem, target.nextSibling);
             }
         }
-    
-        function handleDrop(event) {
-            event.preventDefault();
-    
-            const target = event.target;
-            if (draggedItem !== target && target.classList.contains('list-group-item')) {
-                const items = [...listGroup.querySelectorAll('.list-group-item')];
-                const draggedIndex = items.indexOf(draggedItem);
-                const targetIndex = items.indexOf(target);
-    
-                if (draggedIndex > targetIndex) {
-                    listGroup.insertBefore(draggedItem, target);
-                } else {
-                    listGroup.insertBefore(draggedItem, target.nextSibling);
-                }
-            }
-    
-            event.dataTransfer.clearData();
-            target.classList.remove('over');
+
+        event.dataTransfer.clearData();
+        target.classList.remove('over');
+    }
+
+    function handleDragEnd(event) {
+        if (draggedItem) {
+            draggedItem.classList.remove('dragging');
+            draggedItem.setAttribute('draggable', false);
+
+            document.querySelectorAll('.list-group-item').forEach(item => item.classList.remove('over'));
         }
-    
-        function handleDragEnd(event) {
-            if (draggedItem) {
-                draggedItem.classList.remove('dragging');
-                draggedItem.setAttribute('draggable', false);
-    
-                document.querySelectorAll('.list-group-item').forEach(item => item.classList.remove('over'));
-            }
-        }
-        //Fin Coso de Drag & Drop
+    }
+    //Fin Coso de Drag & Drop
 });
 
 
@@ -426,8 +426,11 @@ function CE_DeactivateNavBy(){
                 console.log("pregunta entra");
     
                 const newListItem = document.createElement('div');
-                newListItem.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
+                newListItem.classList.add('list-group-item', 'list-group-item-action', 'align-items-start');
                 newListItem.style.fontFamily = "hedliner";
+                newListItem.style.display = 'flex';
+                newListItem.style.flexDirection = 'column';
+                newListItem.style.gap = '0.5rem';
                 
                 const newDiv = document.createElement('div');
                 newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
@@ -453,7 +456,6 @@ function CE_DeactivateNavBy(){
                 }else{
                     newSmall.textContent = '';
                 }
-
     
                 const followQuestionList = document.createElement('ul');
                 followQuestionList.style.color = '#000000';
@@ -484,14 +486,49 @@ function CE_DeactivateNavBy(){
                 addFollowQuestionBTN.style.marginRight = '10px';
                 buttonsDiv.appendChild(addFollowQuestionBTN);
     
+                const icon = document.createElement('i');
+                icon.classList.add('fas', 'fa-bars');
+                icon.style.fontSize = '10px';
+    
+                const dragBtn = document.createElement('button');
+                dragBtn.classList.add('dragBtn', 'btn', 'btn-secondary');
+                dragBtn.type = 'button';
+                dragBtn.style.display = 'flex';
+                dragBtn.style.width = '80px';
+                dragBtn.style.height = '20px';
+                dragBtn.style.alignSelf = 'center';
+                dragBtn.style.padding = '0';
+                dragBtn.style.justifyContent = 'center';
+                dragBtn.style.alignItems = 'center';
+                dragBtn.style.border = 'none';
+    
+                dragBtn.appendChild(icon);
+    
                 newDiv.appendChild(newH5);
                 newDiv.appendChild(newSpan);
+    
                 newListItem.appendChild(newDiv);
                 newListItem.appendChild(followQuestionList);
                 newListItem.appendChild(newSmall);
                 newListItem.appendChild(buttonsDiv);
+                newListItem.appendChild(dragBtn);
     
                 listGroup.appendChild(newListItem);
+    
+                //Drag & Drop: Propiedades para el boton de dragBtn
+                dragBtn.addEventListener('mousedown', (event) => {
+                    newListItem.setAttribute('draggable', true);
+                });
+                
+                dragBtn.addEventListener('mouseup', (event) => {
+                    newListItem.setAttribute('draggable', false);
+                });
+                
+                //Drag & Drop: Anexo de propiedades a handle functions
+                newListItem.addEventListener('dragstart', handleDragStart);
+                newListItem.addEventListener('dragover', handleDragOver);
+                newListItem.addEventListener('drop', handleDrop);
+                newListItem.addEventListener('dragend', handleDragEnd);
 
                 if(pregunta.feedback_questions != null){
 
@@ -656,6 +693,4 @@ document.getElementById('GuardarEncuestaBtn').addEventListener('click', (event) 
     alert('Encuesta guardada exitosamente');
     //recargar la pagina
     location.reload();
-
-
 });
