@@ -49,7 +49,7 @@ export function generateCharts(data) {
     });
 
     // Insertar el HTML generado en el contenedor
-    const container = document.getElementById('charts-containerResumenIndividual');
+    const container = document.getElementById('charts-containerResumenIndividualContent');
     if (container) {
         container.innerHTML = chartsHTML; // Insertar todos los gráficos en el contenedor de una vez
 
