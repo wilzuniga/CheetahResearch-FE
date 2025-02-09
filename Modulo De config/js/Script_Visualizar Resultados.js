@@ -794,9 +794,10 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const parentTabPane = button.closest('.tab-pane');
             const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
+            const chartsContainer = document.querySelector('#charts-containerResumenIndividualContent');
 
             if (contentDiv) {
-                
+                // Exportar contenido normal (no gráfico)
                 const options = {
                     margin: 1,
                     filename: `${parentTabPane.id || 'contenido'}.pdf`,
@@ -805,12 +806,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 };
 
                 html2pdf().set(options).from(contentDiv).save();
+            } else if (chartsContainer) {
+                // Exportar gráficos (contenedor específico)
+                const options = {
+                    margin: 1,
+                    filename: 'charts_resumen_individual.pdf',
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                };
+
+                html2pdf().set(options).from(chartsContainer).save();
             }
         });
     });
 });
-
-
 
 
 
