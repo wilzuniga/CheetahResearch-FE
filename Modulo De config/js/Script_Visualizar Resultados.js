@@ -787,27 +787,21 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+
 document.addEventListener('DOMContentLoaded', function () {
     const exportButtons = document.querySelectorAll('button[id^="export_"]');
 
     exportButtons.forEach(button => {
         button.addEventListener('click', function () {
             const parentTabPane = button.closest('.tab-pane');
-            const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
-            const chartsContainer = document.querySelector('#charts-containerResumenIndividualContent');
+            const activeTab = document.querySelector('.tab-pane.active'); // Detecta la pestaña activa
 
-            if (contentDiv) {
-                // Exportar contenido normal (no gráfico)
-                const options = {
-                    margin: 1,
-                    filename: `${parentTabPane.id || 'contenido'}.pdf`,
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-                };
+            // Verificar si estamos en la pestaña activa y si el contenedor de gráficos está presente
+            const contentDiv = activeTab ? activeTab.querySelector('div[id$="Content"]') : null;
+            const chartsContainer = activeTab ? activeTab.querySelector('#charts-containerResumenIndividualContent') : null;
 
-                html2pdf().set(options).from(contentDiv).save();
-            } else if (chartsContainer) {
-                // Exportar gráficos (contenedor específico)
+            if (chartsContainer) {
+                // Si hay gráficos en la pestaña activa
                 const options = {
                     margin: 1,
                     filename: 'charts_resumen_individual.pdf',
@@ -816,10 +810,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 };
 
                 html2pdf().set(options).from(chartsContainer).save();
+            } else if (contentDiv) {
+                // Si no hay gráficos, pero sí contenido normal
+                const options = {
+                    margin: 1,
+                    filename: `${activeTab.id || 'contenido'}.pdf`,
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                };
+
+                html2pdf().set(options).from(contentDiv).save();
+            } else {
+                console.error('No se encontró contenido o gráficos en la pestaña activa.');
             }
         });
     });
 });
+
 
 
 
