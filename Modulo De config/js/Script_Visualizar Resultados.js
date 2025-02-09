@@ -406,7 +406,7 @@ function LLenarResumenes(){
 
                 var div = document.getElementById('ResumenIndividualContent');
                 var textArea = document.getElementById('ResumenIndividualTextArea');
-                var graphs = document.getElementById('charts-containerResumenIndividual');
+                var graphs = document.getElementById('charts-containerResumenIndividualContent');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value; //el filtro seleccionado
                 formData = new FormData();
@@ -719,8 +719,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
-    //charts-containerResumenIndividual ocultar
-    document.getElementById('charts-containerResumenIndividual').style.display = 'none';
+    //charts-containerResumenIndividualContent ocultar
+    document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
     document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
     document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
 
@@ -785,9 +785,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
-
-
-
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -875,7 +872,7 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
     // Elementos a mostrar/ocultar
     const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
     const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
-    const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividual');
+    const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
 
     // Condicional para manejar la visualización
     if (selectedValue === 'individual_Cat') {
