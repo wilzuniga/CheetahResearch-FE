@@ -1,9 +1,7 @@
 // agregarCard.js
 let Demographic_Filters = [];
 let ActiveModules = [];
-
 import { splitMarkdown, generateCharts } from './splitter.js';
-
 
 function initializePage() {
     console.log('Page initialized');
@@ -16,11 +14,12 @@ function initializePage() {
         console.log('ID de estudio:', study_id);
         AgregarFiltros(study_id);
         AgregarModulos(study_id);
-        
     } else {
         console.error('No se encontró el parámetro id en la URL.');
     }
 }
+
+initializePage();
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('charts-containerResumenIndividual').style.display = 'none';
