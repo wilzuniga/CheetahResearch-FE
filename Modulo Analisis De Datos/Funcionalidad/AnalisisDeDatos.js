@@ -24,32 +24,43 @@ function initializePage() {
 initializePage();
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
-    document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
-    document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
-
     const exportButtons = document.querySelectorAll('button[id^="export_"]');
 
     exportButtons.forEach(button => {
         button.addEventListener('click', function () {
             const parentTabPane = button.closest('.tab-pane');
-            const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
+            const activeTab = document.querySelector('.tab-pane.active'); // Detecta la pestaña activa
 
-            if (contentDiv) {
-                
+            // Verificar si estamos en la pestaña activa y si el contenedor de gráficos está presente
+            const chartsContainer = activeTab ? activeTab.querySelector('#charts-containerResumenIndividualContent') : null;
+
+            if (chartsContainer) {
+                // Establecer el estilo de salto de página
+                const charts = chartsContainer.querySelectorAll('.chart-box');
+                charts.forEach((chart, index) => {
+                    // Cada dos gráficos, agregar un salto de página
+                    if (index % 2 !== 0) {
+                        chart.style.pageBreakAfter = 'always';
+                    } else {
+                        chart.style.pageBreakAfter = 'auto';
+                    }
+                });
+
                 const options = {
                     margin: 1,
-                    filename: `${parentTabPane.id || 'contenido'}.pdf`,
+                    filename: 'charts_resumen_individual.pdf',
                     html2canvas: { scale: 2 },
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
                 };
 
-                html2pdf().set(options).from(contentDiv).save();
+                // Exportar todos los canvas dentro del chartsContainer
+                html2pdf().set(options).from(chartsContainer).save();
+            } else {
+                console.error('No se encontró el contenedor de gráficos.');
             }
         });
     });
 });
-
 
 
 
