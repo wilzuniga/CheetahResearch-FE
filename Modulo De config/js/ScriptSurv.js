@@ -715,7 +715,6 @@ function CE_DeactivateNavBy(){
         }
     }
 
-
     function handleDrop(event) {
         event.preventDefault();
 
@@ -736,7 +735,7 @@ function CE_DeactivateNavBy(){
             const newQuestionsOrder = [];
             const newQuestionsImgOrder = [];
             items.forEach((item, index) => {
-                const questionIndex = items.indexOf(item);
+                const questionIndex = Array.from(listGroup.children).indexOf(item);
                 newQuestionsOrder.push(questions[questionIndex]);
                 const questionImg = questionsImg.find(img => img.index === questionIndex);
                 if (questionImg) {
