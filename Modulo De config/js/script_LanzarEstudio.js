@@ -215,8 +215,8 @@ function load(){    // Actualizar el título del estudio desde localStorage
         });
 
     URLOTP = 'https://api.cheetah-research.ai/configuration/api/generate-otp/'
-    formData = new FormData();
-    formData.append('mongo_studio_id', localStorage.getItem('selectedStudyId'));
+    let formDataa = new FormData();
+    formDataa.append('mongo_studio_id', localStorage.getItem('selectedStudyId'));
     //agregar un event listener para el boton OTPBtn_Analisis para generar el otp
     /*
     {
@@ -228,7 +228,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
     const OTPBtn_Analisis = document.getElementById('OTPBtn_Analisis');
     OTPBtn_Analisis.addEventListener('click', (e) => {
         e.preventDefault();
-        axios.post(URLOTP, formData, {
+        axios.post(URLOTP, formDataa, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
