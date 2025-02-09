@@ -722,6 +722,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //charts-containerResumenIndividual ocultar
     document.getElementById('charts-containerResumenIndividual').style.display = 'none';
     document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
+    
     AgregarFiltros();
     LLenarResumenes();
 
