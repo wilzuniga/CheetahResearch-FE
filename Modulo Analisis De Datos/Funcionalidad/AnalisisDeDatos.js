@@ -14,6 +14,9 @@ function initializePage() {
 
     if (study_id) {
         console.log('ID de estudio:', study_id);
+        document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
+        document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
+        document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
         AgregarFiltros(study_id);
         AgregarModulos(study_id);
     } else {
