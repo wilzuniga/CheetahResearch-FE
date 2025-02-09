@@ -796,11 +796,20 @@ document.addEventListener('DOMContentLoaded', function () {
             const activeTab = document.querySelector('.tab-pane.active'); // Detecta la pestaña activa
 
             // Verificar si estamos en la pestaña activa y si el contenedor de gráficos está presente
-            const contentDiv = activeTab ? activeTab.querySelector('div[id$="Content"]') : null;
             const chartsContainer = activeTab ? activeTab.querySelector('#charts-containerResumenIndividualContent') : null;
 
             if (chartsContainer) {
-                // Si hay gráficos en la pestaña activa
+                // Establecer el estilo de salto de página
+                const charts = chartsContainer.querySelectorAll('.chart-box');
+                charts.forEach((chart, index) => {
+                    // Cada dos gráficos, agregar un salto de página
+                    if (index % 2 !== 0) {
+                        chart.style.pageBreakAfter = 'always';
+                    } else {
+                        chart.style.pageBreakAfter = 'auto';
+                    }
+                });
+
                 const options = {
                     margin: 1,
                     filename: 'charts_resumen_individual.pdf',
@@ -810,22 +819,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Exportar todos los canvas dentro del chartsContainer
                 html2pdf().set(options).from(chartsContainer).save();
-            } else if (contentDiv) {
-                // Si no hay gráficos, pero sí contenido normal
-                const options = {
-                    margin: 1,
-                    filename: `${activeTab.id || 'contenido'}.pdf`,
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-                };
-
-                html2pdf().set(options).from(contentDiv).save();
             } else {
-                console.error('No se encontró contenido o gráficos en la pestaña activa.');
+                console.error('No se encontró el contenedor de gráficos.');
             }
         });
     });
 });
+
 
 
 
