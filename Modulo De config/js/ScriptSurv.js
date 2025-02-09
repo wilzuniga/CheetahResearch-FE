@@ -715,11 +715,13 @@ function CE_DeactivateNavBy(){
         }
     }
 
+
     function handleDrop(event) {
         event.preventDefault();
 
         const target = event.target;
         if (draggedItem !== target && target.classList.contains('list-group-item')) {
+            const listGroup = document.querySelector('.list-group');  
             const items = [...listGroup.querySelectorAll('.list-group-item')];
             const draggedIndex = items.indexOf(draggedItem);
             const targetIndex = items.indexOf(target);
