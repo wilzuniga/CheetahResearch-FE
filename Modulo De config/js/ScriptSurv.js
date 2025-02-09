@@ -300,7 +300,8 @@ document.addEventListener('DOMContentLoaded', () => {
             //Actualiza el array de preguntas
             const newQuestionsOrder = [];
             const newQuestionsImgOrder = [];
-            items.forEach((item, index) => {
+            const updatedItems = [...listGroup.querySelectorAll('.list-group-item')];
+            updatedItems.forEach((item, index) => {
                 const questionIndex = items.indexOf(item);
                 newQuestionsOrder.push(questions[questionIndex]);
                 const questionImg = questionsImg.find(img => img.index === questionIndex);
@@ -734,8 +735,9 @@ function CE_DeactivateNavBy(){
             //Actualiza el array de preguntas
             const newQuestionsOrder = [];
             const newQuestionsImgOrder = [];
-            items.forEach((item, index) => {
-                const questionIndex = Array.from(listGroup.children).indexOf(item);
+            const updatedItems = [...listGroup.querySelectorAll('.list-group-item')];
+            updatedItems.forEach((item, index) => {
+                const questionIndex = items.indexOf(item);
                 newQuestionsOrder.push(questions[questionIndex]);
                 const questionImg = questionsImg.find(img => img.index === questionIndex);
                 if (questionImg) {
