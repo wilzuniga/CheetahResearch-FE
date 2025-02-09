@@ -673,7 +673,63 @@ function CE_DeactivateNavBy(){
     });
 
 
+    //Drag & Drop: handle functions
+    let draggedItem = null;
 
+    function handleDragStart(event) {
+        draggedItem = event.target;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/html', event.target.innerHTML);
+        draggedItem.classList.add('dragging');
+    }
+
+    function handleDragOver(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+
+        const target = event.target;
+        const items = document.querySelectorAll('.list-group-item');
+
+        //Efecto visual: Placeholder Anaranjado
+        items.forEach(item => {
+            if (item !== target) {
+                item.classList.remove('over');
+            }
+        });
+        if (target && target !== draggedItem && target.classList.contains('list-group-item')) {
+            target.classList.add('over');
+        }
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+
+        const target = event.target;
+        if (draggedItem !== target && target.classList.contains('list-group-item')) {
+            const items = [...listGroup.querySelectorAll('.list-group-item')];
+            const draggedIndex = items.indexOf(draggedItem);
+            const targetIndex = items.indexOf(target);
+
+            if (draggedIndex > targetIndex) {
+                listGroup.insertBefore(draggedItem, target);
+            } else {
+                listGroup.insertBefore(draggedItem, target.nextSibling);
+            }
+        }
+
+        event.dataTransfer.clearData();
+        target.classList.remove('over');
+    }
+
+    function handleDragEnd(event) {
+        if (draggedItem) {
+            draggedItem.classList.remove('dragging');
+            draggedItem.setAttribute('draggable', false);
+
+            document.querySelectorAll('.list-group-item').forEach(item => item.classList.remove('over'));
+        }
+    }
+    //Fin Coso de Drag & Drop
 
     
 }
