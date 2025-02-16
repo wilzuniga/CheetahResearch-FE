@@ -68,12 +68,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function generateMarkmapHTML(content) {
+function generateMarkmapHTML(content , filter) {
     // Estructura HTML con el contenido dinámico
     var htmlContent = `<!DOCTYPE html>
     <html>
         <head>
-            <title>Markmap</title>  
+            <title>Markmap - ${filter}</title>  
             <style>
                 .markmap > svg {
                     width: 100%;
@@ -107,7 +107,7 @@ function generateMarkmapHTML(content) {
         downloadBtn.onclick = function () {
             let a = document.createElement("a");
             a.href = markmapBlobUrl;
-            a.download = "markmap.html";
+            a.download = `markmap - ${filter}.html`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -302,7 +302,8 @@ function LLenarResumenes(study) {
                             data = data.substring(data.indexOf("#"));
                             data = data.substring(0, data.length - 3);
                         }
-                        generateMarkmapHTML(data);
+
+                        generateMarkmapHTML(data, selectedValue);
                     })
                     .catch(function (error) {
                         console.error('Error al obtener el contenido de Markmap:', error);
