@@ -22,8 +22,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+
+
+
 
     <style>
+
+.markmap > svg {
+        width: 100%;
+        height: 100%;
+      }
 
         /* Estilo básico para el modal */
         .modal {
@@ -37,6 +46,8 @@
             overflow: auto; /* Agrega scroll si es necesario */
             background-color: rgb(0,0,0); /* Fondo oscuro */
             background-color: rgba(0,0,0,0.4); /* Fondo oscuro con transparencia */
+            
+
         }
 
         /* Contenido del modal */
@@ -45,7 +56,7 @@
             margin: 15% auto; /* Centrado en la pantalla */
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; /* Puedes ajustar el tamaño */
+            width: 95%; /* Puedes ajustar el tamaño */
         }
 
         /* Estilo para el botón de cerrar */
@@ -161,9 +172,12 @@
 
                                 <div id="myModal" class="modal">
                                     <div class="modal-content">
-                                        <span class="close">&times;</span>
-                                        <h2>Mapa Mental</h2>
-                                        <p>Este es el contenido del mapa mental o cualquier otro contenido dinámico que desees agregar.</p>
+                                        <div class="markmap">
+                                            # markmap
+                                            ## autoloader
+                                            ## transformer
+                                            ## view
+                                          </div>
                                     </div>
                                 </div>
                                 
