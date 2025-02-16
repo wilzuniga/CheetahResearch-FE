@@ -24,6 +24,46 @@
 
 
     <style>
+
+        /* Estilo básico para el modal */
+        .modal {
+            display: none; /* Por defecto el modal está oculto */
+            position: fixed; /* Fijo en la pantalla */
+            z-index: 1; /* Asegúrate de que esté sobre otros elementos */
+            left: 0;
+            top: 0;
+            width: 100%; /* Ocupa todo el ancho de la pantalla */
+            height: 100%; /* Ocupa toda la altura de la pantalla */
+            overflow: auto; /* Agrega scroll si es necesario */
+            background-color: rgb(0,0,0); /* Fondo oscuro */
+            background-color: rgba(0,0,0,0.4); /* Fondo oscuro con transparencia */
+        }
+
+        /* Contenido del modal */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* Centrado en la pantalla */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Puedes ajustar el tamaño */
+        }
+
+        /* Estilo para el botón de cerrar */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
         @media (max-width: 1000px) {
             img {
                 display: none;
@@ -33,7 +73,7 @@
     </style>
 </head>
 
-<body onload="initializePage()" id="page-top">
+<body id="page-top">
     <div id="wrapper">
         <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius:0px;border-bottom-right-radius: 0px;background: var(--bs-CR-black-dark);">
             <div class="container-fluid d-flex flex-column p-0">
@@ -110,6 +150,7 @@
                                 
                                         
                                         <button id="export_ResumenGeneral" style="border-radius: 5px;">Exportar</button>
+                                        <button id="open_markmap" style="border-radius: 5px;">Abrir Mapa Mental</button>       
     
                                     </div>
                                 
@@ -117,6 +158,15 @@
                                         <div id="ResumenGeneralContent" style="flex: 1;">
                                         </div>
                                 </div>
+
+                                <div id="myModal" class="modal">
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <h2>Mapa Mental</h2>
+                                        <p>Este es el contenido del mapa mental o cualquier otro contenido dinámico que desees agregar.</p>
+                                    </div>
+                                </div>
+                                
                                 
     
                                 <div id="ResumenIndividual" class="tab-pane fade" role="tabpanel">

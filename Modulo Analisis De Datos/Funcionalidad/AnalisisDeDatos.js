@@ -65,9 +65,30 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Espera a que el DOM esté completamente cargado
+document.addEventListener("DOMContentLoaded", function() {
+    // Obtén el modal, el botón para abrirlo y el botón para cerrarlo
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("open_markmap");
+    var span = document.getElementsByClassName("close")[0];
 
+    // Abre el modal cuando se hace clic en el botón
+    btn.addEventListener("click", function() {
+        modal.style.display = "block";
+    });
 
+    // Cierra el modal cuando se hace clic en el botón de cerrar
+    span.addEventListener("click", function() {
+        modal.style.display = "none";
+    });
 
+    // Cierra el modal si se hace clic fuera del modal
+    window.addEventListener("click", function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    });
+});
 
 
 function AgregarModulos(study) {
