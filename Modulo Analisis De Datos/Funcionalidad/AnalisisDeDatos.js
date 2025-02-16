@@ -75,6 +75,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // Abre el modal cuando se hace clic en el botón
     btn.addEventListener("click", function() {
         modal.style.display = "block";
+        setTimeout(function() {
+            const markmap = document.querySelector('.markmap');
+            if (markmap) {
+              markmapAutoloader.load(markmap);
+            }
+          }, 0);
     });
 
     // Cierra el modal cuando se hace clic en el botón de cerrar
