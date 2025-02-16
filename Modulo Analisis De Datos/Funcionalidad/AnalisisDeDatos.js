@@ -77,7 +77,7 @@ function generateMarkmapHTML(content) {
             <style>
                 .markmap > svg {
                     width: 100%;
-                    height: 100%;
+                    height: 100vh;
                 }
             </style>
         </head>
