@@ -3,6 +3,9 @@ let Demographic_Filters = [];
 let ActiveModules = [];
 let formData = new FormData();  
 
+let markmapBlobUrl = null;
+
+
 import { splitMarkdown, generateCharts } from './splitter.js';
 
 function initializePage() {
@@ -65,36 +68,52 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// Espera a que el DOM esté completamente cargado
-document.addEventListener("DOMContentLoaded", function() {
-    // Obtén el modal, el botón para abrirlo y el botón para cerrarlo
-    var modal = document.getElementById("myModal");
-    var btn = document.getElementById("open_markmap");
-    var span = document.getElementsByClassName("close")[0];
+function generateMarkmapHTML(content) {
+    // Estructura HTML con el contenido dinámico
+    var htmlContent = `<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Markmap</title>  
+            <style>
+                .markmap > svg {
+                    width: 100%;
+                    height: 100%;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="markmap">
+                ${content}
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+        </body>
+    </html>`;
 
-    // Abre el modal cuando se hace clic en el botón
-    btn.addEventListener("click", function() {
-        modal.style.display = "block";
-        setTimeout(function() {
-            const markmap = document.querySelector('.markmap');
-            if (markmap) {
-              markmapAutoloader.load(markmap);
-            }
-          }, 0);
-    });
+    // Crear un Blob con el contenido HTML
+    var blob = new Blob([htmlContent], { type: "text/html" });
 
-    // Cierra el modal cuando se hace clic en el botón de cerrar
-    span.addEventListener("click", function() {
-        modal.style.display = "none";
-    });
+    // Revocar URL anterior si existe (para liberar memoria)
+    if (markmapBlobUrl) {
+        URL.revokeObjectURL(markmapBlobUrl);
+    }
 
-    // Cierra el modal si se hace clic fuera del modal
-    window.addEventListener("click", function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    });
-});
+    // Crear un nuevo objeto URL
+    markmapBlobUrl = URL.createObjectURL(blob);
+
+    // Habilitar el botón de descarga
+    let downloadBtn = document.getElementById("download_markmap");
+    if (downloadBtn) {
+        downloadBtn.style.display = "block"; // Mostrar el botón
+        downloadBtn.onclick = function () {
+            let a = document.createElement("a");
+            a.href = markmapBlobUrl;
+            a.download = "markmap.html";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+    }
+}
 
 
 function AgregarModulos(study) {
@@ -262,6 +281,10 @@ function LLenarResumenes(study) {
                 const coso = marked(data);                          
                 div.innerHTML = coso;                      
                 console.log(data);
+
+                generateMarkmapHTML(data);
+
+
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
