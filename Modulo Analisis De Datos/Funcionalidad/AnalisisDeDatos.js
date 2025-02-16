@@ -262,19 +262,20 @@ function LLenarResumenes(study) {
         console.log(event.target.value);
     
         const StyleSelectedOption = document.getElementById('ComboBox_ResumenGeneralTy');
-        const div = document.getElementById('ResumenGeneralContent');
+        var div = document.getElementById('ResumenGeneralContent');
+    
         const selectedValue = event.target.value; // El filtro seleccionado
     
-        let formData = new FormData();
+        formData = new FormData();
         formData.append('filter', selectedValue);
         formData.append('module', 'general');
         formData.append('sub_module', StyleSelectedOption.value);
     
-        const url = `https://api.cheetah-research.ai/configuration/getSummaries/${study}`;
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
     
         axios.post(url, formData)
-            .then((response) => {
-                let data = response.data;
+            .then(function (response) {
+                var data = response.data;
                 if (!data.startsWith("#")) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
@@ -282,26 +283,30 @@ function LLenarResumenes(study) {
                 const coso = marked(data);
                 div.innerHTML = coso;
                 console.log(data);
-    
-                // Segunda petición para Markmap
-                let formDataMarkmap = new FormData();
-                formDataMarkmap.append('filter', selectedValue); // Aquí estaba el error
-                formDataMarkmap.append('module', 'general');
-                formDataMarkmap.append('sub_module', 'markmap');
-    
-                return axios.post(url, formDataMarkmap);
             })
-            .then((response) => {
-                let data = response.data;
-                if (!data.startsWith("#")) {
-                    data = data.substring(data.indexOf("#"));
-                    data = data.substring(0, data.length - 3);
-                }
-                generateMarkmapHTML(data);
-            })
-            .catch((error) => {
+            .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.error('Error:', error);
+                console.log(error);
+            })
+            .then(function () {
+                // Segunda petición para Markmap
+                formData = new FormData();
+                formData.append('filter', selectedValue); // Se corrigió el error aquí
+                formData.append('module', 'general');
+                formData.append('sub_module', 'markmap');
+    
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        generateMarkmapHTML(data);
+                    })
+                    .catch(function (error) {
+                        console.error('Error al obtener el contenido de Markmap:', error);
+                    });
             });
     });
     
