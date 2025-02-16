@@ -260,41 +260,51 @@ function LLenarResumenes(study) {
     const comboBoxRG = document.getElementById('ComboBox_ResumenGeneral');          
     comboBoxRG.addEventListener('change', (event) => {
         console.log(event.target.value);
-
+    
         const StyleSelectedOption = document.getElementById('ComboBox_ResumenGeneralTy');
-
-        var div = document.getElementById('ResumenGeneralContent');
-        // Supongamos que `event.target.value` es el valor del combobox
-        const selectedValue = event.target.value; //el filtro seleccionado
-        formData = new FormData();
+        const div = document.getElementById('ResumenGeneralContent');
+        const selectedValue = event.target.value; // El filtro seleccionado
+    
+        let formData = new FormData();
         formData.append('filter', selectedValue);
         formData.append('module', 'general');
         formData.append('sub_module', StyleSelectedOption.value);
-        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+    
+        const url = `https://api.cheetah-research.ai/configuration/getSummaries/${study}`;
+    
         axios.post(url, formData)
-            .then(function (response) {
-                var data = response.data;
+            .then((response) => {
+                let data = response.data;
                 if (!data.startsWith("#")) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
+                const coso = marked(data);
+                div.innerHTML = coso;
                 console.log(data);
-
+    
+                // Segunda petición para Markmap
+                let formDataMarkmap = new FormData();
+                formDataMarkmap.append('filter', selectedValue); // Aquí estaba el error
+                formDataMarkmap.append('module', 'general');
+                formDataMarkmap.append('sub_module', 'markmap');
+    
+                return axios.post(url, formDataMarkmap);
+            })
+            .then((response) => {
+                let data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
                 generateMarkmapHTML(data);
-
-
             })
-            .catch(function (error) {
+            .catch((error) => {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
+                console.error('Error:', error);
             });
-        
     });
+    
 
 
     //Resumen Individual
