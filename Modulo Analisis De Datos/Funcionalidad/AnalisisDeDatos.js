@@ -79,6 +79,13 @@ function generateMarkmapHTML(content , filter) {
                     width: 100%;
                     height: 100vh;
                 }
+
+                .markmap-foreign > div {
+                    max-width: 800px;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    text-align: left;
+                }
             </style>
         </head>
         <body>
