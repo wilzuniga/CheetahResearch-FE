@@ -1,9 +1,57 @@
 let Demographic_Filters = [];
 let formData = new FormData();  // Asegúrate de que esta línea está presente donde se necesita
+let markmapBlobUrl = null;
 
 
 import { splitMarkdown, generateCharts } from './splitter.js';
 
+
+function generateMarkmapHTML(content , filter) {
+    // Estructura HTML con el contenido dinámico
+    var htmlContent = `<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Markmap - ${filter}</title>  
+            <style>
+                .markmap > svg {
+                    width: 100%;
+                    height: 100vh;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="markmap">
+                ${content}
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+        </body>
+    </html>`;
+
+    // Crear un Blob con el contenido HTML
+    var blob = new Blob([htmlContent], { type: "text/html" });
+
+    // Revocar URL anterior si existe (para liberar memoria)
+    if (markmapBlobUrl) {
+        URL.revokeObjectURL(markmapBlobUrl);
+    }
+
+    // Crear un nuevo objeto URL
+    markmapBlobUrl = URL.createObjectURL(blob);
+
+    // Habilitar el botón de descarga
+    let downloadBtn = document.getElementById("download_markmap");
+    if (downloadBtn) {
+        downloadBtn.style.display = "block"; // Mostrar el botón
+        downloadBtn.onclick = function () {
+            let a = document.createElement("a");
+            a.href = markmapBlobUrl;
+            a.download = `markmap - ${filter}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+    }
+}
 
 
 function AgregarFiltros() {
@@ -389,7 +437,26 @@ function LLenarResumenes(){
                         console.log(error);
                     })
                     .then(function () {
-                        // always executed
+                        // Segunda petición para Markmap
+                        formData = new FormData();
+                        formData.append('filter', selectedValue); // Se corrigió el error aquí
+                        formData.append('module', 'general');
+                        formData.append('sub_module', 'markmap');
+
+                        axios.post(url, formData)
+                            .then(function (response) {
+                                var data = response.data;
+                                if (!data.startsWith("#")) {
+                                    data = data.substring(data.indexOf("#"));
+                                    data = data.substring(0, data.length - 3);
+                                }
+
+                                generateMarkmapHTML(data, selectedValue);
+                            })
+                            .catch(function (error) {
+                                console.error('Error al obtener el contenido de Markmap:', error);
+                            });                    
+                        
                     });
                 
             });
