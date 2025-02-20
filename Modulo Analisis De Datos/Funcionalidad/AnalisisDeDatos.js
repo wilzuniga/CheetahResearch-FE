@@ -62,8 +62,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Exportar todos los canvas dentro del chartsContainer
                 html2pdf().set(options).from(chartsContainer).save();
             } else {
-                console.error('No se encontró el contenedor de gráficos.');
-            }
+ 
+                const options = {
+                    margin: 1,
+                    filename: `${parentTabPane.id || 'contenido'}.pdf`,
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                };
+
+                html2pdf().set(options).from(contentDiv).save();            }
         });
     });
 });
