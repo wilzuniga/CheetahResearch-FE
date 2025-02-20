@@ -62,6 +62,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Exportar todos los canvas dentro del chartsContainer
                 html2pdf().set(options).from(chartsContainer).save();
             } else {
+                
+                const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
+
  
                 const options = {
                     margin: 1,
