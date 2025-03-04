@@ -137,6 +137,18 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+/* Drag & Drop (Lo demás está en js)*/
+.list-group-item {
+  user-select: none;
+}
+.list-group-item.dragging {
+  opacity: 0.3;
+}
+.list-group-item.over {
+  background: linear-gradient(135deg, var(--bs-CR-orange), #eeeeee6a);
+  border: 1px solid var(--bs-CR-orange-2); /* Add a dashed border to indicate the drop target */
+}
+
 @font-face {
   font-family: 'hedliner';
   src: url('../fonts/hedliner-webfont.woff') format('woff'),

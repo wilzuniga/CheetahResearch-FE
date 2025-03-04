@@ -28,3 +28,17 @@ a:hover {
   color: var(--bs-CR-orange);
   transition: 0.2s ease-in-out;
 }
+
+/* Drag & Drop */
+.dragBtn {
+  color: var(--bs-CR-gray);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.dragBtn:hover {
+  cursor: grab;
+  background-color: var(--bs-CR-gray-dark);
+}
+
+.dragBtn.dragging {cursor: grabbing;}

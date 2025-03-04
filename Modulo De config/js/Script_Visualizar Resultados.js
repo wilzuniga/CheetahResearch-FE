@@ -1,9 +1,64 @@
 let Demographic_Filters = [];
 let formData = new FormData();  // Asegúrate de que esta línea está presente donde se necesita
+let markmapBlobUrl = null;
 
 
 import { splitMarkdown, generateCharts } from './splitter.js';
 
+
+function generateMarkmapHTML(content , filter) {
+    // Estructura HTML con el contenido dinámico
+    var htmlContent = `<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Markmap - ${filter}</title>  
+            <style>
+                .markmap > svg {
+                    width: 100%;
+                    height: 100vh;
+                }
+
+                .markmap-foreign > div {
+                    max-width: 800px;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    text-align: left;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="markmap">
+                ${content}
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+        </body>
+    </html>`;
+
+    // Crear un Blob con el contenido HTML
+    var blob = new Blob([htmlContent], { type: "text/html" });
+
+    // Revocar URL anterior si existe (para liberar memoria)
+    if (markmapBlobUrl) {
+        URL.revokeObjectURL(markmapBlobUrl);
+    }
+
+    // Crear un nuevo objeto URL
+    markmapBlobUrl = URL.createObjectURL(blob);
+
+    // Habilitar el botón de descarga
+    let downloadBtn = document.getElementById("download_markmap");
+    if (downloadBtn) {
+        downloadBtn.style.display = "block"; // Mostrar el botón
+        downloadBtn.onclick = function () {
+            let a = document.createElement("a");
+            a.href = markmapBlobUrl;
+            a.download = `markmap - ${filter}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+    }
+}
 
 
 function AgregarFiltros() {
@@ -389,7 +444,26 @@ function LLenarResumenes(){
                         console.log(error);
                     })
                     .then(function () {
-                        // always executed
+                        // Segunda petición para Markmap
+                        formData = new FormData();
+                        formData.append('filter', selectedValue); // Se corrigió el error aquí
+                        formData.append('module', 'general');
+                        formData.append('sub_module', 'markmap');
+
+                        axios.post(url, formData)
+                            .then(function (response) {
+                                var data = response.data;
+                                if (!data.startsWith("#")) {
+                                    data = data.substring(data.indexOf("#"));
+                                    data = data.substring(0, data.length - 3);
+                                }
+
+                                generateMarkmapHTML(data, selectedValue);
+                            })
+                            .catch(function (error) {
+                                console.error('Error al obtener el contenido de Markmap:', error);
+                            });                    
+                        
                     });
                 
             });
@@ -406,7 +480,7 @@ function LLenarResumenes(){
 
                 var div = document.getElementById('ResumenIndividualContent');
                 var textArea = document.getElementById('ResumenIndividualTextArea');
-                var graphs = document.getElementById('charts-containerResumenIndividual');
+                var graphs = document.getElementById('charts-containerResumenIndividualContent');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value; //el filtro seleccionado
                 formData = new FormData();
@@ -719,9 +793,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
-    //charts-containerResumenIndividual ocultar
-    document.getElementById('charts-containerResumenIndividual').style.display = 'none';
+    //charts-containerResumenIndividualContent ocultar
+    document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
     document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
+    document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
+
     AgregarFiltros();
     LLenarResumenes();
 
@@ -785,19 +861,42 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
     const exportButtons = document.querySelectorAll('button[id^="export_"]');
 
     exportButtons.forEach(button => {
         button.addEventListener('click', function () {
             const parentTabPane = button.closest('.tab-pane');
-            const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
+            const activeTab = document.querySelector('.tab-pane.active'); // Detecta la pestaña activa
 
-            if (contentDiv) {
-                
+            // Verificar si estamos en la pestaña activa y si el contenedor de gráficos está presente
+            const chartsContainer = activeTab ? activeTab.querySelector('#charts-containerResumenIndividualContent') : null;
+
+            if (chartsContainer) {
+                // Establecer el estilo de salto de página
+                const charts = chartsContainer.querySelectorAll('.chart-box');
+                charts.forEach((chart, index) => {
+                    // Cada dos gráficos, agregar un salto de página
+                    if (index % 2 !== 0) {
+                        chart.style.pageBreakAfter = 'always';
+                    } else {
+                        chart.style.pageBreakAfter = 'auto';
+                    }
+                });
+
+                const options = {
+                    margin: 1,
+                    filename: 'charts_resumen_individual.pdf',
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                };
+
+                // Exportar todos los canvas dentro del chartsContainer
+                html2pdf().set(options).from(chartsContainer).save();
+            } else {
+
+                const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
+ 
                 const options = {
                     margin: 1,
                     filename: `${parentTabPane.id || 'contenido'}.pdf`,
@@ -810,6 +909,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
 
 
 
@@ -873,7 +973,7 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
     // Elementos a mostrar/ocultar
     const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
     const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
-    const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividual');
+    const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
 
     // Condicional para manejar la visualización
     if (selectedValue === 'individual_Cat') {
@@ -899,10 +999,13 @@ document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change
 
     // al seleccionar percentage que muestre ComboBox_ResumenIndividualDS, de lo contrario se mantiene oculto
     const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
+    const comboBoxResumenIndividualDSLBL = document.getElementById('ComboBox_ResumenIndividualDSLBL');
     if (selectedValue === 'percentage') {
         comboBoxResumenIndividualDS.style.display = 'block';
+        comboBoxResumenIndividualDSLBL.style.display = 'block';
     } else {
         comboBoxResumenIndividualDS.style.display = 'none';
+        comboBoxResumenIndividualDSLBL.style.display = 'none';
     }
 
 

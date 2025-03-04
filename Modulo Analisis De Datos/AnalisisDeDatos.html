@@ -14,15 +14,28 @@
     <link rel="stylesheet" href="assets/css/Hover.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
-    <script src="Funcionalidad/AnalisisDeDatos.js"></script>
+    <script type="module" src="Funcionalidad/AnalisisDeDatos.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/plugins/html.min.js"></script>  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+
+
+
 
     <style>
+
+.markmap > svg {
+        width: 100%;
+        height: 100%;
+      }
+
+
+
         @media (max-width: 1000px) {
             img {
                 display: none;
@@ -32,7 +45,7 @@
     </style>
 </head>
 
-<body onload="initializePage()" id="page-top">
+<body id="page-top">
     <div id="wrapper">
         <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius:0px;border-bottom-right-radius: 0px;background: var(--bs-CR-black-dark);">
             <div class="container-fluid d-flex flex-column p-0">
@@ -109,13 +122,15 @@
                                 
                                         
                                         <button id="export_ResumenGeneral" style="border-radius: 5px;">Exportar</button>
-    
+                                        <button id="download_markmap" style="display: none;">Descargar Mapa Mental</button>
                                     </div>
                                 
                                 
                                         <div id="ResumenGeneralContent" style="flex: 1;">
                                         </div>
                                 </div>
+
+                                                       
                                 
     
                                 <div id="ResumenIndividual" class="tab-pane fade" role="tabpanel">
@@ -146,10 +161,30 @@
                                         <button id="export_ResumenIndividual" style="border-radius: 5px;">Exportar</button>
     
                                     </div>
+
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                        <!-- Combobox para seleccionar display style -->
+                                        <div>
+                                            <label id="ComboBox_ResumenIndividualDSLBL" for="ComboBox_ResumenIndividualDS" style="font-family: hedliner;">Selecciona visualizacion:</label>
+                                            <select id="ComboBox_ResumenIndividualDS" style="font-family: hedliner;">
+                                                <option value="---">---</option>
+                                                <option value="individual_Cat">Visualización grafica</option>
+                                                <option value="percentage_nonCat">Visualización textual</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     
                                     
                                         <!-- Contenido del resumen individual -->
-                                        <div id="ResumenIndividualContent" style="flex: 1;">
+                                        <div style="display: flex; gap: 20px;">
+
+                                                                                  
+                                            <!-- Contenido del resumen individual -->
+                                            <div id="ResumenIndividualContent" style="flex: 1;">
+                                            </div>
+        
+                                            <div id="charts-containerResumenIndividualContent" style="flex: 1;">
+                                            </div>
                                         </div>
                                 </div>
                                 

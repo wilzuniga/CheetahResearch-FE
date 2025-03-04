@@ -126,6 +126,8 @@
                                     <button id="toggle-textarea_ResumenGeneral" style="border-radius: 5px;">Editar</button>
                                     <button id="save-textarea_ResumenGeneral" style="border-radius: 5px;">Guardar Cambios</button>
                                     <button id="export_ResumenGeneral" style="border-radius: 5px;">Exportar</button>
+                                    <button id="download_markmap" style="display: none;">Descargar Mapa Mental</button>
+
 
                                 </div>
                             
@@ -175,11 +177,11 @@
                                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                     <!-- Combobox para seleccionar display style -->
                                     <div>
-                                        <label for="ComboBox_ResumenIndividualDS" style="font-family: hedliner;">Selecciona visualizacion:</label>
+                                        <label id="ComboBox_ResumenIndividualDSLBL" for="ComboBox_ResumenIndividualDS" style="font-family: hedliner;">Selecciona visualizacion:</label>
                                         <select id="ComboBox_ResumenIndividualDS" style="font-family: hedliner;">
                                             <option value="---">---</option>
-                                            <option value="individual_Cat">Visualización categórica</option>
-                                            <option value="percentage_nonCat">Visualización no categórica</option>
+                                            <option value="individual_Cat">Visualización grafica</option>
+                                            <option value="percentage_nonCat">Visualización textual</option>
                                         </select>
                                     </div>
                                 </div>
@@ -196,7 +198,7 @@
                                     <div id="ResumenIndividualContent" style="flex: 1;">
                                     </div>
 
-                                    <div id="charts-containerResumenIndividual" style="flex: 1;">
+                                    <div id="charts-containerResumenIndividualContent" style="flex: 1;">
                                     </div>
                                 </div>
                             </div>
