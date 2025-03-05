@@ -1,6 +1,48 @@
 let imgPP;
 let hash = 0;
 
+//Color Change: getColores
+function fetchColorsFromAPI(study_id) {
+    const url = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
+    return axios.get(url)
+        .then(response => ({
+            color1: response.data.primary_color,
+            color2: response.data.secondary_color
+        }))
+        .catch(error => {
+            console.error('Error capturando colores desde API:', error);
+            return { color1: null, color2: null };
+        });
+}
+
+function applyColors(colors) {//Colors es un array
+    if (colors.color1) {
+        document.documentElement.style.setProperty('--bs-CR-orange', colors.color1);
+
+        document.documentElement.style.setProperty('--bs-CR-orange-2', brightColorVariant(colors.color1));
+    }
+    if (colors.color2) {
+        document.documentElement.style.setProperty('--bs-CR-gray', colors.color2);
+
+        document.documentElement.style.setProperty('--bs-CR-gray-dark', darkColorVariant(colors.color2));
+    }
+}
+
+function darkColorVariant (color) {
+    return tinycolor(color).darken(10).toString();
+}
+function brightColorVariant (color) {
+    return tinycolor(color).brighten(10).toString();
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+    const study_id = new URLSearchParams(window.location.search).get('id');
+    const colors = await fetchColorsFromAPI(study_id);
+    if (colors) {
+        applyColors(colors);
+    }
+});
+
 //Función inicializar Chat
 function initializePage() {
     const study_id = new URLSearchParams(window.location.search).get('id');
