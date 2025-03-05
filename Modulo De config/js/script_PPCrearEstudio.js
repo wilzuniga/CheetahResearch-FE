@@ -27,30 +27,55 @@ function createStudyForm() {
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Titulo del Estudio</p>
             <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" placeholder="Titulo" style="font-family: 'IBM Plex Sans'; border-radius: 3px">
-        </div>`;
+        </div>`
+    ;
 
     const mercadoObjetivo = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Mercado Objetivo</p>
             <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" placeholder="Mercado Objetivo" style="font-family: 'IBM Plex Sans'; border-radius: 3px">
-        </div>`;
+        </div>`
+    ;
 
     const objetivosDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Objetivos del Estudio</p>
             <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" placeholder="Objetivos generales del estudio, separados por comas (&quot;,&quot;)" style="font-family: 'IBM Plex Sans'; border-radius: 3px">
-        </div>`;
+        </div>`
+    ;
 
     const promptDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Prompt del Estudio</p>
             <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif; box-shadow: inset 5px 5px 9px 1px #6d6d6d; color: #072934; border-radius: 3px"></textarea>
-        </div>`;
+        </div>`
+    ;
+
+    const colorInput1 = `
+        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Color Principal del Estudio</p>
+            <input type="color" class="form-control" id="colorInput1" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="#C0601C">
+        </div>`
+    ;
+
+    const colorInput2 = `
+        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Color Secundario del Estudio</p>
+            <input type="color" class="form-control" id="colorInput2" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="#404040">
+        </div>`
+    ;
+
+    const setDefaultColorButton = `
+        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
+            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
+        </div>`
+    ;
 
     const submitButton = `
         <div style="width: 250px;font-family: 'hedliner', sans-serif;">
             <button class="btn btn-primary d-block w-100" id="CrearEstudioBtn" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif;">Crear Estudio</button>
-        </div>`;
+        </div>`
+    ;
 
     const form = `
         <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
@@ -58,6 +83,9 @@ function createStudyForm() {
             ${mercadoObjetivo}
             ${objetivosDelEstudio}
             ${promptDelEstudio}
+            ${colorInput1}
+            ${colorInput2}
+            ${setDefaultColorButton}
             ${submitButton}
         </form>`;
 
@@ -66,13 +94,15 @@ function createStudyForm() {
 
 function createFilledStudyForm() {
 
-//crear u¿el formulario lleno sin el boton de crear estudio y en vez de que sea el prompt que sea el  resumen del estudio. Todo con el localstorage selectedStudyData. Solo lectura
+    //crear u¿el formulario lleno sin el boton de crear estudio y en vez de que sea el prompt que sea el  resumen del estudio. Todo con el localstorage selectedStudyData. Solo lectura
     const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
         tituloDelEstudio: studyData.title,
         mercadoObjetivo: studyData.marketTarget,
         objetivosDelEstudio: studyData.studyObjectives,
         Resumen: studyData.prompt,
+        color1DelEstudio: studyData.color1,
+        color2DelEstudio: studyData.color2
     };
 
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
@@ -83,30 +113,55 @@ function createFilledStudyForm() {
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Titulo del Estudio</p>
             <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" placeholder="Titulo" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.tituloDelEstudio}" >
-        </div>`;
+        </div>`
+    ;
 
     const mercadoObjetivo = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Mercado Objetivo</p>
             <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" placeholder="Mercado Objetivo" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.mercadoObjetivo}" >
-        </div>`;
+        </div>`
+    ;
 
     const objetivosDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Objetivos del Estudio</p>
             <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" placeholder="Objetivos generales del estudio, separados por comas (&quot;,&quot;)" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.objetivosDelEstudio}" >
-        </div>`;
+        </div>`
+    ;
 
     const promptDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Prompt del Estudio</p>
             <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif; box-shadow: inset 5px 5px 9px 1px #6d6d6d; color: #072934; border-radius: 3px" >${selectedStudyData.Resumen}</textarea>
-        </div>`;
+        </div>`
+    ;
+
+    const colorInput1 = `
+        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Color del Estudio</p>
+            <input type="color" class="form-control" id="colorInput1" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.color1DelEstudio}">
+        </div>`
+    ;
+
+    const colorInput2 = `
+        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Color Secundario del Estudio</p>
+            <input type="color" class="form-control" id="colorInput2" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.color2DelEstudio}">
+        </div>`
+    ;
+
+    const setDefaultColorButton = `
+        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
+            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
+        </div>`
+    ;
 
     const submitButton = `
-    <div style="width: 250px;font-family: 'hedliner', sans-serif;">
-        <button class="btn btn-primary d-block w-100" id="UpdateEstudio" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif;">Actualizar Estudio</button>
-    </div>`;
+        <div style="width: 250px;font-family: 'hedliner', sans-serif;">
+            <button class="btn btn-primary d-block w-100" id="UpdateEstudio" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif;">Actualizar Estudio</button>
+        </div>`
+    ;
 
     console.log(studyData);
 
@@ -117,12 +172,14 @@ function createFilledStudyForm() {
             ${mercadoObjetivo}
             ${objetivosDelEstudio}
             ${promptDelEstudio}
+            ${colorInput1}
+            ${colorInput2}
+            ${setDefaultColorButton}
             ${submitButton}
-        </form>`;
+        </form>`
+    ;
     
     return title + form;
-
-
 }
 
 function appendStudyForm() {
@@ -147,13 +204,21 @@ function appendFilledStudyForm() {
         console.log(studyData);
         alert('Estudio actualizado exitosamente');
     });
+
+    //Color Change a Default
+    document.getElementById('setDefaultColorButton').addEventListener('click', () => {
+        document.getElementById('colorInput1').value = '#C0601C';
+        // document.documentElement.style.setProperty('--bs-CR-orange', '#C0601C');//Comentado, tiene que cambiar hasta que se actualiza el estudio
+    });
 }
 
-function StudysaveToLocStrg() {
+function StudysaveToLocStrg() {//Funcion de prueba
     localStorage.setItem('tituloDelEstudio', document.getElementById('TituloDelEstudioTXT').value);
     localStorage.setItem('mercadoObjetivo', document.getElementById('MercadoObjetivoTXT').value);
     localStorage.setItem('objetivosDelEstudio', document.getElementById('ObjetivosDelEstudioTXT').value);
     localStorage.setItem('promptDelEstudio', document.getElementById('PromptGeneralTXT').value);
+    localStorage.setItem('color1DelEstudio', document.getElementById('colorInput1').value);
+    localStorage.setItem('color2DelEstudio', document.getElementById('colorInput2').value);
 }
 
 function deleteFromLocStrg() {
@@ -164,6 +229,8 @@ function deleteFromLocStrg() {
         localStorage.removeItem('mercadoObjetivo');
         localStorage.removeItem('objetivosDelEstudio');
         localStorage.removeItem('promptDelEstudio');
+        localStorage.removeItem('color1DelEstudio');
+        localStorage.removeItem('color2DelEstudio');
         localStorage.removeItem('nombreEncuestador');
         localStorage.removeItem('tonoEncuestador');
         localStorage.removeItem('observacionesImportantes');
@@ -181,6 +248,8 @@ function CaptureAndPostformdta() {
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
+    const color1DelEstudio = document.getElementById('colorInput1').value;
+    const color2DelEstudio = document.getElementById('colorInput2').value;
     //StudysaveToLocStrg();
     //operacion POST, CON FORM DATA
     const url = 'https://api.cheetah-research.ai/configuration/createStudy/';
@@ -189,6 +258,8 @@ function CaptureAndPostformdta() {
     data.append('target', mercadoObjetivo);
     data.append('objective', objetivosDelEstudio);
     data.append('prompt', promptDelEstudio);
+    data.append('color1', color1DelEstudio);
+    data.append('color2', color2DelEstudio);
 
     axios.post(url, data)
         .then(response => {
@@ -208,9 +279,10 @@ function CaptureAndPostformdta() {
         tituloDelEstudio,
         mercadoObjetivo,
         objetivosDelEstudio,
-        promptDelEstudio
+        promptDelEstudio,
+        color1DelEstudio,
+        color2DelEstudio
     };
-
 }
 
 function UpdateAndPostformdta() {
@@ -218,6 +290,8 @@ function UpdateAndPostformdta() {
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
+    const color1DelEstudio = document.getElementById('colorInput1').value;
+    const color2DelEstudio = document.getElementById('colorInput2').value;
     //StudysaveToLocStrg();
     //operacion POST, CON FORM DATA
     const url = 'https://api.cheetah-research.ai/configuration/updateStudy/' + localStorage.getItem('selectedStudyId');
@@ -226,13 +300,14 @@ function UpdateAndPostformdta() {
     data.append('target', mercadoObjetivo);
     data.append('objective', objetivosDelEstudio);
     data.append('prompt', promptDelEstudio);
+    data.append('color1', color1DelEstudio);
+    data.append('color2', color2DelEstudio);
 
     axios.post(url, data)
         .then(response => {
             alert('Estudio actualizado exitosamente');
             localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
-        }
-        )
+        })
         .catch(error => {
             console.error('Error al actualizar el estudio:', error);
         });
@@ -241,7 +316,9 @@ function UpdateAndPostformdta() {
         tituloDelEstudio,
         mercadoObjetivo,
         objetivosDelEstudio,
-        promptDelEstudio
+        promptDelEstudio, 
+        color1DelEstudio,
+        color2DelEstudio
     };
 
 }
@@ -270,9 +347,11 @@ function ApendStudies(){
     document.getElementById('MercadoObjetivoTXT').value = localStorage.getItem('mercadoObjetivo');
     document.getElementById('ObjetivosDelEstudioTXT').value = localStorage.getItem('objetivosDelEstudio');
     document.getElementById('PromptGeneralTXT').value = localStorage.getItem('promptDelEstudio');
+    document.getElementById('colorInput1').value = localStorage.getItem('color1DelEstudio');
+    document.getElementById('colorInput2').value = localStorage.getItem('color2DelEstudio');
 }
 
-function loadStudies() {
+function loadStudies() { //Carga los estudios en la Main Page
     const url = 'https://api.cheetah-research.ai/configuration/get_studies/';
 
     axios.get(url)
