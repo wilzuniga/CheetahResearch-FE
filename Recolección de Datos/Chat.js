@@ -1,3 +1,4 @@
+import tinycolor from 'tinycolor2';
 let imgPP;
 let hash = 0;
 
