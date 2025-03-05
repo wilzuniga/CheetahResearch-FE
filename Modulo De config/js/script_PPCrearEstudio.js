@@ -157,6 +157,12 @@ function createFilledStudyForm() {
         </div>`
     ;
 
+    const saveColorsButton = `
+        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
+            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif;">Guardar Colores</button>
+        </div>`
+    ;
+
     const submitButton = `
         <div style="width: 250px;font-family: 'hedliner', sans-serif;">
             <button class="btn btn-primary d-block w-100" id="UpdateEstudio" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif;">Actualizar Estudio</button>
@@ -175,6 +181,7 @@ function createFilledStudyForm() {
             ${colorInput1}
             ${colorInput2}
             ${setDefaultColorButton}
+            ${saveColorsButton}
             ${submitButton}
         </form>`
     ;
@@ -205,11 +212,14 @@ function appendFilledStudyForm() {
         alert('Estudio actualizado exitosamente');
     });
 
-    //Color Change a Default
+    //Color Change: Colores Default
     document.getElementById('setDefaultColorButton').addEventListener('click', () => {
         document.getElementById('colorInput1').value = '#C0601C';
         // document.documentElement.style.setProperty('--bs-CR-orange', '#C0601C');//Comentado, tiene que cambiar hasta que se actualiza el estudio
     });
+
+    //Color Change: Guardar Colores
+    document.getElementById('saveColorsButton').addEventListener('click', saveColorsToStudy);
 }
 
 function StudysaveToLocStrg() {//Funcion de prueba
@@ -242,14 +252,11 @@ function deleteFromLocStrg() {
     }
 }
 
-
 function CaptureAndPostformdta() {
     const tituloDelEstudio = document.getElementById('TituloDelEstudioTXT').value;
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
-    const color1DelEstudio = document.getElementById('colorInput1').value;
-    const color2DelEstudio = document.getElementById('colorInput2').value;
     //StudysaveToLocStrg();
     //operacion POST, CON FORM DATA
     const url = 'https://api.cheetah-research.ai/configuration/createStudy/';
@@ -257,9 +264,8 @@ function CaptureAndPostformdta() {
     data.append('title', tituloDelEstudio);
     data.append('target', mercadoObjetivo);
     data.append('objective', objetivosDelEstudio);
+    data.append('objective', objetivosDelEstudio);
     data.append('prompt', promptDelEstudio);
-    data.append('color1', color1DelEstudio);
-    data.append('color2', color2DelEstudio);
 
     axios.post(url, data)
         .then(response => {
@@ -280,8 +286,6 @@ function CaptureAndPostformdta() {
         mercadoObjetivo,
         objetivosDelEstudio,
         promptDelEstudio,
-        color1DelEstudio,
-        color2DelEstudio
     };
 }
 
@@ -290,8 +294,6 @@ function UpdateAndPostformdta() {
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
-    const color1DelEstudio = document.getElementById('colorInput1').value;
-    const color2DelEstudio = document.getElementById('colorInput2').value;
     //StudysaveToLocStrg();
     //operacion POST, CON FORM DATA
     const url = 'https://api.cheetah-research.ai/configuration/updateStudy/' + localStorage.getItem('selectedStudyId');
@@ -300,8 +302,6 @@ function UpdateAndPostformdta() {
     data.append('target', mercadoObjetivo);
     data.append('objective', objetivosDelEstudio);
     data.append('prompt', promptDelEstudio);
-    data.append('color1', color1DelEstudio);
-    data.append('color2', color2DelEstudio);
 
     axios.post(url, data)
         .then(response => {
@@ -316,9 +316,7 @@ function UpdateAndPostformdta() {
         tituloDelEstudio,
         mercadoObjetivo,
         objetivosDelEstudio,
-        promptDelEstudio, 
-        color1DelEstudio,
-        color2DelEstudio
+        promptDelEstudio,
     };
 
 }
@@ -423,4 +421,25 @@ function createStudyElement(study) {
     });
 
     return a;
+}
+
+// Color Change
+function saveColorsToStudy() {
+    const studyId = localStorage.getItem('selectedStudyId');
+    const primaryColor = document.getElementById('colorInput1').value;
+    const secondaryColor = document.getElementById('colorInput2').value;
+
+    const url = `https://api.cheetah-research.ai/configuration/set_colors/${studyId}`;
+    const data = new FormData();
+    data.append('primary_color', primaryColor);
+    data.append('secondary_color', secondaryColor);
+
+    axios.post(url, data)
+        .then(response => {
+            alert('Colores guardados exitosamente');
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error('Error al guardar los colores:', error);
+        });
 }

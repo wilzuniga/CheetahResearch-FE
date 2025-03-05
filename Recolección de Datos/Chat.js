@@ -6,8 +6,8 @@ function fetchColorsFromAPI(study_id) {
     const url = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
     return axios.get(url)
         .then(response => ({
-            color1: response.data.color1,
-            color2: response.data.color2
+            color1: response.data.primary_color,
+            color2: response.data.secondary_color
         }))
         .catch(error => {
             console.error('Error capturando colores desde API:', error);
