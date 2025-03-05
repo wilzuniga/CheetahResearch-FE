@@ -71,6 +71,12 @@ function createStudyForm() {
         </div>`
     ;
 
+    const saveColorsButton = `
+        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
+            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif;">Guardar Colores</button>
+        </div>`
+    ;
+
     const submitButton = `
         <div style="width: 250px;font-family: 'hedliner', sans-serif;">
             <button class="btn btn-primary d-block w-100" id="CrearEstudioBtn" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif;">Crear Estudio</button>
@@ -86,6 +92,7 @@ function createStudyForm() {
             ${colorInput1}
             ${colorInput2}
             ${setDefaultColorButton}
+            ${saveColorsButton}
             ${submitButton}
         </form>`;
 
