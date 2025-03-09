@@ -2,7 +2,7 @@ let imgPP;
 let hash = 0;
 
 //Color Change: getColores
-function fetchColorsFromAPI(study_id) {
+function setColorsLocally(study_id) {
     const url = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
     return axios.get(url)
         .then(response => ({
@@ -30,10 +30,10 @@ function applyColors(colors) {//Colors es un array
 
 
 function darkColorVariant (color) {
-    return adjustColor(color, 10);
+    return adjustColor(color, -10);
 }
 function brightColorVariant (color) {
-    return adjustColor(color, -10);
+    return adjustColor(color, 10);
 }
 function adjustColor(color, percent) {//Funcion loca de chatsito
     const num = parseInt(color.slice(1), 16),
@@ -49,7 +49,7 @@ function adjustColor(color, percent) {//Funcion loca de chatsito
 
 document.addEventListener('DOMContentLoaded', async function() {
     const study_id = new URLSearchParams(window.location.search).get('id');
-    const colors = await fetchColorsFromAPI(study_id);
+    const colors = await setColorsLocally(study_id);
     if (colors) {
         applyColors(colors);
     }
