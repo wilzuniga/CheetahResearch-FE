@@ -67,15 +67,20 @@ function createStudyForm() {
 
     const setDefaultColorButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-tertiary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
+            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
         </div>`
     ;
-
     const saveColorsButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif; background-color: ;">Guardar Colores</button>
+            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif;  background-color:var(--bs-CR-orange-2);">Guardar Colores</button>
         </div>`
     ;
+    const colorButtonsContainer = `
+        <div class="d-flex justify-content-between mb-3" style="font-family: 'hedliner', sans-serif;">
+            ${setDefaultColorButton}
+            ${saveColorsButton}
+        </div>`
+    ;//Aparecen horizontalmente
 
     const submitButton = `
         <div style="width: 250px;font-family: 'hedliner', sans-serif;">
@@ -91,8 +96,7 @@ function createStudyForm() {
             ${promptDelEstudio}
             ${colorInput1}
             ${colorInput2}
-            ${setDefaultColorButton}
-            ${saveColorsButton}
+            ${colorButtonsContainer}
             ${submitButton}
         </form>`;
 
@@ -160,15 +164,20 @@ function createFilledStudyForm() {
 
     const setDefaultColorButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-tertiary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
+            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
         </div>`
     ;
-
     const saveColorsButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif;">Guardar Colores</button>
+            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif; background-color:var(--bs-CR-orange-2);">Guardar Colores</button>
         </div>`
     ;
+    const colorButtonsContainer = `
+        <div class="d-flex justify-content-between mb-3" style="font-family: 'hedliner', sans-serif;">
+            ${setDefaultColorButton}
+            ${saveColorsButton}
+        </div>`
+    ;//Aparecen horizontalmente
 
     const submitButton = `
         <div style="width: 250px;font-family: 'hedliner', sans-serif;">
@@ -187,8 +196,7 @@ function createFilledStudyForm() {
             ${promptDelEstudio}
             ${colorInput1}
             ${colorInput2}
-            ${setDefaultColorButton}
-            ${saveColorsButton}
+            ${colorButtonsContainer}
             ${submitButton}
         </form>`
     ;
