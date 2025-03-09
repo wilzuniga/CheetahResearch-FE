@@ -67,13 +67,13 @@ function createStudyForm() {
 
     const setDefaultColorButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
+            <button class="btn btn-tertiary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
         </div>`
     ;
 
     const saveColorsButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif;">Guardar Colores</button>
+            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif; background-color: ;">Guardar Colores</button>
         </div>`
     ;
 
@@ -160,7 +160,7 @@ function createFilledStudyForm() {
 
     const setDefaultColorButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
+            <button class="btn btn-tertiary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
         </div>`
     ;
 
@@ -222,7 +222,7 @@ function appendFilledStudyForm() {
     //Color Change: Colores Default
     document.getElementById('setDefaultColorButton').addEventListener('click', () => {
         document.getElementById('colorInput1').value = '#C0601C';
-        // document.documentElement.style.setProperty('--bs-CR-orange', '#C0601C');//Comentado, tiene que cambiar hasta que se actualiza el estudio
+        document.getElementById('colorInput2').value = '#404040';
     });
 
     //Color Change: Guardar Colores
@@ -311,13 +311,13 @@ function UpdateAndPostformdta() {
     data.append('prompt', promptDelEstudio);
 
     axios.post(url, data)
-        .then(response => {
-            alert('Estudio actualizado exitosamente');
-            localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
-        })
-        .catch(error => {
-            console.error('Error al actualizar el estudio:', error);
-        });
+    .then(response => {
+        alert('Estudio actualizado exitosamente');
+        localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
+    })
+    .catch(error => {
+        console.error('Error al actualizar el estudio:', error);
+    });
 
     return {
         tituloDelEstudio,
@@ -339,6 +339,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             const formContainer = document.getElementById('form-containerStudy');
             formContainer.innerHTML = createFilledStudyForm();       
             appendFilledStudyForm();  
+            setColorsLocally();//Setea en LocalStorage los colores
         }
     }else if(window.location.href.includes('home')){
 
@@ -448,5 +449,28 @@ function saveColorsToStudy() {
         })
         .catch(error => {
             console.error('Error al guardar los colores:', error);
+        });
+}
+
+function setColorsLocally() {
+    const url = 'https://api.cheetah-research.ai/configuration/info_study/' + localStorage.getItem('selectedStudyId');
+    return axios.get(url)
+        .then(response => {
+            const colors = {
+                color1: response.data.primary_color,
+                color2: response.data.secondary_color
+            };
+
+            //Setear colores en Local Storage
+            const selectedStudyData = JSON.parse(localStorage.getItem('selectedStudyData')) || {};
+            selectedStudyData.color1DelEstudio = colors.color1;
+            selectedStudyData.color2DelEstudio = colors.color2;
+            localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
+
+            return colors;
+        })
+        .catch(error => {
+            console.error('Error capturando colores desde API:', error);
+            return { color1: null, color2: null };
         });
 }
