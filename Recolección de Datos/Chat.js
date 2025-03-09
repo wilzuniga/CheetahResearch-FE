@@ -2,7 +2,7 @@ let imgPP;
 let hash = 0;
 
 //Color Change: getColores
-function setColorsLocally(study_id) {
+function setColorsFromAPI(study_id) {
     const url = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
     return axios.get(url)
         .then(response => ({
@@ -49,7 +49,7 @@ function adjustColor(color, percent) {//Funcion loca de chatsito
 
 document.addEventListener('DOMContentLoaded', async function() {
     const study_id = new URLSearchParams(window.location.search).get('id');
-    const colors = await setColorsLocally(study_id);
+    const colors = await setColorsFromAPI(study_id);
     if (colors) {
         applyColors(colors);
     }
