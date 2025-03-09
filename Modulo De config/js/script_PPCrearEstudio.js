@@ -339,7 +339,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             const formContainer = document.getElementById('form-containerStudy');
             formContainer.innerHTML = createFilledStudyForm();       
             appendFilledStudyForm();  
-            setColorsLocally();//Setea en LocalStorage los colores
+            setColorsFromAPI();//Setea en LocalStorage los colores
         }
     }else if(window.location.href.includes('home')){
 
@@ -446,13 +446,14 @@ function saveColorsToStudy() {
         .then(response => {
             alert('Colores guardados exitosamente');
             console.log(response.data);
+            setColorsLocally(primaryColor, secondaryColor);
         })
         .catch(error => {
             console.error('Error al guardar los colores:', error);
         });
 }
 
-function setColorsLocally() {
+function setColorsFromAPI() {
     const url = 'https://api.cheetah-research.ai/configuration/info_study/' + localStorage.getItem('selectedStudyId');
     return axios.get(url)
         .then(response => {
@@ -462,10 +463,7 @@ function setColorsLocally() {
             };
 
             //Setear colores en Local Storage
-            const selectedStudyData = JSON.parse(localStorage.getItem('selectedStudyData')) || {};
-            selectedStudyData.primary_color = colors.color1;
-            selectedStudyData.secondary_color = colors.color2;
-            localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
+            setColorsLocally(colors.color1, colors.color2);
 
             return colors;
         })
@@ -473,4 +471,11 @@ function setColorsLocally() {
             console.error('Error capturando colores desde API:', error);
             return { color1: null, color2: null };
         });
+}
+
+function setColorsLocally(color1, color2) {
+    const selectedStudyData = JSON.parse(localStorage.getItem('selectedStudyData')) || {};
+    selectedStudyData.primary_color = color1;
+    selectedStudyData.secondary_color = color2;
+    localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
 }
