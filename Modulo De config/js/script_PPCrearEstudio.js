@@ -108,8 +108,8 @@ function createFilledStudyForm() {
         mercadoObjetivo: studyData.marketTarget,
         objetivosDelEstudio: studyData.studyObjectives,
         Resumen: studyData.prompt,
-        color1DelEstudio: studyData.color1,
-        color2DelEstudio: studyData.color2
+        color1DelEstudio: studyData.primary_color,
+        color2DelEstudio: studyData.secondary_color
     };
 
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
@@ -463,8 +463,8 @@ function setColorsLocally() {
 
             //Setear colores en Local Storage
             const selectedStudyData = JSON.parse(localStorage.getItem('selectedStudyData')) || {};
-            selectedStudyData.color1DelEstudio = colors.color1;
-            selectedStudyData.color2DelEstudio = colors.color2;
+            selectedStudyData.primary_color = colors.color1;
+            selectedStudyData.secondary_color = colors.color2;
             localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
 
             return colors;
