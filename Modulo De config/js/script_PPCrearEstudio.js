@@ -77,8 +77,8 @@ function createStudyForm() {
     ;
     const colorButtonsContainer = `
         <div class="d-flex justify-content-between mb-3" style="font-family: 'hedliner', sans-serif;">
-            ${setDefaultColorButton}
             ${saveColorsButton}
+            ${setDefaultColorButton}
         </div>`
     ;//Aparecen horizontalmente
 
@@ -174,8 +174,8 @@ function createFilledStudyForm() {
     ;
     const colorButtonsContainer = `
         <div class="d-flex justify-content-between mb-3" style="font-family: 'hedliner', sans-serif;">
-            ${setDefaultColorButton}
             ${saveColorsButton}
+            ${setDefaultColorButton}
         </div>`
     ;//Aparecen horizontalmente
 
