@@ -94,21 +94,24 @@ function llenar() {
         downloadLogsButtonOTP.addEventListener('click', () => {
             axios.post('https://api.cheetah-research.ai/configuration/api/download_log_otp/', formData)
             .then((response) => {
-                const downloadUrl = response.data.url;
-                console.log(response.data);
-                console.log(downloadUrl);
+                const content = response.data;
                 // Sanitizar el nombre del archivo
                 const sanitizedTitle = selectedStudyData.tituloDelEstudio.replace(/\s+/g, '_').replace(/[\/\\?*:|"<>]/g, '');
-
                 const filename = 'logOTP_' + sanitizedTitle + '.csv';
-                // Crear un enlace temporal para la descarga
+
+                // Descargar archivo usando un Blob
+                const blob = new Blob([content], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
                 const tempLink = document.createElement('a');
-                tempLink.href = downloadUrl;
-                tempLink.download = filename; // Usar el nombre sanitizado
+                tempLink.href = url;
+                tempLink.download = filename;
                 tempLink.style.display = 'none'; // Ocultar el enlace
-                document.body.appendChild(tempLink);
+                document.body.appendChild(tempLink); // Agregar el enlace al DOM
                 tempLink.click();
-                document.body.removeChild(tempLink);
+                document.body.removeChild(tempLink); // Eliminar el enlace temporal
+                window.URL.revokeObjectURL(url); // Liberar recursos
+
+
             })
             .catch((error) => {
                 console.error('Error al realizar la solicitud:', error);
