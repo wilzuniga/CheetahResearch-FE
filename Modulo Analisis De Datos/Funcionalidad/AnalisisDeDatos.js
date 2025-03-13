@@ -355,7 +355,7 @@ function LLenarResumenes(study) {
                     data = data.substring(0, data.length - 3);
                 }
                 const coso = splitMarkdownAndWrap(data);                          
-                div.innerHTML = coso;       
+                div.innerHTML = coso.join('\n');       
                 let graphDta = splitMarkdown(data);    
                 generateCharts(graphDta);               
                 console.log(data);

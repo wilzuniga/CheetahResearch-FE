@@ -99,6 +99,12 @@ export function generateCharts(data) {
 
 
 export function splitMarkdownAndWrap(markdownText) {
+
+    //si el texto tiene un '---' al final, lo elimina
+    if (markdownText.endsWith('---')) {
+      markdownText = markdownText.slice(0, -3);
+    }
+
     // Separa el texto markdown usando '---' como delimitador
     const sections = markdownText.split('---').map(section => section.trim());
     
