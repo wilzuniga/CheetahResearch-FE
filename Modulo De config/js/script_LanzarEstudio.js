@@ -214,7 +214,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
             }
         });
 
-    URLOTP = 'https://api.cheetah-research.ai/configuration/api/generate-otp/'
+    URLOTP = 'https://api.cheetah-research.ai/configuration/api/generate_otp_from_platform/'
     let formDataa = new FormData();
     formDataa.append('mongo_studio_id', localStorage.getItem('selectedStudyId'));
     //agregar un event listener para el boton OTPBtn_Analisis para generar el otp
