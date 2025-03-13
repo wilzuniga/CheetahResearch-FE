@@ -95,6 +95,7 @@ function llenar() {
             axios.post('https://api.cheetah-research.ai/configuration/api/download_log_otp/', formData)
             .then((response) => {
                 const downloadUrl = response.data.url;
+                console.log(data);
                 console.log(downloadUrl);
                 // Sanitizar el nombre del archivo
                 const sanitizedTitle = selectedStudyData.tituloDelEstudio.replace(/\s+/g, '_').replace(/[\/\\?*:|"<>]/g, '');
