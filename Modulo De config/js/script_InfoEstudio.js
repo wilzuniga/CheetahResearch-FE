@@ -89,7 +89,7 @@ function llenar() {
 
 
     //DescargarLogOTPBckup CON EL LINK /configuration/api/download_log_otp/
-    const downloadLogsButtonOTP = document.getElementById('DescargarLogOTPBckup');
+    const downloadLogsButtonOTP = document.getElementById('DescargarLogOTPBtn');
     if (downloadLogsButtonOTP) {
         downloadLogsButtonOTP.addEventListener('click', () => {
             axios.post('https://api.cheetah-research.ai/configuration/api/download_log_otp/', formData)
@@ -113,7 +113,7 @@ function llenar() {
             });
         });
     }else {
-        console.error('Elemento con ID "DescargarTranscrptBtn" no encontrado.');
+        console.error('Elemento con ID "DescargarLogOTPBtn" no encontrado.');
     }         
 
 
