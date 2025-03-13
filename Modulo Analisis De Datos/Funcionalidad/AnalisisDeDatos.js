@@ -6,7 +6,7 @@ let formData = new FormData();
 let markmapBlobUrl = null;
 
 
-import { splitMarkdown, generateCharts } from './splitter.js';
+import { splitMarkdown, generateCharts, splitMarkdownAndWrap } from './splitter.js';
 
 function initializePage() {
     console.log('Page initialized');
@@ -354,7 +354,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
+                const coso = splitMarkdownAndWrap(data);                          
                 div.innerHTML = coso;       
                 let graphDta = splitMarkdown(data);    
                 generateCharts(graphDta);               
