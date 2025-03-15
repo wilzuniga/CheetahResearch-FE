@@ -86,7 +86,40 @@ function llenar() {
     }else {
         console.error('Elemento con ID "DescargarTranscrptBtn" no encontrado.');
     }
-            
+
+
+    //DescargarLogOTPBckup CON EL LINK /configuration/api/download_log_otp/
+    const downloadLogsButtonOTP = document.getElementById('DescargarLogOTPBtn');
+    if (downloadLogsButtonOTP) {
+        downloadLogsButtonOTP.addEventListener('click', () => {
+            axios.post('https://api.cheetah-research.ai/configuration/api/download_log_otp/', formData)
+            .then((response) => {
+                const content = response.data;
+                // Sanitizar el nombre del archivo
+                const sanitizedTitle = selectedStudyData.tituloDelEstudio.replace(/\s+/g, '_').replace(/[\/\\?*:|"<>]/g, '');
+                const filename = 'logOTP_' + sanitizedTitle + '.csv';
+
+                // Descargar archivo usando un Blob
+                const blob = new Blob([content], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const tempLink = document.createElement('a');
+                tempLink.href = url;
+                tempLink.download = filename;
+                tempLink.style.display = 'none'; // Ocultar el enlace
+                document.body.appendChild(tempLink); // Agregar el enlace al DOM
+                tempLink.click();
+                document.body.removeChild(tempLink); // Eliminar el enlace temporal
+                window.URL.revokeObjectURL(url); // Liberar recursos
+
+
+            })
+            .catch((error) => {
+                console.error('Error al realizar la solicitud:', error);
+            });
+        });
+    }else {
+        console.error('Elemento con ID "DescargarLogOTPBtn" no encontrado.');
+    }         
 
 
 
