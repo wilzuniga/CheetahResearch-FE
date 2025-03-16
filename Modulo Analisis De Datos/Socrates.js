@@ -448,3 +448,35 @@ window.addEventListener('beforeunload', function (event) {
     // Nota: Los navegadores modernos pueden ignorar el mensaje y mostrar un texto genérico.
 });
 
+
+
+
+
+// Contenedor preguntas "questionContainer"
+
+function AgregarPreguntas() {
+    const url = "https://api.cheetah-research.ai/configuration/get_questions/" + localStorage.getItem('selectedStudyId');
+    axios.get(url)
+        .then(response => {
+            console.log(response.data);
+            const data = response.data.suggested_questions;
+            //ciclar por la data
+            data.forEach(pregunta => {
+                //                                            <p class="card-text" style="color: #aaa7aa;">Pregunta</p>
+                const questionContainer = document.getElementById('questionContainer');
+                // insertar las preguntas como texto en el contenedor como <p>
+                const p = document.createElement('p');
+                p.className = 'card-text';
+                p.style.color = '#aaa7aa';
+                p.textContent = pregunta;
+                questionContainer.appendChild(p);
+                
+
+
+            });
+
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        });
+}
