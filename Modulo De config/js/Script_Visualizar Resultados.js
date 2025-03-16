@@ -87,6 +87,7 @@ function AgregarFiltros() {
             const comboBox7 = document.getElementById('Combobox_NPS');
             const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
             const comboBox9 = document.getElementById('Combobox_customerExperience');
+            const comboBox10 = document.getElementById('Combobox_Satisfaccion');
 
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
@@ -97,6 +98,7 @@ function AgregarFiltros() {
             comboBox7.innerHTML = '';
             comboBox8.innerHTML = '';
             comboBox9.innerHTML = '';
+            comboBox10.innerHTML = '';
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -112,6 +114,7 @@ function AgregarFiltros() {
             comboBox7.appendChild(option.cloneNode(true));
             comboBox8.appendChild(option.cloneNode(true));
             comboBox9.appendChild(option.cloneNode(true));
+            comboBox10.appendChild(option.cloneNode(true));
 
         });
         }
@@ -146,7 +149,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 'save-textarea_AP_SegmentosPsicograficos': 'SegmentosPsicograficosTextArea',
                 'save-textarea_AP_NPS': 'NPSTextArea',
                 'save-textarea_AP_EstiloDeComunicacion': 'EstiloDeComunicacionTextArea',
-                'save-textarea_customerExperience': 'customerExperienceTextArea'
+                'save-textarea_customerExperience': 'customerExperienceTextArea',
+                'save-textarea_AP_Satisfaccion' : 'SatisfaccionTextArea'
             };
 
             //conseguir los comboboxes de cada seccion
@@ -160,6 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
             const comboBoxCE = document.getElementById('Combobox_customerExperience');
+            const comboBoxSat = document.getElementById('Combobox_Satisfaccion');
 
             //conseguir el combobox seleccionado de cada seccion
             const StyleSelectedOptionRG = comboBoxRG.options[comboBoxRG.selectedIndex];
@@ -171,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionNPS = comboBoxNPS.options[comboBoxNPS.selectedIndex];
             const StyleSelectedOptionEC = comboBoxEC.options[comboBoxEC.selectedIndex];
             const StyleSelectedOptionCE = comboBoxCE.options[comboBoxCE.selectedIndex];
+            const StyleSelectedOptionSat = comboBoxSat.options[comboBoxSat.selectedIndex];
 
             //conseguir el valor del combobox seleccionado de cada seccion
             const StyleSelectedOptionRGValue = StyleSelectedOptionRG.value;
@@ -182,6 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionNPSValue = StyleSelectedOptionNPS.value;
             const StyleSelectedOptionECValue = StyleSelectedOptionEC.value;
             const StyleSelectedOptionCEValue = StyleSelectedOptionCE.value;
+            const StyleSelectedOptionSatValue = StyleSelectedOptionSat.value;
 
             //en el caso de el resumen general y el resumen individual, conseguir los subfiltros 
             const StyleSelectedOptionRGSub = document.getElementById('ComboBox_ResumenGeneralTy');
@@ -400,6 +407,32 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                     }
                     break;
+
+                case 'save-textarea_AP_Satisfaccion':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataSat = new FormData();
+                    formDataSat.append('filter', StyleSelectedOptionSatValue);
+                    formDataSat.append('module', 'psicographic_questions');
+                    formDataSat.append('sub_module', 'customer_satisfaction');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionSatValue + '.md';
+
+                    formDataSat.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataSat)
+                        .then(function (response) {
+                            console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+
+
                 default:
                     break;
             }
@@ -521,6 +554,7 @@ function LLenarResumenes(){
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
             const comboBoxCE = document.getElementById('Combobox_customerExperience');
+            const comboBoxSat = document.getElementById('Combobox_Satisfaccion');
 
             //User Persona, perfecto
             comboBoxUP.addEventListener('change', (event) => {
@@ -745,6 +779,45 @@ function LLenarResumenes(){
                         // always executed
                     });
             });
+
+            //satisfaccion, Perfecto 
+            comboBoxSat.addEventListener('change', (event) => {
+                console.log(event.target.value);
+
+                var div = document.getElementById('SatisfaccionContent');
+                var textArea = document.getElementById('SatisfaccionTextArea');
+
+                // Supongamos que `event.target.value` es el valor del combobox
+                const selectedValue = event.target.value;
+
+                formData = new FormData();
+                formData.append('filter', selectedValue);
+                formData.append('module', 'psicographic_questions');
+                formData.append('sub_module', 'customer_satisfaction');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf('#'));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        const coso = marked(data);
+                        div.innerHTML = coso;
+                        textArea.value = data;
+                        console.log(data);
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            });
+            
+
+
 
             comboBoxEC.addEventListener('change', (event) => {
                 console.log(event.target.value);

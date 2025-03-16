@@ -1,6 +1,7 @@
 let filtros = [];
 let modules = [];
 let dominios = [];
+let preguntas = [];
 let studyStatus = 0;
 let formData = new FormData();  
 
@@ -254,7 +255,45 @@ function load(){    // Actualizar el título del estudio desde localStorage
     AgregarFiltros();
     AgregarModulos();
     AgregarDominios();
+    AgregarPreguntas()
+
+    //Manejar el evento del boton de agregar Preguntas
+    const AgregarPreguntaBtn = document.getElementById('AgregarPreguntaBTN');
+    const PreguntasLST = document.getElementById('PreguntasLST');
     
+    AgregarPreguntaBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const preguntaTxt = document.getElementById('PreguntasTXT').value;
+        if (preguntaTxt) {
+            preguntas.push(preguntaTxt);
+            const preguntaItem = document.createElement('li');
+            preguntaItem.classList.add('list-group-item');
+            preguntaItem.style.display = 'flex';
+            preguntaItem.style.justifyContent = 'space-between';
+            preguntaItem.style.alignItems = 'center';
+
+            const preguntaSpan = document.createElement('span');
+            preguntaSpan.innerText = preguntaTxt;
+            preguntaSpan.style.fontFamily = 'IBM Plex Sans';
+            preguntaItem.appendChild(preguntaSpan);
+
+            const eliminarBtn = document.createElement('button');
+            eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+            eliminarBtn.innerText = 'Eliminar';
+            eliminarBtn.addEventListener('click', () => {
+                preguntaItem.remove();
+                //eliminar el filtro del arreglo
+                const index = preguntas.indexOf(preguntaTxt);
+                if (index > -1) {
+                    preguntas.splice(index, 1);
+                }
+            });
+            preguntaItem.appendChild(eliminarBtn);
+
+            PreguntasLST.appendChild(preguntaItem);
+            document.getElementById('PreguntasTXT').value = ''; // Limpiar el campo de texto
+        }
+    });
 
     // Manejar el evento del botón de agregar filtro
     const agregarFiltroBtn = document.getElementById('AgregarFiltroBTN');
@@ -385,6 +424,7 @@ function AgregarFiltros() {
         });
 }
 
+//Agrefar Preguntas    
 
 
 function eliminarDominio(dominio) {
@@ -588,6 +628,37 @@ guardarFitroBTN.addEventListener('click', (e) => {
 }
 );
 
+// Agregar un event listener para el botón de guardar preguntas
+guardarPreguntaBTN.addEventListener('click', (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+
+    const preguntasLST = document.getElementById('PreguntasLST');
+    const preguntasItems = preguntasLST.getElementsByTagName('li');
+    preguntas = [];
+    for (let i = 0; i < preguntasItems.length; i++) {
+        const preguntaTxt = preguntasItems[i].getElementsByTagName('span')[0].innerText;
+        preguntas.push(preguntaTxt);
+    }
+    const preguntasString = JSON.stringify(preguntas);
+    formData.append('questions', preguntasString);
+
+    axios.post('https://api.cheetah-research.ai/configuration/questions/' + localStorage.getItem('selectedStudyId'), formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+
+        .then(response => {
+            //alert
+            alert('Preguntas guardadas correctamente');
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        }
+        );
+});
+
 guardarDominioBTN.addEventListener('click', (e) => {
     e.preventDefault();
     const dominiosLST = document.getElementById('DominiosLST');
@@ -602,7 +673,7 @@ guardarDominioBTN.addEventListener('click', (e) => {
     // Ciclar los dominios y enviarlos uno por uno
     const studyId = localStorage.getItem('selectedStudyId');
     const apiUrl = `https://api.cheetah-research.ai/configuration/api/add-domain/`;
-    const enviarFiltro = (dominio) => {
+    const enviarDominio = (dominio) => {
         const formData = new FormData();
         formData.append('study_id', studyId);
         formData.append('domain', dominio);
@@ -615,7 +686,7 @@ guardarDominioBTN.addEventListener('click', (e) => {
     };
 
     // Enviar cada dominio individualmente
-    const requests = dominios.map(enviarFiltro);
+    const requests = dominios.map(enviarDominio);
 
     Promise.all(requests)
         .then(() => {
