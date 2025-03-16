@@ -237,8 +237,8 @@ function load(){    // Actualizar el título del estudio desde localStorage
     AgregarFiltros();
     AgregarModulos();
     AgregarDominios();
-    //AgregarPreguntas()
-/*
+    AgregarPreguntas()
+
     //Manejar el evento del boton de agregar Preguntas
     const AgregarPreguntaBtn = document.getElementById('AgregarPreguntaBTN');
     const PreguntasLST = document.getElementById('PreguntasLST');
@@ -276,7 +276,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
             document.getElementById('PreguntasTXT').value = ''; // Limpiar el campo de texto
         }
     });
-*/
+
     // Manejar el evento del botón de agregar filtro
     const agregarFiltroBtn = document.getElementById('AgregarFiltroBTN');
     const filtrosLST = document.getElementById('FiltrosLST');
@@ -406,7 +406,46 @@ function AgregarFiltros() {
         });
 }
 
-//Agrefar Preguntas    
+//Agrefar Preguntas  
+function AgregarPreguntas() {
+    const url = "https://api.cheetah-research.ai/configuration/get_questions/" + localStorage.getItem('selectedStudyId');
+    axios.get(url)
+        .then(response => {
+            console.log(response.data);
+            const data = response.data.questions;
+            //ciclar por la data
+            data.forEach(pregunta => {
+                preguntas.push(pregunta);
+                const preguntaItem = document.createElement('li');
+                preguntaItem.classList.add('list-group-item');
+                preguntaItem.style.display = 'flex';
+                preguntaItem.style.justifyContent = 'space-between';
+                preguntaItem.style.alignItems = 'center';
+                
+                const preguntaSpan = document.createElement('span');
+                preguntaSpan.innerText = pregunta;
+                preguntaSpan.style.fontFamily = 'IBM Plex Sans';
+                preguntaItem.appendChild(preguntaSpan);
+
+                const eliminarBtn = document.createElement('button');
+                eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+                eliminarBtn.innerText = 'Eliminar';
+                eliminarBtn.addEventListener('click', () => {
+                    preguntaItem.remove();
+                    const index = preguntas.indexOf(preguntaTxt);
+                    if (index > -1) {
+                        preguntas.splice(index, 1);
+                    }
+                });
+                preguntaItem.appendChild(eliminarBtn);
+                PreguntasLST.appendChild(preguntaItem);
+            });
+
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        });
+}
 
 
 function eliminarDominio(dominio) {
@@ -609,38 +648,40 @@ guardarFitroBTN.addEventListener('click', (e) => {
         });
 }
 );
-/*
-// Agregar un event listener para el botón de guardar preguntas
+
 guardarPreguntaBTN.addEventListener('click', (e) => {
     e.preventDefault();
-    const formData = new FormData();
 
     const preguntasLST = document.getElementById('PreguntasLST');
     const preguntasItems = preguntasLST.getElementsByTagName('li');
-    preguntas = [];
+    let preguntas = [];
+
     for (let i = 0; i < preguntasItems.length; i++) {
         const preguntaTxt = preguntasItems[i].getElementsByTagName('span')[0].innerText;
         preguntas.push(preguntaTxt);
     }
-    const preguntasString = JSON.stringify(preguntas);
-    formData.append('questions', preguntasString);
 
-    axios.post('https://api.cheetah-research.ai/configuration/questions/' + localStorage.getItem('selectedStudyId'), formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
+    const data = {
+        suggested_questions: preguntas
+    };
+
+    axios.post(
+        `https://api.cheetah-research.ai/configuration/suggested_questions/${localStorage.getItem('selectedStudyId')}`,
+        data,
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
         }
+    )
+    .then(response => {
+        alert('Preguntas guardadas correctamente');
     })
-
-        .then(response => {
-            //alert
-            alert('Preguntas guardadas correctamente');
-        })
-        .catch(error => {
-            console.error('Error al enviar los datos:', error);
-        }
-        );
+    .catch(error => {
+        console.error('Error al enviar los datos:', error);
+    });
 });
-*/
+
 
 guardarDominioBTN.addEventListener('click', (e) => {
     e.preventDefault();
