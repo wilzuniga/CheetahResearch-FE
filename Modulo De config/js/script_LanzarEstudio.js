@@ -238,7 +238,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
     AgregarModulos();
     AgregarDominios();
     //AgregarPreguntas()
-
+/*
     //Manejar el evento del boton de agregar Preguntas
     const AgregarPreguntaBtn = document.getElementById('AgregarPreguntaBTN');
     const PreguntasLST = document.getElementById('PreguntasLST');
@@ -276,7 +276,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
             document.getElementById('PreguntasTXT').value = ''; // Limpiar el campo de texto
         }
     });
-
+*/
     // Manejar el evento del botón de agregar filtro
     const agregarFiltroBtn = document.getElementById('AgregarFiltroBTN');
     const filtrosLST = document.getElementById('FiltrosLST');

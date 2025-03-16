@@ -611,7 +611,7 @@ function LLenarResumenes(study) {
         formData = new FormData();
         formData.append('filter', selectedValue);
         formData.append('module', 'psicographic_questions');
-        formData.append('sub_module', 'satisfaccion');
+        formData.append('sub_module', 'customer_satisfaction');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
 
         axios.post(url, formData)
