@@ -31,24 +31,6 @@ function load(){    // Actualizar el título del estudio desde localStorage
         document.getElementById('TituloEstudioLBL').innerText = estudio.title;
     }
 
-    url = 'https://api.cheetah-research.ai/configuration/test/' + localStorage.getItem('selectedStudyId');
-    axios.get(url)
-        .then(response => {
-            console.log(response.data);
-            const data = response.data;
-                if(data.test){
-                    let coso = document.getElementById('test_Switch');
-                    coso.checked = true;
-                }else{
-                    let coso = document.getElementById('test_Switch');
-                    coso.checked = false;
-                }
-        }
-        )
-        .catch(error => {
-            console.error('Error al enviar los datos:', error);
-        });
-
     url = 'https://api.cheetah-research.ai/configuration/info_study/' + localStorage.getItem('selectedStudyId');
     //{"status": "success", "studyDate": "2024-08-04T21:07:30.632822-06:00", "studyStatus": 0}
     axios.get(url)
@@ -255,7 +237,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
     AgregarFiltros();
     AgregarModulos();
     AgregarDominios();
-    AgregarPreguntas()
+    //AgregarPreguntas()
 
     //Manejar el evento del boton de agregar Preguntas
     const AgregarPreguntaBtn = document.getElementById('AgregarPreguntaBTN');
@@ -627,7 +609,7 @@ guardarFitroBTN.addEventListener('click', (e) => {
         });
 }
 );
-
+/*
 // Agregar un event listener para el botón de guardar preguntas
 guardarPreguntaBTN.addEventListener('click', (e) => {
     e.preventDefault();
@@ -658,6 +640,7 @@ guardarPreguntaBTN.addEventListener('click', (e) => {
         }
         );
 });
+*/
 
 guardarDominioBTN.addEventListener('click', (e) => {
     e.preventDefault();
