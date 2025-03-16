@@ -1,6 +1,9 @@
 let imgPP;
 let hash = 0;
 
+
+AgregarPreguntas();
+
 //Cambiar size del Type-Box con Input y Window resize
 document.addEventListener('DOMContentLoaded', (event) => {
     const messageInput = document.getElementById('Message-Input');
