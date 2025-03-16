@@ -412,7 +412,7 @@ function AgregarPreguntas() {
     axios.get(url)
         .then(response => {
             console.log(response.data);
-            const data = response.data.questions;
+            const data = response.data.suggested_questions;
             //ciclar por la data
             data.forEach(pregunta => {
                 preguntas.push(pregunta);
