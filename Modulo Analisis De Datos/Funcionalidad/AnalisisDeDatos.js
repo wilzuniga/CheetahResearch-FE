@@ -154,12 +154,15 @@ function AgregarModulos(study) {
             const UserPersonaBtn = document.getElementById('UserPersonaBtn');
             const AnalisisPsicograficosBtn = document.getElementById('AnalisisPsicograficosBtn');
             const CustomerEcperienceBtn = document.getElementById('customerExperienceBtn');
+            const NPSySatisfaccionBtn = document.getElementById('NPSySatisfaccionBtn');
+
 
             ResumenGeneralBtn.style.display = 'none';
             ResumenIndividualBtn.style.display = 'none';
             UserPersonaBtn.style.display = 'none';
             AnalisisPsicograficosBtn.style.display = 'none';
             CustomerEcperienceBtn.style.display = 'none';
+            NPSySatisfaccionBtn.style.display = 'none';
 
             ActiveModules.forEach(modulo => {
                 if (modulo === 'Modulo de Analisis General') {
@@ -176,6 +179,9 @@ function AgregarModulos(study) {
                 }
                 if (modulo === 'Modulo customer Experience') {
                     CustomerEcperienceBtn.style.display = 'block';
+                }
+                if (modulo === 'Modulo de Customer Satisfaction') {
+                    NPSySatisfaccionBtn.style.display = 'block';
                 }
 
             }
@@ -222,6 +228,7 @@ function AgregarFiltros(study) {
             const comboBox7 = document.getElementById('Combobox_NPS');
             const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
             const comboBox9 = document.getElementById('Combobox_customerExperience');
+            const comboBox10 = document.getElementById('Combobox_Satisfaccion');
 
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
@@ -232,7 +239,7 @@ function AgregarFiltros(study) {
             comboBox7.innerHTML = '';
             comboBox8.innerHTML = '';
             comboBox9.innerHTML = '';
-
+            comboBox10.innerHTML = '';
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -248,6 +255,7 @@ function AgregarFiltros(study) {
             comboBox7.appendChild(option.cloneNode(true));
             comboBox8.appendChild(option.cloneNode(true));
             comboBox9.appendChild(option.cloneNode(true));
+            comboBox10.appendChild(option.cloneNode(true));
         });
 
         LLenarResumenes(study);
@@ -378,6 +386,7 @@ function LLenarResumenes(study) {
     const comboBoxNPS = document.getElementById('Combobox_NPS');
     const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
     const comboBoxCE = document.getElementById('Combobox_customerExperience');
+    const comboBoxS = document.getElementById('Combobox_Satisfaccion');
 
     //User Persona, perfecto
     comboBoxUP.addEventListener('change', (event) => {
@@ -590,6 +599,41 @@ function LLenarResumenes(study) {
                 // always executed
             });
     });
+
+    //Satisfaccion, perfecto
+    comboBoxS.addEventListener('change', (event) => {
+        console.log(event.target.value);
+
+        var div = document.getElementById('SatisfaccionContent');
+        // Supongamos que `event.target.value` es el valor del combobox
+        const selectedValue = event.target.value;
+
+        formData = new FormData();
+        formData.append('filter', selectedValue);
+        formData.append('module', 'psicographic_questions');
+        formData.append('sub_module', 'satisfaccion');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                const coso = marked(data);
+                div.innerHTML = coso;
+                console.log(data);
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+    });
+
 
     comboBoxEC.addEventListener('change', (event) => {
         console.log(event.target.value);
