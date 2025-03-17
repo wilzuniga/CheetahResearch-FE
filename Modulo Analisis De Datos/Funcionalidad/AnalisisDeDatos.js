@@ -43,18 +43,32 @@ document.addEventListener('DOMContentLoaded', function () {
             if (chartsContainer) {
                 const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Selecciona el div cuyo ID termina en "Content"
 
-                // Crear un nuevo div que contendrá solo los títulos en <h4>
+                // Crear un nuevo div que contendrá el contenido final para exportar
                 const exportDiv = document.createElement('div');
-
+                
+                // Agregar contenido antes de los <details> al exportDiv
+                const beforeDetails = [...contentDiv.childNodes].slice(0, contentDiv.firstElementChild?.tagName === "DETAILS" ? 0 : -1);
+                beforeDetails.forEach(node => exportDiv.appendChild(node.cloneNode(true)));
+                
+                // Extraer y agregar títulos <h4> de cada <details> con una línea <hr> entre ellos
                 const details = contentDiv.querySelectorAll('details');
-                details.forEach(detail => {
+                details.forEach((detail, index) => {
                     const summary = detail.querySelector('summary h4'); // Selecciona el título en <h4>
                     if (summary) {
                         const clonedTitle = summary.cloneNode(true); // Clona el título sin modificarlo
                         exportDiv.appendChild(clonedTitle); // Agrega el título al nuevo div
+                
+                        // Agregar una línea <hr> entre títulos
+                        if (index < details.length - 1) {
+                            exportDiv.appendChild(document.createElement('hr'));
+                        }
                     }
                 });
-
+                
+                // Agregar contenido después de los <details> al exportDiv
+                const afterDetails = [...contentDiv.childNodes].slice(contentDiv.lastElementChild?.tagName === "DETAILS" ? 0 : 1);
+                afterDetails.forEach(node => exportDiv.appendChild(node.cloneNode(true)));
+                
                 // Configurar las opciones para el PDF
                 const options = {
                     margin: 1,
@@ -62,10 +76,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     html2canvas: { scale: 2, backgroundColor: '#ffffff' },
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
                 };
-
-                // Generar el PDF con solo los títulos en h4
+                
+                // Generar el PDF con la estructura deseada
                 html2pdf().set(options).from(exportDiv).save();
-
+                
             } else {
                 
                 const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
