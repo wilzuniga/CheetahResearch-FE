@@ -41,28 +41,30 @@ document.addEventListener('DOMContentLoaded', function () {
             const chartsContainer = activeTab ? activeTab.querySelector('#charts-containerResumenIndividualContent') : null;
 
             if (chartsContainer) {
-                const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
+                const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Selecciona el div cuyo ID termina en "Content"
 
-                // Asegurar que los <details> se muestren correctamente y no se superpongan
+                // Crear un nuevo div que contendrá solo los títulos en <h4>
+                const exportDiv = document.createElement('div');
+
                 const details = contentDiv.querySelectorAll('details');
                 details.forEach(detail => {
-                    detail.style.display = 'block';
-                    detail.style.marginBottom = '10px'; // Espaciado entre elementos
-                    detail.open = true; // Asegurar que estén abiertos al generar el PDF
+                    const summary = detail.querySelector('summary h4'); // Selecciona el título en <h4>
+                    if (summary) {
+                        const clonedTitle = summary.cloneNode(true); // Clona el título sin modificarlo
+                        exportDiv.appendChild(clonedTitle); // Agrega el título al nuevo div
+                    }
                 });
 
+                // Configurar las opciones para el PDF
                 const options = {
                     margin: 1,
                     filename: `${parentTabPane.id || 'contenido'}.pdf`,
-                    html2canvas: { scale: 3, backgroundColor: '#ffffff' },
+                    html2canvas: { scale: 2, backgroundColor: '#ffffff' },
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-                    pagebreak: { mode: ['avoid-all'] }
                 };
 
-                // Pequeño delay para asegurarse de que los detalles se rendericen antes de generar el PDF
-                setTimeout(() => {
-                    html2pdf().set(options).from(contentDiv).save();
-                }, 500);
+                // Generar el PDF con solo los títulos en h4
+                html2pdf().set(options).from(exportDiv).save();
 
             } else {
                 
