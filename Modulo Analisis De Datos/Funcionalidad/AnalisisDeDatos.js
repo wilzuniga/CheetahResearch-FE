@@ -43,15 +43,27 @@ document.addEventListener('DOMContentLoaded', function () {
             if (chartsContainer) {
                 const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
 
- 
+                // Asegurar que los <details> se muestren correctamente y no se superpongan
+                const details = contentDiv.querySelectorAll('details');
+                details.forEach(detail => {
+                    detail.style.display = 'block';
+                    detail.style.marginBottom = '10px'; // Espaciado entre elementos
+                    detail.open = true; // Asegurar que estén abiertos al generar el PDF
+                });
+
                 const options = {
                     margin: 1,
                     filename: `${parentTabPane.id || 'contenido'}.pdf`,
-                    html2canvas: { scale: 2 },
+                    html2canvas: { scale: 3, backgroundColor: '#ffffff' },
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all'] }
                 };
 
-                html2pdf().set(options).from(contentDiv).save();
+                // Pequeño delay para asegurarse de que los detalles se rendericen antes de generar el PDF
+                setTimeout(() => {
+                    html2pdf().set(options).from(contentDiv).save();
+                }, 500);
+
             } else {
                 
                 const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
