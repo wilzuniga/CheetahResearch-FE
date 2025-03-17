@@ -41,26 +41,17 @@ document.addEventListener('DOMContentLoaded', function () {
             const chartsContainer = activeTab ? activeTab.querySelector('#charts-containerResumenIndividualContent') : null;
 
             if (chartsContainer) {
-                // Establecer el estilo de salto de página
-                const charts = chartsContainer.querySelectorAll('.chart-box');
-                charts.forEach((chart, index) => {
-                    // Cada dos gráficos, agregar un salto de página
-                    if (index % 2 !== 0) {
-                        chart.style.pageBreakAfter = 'always';
-                    } else {
-                        chart.style.pageBreakAfter = 'auto';
-                    }
-                });
+                const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
 
+ 
                 const options = {
                     margin: 1,
-                    filename: 'charts_resumen_individual.pdf',
+                    filename: `${parentTabPane.id || 'contenido'}.pdf`,
                     html2canvas: { scale: 2 },
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
                 };
 
-                // Exportar todos los canvas dentro del chartsContainer
-                html2pdf().set(options).from(chartsContainer).save();
+                html2pdf().set(options).from(contentDiv).save();
             } else {
                 
                 const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
