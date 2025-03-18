@@ -41,36 +41,72 @@ document.addEventListener('DOMContentLoaded', function () {
             const chartsContainer = activeTab ? activeTab.querySelector('#charts-containerResumenIndividualContent') : null;
 
             if (chartsContainer) {
-                const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Selecciona el div cuyo ID termina en "Content"
-
-            // Crear un nuevo div que contendrá solo los títulos en <h4>
-            const exportDiv = document.createElement('div');
-
-            //append el h1 y p que estan antes de los 
 
 
-            exportDiv.appendChild(document.createElement('hr')); // Línea horizontal
+                // Seleccionar el contenido
+                const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
+                const allElements = [...contentDiv.children];
 
-            const details = contentDiv.querySelectorAll('details');
-            details.forEach(detail => {
-                const summary = detail.querySelector('summary h4'); // Selecciona el título en <h4>
-                if (summary) {
-                    const clonedTitle = summary.cloneNode(true); // Clona el título sin modificarlo
-                    exportDiv.appendChild(clonedTitle); // Agrega el título al nuevo div
-                }
-            });
+                // Crear contenedores para los dos PDFs
+                const pdfCollapsed = document.createElement('div');
+                const pdfExpanded = document.createElement('div');
+
+                let currentCollapsed = document.createElement('div');
+                let currentExpanded = document.createElement('div');
+
+                pdfCollapsed.appendChild(currentCollapsed);
+                pdfExpanded.appendChild(currentExpanded);
+
+                allElements.forEach(element => {
+                    if (element.tagName === 'HR') {
+                        // Agregar separaciones entre los documentos
+                        currentCollapsed = document.createElement('div');
+                        pdfCollapsed.appendChild(document.createElement('hr'));
+                        pdfCollapsed.appendChild(currentCollapsed);
+                        
+                        currentExpanded = document.createElement('div');
+                        pdfExpanded.appendChild(document.createElement('hr'));
+                        pdfExpanded.appendChild(currentExpanded);
+                    } else if (element.tagName === 'DETAILS') {
+                        // Manejo de details
+                        const summary = element.querySelector('summary h4');
+                        if (summary) {
+                            const clonedTitle = summary.cloneNode(true);
+                            currentCollapsed.appendChild(clonedTitle);
+                            currentCollapsed.appendChild(document.createElement('hr'));
+                            
+                            const expandedSection = document.createElement('div');
+                            expandedSection.appendChild(clonedTitle.cloneNode(true));
+                            expandedSection.appendChild(document.createElement('hr'));
+                            
+                            // Extraer y agregar el contenido de details
+                            [...element.children].forEach(child => {
+                                if (child.tagName !== 'SUMMARY') {
+                                    expandedSection.appendChild(child.cloneNode(true));
+                                }
+                            });
+                            
+                            currentExpanded.appendChild(expandedSection);
+                        }
+                    } else {
+                        currentCollapsed.appendChild(element.cloneNode(true));
+                        currentExpanded.appendChild(element.cloneNode(true));
+                    }
+                });
+
+                // Configurar las opciones para los PDFs
+                const options = {
+                    margin: 1,
+                    html2canvas: { scale: 2, backgroundColor: '#ffffff' },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                };
+
+                // Generar y descargar los dos PDFs
+                html2pdf().set({ ...options, filename: `${parentTabPane.id || 'contenido'}_contraido.pdf` }).from(pdfCollapsed).save();
+                html2pdf().set({ ...options, filename: `${parentTabPane.id || 'contenido'}_expandido.pdf` }).from(pdfExpanded).save();
 
 
-            // Configurar las opciones para el PDF
-            const options = {
-                margin: 1,
-                filename: `${parentTabPane.id || 'contenido'}.pdf`,
-                html2canvas: { scale: 2, backgroundColor: '#ffffff' },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-            };
 
-            // Generar el PDF con solo los títulos en h4
-            html2pdf().set(options).from(exportDiv).save();
 
             } else {
                 
