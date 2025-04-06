@@ -406,9 +406,16 @@ function createStudyElement(study) {
     span.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
     span.style.fontFamily = "'hedliner', sans-serif";
     span.style.borderRadius = '2px';
-    //COLOR DE LA ETIQUETA HEX C0601C
+    // COLOR DE LA ETIQUETA HEX C0601C
     span.style.color = '#FFFFFF';
-    span.textContent = study.marketTarget;
+
+    // Truncar el texto si es demasiado largo
+    const maxLength = 50; // Máximo número de caracteres permitidos
+    if (study.marketTarget.length > maxLength) {
+        span.textContent = study.marketTarget.substring(0, maxLength) + '...';
+    } else {
+        span.textContent = study.marketTarget;
+    }
 
     div1.appendChild(h5);
     div1.appendChild(span);
