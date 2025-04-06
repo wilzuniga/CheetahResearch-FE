@@ -279,7 +279,6 @@ function CaptureAndPostformdta() {
     data.append('title', tituloDelEstudio);
     data.append('target', mercadoObjetivo);
     data.append('objective', objetivosDelEstudio);
-    data.append('objective', objetivosDelEstudio);
     data.append('prompt', promptDelEstudio);
 
     axios.post(url, data)
