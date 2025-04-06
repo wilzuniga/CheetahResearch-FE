@@ -47,7 +47,7 @@ function createStudyForm() {
     const promptDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Prompt del Estudio</p>
-            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif; box-shadow: inset 5px 5px 9px 1px #6d6d6d; color: #072934; border-radius: 3px"></textarea>
+            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif;  color: #072934; border-radius: 3px"></textarea>
         </div>`
     ;
 
@@ -144,7 +144,7 @@ function createFilledStudyForm() {
     const promptDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Prompt del Estudio</p>
-            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif; box-shadow: inset 5px 5px 9px 1px #6d6d6d; color: #072934; border-radius: 3px" >${selectedStudyData.Resumen}</textarea>
+            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif;  color: #072934; border-radius: 3px" >${selectedStudyData.Resumen}</textarea>
         </div>`
     ;
 
@@ -410,7 +410,7 @@ function createStudyElement(study) {
     span.style.color = '#FFFFFF';
 
     // Truncar el texto si es demasiado largo
-    const maxLength = 50; // Máximo número de caracteres permitidos
+    const maxLength = 110; // Máximo número de caracteres permitidos
     if (study.marketTarget.length > maxLength) {
         span.textContent = study.marketTarget.substring(0, maxLength) + '...';
     } else {

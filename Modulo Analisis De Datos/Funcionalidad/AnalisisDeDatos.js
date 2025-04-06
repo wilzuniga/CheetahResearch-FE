@@ -528,8 +528,8 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
+                const coso = splitMarkdownAndWrap(data);                          
+                div.innerHTML = coso.join('<hr>');                     
                 console.log(data);
             })
             .catch(function (error) {
@@ -566,8 +566,8 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
+                const coso = splitMarkdownAndWrap(data);                          
+                div.innerHTML = coso.join('<hr>');                   
                 console.log(data);
             })
             .catch(function (error) {
@@ -600,8 +600,8 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
+                const coso = splitMarkdownAndWrap(data);                          
+                div.innerHTML = coso.join('<hr>');                        
                 console.log(data);
             })
             .catch(function (error) {
@@ -634,8 +634,8 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
+                const coso = splitMarkdownAndWrap(data);                          
+                div.innerHTML = coso.join('<hr>');                
                 console.log(data);
             })
             .catch(function (error) {
