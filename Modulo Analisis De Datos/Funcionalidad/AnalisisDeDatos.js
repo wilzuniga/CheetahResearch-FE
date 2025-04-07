@@ -35,13 +35,17 @@ document.addEventListener('DOMContentLoaded', function () {
     exportButtons.forEach(button => {
         button.addEventListener('click', function () {
             const parentTabPane = button.closest('.tab-pane');
-            const activeTab = document.querySelector('.tab-pane.active');
-            const chartsContainer = activeTab ? activeTab.querySelector('#charts-containerResumenIndividualContent') : null;
+            const activeTab = document.querySelector('.tab-pane.active'); // Detecta la pestaña activa
 
-            // Función para generar y descargar dos versiones del PDF
-            function generarPDFsDesde(divFuente, nombreBaseArchivo) {
-                const allElements = [...divFuente.children];
 
+            // Verificar si el content div contiene la palabra details
+
+            if (activeTab && activeTab.querySelector('details')) {
+                // Si hay un elemento details, crear dos PDFs: uno colapsado y otro expandido
+                const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
+                const allElements = [...contentDiv.children];
+
+                // Crear contenedores para los dos PDFs
                 const pdfCollapsed = document.createElement('div');
                 const pdfExpanded = document.createElement('div');
 
@@ -53,32 +57,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 allElements.forEach(element => {
                     if (element.tagName === 'HR') {
+                        // Agregar separaciones entre los documentos
                         currentCollapsed = document.createElement('div');
-                        currentExpanded = document.createElement('div');
-
                         pdfCollapsed.appendChild(document.createElement('hr'));
                         pdfCollapsed.appendChild(currentCollapsed);
-
+                        
+                        currentExpanded = document.createElement('div');
                         pdfExpanded.appendChild(document.createElement('hr'));
                         pdfExpanded.appendChild(currentExpanded);
                     } else if (element.tagName === 'DETAILS') {
+                        // Manejo de details
                         const summary = element.querySelector('summary h4');
                         if (summary) {
                             const clonedTitle = summary.cloneNode(true);
-
                             currentCollapsed.appendChild(clonedTitle);
                             currentCollapsed.appendChild(document.createElement('hr'));
-
+                            
                             const expandedSection = document.createElement('div');
                             expandedSection.appendChild(clonedTitle.cloneNode(true));
                             expandedSection.appendChild(document.createElement('hr'));
-
+                            
+                            // Extraer y agregar el contenido de details
                             [...element.children].forEach(child => {
                                 if (child.tagName !== 'SUMMARY') {
                                     expandedSection.appendChild(child.cloneNode(true));
                                 }
                             });
-
+                            
                             currentExpanded.appendChild(expandedSection);
                         }
                     } else {
@@ -87,53 +92,36 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
 
+                // Configurar las opciones para los PDFs
                 const options = {
                     margin: 1,
                     html2canvas: { scale: 2, backgroundColor: '#ffffff' },
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
                 };
 
-                html2pdf().set({ ...options, filename: `${nombreBaseArchivo}_contraido.pdf` }).from(pdfCollapsed).save();
-                html2pdf().set({ ...options, filename: `${nombreBaseArchivo}_expandido.pdf` }).from(pdfExpanded).save();
-            }
+                // Generar y descargar los dos PDFs
+                html2pdf().set({ ...options, filename: `${parentTabPane.id || 'contenido'}_contraido.pdf` }).from(pdfCollapsed).save();
+                html2pdf().set({ ...options, filename: `${parentTabPane.id || 'contenido'}_expandido.pdf` }).from(pdfExpanded).save();
 
-            if (chartsContainer) {
-                const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
-                generarPDFsDesde(contentDiv, parentTabPane.id || 'contenido');
+
+
+
             } else {
-                const analysisDivs = [
-                    'NPSContent',
-                    'EKMANContent',
-                    'EstiloDeComunicacionContent',
-                    'SegmentosPsicograficosContent',
-                    'RasgosDePersonalidadContent'
-                ];
+                
+                const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
 
-                let algunoGenerado = false;
+ 
+                const options = {
+                    margin: 1,
+                    filename: `${parentTabPane.id || 'contenido'}.pdf`,
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                };
 
-                analysisDivs.forEach(divId => {
-                    const analysisDiv = document.getElementById(divId);
-                    if (analysisDiv) {
-                        generarPDFsDesde(analysisDiv, divId);
-                        algunoGenerado = true;
-                    }
-                });
-
-                if (!algunoGenerado && parentTabPane) {
-                    const fallbackContentDiv = parentTabPane.querySelector('div[id$="Content"]');
-                    const options = {
-                        margin: 1,
-                        filename: `${parentTabPane.id || 'contenido'}.pdf`,
-                        html2canvas: { scale: 2 },
-                        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-                    };
-                    html2pdf().set(options).from(fallbackContentDiv).save();
-                }
-            }
+                html2pdf().set(options).from(contentDiv).save();            }
         });
     });
 });
-
 
 function generateMarkmapHTML(content , filter) {
     // Estructura HTML con el contenido dinámico
