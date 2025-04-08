@@ -392,7 +392,7 @@ function loadStudies() { //Carga los estudios en la Main Page
     
     axios.get(url, {
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
         }
     })
