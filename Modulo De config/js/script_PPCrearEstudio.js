@@ -390,9 +390,9 @@ function loadStudies() { //Carga los estudios en la Main Page
     
     const url = `https://api.cheetah-research.ai/configuration/get_studies_by_user_id/${userId}/`;
     
-    axios.get(url, {
+    axios.post(url, {
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Token ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     })
