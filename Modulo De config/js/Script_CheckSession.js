@@ -10,7 +10,6 @@ async function checkSession(){
             console.log('Sesión activa');
         } else {
             window.location.href = 'https://www.cheetah-research.ai/login/';
-
         }
     } catch (error) {
         console.log('error check session', error);
