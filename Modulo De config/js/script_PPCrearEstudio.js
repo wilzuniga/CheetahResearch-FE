@@ -287,7 +287,7 @@ function CaptureAndPostformdta() {
     // Hacemos el POST con headers explícitos
     axios.post(url, data, {
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Token ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     })
@@ -332,7 +332,7 @@ function UpdateAndPostformdta() {
     // Hacemos el POST con los headers adecuados
     axios.post(url, data, {
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Token ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     })
@@ -392,7 +392,7 @@ function loadStudies() { //Carga los estudios en la Main Page
     
     axios.get(url, {
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Token ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     })
