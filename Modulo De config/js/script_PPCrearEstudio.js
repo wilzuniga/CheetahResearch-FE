@@ -272,35 +272,43 @@ function CaptureAndPostformdta() {
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
-    //StudysaveToLocStrg();
-    //operacion POST, CON FORM DATA
+    
+    const token = localStorage.getItem('token');
     const url = 'https://api.cheetah-research.ai/configuration/createStudy/';
-    const data = new FormData();
-    data.append('title', tituloDelEstudio);
-    data.append('target', mercadoObjetivo);
-    data.append('objective', objetivosDelEstudio);
-    data.append('prompt', promptDelEstudio);
-
-    axios.post(url, data)
-        .then(response => {
-            alert('Estudio creado exitosamente');
-            localStorage.setItem('selectedStudyId', response.data.study_id);
-            localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
-            
-            CE_DeactivateNavBy();
-
+    
+    // Armamos el body como JSON
+    const data = {
+        title: tituloDelEstudio,
+        target: mercadoObjetivo,
+        objective: objetivosDelEstudio,
+        prompt: promptDelEstudio
+    };
+    
+    // Hacemos el POST con headers explícitos
+    axios.post(url, data, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
         }
-        )
-        .catch(error => {
-            console.error('Error al crear el estudio:', error);
-        });
-
+    })
+    .then(response => {
+        alert('Estudio creado exitosamente');
+        localStorage.setItem('selectedStudyId', response.data.study_id);
+        localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
+    
+        CE_DeactivateNavBy();
+    })
+    .catch(error => {
+        console.error('Error al crear el estudio:', error);
+    });
+    
     return {
         tituloDelEstudio,
         mercadoObjetivo,
         objetivosDelEstudio,
         promptDelEstudio,
     };
+    
 }
 
 function UpdateAndPostformdta() {
@@ -308,16 +316,26 @@ function UpdateAndPostformdta() {
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
-    //StudysaveToLocStrg();
-    //operacion POST, CON FORM DATA
-    const url = 'https://api.cheetah-research.ai/configuration/updateStudy/' + localStorage.getItem('selectedStudyId');
-    const data = new FormData();
-    data.append('title', tituloDelEstudio);
-    data.append('target', mercadoObjetivo);
-    data.append('objective', objetivosDelEstudio);
-    data.append('prompt', promptDelEstudio);
-
-    axios.post(url, data)
+    
+    const token = localStorage.getItem('token');
+    const studyId = localStorage.getItem('selectedStudyId');
+    const url = `https://api.cheetah-research.ai/configuration/updateStudy/${studyId}`;
+    
+    // Armamos el body como JSON
+    const data = {
+        title: tituloDelEstudio,
+        target: mercadoObjetivo,
+        objective: objetivosDelEstudio,
+        prompt: promptDelEstudio
+    };
+    
+    // Hacemos el POST con los headers adecuados
+    axios.post(url, data, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
     .then(response => {
         alert('Estudio actualizado exitosamente');
         localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
@@ -325,14 +343,14 @@ function UpdateAndPostformdta() {
     .catch(error => {
         console.error('Error al actualizar el estudio:', error);
     });
-
+    
     return {
         tituloDelEstudio,
         mercadoObjetivo,
         objetivosDelEstudio,
         promptDelEstudio,
     };
-
+    
 }
 
 // Llama a la función cuando la página se carga completamente
@@ -365,26 +383,37 @@ function ApendStudies(){
 }
 
 function loadStudies() { //Carga los estudios en la Main Page
-    const url = 'https://api.cheetah-research.ai/configuration/get_studies/';
+    //const url = 'https://api.cheetah-research.ai/configuration/get_studies/'; get studies trae todos los estudios de la db
 
-    axios.get(url)
-        .then(response => {
-            console.log(response.data);
-            const studies = response.data;
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('user_id'); // Asegurate de haber guardado esto al hacer login
     
-            // Invertir el orden de los estudios
-            const reversedStudies = studies.reverse();
-            
-            const listGroup = document.getElementById('listgrouptudies');
+    const url = `https://api.cheetah-research.ai/configuration/get_studies_by_user_id/${userId}/`;
     
-            reversedStudies.forEach(study => {
-                const studyElement = createStudyElement(study);
-                listGroup.appendChild(studyElement);
-            });
-        })
-        .catch(error => {
-            console.error('Error al cargar los estudios:', error);
-        });    
+    axios.get(url, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        console.log(response.data);
+        const studies = response.data;
+    
+        // Invertir el orden de los estudios
+        const reversedStudies = studies.reverse();
+    
+        const listGroup = document.getElementById('listgrouptudies');
+    
+        reversedStudies.forEach(study => {
+            const studyElement = createStudyElement(study);
+            listGroup.appendChild(studyElement);
+        });
+    })
+    .catch(error => {
+        console.error('Error al cargar los estudios:', error);
+    });
+    
 }
 
 function createStudyElement(study) {
