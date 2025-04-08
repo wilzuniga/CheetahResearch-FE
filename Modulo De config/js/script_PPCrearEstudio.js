@@ -386,8 +386,9 @@ function loadStudies() { //Carga los estudios en la Main Page
     //const url = 'https://api.cheetah-research.ai/configuration/get_studies/'; get studies trae todos los estudios de la db
 
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('user_id'); // Asegurate de haber guardado esto al hacer login
-    
+    const userId = parseInt(localStorage.getItem('user_id')); // para int
+    // o
+        
     const url = `https://api.cheetah-research.ai/configuration/get_studies_by_user_id/${userId}/`;
     
     axios.post(url, {
