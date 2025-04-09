@@ -217,7 +217,7 @@ function sendMessage(message, imageSrc) {
         }
 
     }).catch((error) => {
-        console.log('Error:', error);
+        // console.log('Error:', error);
     });
 }
 
@@ -348,7 +348,7 @@ function load() {
     const url = 'https://api.cheetah-research.ai/analysis/startS/';
 
     const study_id = new URLSearchParams(window.location.search).get('id');
-    console.log(study_id);
+    // console.log(study_id);
     axios.post(url, { study_id: study_id }, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -357,7 +357,7 @@ function load() {
         const data = response.data;
         hash = data.hash;
 
-        console.log(data);
+        // console.log(data);
 
         //Bot Status - Conectado
         botStatus=document.getElementById('Bot-Status');
@@ -365,7 +365,7 @@ function load() {
         botStatus.style.color = 'var(--bs-CR-orange-2)';
 
     }).catch((error) => {
-        console.log('Error:', error);
+        // console.log('Error:', error);
     });
 }
 
@@ -438,7 +438,7 @@ window.addEventListener('beforeunload', function (event) {
     }).then((response) => {
         const data = response.data;
     }).catch((error) => {
-        console.log('Error:', error);
+        // console.log('Error:', error);
     });
 
 
@@ -461,7 +461,7 @@ function AgregarPreguntas() {
     const url = "https://api.cheetah-research.ai/configuration/get_questions/" + localStorage.getItem('selectedStudyId');
     axios.get(url)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data.suggested_questions;
             //ciclar por la data
             data.forEach(pregunta => {

@@ -9,14 +9,14 @@ let markmapBlobUrl = null;
 import { splitMarkdown, generateCharts, splitMarkdownAndWrap } from './splitter.js';
 
 function initializePage() {
-    console.log('Page initialized');
+    // console.log('Page initialized');
     const study_id = new URLSearchParams(window.location.search).get('id');
 
-    console.log('study_id param ejemplo: ?id=66ac6dfbfc65e4742d415b60');
-    console.log('Utilizar Puerto 8080');
+    // console.log('study_id param ejemplo: ?id=66ac6dfbfc65e4742d415b60');
+    // console.log('Utilizar Puerto 8080');
 
     if (study_id) {
-        console.log('ID de estudio:', study_id);
+        // console.log('ID de estudio:', study_id);
         document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
@@ -192,7 +192,7 @@ function AgregarModulos(study) {
                 ActiveModules.push(modulo);
             });
 
-            console.log(ActiveModules);
+            // console.log(ActiveModules);
 
             const ResumenGeneralBtn = document.getElementById('ResumenGeneralBtn');
             const ResumenIndividualBtn = document.getElementById('ResumenIndividualBtn');
@@ -237,7 +237,7 @@ function AgregarModulos(study) {
         )
         .catch(function (error) {
             // handle error
-            console.log(error);
+            // console.log(error);
         }
         )
         .then(function () {
@@ -309,7 +309,7 @@ function AgregarFiltros(study) {
         )
         .catch(function (error) {
             // handle error
-            console.log(error);
+            // console.log(error);
         }
         )
         .then(function () {
@@ -329,7 +329,7 @@ function LLenarResumenes(study) {
     //lenar el div con el resumen general y agregar el event listener al combobox con id ComboBox_ResumenGeneral
     const comboBoxRG = document.getElementById('ComboBox_ResumenGeneral');          
     comboBoxRG.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
     
         const StyleSelectedOption = document.getElementById('ComboBox_ResumenGeneralTy');
         var div = document.getElementById('ResumenGeneralContent');
@@ -352,11 +352,11 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);
                 div.innerHTML = coso;
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
+                // console.log(error);
             })
             .then(function () {
                 // Segunda petición para Markmap
@@ -388,7 +388,7 @@ function LLenarResumenes(study) {
     const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
     
     comboBoxRI.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
         const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
 
@@ -411,11 +411,11 @@ function LLenarResumenes(study) {
                 div.innerHTML = coso.join('<hr>');       
                 let graphDta = splitMarkdown(data);    
                 generateCharts(graphDta);               
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
+                // console.log(error);
             })
             .then(function () {
                 // always executed
@@ -437,7 +437,7 @@ function LLenarResumenes(study) {
     comboBoxUP.addEventListener('change', (event) => {
         //Llenar el user persona de la misma fotma que se llenan los anteriores 
 
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
 
         // Obtener el div donde se mostrará el contenido
@@ -459,12 +459,12 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);                          
                 div.innerHTML = coso;                      
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 // agregar mensaje de "no se encontraron datos" en el div
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
+                // console.log(error);
             })
             .then(function () {
                 // always executed
@@ -474,7 +474,7 @@ function LLenarResumenes(study) {
 
     //customer Experience, perfecto
     comboBoxCE.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
         var div = document.getElementById('customerExperienceContent');
         // Supongamos que `event.target.value` es el valor del combobox
@@ -493,11 +493,11 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);                          
                 div.innerHTML = coso;          
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
+                // console.log(error);
             })
             .then(function () {
                 // always executed
@@ -506,7 +506,7 @@ function LLenarResumenes(study) {
 
     //ekman, perfecto
     comboBoxEK.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
 
         // Obtener el div donde se mostrará el contenido
@@ -528,11 +528,11 @@ function LLenarResumenes(study) {
                 }
                 const coso = splitMarkdownAndWrap(data);                          
                 div.innerHTML = coso.join('<hr>');                     
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
+                // console.log(error);
             })
             .then(function () {
                 // always executed
@@ -542,9 +542,9 @@ function LLenarResumenes(study) {
 
     //Rasgos de personalidad, perfecto
     comboBoxRP.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
 
         // Obtener el div donde se mostrará el contenido
@@ -566,11 +566,11 @@ function LLenarResumenes(study) {
                 }
                 const coso = splitMarkdownAndWrap(data);                          
                 div.innerHTML = coso.join('<hr>');                   
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
+                // console.log(error);
             })
             .then(function () {
                 // always executed
@@ -580,7 +580,7 @@ function LLenarResumenes(study) {
     //Segmentos Psicograficos, perfecto
 
     comboBoxSP.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
         var div = document.getElementById('SegmentosPsicograficosContent');
         // Supongamos que `event.target.value` es el valor del combobox
@@ -600,11 +600,11 @@ function LLenarResumenes(study) {
                 }
                 const coso = splitMarkdownAndWrap(data);                          
                 div.innerHTML = coso.join('<hr>');                        
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
+                // console.log(error);
             })
             .then(function () {
                 // always executed
@@ -613,7 +613,7 @@ function LLenarResumenes(study) {
 
     //NPS, perfecto
     comboBoxNPS.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
         var div = document.getElementById('NPSContent');
         // Supongamos que `event.target.value` es el valor del combobox
@@ -634,11 +634,11 @@ function LLenarResumenes(study) {
                 }
                 const coso = splitMarkdownAndWrap(data);                          
                 div.innerHTML = coso.join('<hr>');                
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
+                // console.log(error);
             })
             .then(function () {
                 // always executed
@@ -647,7 +647,7 @@ function LLenarResumenes(study) {
 
     //Satisfaccion, perfecto
     comboBoxS.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
         var div = document.getElementById('SatisfaccionContent');
         // Supongamos que `event.target.value` es el valor del combobox
@@ -668,11 +668,11 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);
                 div.innerHTML = coso;
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
+                // console.log(error);
             })
             .then(function () {
                 // always executed
@@ -681,7 +681,7 @@ function LLenarResumenes(study) {
 
 
     comboBoxEC.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
         var div = document.getElementById('EstiloDeComunicacionContent');
         // Supongamos que `event.target.value` es el valor del combobox
@@ -701,11 +701,11 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);                          
                 div.innerHTML = coso;                      
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
+                // console.log(error);
             })
             .then(function () {
                 // always executed

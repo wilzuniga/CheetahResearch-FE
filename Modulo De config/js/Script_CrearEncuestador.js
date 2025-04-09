@@ -44,7 +44,7 @@ function createSurveyerFormReadOnly() {
             'Content-Type': 'multipart/form-data',
         }
     }).then(response => {
-        console.log(response);
+        // console.log(response);
         const data = response.data;
         formContainer.innerHTML = `
                     <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;">Encuestador</h2>
@@ -76,7 +76,7 @@ function createSurveyerFormReadOnly() {
                 `;
 
         document.getElementById('ActualizarEncuestadorBtn').addEventListener('click', (event) => {
-            console.log('Actualizando encuestador');
+            // console.log('Actualizando encuestador');
             event.preventDefault();
             updateSurveyerFormData(data);
         });
@@ -108,7 +108,7 @@ function updateSurveyerFormData(data) {
     data0.append('_id', localStorage.getItem('selectedStudyId'));
 
     for (let pair of data0.entries()) {
-        console.log(pair[0]+ ': ' + pair[1]);
+        // console.log(pair[0]+ ': ' + pair[1]);
     }
 
     axios.post(url, data0, {
@@ -118,7 +118,7 @@ function updateSurveyerFormData(data) {
     })
     .then(response => {
 
-        console.log(response);
+        // console.log(response);
         //Alert coso guardado
         alert('Encuestador actualizado  exitosamente');
 
@@ -199,7 +199,7 @@ function captureSurveyerFormData() {
     data.append('study_id', localStorage.getItem('selectedStudyId'));
 
     for (let pair of data.entries()) {
-        console.log(pair[0]+ ': ' + pair[1]);
+        // console.log(pair[0]+ ': ' + pair[1]);
     }
 
 
@@ -209,7 +209,7 @@ function captureSurveyerFormData() {
         }
     })
     .then(response => {
-        console.log(response);
+        // console.log(response);
         //enviar mensaje para confirmar que se creo el encuestador
         alert('Encuestador creado exitosamente');
     })
@@ -235,11 +235,11 @@ function captureSurveyerFormData() {
     CSrvyr_DeactivateNavBy();
 
     //log
-    console.log(localStorage.getItem('nombreEncuestador'));
-    console.log(localStorage.getItem('tonoEncuestador'));
-    console.log(localStorage.getItem('observacionesImportantes'));
-    console.log(localStorage.getItem('saludoEncuestador'));
-    console.log('Encuestador creado exitosamente');
+    // console.log(localStorage.getItem('nombreEncuestador'));
+    // console.log(localStorage.getItem('tonoEncuestador'));
+    // console.log(localStorage.getItem('observacionesImportantes'));
+    // console.log(localStorage.getItem('saludoEncuestador'));
+    // console.log('Encuestador creado exitosamente');
 }
 
 
@@ -269,13 +269,13 @@ function CSrvyr_DeactivateNavBy(){
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
 
 
-    console.log('Verificando si se activan los botones');
+    // console.log('Verificando si se activan los botones');
     if(localStorage.getItem('nombreEncuestador') != null){
         enableNavItems();
-        console.log('Activando botones');
+        // console.log('Activando botones');
     }else{
         disableNavItems();
-        console.log('Desactivando botones');
+        // console.log('Desactivando botones');
     }
 }
 
