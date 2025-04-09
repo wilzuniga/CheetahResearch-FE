@@ -217,7 +217,7 @@ function sendMessage(message, imageSrc) {
         }
 
     }).catch((error) => {
-        // console.log('Error:', error);
+        console.log('Error:', error);
     });
 }
 
@@ -365,7 +365,7 @@ function load() {
         botStatus.style.color = 'var(--bs-CR-orange-2)';
 
     }).catch((error) => {
-        // console.log('Error:', error);
+        console.log('Error:', error);
     });
 }
 
@@ -438,7 +438,7 @@ window.addEventListener('beforeunload', function (event) {
     }).then((response) => {
         const data = response.data;
     }).catch((error) => {
-        // console.log('Error:', error);
+        console.log('Error:', error);
     });
 
 

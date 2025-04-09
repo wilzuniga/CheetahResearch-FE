@@ -357,7 +357,7 @@ function UpdateAndPostformdta() {
 window.addEventListener('DOMContentLoaded', (event) => {
     if(window.location.href.includes('https://www.cheetah-research.ai/configuration/study/')){
         if(localStorage.getItem('selectedStudyId') == null){
-            // console.log('Study id:', localStorage.getItem('selectedStudyId'));
+            console.log('Study id:', localStorage.getItem('selectedStudyId'));
             CE_DeactivateNavBy();
             appendStudyForm();
         }else{
@@ -368,7 +368,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     }else if(window.location.href.includes('home')){
 
-        // console.log('Study id:', localStorage.getItem('selectedStudyId'));
+        console.log('Study id:', localStorage.getItem('selectedStudyId'));
         loadStudies();
     }
 });

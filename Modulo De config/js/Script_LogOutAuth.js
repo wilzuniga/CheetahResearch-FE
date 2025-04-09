@@ -16,6 +16,6 @@ async function logOut(){
 
         }
     } catch (error) {
-        // console.log('error login Out', error);
+        console.log('error login Out', error);
     }
 }

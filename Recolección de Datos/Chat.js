@@ -303,7 +303,7 @@ function sendMessage(message, imageSrc) {
 
             }
             ).catch((error) => {
-                // console.log('Error:', error);
+                console.log('Error:', error);
             });
 
         }if (data.response.includes('NO SIRVE')) {
@@ -334,7 +334,7 @@ function sendMessage(message, imageSrc) {
         }
 
     }).catch((error) => {
-        // console.log('Error:', error);
+        console.log('Error:', error);
         getMessage('¿Deseas agregar algo mas a tu respuesta?.', null);
         loadingMsg.style.display = 'none';
     });
@@ -500,7 +500,7 @@ function load(study_id) {
         getMessage(data.response, null);
 
     }).catch((error) => {
-        // console.log('Error:', error);
+        console.log('Error:', error);
     });
 }
 
