@@ -10,9 +10,9 @@ function enableNavItems() {
 }
 
 function CE_DeactivateNavBy(){
-    console.log('Verificando si se activan los botones');
+    // console.log('Verificando si se activan los botones');
     if(localStorage.getItem('selectedStudyId') != null){
-        console.log('Study id:', localStorage.getItem('selectedStudyId'));
+        // console.log('Study id:', localStorage.getItem('selectedStudyId'));
         enableNavItems();
     }else{
         disableNavItems();
@@ -185,7 +185,7 @@ function createFilledStudyForm() {
         </div>`
     ;
 
-    console.log(studyData);
+    // console.log(studyData);
 
 
     const form = `
@@ -210,7 +210,7 @@ function appendStudyForm() {
 
     document.getElementById('CrearEstudioBtn').addEventListener('click', () => {
         const studyData = CaptureAndPostformdta();
-        console.log(studyData);
+        // console.log(studyData);
         alert('Estudio creado exitosamente');
         //guardar en localsotrage el estudio creado
         localStorage.setItem('selectedStudyData', JSON.stringify(studyData));
@@ -223,7 +223,7 @@ function appendFilledStudyForm() {
         const studyData = UpdateAndPostformdta();
         //actualizar el estudio salvado en localstorage
         localStorage.setItem('selectedStudyData', JSON.stringify(studyData));
-        console.log(studyData);
+        // console.log(studyData);
         alert('Estudio actualizado exitosamente');
     });
 
@@ -249,7 +249,7 @@ function StudysaveToLocStrg() {//Funcion de prueba
 function deleteFromLocStrg() {
     //verificar si se esta en PaginaPrincipal.html o CreacionDeEstudio.html
     if(window.location.href.includes('home')){
-        console.log('Borrando datos del estudio');
+        // console.log('Borrando datos del estudio');
         localStorage.removeItem('tituloDelEstudio');
         localStorage.removeItem('mercadoObjetivo');
         localStorage.removeItem('objetivosDelEstudio');
@@ -357,7 +357,7 @@ function UpdateAndPostformdta() {
 window.addEventListener('DOMContentLoaded', (event) => {
     if(window.location.href.includes('https://www.cheetah-research.ai/configuration/study/')){
         if(localStorage.getItem('selectedStudyId') == null){
-            console.log('Study id:', localStorage.getItem('selectedStudyId'));
+            // console.log('Study id:', localStorage.getItem('selectedStudyId'));
             CE_DeactivateNavBy();
             appendStudyForm();
         }else{
@@ -368,7 +368,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     }else if(window.location.href.includes('home')){
 
-        console.log('Study id:', localStorage.getItem('selectedStudyId'));
+        // console.log('Study id:', localStorage.getItem('selectedStudyId'));
         loadStudies();
     }
 });
@@ -385,18 +385,18 @@ function ApendStudies(){
 function loadStudies() { //Carga los estudios en la Main Page
 
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('user_id'); // Asegurate de haber guardado esto al hacer login
+    const userId = localStorage.getItem('user_id'); // Asegurate que no sea NaN
     
     const url = `https://api.cheetah-research.ai/configuration/get_studies_by_user_id/${userId}/`;
     
     axios.get(url, {
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Token ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     })
     .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         const studies = response.data;
     
         // Invertir el orden de los estudios
@@ -416,7 +416,7 @@ function loadStudies() { //Carga los estudios en la Main Page
 }
 
 function createStudyElement(study) {
-    console.log('Study');
+    // console.log('Study');
     const a = document.createElement('a');
     a.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
     a.href = 'https://www.cheetah-research.ai/configuration/study/';
@@ -487,7 +487,7 @@ function saveColorsToStudy() {
     axios.post(url, data)
         .then(response => {
             alert('Colores guardados exitosamente');
-            console.log(response.data);
+            // console.log(response.data);
             setColorsLocally(primaryColor, secondaryColor);
         })
         .catch(error => {

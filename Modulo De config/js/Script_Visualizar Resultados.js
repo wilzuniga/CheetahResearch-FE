@@ -121,7 +121,7 @@ function AgregarFiltros() {
         )
         .catch(function (error) {
             // handle error
-            console.log(error);
+            // console.log(error);
         }
         )
         .then(function () {
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataRG)
                         .then(function (response) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataRI)
                         .then(function (response) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataUP)
                         .then(function (response) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataEK)
                         .then(function (response) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataRP)
                         .then(function (response) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataSP)
                         .then(function (response) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataNPS)
                         .then(function (response) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataEC)
                         .then(function (response) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataCE)
                         .then(function (response) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -423,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataSat)
                         .then(function (response) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -446,7 +446,7 @@ function LLenarResumenes(){
             //lenar el div con el resumen general y agregar el event listener al combobox con id ComboBox_ResumenGeneral
             const comboBoxRG = document.getElementById('ComboBox_ResumenGeneral');          
             comboBoxRG.addEventListener('change', (event) => {
-                console.log(event.target.value);
+                // console.log(event.target.value);
 
                 const StyleSelectedOption = document.getElementById('ComboBox_ResumenGeneralTy');
 
@@ -470,11 +470,11 @@ function LLenarResumenes(){
                         const coso = marked(data);                          
                         div.innerHTML = coso;   
                         textArea.value = data;                   
-                        console.log(data);
+                        // console.log(data);
                     })
                     .catch(function (error) {
                         div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         // Segunda petición para Markmap
@@ -507,7 +507,7 @@ function LLenarResumenes(){
             const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
             
             comboBoxRI.addEventListener('change', (event) => {
-                console.log(event.target.value);
+                // console.log(event.target.value);
 
                 const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
 
@@ -534,11 +534,11 @@ function LLenarResumenes(){
                         let graphDta = splitMarkdown(data);    
                         generateCharts(graphDta);
 
-                        console.log(data);
+                        // console.log(data);
                     })
                     .catch(function (error) {
                         div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         // always executed
@@ -560,7 +560,7 @@ function LLenarResumenes(){
             comboBoxUP.addEventListener('change', (event) => {
                 //Llenar el user persona de la misma fotma que se llenan los anteriores 
 
-                console.log(event.target.value);
+                // console.log(event.target.value);
 
 
                 // Obtener el div donde se mostrará el contenido
@@ -584,12 +584,12 @@ function LLenarResumenes(){
                         const coso = marked(data);                          
                         div.innerHTML = coso;          
                         textArea.value = data;            
-                        console.log(data);
+                        // console.log(data);
                     })
                     .catch(function (error) {
                         // agregar mensaje de "no se encontraron datos" en el div
                         div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         // always executed
@@ -599,7 +599,7 @@ function LLenarResumenes(){
 
             //customer Experience, perfecto
             comboBoxCE.addEventListener('change', (event) => {
-                console.log(event.target.value);
+                // console.log(event.target.value);
 
                 var div = document.getElementById('customerExperienceContent');
                 var textArea = document.getElementById('customerExperienceTextArea');
@@ -620,11 +620,11 @@ function LLenarResumenes(){
                         const coso = marked(data);                          
                         div.innerHTML = coso;          
                         textArea.value = data;            
-                        console.log(data);
+                        // console.log(data);
                     })
                     .catch(function (error) {
                         div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         // always executed
@@ -634,7 +634,7 @@ function LLenarResumenes(){
 
             //ekman, perfecto
             comboBoxEK.addEventListener('change', (event) => {
-                console.log(event.target.value);
+                // console.log(event.target.value);
 
 
                 // Obtener el div donde se mostrará el contenido
@@ -658,11 +658,11 @@ function LLenarResumenes(){
                         const coso = marked(data);                          
                         div.innerHTML = coso;  
                         textArea.value = data;                    
-                        console.log(data);
+                        // console.log(data);
                     })
                     .catch(function (error) {
                         div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         // always executed
@@ -672,9 +672,9 @@ function LLenarResumenes(){
 
             //Rasgos de personalidad, perfecto
             comboBoxRP.addEventListener('change', (event) => {
-                console.log(event.target.value);
+                // console.log(event.target.value);
 
-                console.log(event.target.value);
+                // console.log(event.target.value);
 
 
                 // Obtener el div donde se mostrará el contenido
@@ -698,11 +698,11 @@ function LLenarResumenes(){
                         const coso = marked(data);                          
                         div.innerHTML = coso;        
                         textArea.value = data;              
-                        console.log(data);
+                        // console.log(data);
                     })
                     .catch(function (error) {
                         div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         // always executed
@@ -712,7 +712,7 @@ function LLenarResumenes(){
             //Segmentos Psicograficos, perfecto
 
             comboBoxSP.addEventListener('change', (event) => {
-                console.log(event.target.value);
+                // console.log(event.target.value);
 
                 var div = document.getElementById('SegmentosPsicograficosContent');
                 var textArea = document.getElementById('SegmentosPsicograficosTextArea');
@@ -734,11 +734,11 @@ function LLenarResumenes(){
                         const coso = marked(data);                          
                         div.innerHTML = coso;      
                         textArea.value = data;                
-                        console.log(data);
+                        // console.log(data);
                     })
                     .catch(function (error) {
                         div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         // always executed
@@ -747,7 +747,7 @@ function LLenarResumenes(){
 
             //NPS, perfecto
             comboBoxNPS.addEventListener('change', (event) => {
-                console.log(event.target.value);
+                // console.log(event.target.value);
 
                 var div = document.getElementById('NPSContent');
                 var textArea = document.getElementById('NPSTextArea');
@@ -769,11 +769,11 @@ function LLenarResumenes(){
                         const coso = marked(data);                          
                         div.innerHTML = coso;     
                         textArea.value = data;                 
-                        console.log(data);
+                        // console.log(data);
                     })
                     .catch(function (error) {
                         div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         // always executed
@@ -782,7 +782,7 @@ function LLenarResumenes(){
 
             //satisfaccion, Perfecto 
             comboBoxSat.addEventListener('change', (event) => {
-                console.log(event.target.value);
+                // console.log(event.target.value);
 
                 var div = document.getElementById('SatisfaccionContent');
                 var textArea = document.getElementById('SatisfaccionTextArea');
@@ -805,11 +805,11 @@ function LLenarResumenes(){
                         const coso = marked(data);
                         div.innerHTML = coso;
                         textArea.value = data;
-                        console.log(data);
+                        // console.log(data);
                     })
                     .catch(function (error) {
                         div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         // always executed
@@ -820,7 +820,7 @@ function LLenarResumenes(){
 
 
             comboBoxEC.addEventListener('change', (event) => {
-                console.log(event.target.value);
+                // console.log(event.target.value);
 
                 var div = document.getElementById('EstiloDeComunicacionContent');
                 var textArea = document.getElementById('EstiloDeComunicacionTextArea');
@@ -842,11 +842,11 @@ function LLenarResumenes(){
                         const coso = marked(data);                          
                         div.innerHTML = coso;   
                         textArea.value = data;                   
-                        console.log(data);
+                        // console.log(data);
                     })
                     .catch(function (error) {
                         div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         // always executed
@@ -1011,14 +1011,14 @@ botonImportar.addEventListener('click', () => {
             }
         })
             .then(response => {
-                console.log(response.data);
+                // console.log(response.data);
                 alert('Archivos subidos exitosamente');
             })
             .catch(error => {
                 console.error('Error al enviar los datos:', error);
             });
         // Aquí puedes hacer algo con los archivos seleccionados, como guardarlos en un arreglo o procesarlos de alguna manera
-        console.log(files);
+        // console.log(files);
     });
     fileChooser.click();
 });
@@ -1030,7 +1030,7 @@ botonForzarA.addEventListener('click', () => {
 
     axios.get(url)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             alert('Análisis forzado exitosamente');
         })
         .catch(error => {

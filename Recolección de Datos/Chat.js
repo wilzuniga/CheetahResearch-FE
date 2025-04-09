@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 function initializePage() {
     const study_id = new URLSearchParams(window.location.search).get('id');
     if (study_id) {
-        console.log('ID de estudio:', study_id);
+        // console.log('ID de estudio:', study_id);
         loadInterviewer(study_id);
     } else {
         console.error('No se encontró el parámetro id en la URL.');
@@ -303,7 +303,7 @@ function sendMessage(message, imageSrc) {
 
             }
             ).catch((error) => {
-                console.log('Error:', error);
+                // console.log('Error:', error);
             });
 
         }if (data.response.includes('NO SIRVE')) {
@@ -334,7 +334,7 @@ function sendMessage(message, imageSrc) {
         }
 
     }).catch((error) => {
-        console.log('Error:', error);
+        // console.log('Error:', error);
         getMessage('¿Deseas agregar algo mas a tu respuesta?.', null);
         loadingMsg.style.display = 'none';
     });
@@ -500,7 +500,7 @@ function load(study_id) {
         getMessage(data.response, null);
 
     }).catch((error) => {
-        console.log('Error:', error);
+        // console.log('Error:', error);
     });
 }
 
@@ -509,7 +509,7 @@ function verificarLink(study_id) {
     
     return axios.get(VerifURL)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             let studyStatus = data.studyStatus;
             
