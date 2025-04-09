@@ -237,7 +237,7 @@ function AgregarModulos(study) {
         )
         .catch(function (error) {
             // handle error
-            // console.log(error);
+            console.log(error);
         }
         )
         .then(function () {
@@ -309,7 +309,7 @@ function AgregarFiltros(study) {
         )
         .catch(function (error) {
             // handle error
-            // console.log(error);
+            console.log(error);
         }
         )
         .then(function () {
@@ -356,7 +356,7 @@ function LLenarResumenes(study) {
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                // console.log(error);
+                console.log(error);
             })
             .then(function () {
                 // Segunda petición para Markmap
@@ -415,7 +415,7 @@ function LLenarResumenes(study) {
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                // console.log(error);
+                console.log(error);
             })
             .then(function () {
                 // always executed
@@ -464,7 +464,7 @@ function LLenarResumenes(study) {
             .catch(function (error) {
                 // agregar mensaje de "no se encontraron datos" en el div
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                // console.log(error);
+                console.log(error);
             })
             .then(function () {
                 // always executed
@@ -497,7 +497,7 @@ function LLenarResumenes(study) {
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                // console.log(error);
+                console.log(error);
             })
             .then(function () {
                 // always executed
@@ -532,7 +532,7 @@ function LLenarResumenes(study) {
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                // console.log(error);
+                console.log(error);
             })
             .then(function () {
                 // always executed
@@ -570,7 +570,7 @@ function LLenarResumenes(study) {
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                // console.log(error);
+                console.log(error);
             })
             .then(function () {
                 // always executed
@@ -604,7 +604,7 @@ function LLenarResumenes(study) {
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                // console.log(error);
+                console.log(error);
             })
             .then(function () {
                 // always executed
@@ -638,7 +638,7 @@ function LLenarResumenes(study) {
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                // console.log(error);
+                console.log(error);
             })
             .then(function () {
                 // always executed
@@ -672,7 +672,7 @@ function LLenarResumenes(study) {
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                // console.log(error);
+                console.log(error);
             })
             .then(function () {
                 // always executed
@@ -705,7 +705,7 @@ function LLenarResumenes(study) {
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                // console.log(error);
+                console.log(error);
             })
             .then(function () {
                 // always executed
