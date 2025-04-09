@@ -383,7 +383,6 @@ function ApendStudies(){
 }
 
 function loadStudies() { //Carga los estudios en la Main Page
-    //const url = 'https://api.cheetah-research.ai/configuration/get_studies/'; get studies trae todos los estudios de la db
 
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('user_id'); // Asegurate de haber guardado esto al hacer login
