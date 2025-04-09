@@ -22,7 +22,7 @@ export function splitMarkdown(markdownText) {
         return { pregunta, respuestas };
     }).filter(section => section.respuestas.length > 0); // sin respuestas
     
-    console.log(JSON.stringify(parsedSections, null, 2));
+    // console.log(JSON.stringify(parsedSections, null, 2));
     return parsedSections;
 }
 
@@ -86,7 +86,7 @@ export function generateCharts(data) {
                 }
             });
         });
-        console.log("Gráficos generados correctamente.");
+        // console.log("Gráficos generados correctamente.");
     } else {
         console.error("El contenedor de gráficos no se encontró.");
     }

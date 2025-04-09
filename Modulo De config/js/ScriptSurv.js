@@ -353,7 +353,7 @@ function guardarPreguntas() {
     );
 
     enviarDatos(questions);
-    console.log(questions);
+    // console.log(questions);
     questions = [];
     questionsImg = [];;
 }
@@ -374,7 +374,7 @@ function enviarDatos(preguntas) {
         },
     })
     .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
     })
     .catch(error => {
         console.error('Error al enviar los datos:', error);
@@ -390,7 +390,7 @@ function enviarDatos(preguntas) {
         },
     })
     .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
     })
     .catch(error => {
         console.error('Error al enviar los datos:', error);
@@ -425,20 +425,20 @@ function CE_DeactivateNavBy(){
     const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId') ;
     axios.get(url)
     .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         response.data.questions.forEach((pregunta) => {
             questions.push(pregunta);
         });
 
         if(questions.length > 0){
             //AGREGAR PREGUNTAS AL LISTADO DE PREGUNTAS
-            console.log("pregunta entra 11");
+            // console.log("pregunta entra 11");
     
             const listGroup = document.querySelector('.list-group');
             listGroup.innerHTML = '';
     
             questions.forEach((pregunta, index) => {
-                console.log("pregunta entra");
+                // console.log("pregunta entra");
     
                 const newListItem = document.createElement('div');
                 newListItem.classList.add('list-group-item', 'list-group-item-action', 'align-items-start');
@@ -675,10 +675,10 @@ function CE_DeactivateNavBy(){
                 
     
             });
-            console.log('Preguntas guardadas');
+            // console.log('Preguntas guardadas');
             enableNavItems();
         }else{
-            console.log('No hay preguntas guardadas');
+            // console.log('No hay preguntas guardadas');
             disableNavItems();
         }
     }

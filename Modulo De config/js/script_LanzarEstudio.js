@@ -18,10 +18,10 @@ function load(){    // Actualizar el título del estudio desde localStorage
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
     
     const datos = localStorage.getItem('selectedStudyData');
-    console.log(datos);
+    // console.log(datos);
     if (datos) {
         const estudio = JSON.parse(datos);
-        console.log(estudio.summary);
+        // console.log(estudio.summary);
 
         let coso = estudio.prompt;
         //pasar de markdown a html
@@ -35,7 +35,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
     //{"status": "success", "studyDate": "2024-08-04T21:07:30.632822-06:00", "studyStatus": 0}
     axios.get(url)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             studyStatus = data.studyStatus;
             if(data.studyStatus == 0){
@@ -71,7 +71,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                     }
                 })
                     .then(response => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         const data = response.data;
                             document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
                             studyStatus = 3;
@@ -95,7 +95,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                     }
                 })
                     .then(response => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         const data = response.data;
                             document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
                             studyStatus = 1;
@@ -125,7 +125,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                     }
                 })
                     .then(response => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         const data = response.data;
                             document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - Activo';
                             studyStatus = 2;
@@ -148,7 +148,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                     }
                 })
                     .then(response => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         const data = response.data;
                             document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
                             studyStatus = 0;
@@ -184,7 +184,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
             'Content-Type': 'multipart/form-data',
         }
     }).then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             let estatus = data.otp + "      - " + data.expires_at + " - " + data.used;
             document.getElementById('OTP_Analisis').innerText = estatus;
@@ -216,7 +216,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                 'Content-Type': 'multipart/form-data',
             }
         }).then(response => {
-                console.log(response.data);
+                // console.log(response.data);
                 const data = response.data;
                 let estatus = data.otp + "      - " + data.expires_at;
                 document.getElementById('OTP_Analisis').innerText = estatus;
@@ -370,7 +370,7 @@ function AgregarFiltros() {
     const url = "https://api.cheetah-research.ai/configuration/get_filters/" + localStorage.getItem('selectedStudyId');
     axios.get(url)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data.filters;
             //ciclar por la data
             data.forEach(filtro => {
@@ -411,7 +411,7 @@ function AgregarPreguntas() {
     const url = "https://api.cheetah-research.ai/configuration/get_questions/" + localStorage.getItem('selectedStudyId');
     axios.get(url)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data.suggested_questions;
             //ciclar por la data
             data.forEach(pregunta => {
@@ -461,7 +461,7 @@ function eliminarDominio(dominio) {
         }
     })
         .then(response => {
-            console.log('Dominio eliminado correctamente:', response.data);
+            // console.log('Dominio eliminado correctamente:', response.data);
             alert('Dominio eliminado correctamente');
         })
         .catch(error => {
@@ -487,7 +487,7 @@ function AgregarDominios() {
     }
     )
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data.domains;
             //ciclar por la data
             data.forEach(dominio => {
@@ -530,7 +530,7 @@ function AgregarModulos() {
     const url = "https://api.cheetah-research.ai/configuration/get_modules/" + localStorage.getItem('selectedStudyId');
     axios.get(url)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data.modules;
 
             data.forEach(modulo => {
