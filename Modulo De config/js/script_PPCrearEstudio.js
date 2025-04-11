@@ -364,7 +364,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             const formContainer = document.getElementById('form-containerStudy');
             formContainer.innerHTML = createFilledStudyForm();       
             appendFilledStudyForm();  
-            setColorsFromAPI();//Setea colores en LocalStorage y en la interfaz
+            setColorsFromAPI(localStorage.getItem('selectedStudyId'));//Setea colores en LocalStorage y en la interfaz
         }
     }else if(window.location.href.includes('home')){
 
