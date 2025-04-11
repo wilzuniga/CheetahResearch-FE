@@ -2,7 +2,7 @@ let imgPP;
 let hash = 0;
 
 //Color Change: getColores
-export function setColorsFromAPI(study_id) {
+function setColorsFromAPI(study_id) {
     const url = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
     return axios.get(url)
         .then(response => ({
@@ -15,7 +15,7 @@ export function setColorsFromAPI(study_id) {
         });
 }
 
-export function applyColors(colors) {//Colors es un array
+function applyColors(colors) {//Colors es un array
     if (colors.color1) {
         document.documentElement.style.setProperty('--bs-CR-orange', colors.color1);
 

@@ -181,7 +181,7 @@ function createFilledStudyForm() {
 
     const submitButton = `
         <div style="width: 250px;font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-primary d-block w-100" id="UpdateEstudio" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif;">Actualizar Estudio</button>
+            <button class="btn btn-primary d-block w-100" id="UpdateEstudio" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif; background-color: var(--bs-CR-orange);">Actualizar Estudio</button>
         </div>`
     ;
 
@@ -495,18 +495,29 @@ function saveColorsToStudy() {
         });
 }
 
+
+
+function setColorsLocally(color1, color2) {
+    //Aplicar los colores en interfaz
+    applyColors({ color1, color2 });
+
+    //Enviar colores a Chatbot
+    const selectedStudyData = JSON.parse(localStorage.getItem('selectedStudyData')) || {};
+    selectedStudyData.primary_color = color1;
+    selectedStudyData.secondary_color = color2;
+    localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
+}
+
+//Colores
 function setColorsFromAPI() {
     const studyId = localStorage.getItem('selectedStudyId');
     const url = 'https://api.cheetah-research.ai/configuration/info_study/' + studyId;
-    console.log(studyId);
     return axios.get(url)
         .then(response => {
             const colors = {
                 color1: response.data.primary_color,
                 color2: response.data.secondary_color
             };
-
-            console.log(colors);
 
 
             //Setear colores en Local Storage
@@ -520,17 +531,6 @@ function setColorsFromAPI() {
         });
 }
 
-function setColorsLocally(color1, color2) {
-    //Aplicar los colores en interfaz
-    applyColors({ color1, color2 });
-
-    //Enviar colores a Chatbot
-    const selectedStudyData = JSON.parse(localStorage.getItem('selectedStudyData')) || {};
-    selectedStudyData.primary_color = color1;
-    selectedStudyData.secondary_color = color2;
-    localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
-}
-
 function applyColors(colors) {//Colors es un array
     if (colors.color1) {
         document.documentElement.style.setProperty('--bs-CR-orange', colors.color1);
@@ -542,4 +542,21 @@ function applyColors(colors) {//Colors es un array
 
         document.documentElement.style.setProperty('--bs-CR-gray-dark', darkColorVariant(colors.color2));
     }
+}
+function darkColorVariant (color) {
+    return adjustColor(color, -10);
+}
+function brightColorVariant (color) {
+    return adjustColor(color, 10);
+}
+function adjustColor(color, percent) {//Funcion loca de chatsito
+    const num = parseInt(color.slice(1), 16),
+          amt = Math.round(2.55 * percent),
+          R = (num >> 16) + amt,
+          G = (num >> 8 & 0x00FF) + amt,
+          B = (num & 0x0000FF) + amt;
+    return `#${(0x1000000 + (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 + 
+                (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 + 
+                (B < 255 ? (B < 1 ? 0 : B) : 255))
+                .toString(16).slice(1).toUpperCase()}`;
 }
