@@ -364,7 +364,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             const formContainer = document.getElementById('form-containerStudy');
             formContainer.innerHTML = createFilledStudyForm();       
             appendFilledStudyForm();  
-            setColorsFromAPI(localStorage.getItem('selectedStudyId'));//Setea colores en LocalStorage y en la interfaz
+            setColorsFromAPI();//Setea colores en LocalStorage y en la interfaz
         }
     }else if(window.location.href.includes('home')){
 
@@ -496,13 +496,18 @@ function saveColorsToStudy() {
 }
 
 function setColorsFromAPI() {
-    const url = 'https://api.cheetah-research.ai/configuration/info_study/' + localStorage.getItem('selectedStudyId');
+    const studyId = localStorage.getItem('selectedStudyId');
+    const url = 'https://api.cheetah-research.ai/configuration/info_study/' + studyId;
+    console.log(studyId);
     return axios.get(url)
         .then(response => {
             const colors = {
                 color1: response.data.primary_color,
                 color2: response.data.secondary_color
             };
+
+            console.log(colors);
+
 
             //Setear colores en Local Storage
             setColorsLocally(colors.color1, colors.color2);
@@ -524,19 +529,6 @@ function setColorsLocally(color1, color2) {
     selectedStudyData.primary_color = color1;
     selectedStudyData.secondary_color = color2;
     localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
-}
-
-function setColorsFromAPI(study_id) {
-    const url = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
-    return axios.get(url)
-        .then(response => ({
-            color1: response.data.primary_color,
-            color2: response.data.secondary_color
-        }))
-        .catch(error => {
-            console.error('Error capturando colores desde API:', error);
-            return { color1: null, color2: null };
-        });
 }
 
 function applyColors(colors) {//Colors es un array
