@@ -1,4 +1,4 @@
-import { applyColors } from "../../Recolección de Datos/Chat.js";
+
 
 
 function disableNavItems() {
@@ -524,4 +524,30 @@ function setColorsLocally(color1, color2) {
     selectedStudyData.primary_color = color1;
     selectedStudyData.secondary_color = color2;
     localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
+}
+
+function setColorsFromAPI(study_id) {
+    const url = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
+    return axios.get(url)
+        .then(response => ({
+            color1: response.data.primary_color,
+            color2: response.data.secondary_color
+        }))
+        .catch(error => {
+            console.error('Error capturando colores desde API:', error);
+            return { color1: null, color2: null };
+        });
+}
+
+function applyColors(colors) {//Colors es un array
+    if (colors.color1) {
+        document.documentElement.style.setProperty('--bs-CR-orange', colors.color1);
+
+        document.documentElement.style.setProperty('--bs-CR-orange-2', brightColorVariant(colors.color1));
+    }
+    if (colors.color2) {
+        document.documentElement.style.setProperty('--bs-CR-gray', colors.color2);
+
+        document.documentElement.style.setProperty('--bs-CR-gray-dark', darkColorVariant(colors.color2));
+    }
 }
