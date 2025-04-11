@@ -18,7 +18,7 @@ document.getElementById('LanzarEstudioBtn').addEventListener('click', (e) => {
             const url = 'https://api.cheetah-research.ai/configuration/test/' + studioID + '/0';
             axios.post(url)
                 .then(response => {
-                    console.log(response.data);
+                    // console.log(response.data);
                 })
                 .catch(error => {
                     console.error('Error al enviar los datos:', error);
@@ -27,7 +27,7 @@ document.getElementById('LanzarEstudioBtn').addEventListener('click', (e) => {
             const url = 'https://api.cheetah-research.ai/configuration/test/' + studioID + '/1';
             axios.post(url)
                 .then(response => {
-                    console.log(response.data);
+                    // console.log(response.data);
                 })
                 .catch(error => {
                     console.error('Error al enviar los datos:', error);

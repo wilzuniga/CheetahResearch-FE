@@ -11,6 +11,7 @@ async function logOut(){
         });
         if (response.status === 200) {
             localStorage.removeItem('token');
+            localStorage.removeItem('user_id');
             window.location.href = 'https://www.cheetah-research.ai/login/';
 
         }

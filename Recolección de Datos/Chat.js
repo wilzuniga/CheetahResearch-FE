@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 function initializePage() {
     const study_id = new URLSearchParams(window.location.search).get('id');
     if (study_id) {
-        console.log('ID de estudio:', study_id);
+        // console.log('ID de estudio:', study_id);
         loadInterviewer(study_id);
     } else {
         console.error('No se encontró el parámetro id en la URL.');
@@ -509,7 +509,7 @@ function verificarLink(study_id) {
     
     return axios.get(VerifURL)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             let studyStatus = data.studyStatus;
             

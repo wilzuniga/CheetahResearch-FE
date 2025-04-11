@@ -1,6 +1,9 @@
 let imgPP;
 let hash = 0;
 
+
+AgregarPreguntas();
+
 //Cambiar size del Type-Box con Input y Window resize
 document.addEventListener('DOMContentLoaded', (event) => {
     const messageInput = document.getElementById('Message-Input');
@@ -345,7 +348,7 @@ function load() {
     const url = 'https://api.cheetah-research.ai/analysis/startS/';
 
     const study_id = new URLSearchParams(window.location.search).get('id');
-    console.log(study_id);
+    // console.log(study_id);
     axios.post(url, { study_id: study_id }, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -354,7 +357,7 @@ function load() {
         const data = response.data;
         hash = data.hash;
 
-        console.log(data);
+        // console.log(data);
 
         //Bot Status - Conectado
         botStatus=document.getElementById('Bot-Status');
@@ -448,3 +451,35 @@ window.addEventListener('beforeunload', function (event) {
     // Nota: Los navegadores modernos pueden ignorar el mensaje y mostrar un texto genérico.
 });
 
+
+
+
+
+// Contenedor preguntas "questionContainer"
+
+function AgregarPreguntas() {
+    const url = "https://api.cheetah-research.ai/configuration/get_questions/" + localStorage.getItem('selectedStudyId');
+    axios.get(url)
+        .then(response => {
+            // console.log(response.data);
+            const data = response.data.suggested_questions;
+            //ciclar por la data
+            data.forEach(pregunta => {
+                //                                            <p class="card-text" style="color: #aaa7aa;">Pregunta</p>
+                const questionContainer = document.getElementById('questionContainer');
+                // insertar las preguntas como texto en el contenedor como <p>
+                const p = document.createElement('p');
+                p.className = 'card-text';
+                p.style.color = '#aaa7aa';
+                p.textContent = pregunta;
+                questionContainer.appendChild(p);
+                
+
+
+            });
+
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        });
+}

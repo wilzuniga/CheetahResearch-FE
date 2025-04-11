@@ -9,14 +9,14 @@ let markmapBlobUrl = null;
 import { splitMarkdown, generateCharts, splitMarkdownAndWrap } from './splitter.js';
 
 function initializePage() {
-    console.log('Page initialized');
+    // console.log('Page initialized');
     const study_id = new URLSearchParams(window.location.search).get('id');
 
-    console.log('study_id param ejemplo: ?id=66ac6dfbfc65e4742d415b60');
-    console.log('Utilizar Puerto 8080');
+    // console.log('study_id param ejemplo: ?id=66ac6dfbfc65e4742d415b60');
+    // console.log('Utilizar Puerto 8080');
 
     if (study_id) {
-        console.log('ID de estudio:', study_id);
+        // console.log('ID de estudio:', study_id);
         document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
@@ -37,30 +37,75 @@ document.addEventListener('DOMContentLoaded', function () {
             const parentTabPane = button.closest('.tab-pane');
             const activeTab = document.querySelector('.tab-pane.active'); // Detecta la pestaña activa
 
-            // Verificar si estamos en la pestaña activa y si el contenedor de gráficos está presente
-            const chartsContainer = activeTab ? activeTab.querySelector('#charts-containerResumenIndividualContent') : null;
 
-            if (chartsContainer) {
-                // Establecer el estilo de salto de página
-                const charts = chartsContainer.querySelectorAll('.chart-box');
-                charts.forEach((chart, index) => {
-                    // Cada dos gráficos, agregar un salto de página
-                    if (index % 2 !== 0) {
-                        chart.style.pageBreakAfter = 'always';
+            // Verificar si el content div contiene la palabra details
+
+            if (activeTab && activeTab.querySelector('details')) {
+                // Si hay un elemento details, crear dos PDFs: uno colapsado y otro expandido
+                const contentDiv = parentTabPane.querySelector('div[id$="Content"]');
+                const allElements = [...contentDiv.children];
+
+                // Crear contenedores para los dos PDFs
+                const pdfCollapsed = document.createElement('div');
+                const pdfExpanded = document.createElement('div');
+
+                let currentCollapsed = document.createElement('div');
+                let currentExpanded = document.createElement('div');
+
+                pdfCollapsed.appendChild(currentCollapsed);
+                pdfExpanded.appendChild(currentExpanded);
+
+                allElements.forEach(element => {
+                    if (element.tagName === 'HR') {
+                        // Agregar separaciones entre los documentos
+                        currentCollapsed = document.createElement('div');
+                        pdfCollapsed.appendChild(document.createElement('hr'));
+                        pdfCollapsed.appendChild(currentCollapsed);
+                        
+                        currentExpanded = document.createElement('div');
+                        pdfExpanded.appendChild(document.createElement('hr'));
+                        pdfExpanded.appendChild(currentExpanded);
+                    } else if (element.tagName === 'DETAILS') {
+                        // Manejo de details
+                        const summary = element.querySelector('summary h4');
+                        if (summary) {
+                            const clonedTitle = summary.cloneNode(true);
+                            currentCollapsed.appendChild(clonedTitle);
+                            currentCollapsed.appendChild(document.createElement('hr'));
+                            
+                            const expandedSection = document.createElement('div');
+                            expandedSection.appendChild(clonedTitle.cloneNode(true));
+                            expandedSection.appendChild(document.createElement('hr'));
+                            
+                            // Extraer y agregar el contenido de details
+                            [...element.children].forEach(child => {
+                                if (child.tagName !== 'SUMMARY') {
+                                    expandedSection.appendChild(child.cloneNode(true));
+                                }
+                            });
+                            
+                            currentExpanded.appendChild(expandedSection);
+                        }
                     } else {
-                        chart.style.pageBreakAfter = 'auto';
+                        currentCollapsed.appendChild(element.cloneNode(true));
+                        currentExpanded.appendChild(element.cloneNode(true));
                     }
                 });
 
+                // Configurar las opciones para los PDFs
                 const options = {
                     margin: 1,
-                    filename: 'charts_resumen_individual.pdf',
-                    html2canvas: { scale: 2 },
+                    html2canvas: { scale: 2, backgroundColor: '#ffffff' },
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
                 };
 
-                // Exportar todos los canvas dentro del chartsContainer
-                html2pdf().set(options).from(chartsContainer).save();
+                // Generar y descargar los dos PDFs
+                html2pdf().set({ ...options, filename: `${parentTabPane.id || 'contenido'}_contraido.pdf` }).from(pdfCollapsed).save();
+                html2pdf().set({ ...options, filename: `${parentTabPane.id || 'contenido'}_expandido.pdf` }).from(pdfExpanded).save();
+
+
+
+
             } else {
                 
                 const contentDiv = parentTabPane.querySelector('div[id$="Content"]'); // Div cuyo ID termina en "Content"
@@ -147,19 +192,22 @@ function AgregarModulos(study) {
                 ActiveModules.push(modulo);
             });
 
-            console.log(ActiveModules);
+            // console.log(ActiveModules);
 
             const ResumenGeneralBtn = document.getElementById('ResumenGeneralBtn');
             const ResumenIndividualBtn = document.getElementById('ResumenIndividualBtn');
             const UserPersonaBtn = document.getElementById('UserPersonaBtn');
             const AnalisisPsicograficosBtn = document.getElementById('AnalisisPsicograficosBtn');
             const CustomerEcperienceBtn = document.getElementById('customerExperienceBtn');
+            const NPSySatisfaccionBtn = document.getElementById('NPSySatisfaccionBtn');
+
 
             ResumenGeneralBtn.style.display = 'none';
             ResumenIndividualBtn.style.display = 'none';
             UserPersonaBtn.style.display = 'none';
             AnalisisPsicograficosBtn.style.display = 'none';
             CustomerEcperienceBtn.style.display = 'none';
+            NPSySatisfaccionBtn.style.display = 'none';
 
             ActiveModules.forEach(modulo => {
                 if (modulo === 'Modulo de Analisis General') {
@@ -176,6 +224,9 @@ function AgregarModulos(study) {
                 }
                 if (modulo === 'Modulo customer Experience') {
                     CustomerEcperienceBtn.style.display = 'block';
+                }
+                if (modulo === 'Modulo de Customer Satisfaction') {
+                    NPSySatisfaccionBtn.style.display = 'block';
                 }
 
             }
@@ -222,6 +273,7 @@ function AgregarFiltros(study) {
             const comboBox7 = document.getElementById('Combobox_NPS');
             const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
             const comboBox9 = document.getElementById('Combobox_customerExperience');
+            const comboBox10 = document.getElementById('Combobox_Satisfaccion');
 
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
@@ -232,7 +284,7 @@ function AgregarFiltros(study) {
             comboBox7.innerHTML = '';
             comboBox8.innerHTML = '';
             comboBox9.innerHTML = '';
-
+            comboBox10.innerHTML = '';
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -248,6 +300,7 @@ function AgregarFiltros(study) {
             comboBox7.appendChild(option.cloneNode(true));
             comboBox8.appendChild(option.cloneNode(true));
             comboBox9.appendChild(option.cloneNode(true));
+            comboBox10.appendChild(option.cloneNode(true));
         });
 
         LLenarResumenes(study);
@@ -276,7 +329,7 @@ function LLenarResumenes(study) {
     //lenar el div con el resumen general y agregar el event listener al combobox con id ComboBox_ResumenGeneral
     const comboBoxRG = document.getElementById('ComboBox_ResumenGeneral');          
     comboBoxRG.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
     
         const StyleSelectedOption = document.getElementById('ComboBox_ResumenGeneralTy');
         var div = document.getElementById('ResumenGeneralContent');
@@ -299,7 +352,7 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);
                 div.innerHTML = coso;
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -335,7 +388,7 @@ function LLenarResumenes(study) {
     const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
     
     comboBoxRI.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
         const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
 
@@ -358,7 +411,7 @@ function LLenarResumenes(study) {
                 div.innerHTML = coso.join('<hr>');       
                 let graphDta = splitMarkdown(data);    
                 generateCharts(graphDta);               
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -378,12 +431,13 @@ function LLenarResumenes(study) {
     const comboBoxNPS = document.getElementById('Combobox_NPS');
     const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
     const comboBoxCE = document.getElementById('Combobox_customerExperience');
+    const comboBoxS = document.getElementById('Combobox_Satisfaccion');
 
     //User Persona, perfecto
     comboBoxUP.addEventListener('change', (event) => {
         //Llenar el user persona de la misma fotma que se llenan los anteriores 
 
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
 
         // Obtener el div donde se mostrará el contenido
@@ -405,7 +459,7 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);                          
                 div.innerHTML = coso;                      
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 // agregar mensaje de "no se encontraron datos" en el div
@@ -420,7 +474,7 @@ function LLenarResumenes(study) {
 
     //customer Experience, perfecto
     comboBoxCE.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
         var div = document.getElementById('customerExperienceContent');
         // Supongamos que `event.target.value` es el valor del combobox
@@ -439,7 +493,7 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);                          
                 div.innerHTML = coso;          
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -452,7 +506,7 @@ function LLenarResumenes(study) {
 
     //ekman, perfecto
     comboBoxEK.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
 
         // Obtener el div donde se mostrará el contenido
@@ -472,9 +526,9 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
-                console.log(data);
+                const coso = splitMarkdownAndWrap(data);                          
+                div.innerHTML = coso.join('<hr>');                     
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -488,9 +542,9 @@ function LLenarResumenes(study) {
 
     //Rasgos de personalidad, perfecto
     comboBoxRP.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
 
         // Obtener el div donde se mostrará el contenido
@@ -510,9 +564,9 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
-                console.log(data);
+                const coso = splitMarkdownAndWrap(data);                          
+                div.innerHTML = coso.join('<hr>');                   
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -526,7 +580,7 @@ function LLenarResumenes(study) {
     //Segmentos Psicograficos, perfecto
 
     comboBoxSP.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
         var div = document.getElementById('SegmentosPsicograficosContent');
         // Supongamos que `event.target.value` es el valor del combobox
@@ -544,9 +598,9 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
-                console.log(data);
+                const coso = splitMarkdownAndWrap(data);                          
+                div.innerHTML = coso.join('<hr>');                        
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -559,7 +613,7 @@ function LLenarResumenes(study) {
 
     //NPS, perfecto
     comboBoxNPS.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
         var div = document.getElementById('NPSContent');
         // Supongamos que `event.target.value` es el valor del combobox
@@ -578,9 +632,9 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
-                console.log(data);
+                const coso = splitMarkdownAndWrap(data);                          
+                div.innerHTML = coso.join('<hr>');                
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -591,8 +645,43 @@ function LLenarResumenes(study) {
             });
     });
 
+    //Satisfaccion, perfecto
+    comboBoxS.addEventListener('change', (event) => {
+        // console.log(event.target.value);
+
+        var div = document.getElementById('SatisfaccionContent');
+        // Supongamos que `event.target.value` es el valor del combobox
+        const selectedValue = event.target.value;
+
+        formData = new FormData();
+        formData.append('filter', selectedValue);
+        formData.append('module', 'psicographic_questions');
+        formData.append('sub_module', 'customer_satisfaction');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                const coso = marked(data);
+                div.innerHTML = coso;
+                // console.log(data);
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+    });
+
+
     comboBoxEC.addEventListener('change', (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
         var div = document.getElementById('EstiloDeComunicacionContent');
         // Supongamos que `event.target.value` es el valor del combobox
@@ -612,7 +701,7 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);                          
                 div.innerHTML = coso;                      
-                console.log(data);
+                // console.log(data);
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";

@@ -112,7 +112,7 @@ function enviarOTP(study_id) {
             }
         })
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             let status = data.success;
             if (status === 'OTP email sent successfully') {
@@ -193,7 +193,7 @@ async function LegalDisclaimer(study_id) {
         });
     });
 
-    console.log("El botón fue presionado, continuando...");
+    // console.log("El botón fue presionado, continuando...");
     
 
     contenido(study_id);
@@ -207,7 +207,7 @@ function verificarLink(study_id) {
     
     return axios.get(VerifURL)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             let studyStatus = data.studyStatus;
             
@@ -238,7 +238,7 @@ function verificarOTP(study_id) {
 
     axios.post(url, formData)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             let status = data.status;
             if(status == 'success') {
@@ -260,11 +260,11 @@ function verificarOTP(study_id) {
 
 
 async function initializePage() {
-    console.log('Page initialized');
+    // console.log('Page initialized');
     const study_id = new URLSearchParams(window.location.search).get('id');
 
     if (study_id) {
-        console.log('ID de estudio:', study_id);
+        // console.log('ID de estudio:', study_id);
         await LegalDisclaimer(study_id);
 
     } else {

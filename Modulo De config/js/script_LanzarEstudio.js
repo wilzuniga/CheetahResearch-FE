@@ -1,6 +1,7 @@
 let filtros = [];
 let modules = [];
 let dominios = [];
+let preguntas = [];
 let studyStatus = 0;
 let formData = new FormData();  
 
@@ -17,10 +18,10 @@ function load(){    // Actualizar el título del estudio desde localStorage
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
     
     const datos = localStorage.getItem('selectedStudyData');
-    console.log(datos);
+    // console.log(datos);
     if (datos) {
         const estudio = JSON.parse(datos);
-        console.log(estudio.summary);
+        // console.log(estudio.summary);
 
         let coso = estudio.prompt;
         //pasar de markdown a html
@@ -30,29 +31,11 @@ function load(){    // Actualizar el título del estudio desde localStorage
         document.getElementById('TituloEstudioLBL').innerText = estudio.title;
     }
 
-    url = 'https://api.cheetah-research.ai/configuration/test/' + localStorage.getItem('selectedStudyId');
-    axios.get(url)
-        .then(response => {
-            console.log(response.data);
-            const data = response.data;
-                if(data.test){
-                    let coso = document.getElementById('test_Switch');
-                    coso.checked = true;
-                }else{
-                    let coso = document.getElementById('test_Switch');
-                    coso.checked = false;
-                }
-        }
-        )
-        .catch(error => {
-            console.error('Error al enviar los datos:', error);
-        });
-
     url = 'https://api.cheetah-research.ai/configuration/info_study/' + localStorage.getItem('selectedStudyId');
     //{"status": "success", "studyDate": "2024-08-04T21:07:30.632822-06:00", "studyStatus": 0}
     axios.get(url)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             studyStatus = data.studyStatus;
             if(data.studyStatus == 0){
@@ -88,7 +71,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                     }
                 })
                     .then(response => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         const data = response.data;
                             document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
                             studyStatus = 3;
@@ -112,7 +95,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                     }
                 })
                     .then(response => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         const data = response.data;
                             document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
                             studyStatus = 1;
@@ -142,7 +125,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                     }
                 })
                     .then(response => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         const data = response.data;
                             document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - Activo';
                             studyStatus = 2;
@@ -165,7 +148,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                     }
                 })
                     .then(response => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         const data = response.data;
                             document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
                             studyStatus = 0;
@@ -201,7 +184,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
             'Content-Type': 'multipart/form-data',
         }
     }).then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data;
             let estatus = data.otp + "      - " + data.expires_at + " - " + data.used;
             document.getElementById('OTP_Analisis').innerText = estatus;
@@ -233,7 +216,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
                 'Content-Type': 'multipart/form-data',
             }
         }).then(response => {
-                console.log(response.data);
+                // console.log(response.data);
                 const data = response.data;
                 let estatus = data.otp + "      - " + data.expires_at;
                 document.getElementById('OTP_Analisis').innerText = estatus;
@@ -254,7 +237,45 @@ function load(){    // Actualizar el título del estudio desde localStorage
     AgregarFiltros();
     AgregarModulos();
     AgregarDominios();
+    AgregarPreguntas()
+
+    //Manejar el evento del boton de agregar Preguntas
+    const AgregarPreguntaBtn = document.getElementById('AgregarPreguntaBTN');
+    const PreguntasLST = document.getElementById('PreguntasLST');
     
+    AgregarPreguntaBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const preguntaTxt = document.getElementById('PreguntasTXT').value;
+        if (preguntaTxt) {
+            preguntas.push(preguntaTxt);
+            const preguntaItem = document.createElement('li');
+            preguntaItem.classList.add('list-group-item');
+            preguntaItem.style.display = 'flex';
+            preguntaItem.style.justifyContent = 'space-between';
+            preguntaItem.style.alignItems = 'center';
+
+            const preguntaSpan = document.createElement('span');
+            preguntaSpan.innerText = preguntaTxt;
+            preguntaSpan.style.fontFamily = 'IBM Plex Sans';
+            preguntaItem.appendChild(preguntaSpan);
+
+            const eliminarBtn = document.createElement('button');
+            eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+            eliminarBtn.innerText = 'Eliminar';
+            eliminarBtn.addEventListener('click', () => {
+                preguntaItem.remove();
+                //eliminar el filtro del arreglo
+                const index = preguntas.indexOf(preguntaTxt);
+                if (index > -1) {
+                    preguntas.splice(index, 1);
+                }
+            });
+            preguntaItem.appendChild(eliminarBtn);
+
+            PreguntasLST.appendChild(preguntaItem);
+            document.getElementById('PreguntasTXT').value = ''; // Limpiar el campo de texto
+        }
+    });
 
     // Manejar el evento del botón de agregar filtro
     const agregarFiltroBtn = document.getElementById('AgregarFiltroBTN');
@@ -349,7 +370,7 @@ function AgregarFiltros() {
     const url = "https://api.cheetah-research.ai/configuration/get_filters/" + localStorage.getItem('selectedStudyId');
     axios.get(url)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data.filters;
             //ciclar por la data
             data.forEach(filtro => {
@@ -385,6 +406,46 @@ function AgregarFiltros() {
         });
 }
 
+//Agrefar Preguntas  
+function AgregarPreguntas() {
+    const url = "https://api.cheetah-research.ai/configuration/get_questions/" + localStorage.getItem('selectedStudyId');
+    axios.get(url)
+        .then(response => {
+            // console.log(response.data);
+            const data = response.data.suggested_questions;
+            //ciclar por la data
+            data.forEach(pregunta => {
+                preguntas.push(pregunta);
+                const preguntaItem = document.createElement('li');
+                preguntaItem.classList.add('list-group-item');
+                preguntaItem.style.display = 'flex';
+                preguntaItem.style.justifyContent = 'space-between';
+                preguntaItem.style.alignItems = 'center';
+                
+                const preguntaSpan = document.createElement('span');
+                preguntaSpan.innerText = pregunta;
+                preguntaSpan.style.fontFamily = 'IBM Plex Sans';
+                preguntaItem.appendChild(preguntaSpan);
+
+                const eliminarBtn = document.createElement('button');
+                eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+                eliminarBtn.innerText = 'Eliminar';
+                eliminarBtn.addEventListener('click', () => {
+                    preguntaItem.remove();
+                    const index = preguntas.indexOf(preguntaTxt);
+                    if (index > -1) {
+                        preguntas.splice(index, 1);
+                    }
+                });
+                preguntaItem.appendChild(eliminarBtn);
+                PreguntasLST.appendChild(preguntaItem);
+            });
+
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        });
+}
 
 
 function eliminarDominio(dominio) {
@@ -400,7 +461,7 @@ function eliminarDominio(dominio) {
         }
     })
         .then(response => {
-            console.log('Dominio eliminado correctamente:', response.data);
+            // console.log('Dominio eliminado correctamente:', response.data);
             alert('Dominio eliminado correctamente');
         })
         .catch(error => {
@@ -426,7 +487,7 @@ function AgregarDominios() {
     }
     )
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data.domains;
             //ciclar por la data
             data.forEach(dominio => {
@@ -469,7 +530,7 @@ function AgregarModulos() {
     const url = "https://api.cheetah-research.ai/configuration/get_modules/" + localStorage.getItem('selectedStudyId');
     axios.get(url)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             const data = response.data.modules;
 
             data.forEach(modulo => {
@@ -588,6 +649,40 @@ guardarFitroBTN.addEventListener('click', (e) => {
 }
 );
 
+guardarPreguntaBTN.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const preguntasLST = document.getElementById('PreguntasLST');
+    const preguntasItems = preguntasLST.getElementsByTagName('li');
+    let preguntas = [];
+
+    for (let i = 0; i < preguntasItems.length; i++) {
+        const preguntaTxt = preguntasItems[i].getElementsByTagName('span')[0].innerText;
+        preguntas.push(preguntaTxt);
+    }
+
+    const data = {
+        suggested_questions: preguntas
+    };
+
+    axios.post(
+        `https://api.cheetah-research.ai/configuration/suggested_questions/${localStorage.getItem('selectedStudyId')}`,
+        data,
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    )
+    .then(response => {
+        alert('Preguntas guardadas correctamente');
+    })
+    .catch(error => {
+        console.error('Error al enviar los datos:', error);
+    });
+});
+
+
 guardarDominioBTN.addEventListener('click', (e) => {
     e.preventDefault();
     const dominiosLST = document.getElementById('DominiosLST');
@@ -602,7 +697,7 @@ guardarDominioBTN.addEventListener('click', (e) => {
     // Ciclar los dominios y enviarlos uno por uno
     const studyId = localStorage.getItem('selectedStudyId');
     const apiUrl = `https://api.cheetah-research.ai/configuration/api/add-domain/`;
-    const enviarFiltro = (dominio) => {
+    const enviarDominio = (dominio) => {
         const formData = new FormData();
         formData.append('study_id', studyId);
         formData.append('domain', dominio);
@@ -615,7 +710,7 @@ guardarDominioBTN.addEventListener('click', (e) => {
     };
 
     // Enviar cada dominio individualmente
-    const requests = dominios.map(enviarFiltro);
+    const requests = dominios.map(enviarDominio);
 
     Promise.all(requests)
         .then(() => {

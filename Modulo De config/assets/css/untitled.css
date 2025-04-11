@@ -24,13 +24,14 @@
 }
 
 .card {
-  background-color: #e4e4e4;
+  background-color: #f0f0f0;
 }
 
 
 
 .form-control {
-  font-family: 'hedliner', sans-serif;box-shadow: inset 2px 2px 5px 1px #6d6d6d; color: #072934;
+  font-family: 'hedliner', sans-serif;
+  color: #072934;
 }
 
 .switch {
@@ -69,7 +70,7 @@
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #eb7e20;
+
 }
 
 .slider.round {
@@ -120,7 +121,7 @@ input:checked + .slider {
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #eb7e20;
+
 }
 
 input:checked + .slider:before {

@@ -10,9 +10,9 @@ function enableNavItems() {
 }
 
 function CE_DeactivateNavBy(){
-    console.log('Verificando si se activan los botones');
+    // console.log('Verificando si se activan los botones');
     if(localStorage.getItem('selectedStudyId') != null){
-        console.log('Study id:', localStorage.getItem('selectedStudyId'));
+        // console.log('Study id:', localStorage.getItem('selectedStudyId'));
         enableNavItems();
     }else{
         disableNavItems();
@@ -47,7 +47,7 @@ function createStudyForm() {
     const promptDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Prompt del Estudio</p>
-            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif; box-shadow: inset 5px 5px 9px 1px #6d6d6d; color: #072934; border-radius: 3px"></textarea>
+            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif;  color: #072934; border-radius: 3px"></textarea>
         </div>`
     ;
 
@@ -144,7 +144,7 @@ function createFilledStudyForm() {
     const promptDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Prompt del Estudio</p>
-            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif; box-shadow: inset 5px 5px 9px 1px #6d6d6d; color: #072934; border-radius: 3px" >${selectedStudyData.Resumen}</textarea>
+            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif;  color: #072934; border-radius: 3px" >${selectedStudyData.Resumen}</textarea>
         </div>`
     ;
 
@@ -185,7 +185,7 @@ function createFilledStudyForm() {
         </div>`
     ;
 
-    console.log(studyData);
+    // console.log(studyData);
 
 
     const form = `
@@ -210,7 +210,7 @@ function appendStudyForm() {
 
     document.getElementById('CrearEstudioBtn').addEventListener('click', () => {
         const studyData = CaptureAndPostformdta();
-        console.log(studyData);
+        // console.log(studyData);
         alert('Estudio creado exitosamente');
         //guardar en localsotrage el estudio creado
         localStorage.setItem('selectedStudyData', JSON.stringify(studyData));
@@ -223,7 +223,7 @@ function appendFilledStudyForm() {
         const studyData = UpdateAndPostformdta();
         //actualizar el estudio salvado en localstorage
         localStorage.setItem('selectedStudyData', JSON.stringify(studyData));
-        console.log(studyData);
+        // console.log(studyData);
         alert('Estudio actualizado exitosamente');
     });
 
@@ -249,7 +249,7 @@ function StudysaveToLocStrg() {//Funcion de prueba
 function deleteFromLocStrg() {
     //verificar si se esta en PaginaPrincipal.html o CreacionDeEstudio.html
     if(window.location.href.includes('home')){
-        console.log('Borrando datos del estudio');
+        // console.log('Borrando datos del estudio');
         localStorage.removeItem('tituloDelEstudio');
         localStorage.removeItem('mercadoObjetivo');
         localStorage.removeItem('objetivosDelEstudio');
@@ -272,36 +272,43 @@ function CaptureAndPostformdta() {
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
-    //StudysaveToLocStrg();
-    //operacion POST, CON FORM DATA
+    
+    const token = localStorage.getItem('token');
     const url = 'https://api.cheetah-research.ai/configuration/createStudy/';
-    const data = new FormData();
-    data.append('title', tituloDelEstudio);
-    data.append('target', mercadoObjetivo);
-    data.append('objective', objetivosDelEstudio);
-    data.append('objective', objetivosDelEstudio);
-    data.append('prompt', promptDelEstudio);
-
-    axios.post(url, data)
-        .then(response => {
-            alert('Estudio creado exitosamente');
-            localStorage.setItem('selectedStudyId', response.data.study_id);
-            localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
-            
-            CE_DeactivateNavBy();
-
+    
+    // Armamos el body como JSON
+    const data = {
+        title: tituloDelEstudio,
+        target: mercadoObjetivo,
+        objective: objetivosDelEstudio,
+        prompt: promptDelEstudio
+    };
+    
+    // Hacemos el POST con headers explícitos
+    axios.post(url, data, {
+        headers: {
+            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
         }
-        )
-        .catch(error => {
-            console.error('Error al crear el estudio:', error);
-        });
-
+    })
+    .then(response => {
+        alert('Estudio creado exitosamente');
+        localStorage.setItem('selectedStudyId', response.data.study_id);
+        localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
+    
+        CE_DeactivateNavBy();
+    })
+    .catch(error => {
+        console.error('Error al crear el estudio:', error);
+    });
+    
     return {
         tituloDelEstudio,
         mercadoObjetivo,
         objetivosDelEstudio,
         promptDelEstudio,
     };
+    
 }
 
 function UpdateAndPostformdta() {
@@ -309,16 +316,26 @@ function UpdateAndPostformdta() {
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
-    //StudysaveToLocStrg();
-    //operacion POST, CON FORM DATA
-    const url = 'https://api.cheetah-research.ai/configuration/updateStudy/' + localStorage.getItem('selectedStudyId');
-    const data = new FormData();
-    data.append('title', tituloDelEstudio);
-    data.append('target', mercadoObjetivo);
-    data.append('objective', objetivosDelEstudio);
-    data.append('prompt', promptDelEstudio);
-
-    axios.post(url, data)
+    
+    const token = localStorage.getItem('token');
+    const studyId = localStorage.getItem('selectedStudyId');
+    const url = `https://api.cheetah-research.ai/configuration/updateStudy/${studyId}`;
+    
+    // Armamos el body como JSON
+    const data = {
+        title: tituloDelEstudio,
+        target: mercadoObjetivo,
+        objective: objetivosDelEstudio,
+        prompt: promptDelEstudio
+    };
+    
+    // Hacemos el POST con los headers adecuados
+    axios.post(url, data, {
+        headers: {
+            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }
+    })
     .then(response => {
         alert('Estudio actualizado exitosamente');
         localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
@@ -326,14 +343,14 @@ function UpdateAndPostformdta() {
     .catch(error => {
         console.error('Error al actualizar el estudio:', error);
     });
-
+    
     return {
         tituloDelEstudio,
         mercadoObjetivo,
         objetivosDelEstudio,
         promptDelEstudio,
     };
-
+    
 }
 
 // Llama a la función cuando la página se carga completamente
@@ -366,30 +383,40 @@ function ApendStudies(){
 }
 
 function loadStudies() { //Carga los estudios en la Main Page
-    const url = 'https://api.cheetah-research.ai/configuration/get_studies/';
 
-    axios.get(url)
-        .then(response => {
-            console.log(response.data);
-            const studies = response.data;
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('user_id'); // Asegurate que no sea NaN
     
-            // Invertir el orden de los estudios
-            const reversedStudies = studies.reverse();
-            
-            const listGroup = document.getElementById('listgrouptudies');
+    const url = `https://api.cheetah-research.ai/configuration/get_studies_by_user_id/${userId}/`;
     
-            reversedStudies.forEach(study => {
-                const studyElement = createStudyElement(study);
-                listGroup.appendChild(studyElement);
-            });
-        })
-        .catch(error => {
-            console.error('Error al cargar los estudios:', error);
-        });    
+    axios.get(url, {
+        headers: {
+            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        // console.log(response.data);
+        const studies = response.data;
+    
+        // Invertir el orden de los estudios
+        const reversedStudies = studies.reverse();
+    
+        const listGroup = document.getElementById('listgrouptudies');
+    
+        reversedStudies.forEach(study => {
+            const studyElement = createStudyElement(study);
+            listGroup.appendChild(studyElement);
+        });
+    })
+    .catch(error => {
+        console.error('Error al cargar los estudios:', error);
+    });
+    
 }
 
 function createStudyElement(study) {
-    console.log('Study');
+    // console.log('Study');
     const a = document.createElement('a');
     a.classList.add('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start');
     a.href = 'https://www.cheetah-research.ai/configuration/study/';
@@ -407,9 +434,16 @@ function createStudyElement(study) {
     span.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
     span.style.fontFamily = "'hedliner', sans-serif";
     span.style.borderRadius = '2px';
-    //COLOR DE LA ETIQUETA HEX C0601C
+    // COLOR DE LA ETIQUETA HEX C0601C
     span.style.color = '#FFFFFF';
-    span.textContent = study.marketTarget;
+
+    // Truncar el texto si es demasiado largo
+    const maxLength = 110; // Máximo número de caracteres permitidos
+    if (study.marketTarget.length > maxLength) {
+        span.textContent = study.marketTarget.substring(0, maxLength) + '...';
+    } else {
+        span.textContent = study.marketTarget;
+    }
 
     div1.appendChild(h5);
     div1.appendChild(span);
@@ -453,7 +487,7 @@ function saveColorsToStudy() {
     axios.post(url, data)
         .then(response => {
             alert('Colores guardados exitosamente');
-            console.log(response.data);
+            // console.log(response.data);
             setColorsLocally(primaryColor, secondaryColor);
         })
         .catch(error => {
