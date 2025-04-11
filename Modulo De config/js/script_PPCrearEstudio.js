@@ -169,7 +169,7 @@ function createFilledStudyForm() {
     ;
     const saveColorsButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif; background-color:var(--bs-CR-orange-2);">Guardar Colores</button>
+            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Guardar Colores</button>
         </div>`
     ;
     const colorButtonsContainer = `
@@ -181,7 +181,7 @@ function createFilledStudyForm() {
 
     const submitButton = `
         <div style="width: 250px;font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-primary d-block w-100" id="UpdateEstudio" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif; background-color: var(--bs-CR-orange);">Actualizar Estudio</button>
+            <button class="btn btn-primary d-block w-100" id="UpdateEstudio" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray);background-color: var(--bs-CR-orange);">Actualizar Estudio</button>
         </div>`
     ;
 

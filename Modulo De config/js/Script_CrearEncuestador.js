@@ -5,7 +5,7 @@
 function createSurveyerForm() {
     const formContainer = document.createElement('div');
     formContainer.innerHTML = `
-        <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;">Crear Encuestador</h2>
+        <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Crear Encuestador</h2>
         <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
             <div class="mb-3">
             <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Seleccionar Imagen</p>
@@ -70,7 +70,7 @@ function createSurveyerFormReadOnly() {
                             <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" placeholder="Ingresa el saludo del encuestador" style="font-family: 'IBM Plex Sans'">${data.interviewerGreeting}</textarea>
                         </div>
                         <div style="width: 250px;">
-                            <button class="btn btn-primary d-block w-100" id="ActualizarEncuestadorBtn" type="button" style="font-weight: bold; font-size: 20px; border-radius: 10px;">Actualizar Encuestador</button>
+                            <button class="btn btn-primary d-block w-100" id="ActualizarEncuestadorBtn" type="button" style="font-weight: bold; font-size: 20px; border-radius: 10px; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Actualizar Encuestador</button>
                         </div>
                     </form>
                 `;
