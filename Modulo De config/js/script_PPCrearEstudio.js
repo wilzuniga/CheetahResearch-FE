@@ -1,4 +1,4 @@
-
+import { applyColors } from "../../Recolección de Datos/Chat.js";
 
 
 function disableNavItems() {
@@ -364,7 +364,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             const formContainer = document.getElementById('form-containerStudy');
             formContainer.innerHTML = createFilledStudyForm();       
             appendFilledStudyForm();  
-            setColorsFromAPI();//Setea en LocalStorage los colores
+            setColorsFromAPI();//Setea colores en LocalStorage y en la interfaz
         }
     }else if(window.location.href.includes('home')){
 
@@ -516,6 +516,10 @@ function setColorsFromAPI() {
 }
 
 function setColorsLocally(color1, color2) {
+    //Aplicar los colores en interfaz
+    applyColors({ color1, color2 });
+
+    //Enviar colores a Chatbot
     const selectedStudyData = JSON.parse(localStorage.getItem('selectedStudyData')) || {};
     selectedStudyData.primary_color = color1;
     selectedStudyData.secondary_color = color2;

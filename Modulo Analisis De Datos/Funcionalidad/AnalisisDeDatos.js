@@ -1,3 +1,4 @@
+import { setColorsFromAPI, applyColors } from '../../Recolección de Datos/Chat.js';
 // agregarCard.js
 let Demographic_Filters = [];
 let ActiveModules = [];
@@ -29,7 +30,7 @@ function initializePage() {
 
 initializePage();
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     const exportButtons = document.querySelectorAll('button[id^="export_"]');
 
     exportButtons.forEach(button => {
@@ -121,6 +122,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 html2pdf().set(options).from(contentDiv).save();            }
         });
     });
+
+    const colors = await setColorsFromAPI(study_id);
+    if (colors) {
+        applyColors(colors);
+    }
 });
 
 function generateMarkmapHTML(content , filter) {
