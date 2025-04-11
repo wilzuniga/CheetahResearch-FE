@@ -903,8 +903,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Alternar visibilidad del textarea
                 if (textarea.style.display === 'none' || textarea.style.display === '') {
                     textarea.style.display = 'block';
+                    button.style.color = 'var(--bs-CR-gray)';
+                    button.style.backgroundColor = 'var(--bs-CR-orange)';
                 } else {
                     textarea.style.display = 'none';
+                    button.style.color = '';
+                    button.style.backgroundColor = '';
                 }
             }
         });
