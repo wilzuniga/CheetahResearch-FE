@@ -290,11 +290,7 @@ function setColorsFromAPI(studyId) {
                 color2: response.data.secondary_color
             };
 
-            console.log(colors);
-
-
-            //Setear colores en Local Storage
-            setColorsLocally(colors.color1, colors.color2);
+            applyColors(colors);
 
             return colors;
         })
