@@ -13,8 +13,8 @@
   --bs-list-group-action-active-bg: var(--bs-CR-orange);
   --bs-list-group-disabled-color: var(--bs-secondary-color);
   --bs-list-group-disabled-bg: var(--bs-body-bg);
-  --bs-list-group-active-color: #fff;
-  --bs-list-group-active-bg: var(--bs-primary);
+  --bs-list-group-active-color: var(--bs-CR-gray);
+  --bs-list-group-active-bg: var(--bs-CR-orange);
   --bs-list-group-active-border-color: #072934;
   display: flex;
   flex-direction: column;
