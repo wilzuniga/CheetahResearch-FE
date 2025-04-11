@@ -1,5 +1,5 @@
 :root, [data-bs-theme=light] {
-  --bs-primary: #C0601C;
+  --bs-primary: var(--bs-CR-orange);
   --bs-primary-rgb: 235,126,32;
   --bs-primary-text-emphasis: #5E320D;
   --bs-primary-bg-subtle: #FBE5D2;
@@ -15,7 +15,7 @@
 .btn-primary {
   --bs-btn-color: #000000;
   --bs-btn-bg: #C0601C;
-  --bs-btn-border-color: #C0601C;
+  --bs-btn-border-color: var(--bs-CR-orange);
   --bs-btn-hover-color: #000000;
   --bs-btn-hover-bg: #EE9141;
   --bs-btn-hover-border-color: #ED8B36;
