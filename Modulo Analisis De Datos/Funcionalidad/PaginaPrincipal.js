@@ -176,8 +176,8 @@ async function LegalDisclaimer(study_id) {
                 padding: 10px;
                 border-radius: 5px;
                 margin: 10px;
-                background-color: #c0601c;
-                color: white;
+                background-color: var(--bs-CR-orange);
+                color: var(--bs-CR-gray);
                 border: none;
                 cursor: pointer;
             ">Acceder Al Reporte</button>

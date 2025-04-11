@@ -266,7 +266,7 @@ function getMessage(message, imageSrc) {
     card.style.borderRadius = '15px';
     card.style.borderBottomLeftRadius = '0px';
     card.style.borderBottomWidth = 'medium';
-    card.style.borderColor = '#C2681A';
+    card.style.borderColor = 'var(--bs-CR-orange)';
     card.style.background = 'var(--bs-CR-orange-2)';
 
     const cardBody = document.createElement('div');
