@@ -1,36 +1,35 @@
-async function listNonActiveUsers() {
+function listNonActiveUsers() {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('user_id');
 
-    try {
-        const response = await fetch('https://api.cheetah-research.ai/configuration/get_studies/', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${localStorage.getItem('token')}`
-            }
-        });
+    const url = `https://api.cheetah-research.ai/configuration/get_studies_by_user_id/${userId}/`;
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+    axios.get(url, {
+        headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        const studies = response.data;
+        // Invertir el orden si lo necesitás
+        const reversedStudies = studies.reverse();
 
-
-        const studys = await response.json();
-        const studySelect=document.getElementById('select-Study');
-
+        const studySelect = document.getElementById('select-Study');
         studySelect.innerHTML = '';
 
-        studys.forEach(study => {
+        reversedStudies.forEach(study => {
             const option = document.createElement('option');
             option.value = study._id;
             option.textContent = study.title;
             studySelect.appendChild(option);
         });
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-    }
-
-
+    })
+    .catch(error => {
+        console.error('Error al cargar los estudios no activos:', error);
+    });
 }
+
 
 document.addEventListener('DOMContentLoaded', listNonActiveUsers);
 
