@@ -48,6 +48,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     //Resize al cambiar tamaño de Ventana
     window.addEventListener('resize', messageInput_resizeWindow);
+
+    //Setear colores
+    const study_id = new URLSearchParams(window.location.search).get('id');
+    setColorsFromAPI(study_id);
 });
 
 //Enviar mensaje al presionar enter
@@ -348,7 +352,6 @@ function load() {
     const url = 'https://api.cheetah-research.ai/analysis/startS/';
 
     const study_id = new URLSearchParams(window.location.search).get('id');
-    setColorsFromAPI(study_id);//Setea colores
     // console.log(study_id);
     axios.post(url, { study_id: study_id }, {
         headers: {

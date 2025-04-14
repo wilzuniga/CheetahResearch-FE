@@ -61,7 +61,7 @@ function createStudyForm() {
     const colorInput2 = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Color Secundario del Estudio</p>
-            <input type="color" class="form-control" id="colorInput2" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="#404040">
+            <input type="color" class="form-control" id="colorInput2" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="#212121">
         </div>`
     ;
 
@@ -230,7 +230,7 @@ function appendFilledStudyForm() {
     //Color Change: Colores Default
     document.getElementById('setDefaultColorButton').addEventListener('click', () => {
         document.getElementById('colorInput1').value = '#C0601C';
-        document.getElementById('colorInput2').value = '#404040';
+        document.getElementById('colorInput2').value = '#212121';
     });
 
     //Color Change: Guardar Colores
