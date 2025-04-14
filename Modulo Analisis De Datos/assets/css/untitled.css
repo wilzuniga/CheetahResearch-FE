@@ -123,7 +123,7 @@ input:focus + .slider {
 }
 
 input:checked + .slider {
-  background-color: #C0601C;
+  background-color: var(--bs-CR-orange);
 }
 
 input:focus + .slider {
@@ -172,7 +172,7 @@ input:checked + .slider:before {
 .list-group-item.active {
   z-index: 2;
   color: var(--bs-list-group-active-color);
-  background-color: #C0601C;
+  background-color: var(--bs-CR-orange);
   border-color: var(--bs-list-group-active-border-color);
 }
 
