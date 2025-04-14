@@ -120,7 +120,22 @@ function llenar() {
         });
     }else {
         console.error('Elemento con ID "DescargarLogOTPBtn" no encontrado.');
-    }         
+    }  
+    
+    //get numero de encuestas con https://api.cheetah-research.ai/chatbot/survey_count/ y ponerlo en EncuestasLBL
+    const surveyCountLabel = document.getElementById('EncuestasLBL');
+    if (surveyCountLabel) {
+        axios.post('https://api.cheetah-research.ai/chatbot/survey_count/', formData)
+        .then((response) => {
+            const surveyCount = response.data.survey_count;
+            surveyCountLabel.innerText = `${surveyCount}`;
+        })
+        .catch((error) => {
+            console.error('Error al realizar la solicitud:', error);
+        });
+    } else {
+        console.error('Elemento con ID "EncuestasLBL" no encontrado.');
+    }
 
 
 
