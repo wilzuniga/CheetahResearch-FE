@@ -433,7 +433,7 @@ function CE_DeactivateNavBy(){
     const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId') ;
     axios.get(url)
     .then(response => {
-        // console.log(response.data);
+        console.log(response.data);
         response.data.questions.forEach((pregunta) => {
             questions.push(pregunta);
         });
