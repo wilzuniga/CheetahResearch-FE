@@ -89,7 +89,11 @@
                                 <a id="UserPersonaBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#UserPersona" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">User Persona</a>
                                 <a id="AnalisisPsicograficosBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#AnalisisPsicograficos" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">Análisis Psicograficos</a>
                                 <a id="customerExperienceBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#customerExperience" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">Experiencia de Usuario</a>
-                                <a id="NPSySatisfaccionBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#NPSySatisfaccion" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">NPS y satisfacción</a>.
+                                <a id="NPSySatisfaccionBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#NPSySatisfaccion" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">NPS y satisfacción</a>
+
+                                <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#BrandStatus" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">Brand Status</a>
+                                <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#ClimaLaboral" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius: 2px;height: 46px;font-family: hedliner;font-weight: bold;">Clima Laboral</a>
+                                
                                 <div style="height: 95%;"></div>
                             </div>
                         </div>
@@ -245,6 +249,107 @@
 
 
 
+
+                                <div id="ClimaLaboral" class="tab-pane fade" role="tabpanel">
+                                    <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                        <a class="list-group-item list-group-item-action" href="#A_ClimaLaboral" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Analisis de Clima Laboral</a>
+                                    </div> <!-- 🔧 Cierre agregado aquí -->
+                                
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="tab-content">
+                                                <div id="A_ClimaLaboral" class="tab-pane fade" role="tabpanel">
+                                                    <h3>Análisis de Clima Laboral</h3>
+                                                    <p>Este análisis integral evalúa el clima laboral a través de un estudio detallado que identifica factores clave, tendencias en los comentarios y áreas críticas de mejora. Se examinan correlaciones, se segmentan los empleados y se aplican modelos como Kano y ACSI para ofrecer una visión profunda de la situación actual y recomendaciones estratégicas.</p>
+                                
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                                        <div>
+                                                            <label for="Combobox_ClimaLaboral" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_ClimaLaboral" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+                                                        </div>
+                                                        <button id="export_AP_ClimaLaboral" style="border-radius: 5px;">Exportar</button>
+                                                    </div>
+                                
+                                                    <div id="ClimaLaboralContent" style="flex: 1;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                
+                                <div id="BrandStatus" class="tab-pane fade" role="tabpanel">
+                                    <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                        <a class="list-group-item list-group-item-action" href="#A_BrandStrenght" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Analisis de Brand Strenght</a>
+                                        <a class="list-group-item list-group-item-action" href="#A_BrandEquity" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius: 2px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Analisis de Brand Equity</a>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="tab-content">
+                                                <div id="A_BrandStrenght" class="tab-pane fade" role="tabpanel">
+                                                    <h3>Análisis de Brand Strength</h3>
+                                                    <p>Este análisis integral evalúa la fortaleza de la marca a través de un estudio detallado que identifica factores clave, percepciones del consumidor y áreas de oportunidad. Se examinan atributos de marca, asociaciones, lealtad y métricas como el reconocimiento y la relevancia para ofrecer una visión profunda de la situación actual y recomendaciones estratégicas.</p>
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                                        <!-- Combobox para seleccionar filtro -->
+                                                        <div>
+                                                            <label for="Combobox_BrandStrenght" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_BrandStrenght" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+                                                        </div>
+                                                
+                                                        <!-- Botón para mostrar/ocultar el textarea -->
+                                                        <button id="export_AP_BrandStrenght" style="border-radius: 5px;">Exportar</button>
+                                
+                                                    </div>
+                                                    
+                                 
+                                                    <div id="BrandStrenghtContent" style="flex: 1;">
+                                                    </div>
+                                                    
+                                                </div>
+                                
+                                
+                                                <div id="A_BrandEquity" class="tab-pane fade" role="tabpanel">
+                                                    <h3>Análisis de Brand Equity</h3>
+                                                    <p>Este análisis integral evalúa el valor de marca a través de un estudio detallado que identifica factores clave, percepciones del consumidor y áreas de oportunidad. Se examinan atributos de marca, asociaciones, lealtad y métricas como el Net Promoter Score (NPS) para ofrecer una visión profunda de la fortaleza de la marca y recomendaciones estratégicas.</p>
+                                                
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                                        <!-- Combobox para seleccionar filtro -->
+                                                        <div>
+                                                            <label for="Combobox_BrandEquity" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_BrandEquity" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+                                                        </div>
+                                                
+                                                        <!-- Botón para mostrar/ocultar el textarea -->
+                                                        <button id="export_AP_BrandEquity" style="border-radius: 5px;">Exportar</button>
+                                
+                                                    </div>
+                                                    
+                                                    
+                                                    <div id="BrandEquityContent" style="flex: 1;">
+                                                    </div>
+                                                </div>
+                                                
+                                                
+                                                
+                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                
+                                
 
                                 
                                 <div id="NPSySatisfaccion" class="tab-pane fade" role="tabpanel">
