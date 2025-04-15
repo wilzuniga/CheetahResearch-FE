@@ -201,6 +201,9 @@ function AgregarModulos(study) {
             const AnalisisPsicograficosBtn = document.getElementById('AnalisisPsicograficosBtn');
             const CustomerEcperienceBtn = document.getElementById('customerExperienceBtn');
             const NPSySatisfaccionBtn = document.getElementById('NPSySatisfaccionBtn');
+            const BrandStatusBtn = document.getElementById('BrandStatusBtn');
+            const ClimaLaboralBtn = document.getElementById('ClimaLaboralBtn');
+            
 
 
             ResumenGeneralBtn.style.display = 'none';
@@ -209,6 +212,8 @@ function AgregarModulos(study) {
             AnalisisPsicograficosBtn.style.display = 'none';
             CustomerEcperienceBtn.style.display = 'none';
             NPSySatisfaccionBtn.style.display = 'none';
+            BrandStatusBtn.style.display = 'none';
+            ClimaLaboralBtn.style.display = 'none';
 
             ActiveModules.forEach(modulo => {
                 if (modulo === 'Modulo de Analisis General') {
@@ -228,6 +233,12 @@ function AgregarModulos(study) {
                 }
                 if (modulo === 'Modulo de Customer Satisfaction') {
                     NPSySatisfaccionBtn.style.display = 'block';
+                }
+                if (modulo === 'Modulo de Brand Status') {
+                    BrandStatusBtn.style.display = 'block';
+                }
+                if (modulo === 'Modulo de Clima Laboral') {
+                    ClimaLaboralBtn.style.display = 'block';
                 }
 
             }
@@ -275,6 +286,10 @@ function AgregarFiltros(study) {
             const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
             const comboBox9 = document.getElementById('Combobox_customerExperience');
             const comboBox10 = document.getElementById('Combobox_Satisfaccion');
+            const comboBox11 = document.getElementById('Combobox_ClimaLaboral');
+            const comboBox12 = document.getElementById('Combobox_BrandStrenght');
+            const comboBox13 = document.getElementById('Combobox_BrandEquity');
+
 
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
@@ -286,6 +301,9 @@ function AgregarFiltros(study) {
             comboBox8.innerHTML = '';
             comboBox9.innerHTML = '';
             comboBox10.innerHTML = '';
+            comboBox11.innerHTML = '';
+            comboBox12.innerHTML = '';
+            comboBox13.innerHTML = '';
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -302,6 +320,10 @@ function AgregarFiltros(study) {
             comboBox8.appendChild(option.cloneNode(true));
             comboBox9.appendChild(option.cloneNode(true));
             comboBox10.appendChild(option.cloneNode(true));
+            comboBox11.appendChild(option.cloneNode(true));
+            comboBox12.appendChild(option.cloneNode(true));
+            comboBox13.appendChild(option.cloneNode(true));
+
         });
 
         LLenarResumenes(study);
@@ -433,6 +455,9 @@ function LLenarResumenes(study) {
     const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
     const comboBoxCE = document.getElementById('Combobox_customerExperience');
     const comboBoxS = document.getElementById('Combobox_Satisfaccion');
+    const comboBoxCL = document.getElementById('Combobox_ClimaLaboral');
+    const comboBoxBS = document.getElementById('Combobox_BrandStrenght');
+    const comboBoxBE = document.getElementById('Combobox_BrandEquity');
 
     //User Persona, perfecto
     comboBoxUP.addEventListener('change', (event) => {
@@ -680,7 +705,102 @@ function LLenarResumenes(study) {
             });
     });
 
+    //Clima Laboral, perfecto
+    comboBoxCL.addEventListener('change', (event) => {
+        // console.log(event.target.value);
 
+        var div = document.getElementById('ClimaLaboralContent');
+        // Supongamos que `event.target.value` es el valor del combobox
+        const selectedValue = event.target.value;
+
+        formData = new FormData();     
+        formData.append('filter', selectedValue);
+        formData.append('module', 'work_environment');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                const coso = marked(data);                          
+                div.innerHTML = coso;   
+
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+
+            });
+    });
+
+    comboBoxBS.addEventListener('change', (event) => {
+        // console.log(event.target.value);
+        var div = document.getElementById('BrandStrenghtContent');
+        var textArea = document.getElementById('BrandStrenghtTextArea');
+        const selectedValue = event.target.value;
+
+        formData = new FormData();     
+        formData.append('filter', selectedValue);
+        formData.append('module', 'brand_status');
+        formData.append('sub_module', 'brand_strength');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                const coso = marked(data);                          
+                div.innerHTML = coso;   
+                textArea.value = data;                   
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+
+            });
+    });
+
+    comboBoxBE.addEventListener('change', (event) => {
+        // console.log(event.target.value);
+        var div = document.getElementById('BrandEquityContent');
+        var textArea = document.getElementById('BrandEquityTextArea');
+        const selectedValue = event.target.value;
+
+
+        
+        formData = new FormData();     
+        formData.append('filter', selectedValue);
+        formData.append('module', 'brand_status');
+        formData.append('sub_module', 'brand_equity');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                const coso = marked(data);                          
+                div.innerHTML = coso;   
+                textArea.value = data;                   
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+
+            });
+    });
+    
     comboBoxEC.addEventListener('change', (event) => {
         // console.log(event.target.value);
 
