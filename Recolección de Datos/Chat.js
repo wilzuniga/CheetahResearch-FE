@@ -439,15 +439,11 @@ function getMessage(message, imageSrc, link) {
     h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
 
     BotIMG_Cont.appendChild(BotIMG);
-
     BotIMG_Div.appendChild(BotIMG_Cont);
-
     cardBody.appendChild(h4);
     card.appendChild(cardBody);
-
     li.appendChild(BotIMG_Div);
     li.appendChild(card);
-
     messageList.appendChild(li);
 
     //Scroll automático hacia abajo cuando se envía un mensaje nuevo
