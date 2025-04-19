@@ -9,6 +9,7 @@ function setColorsFromAPI(study_id) {
             color1: response.data.primary_color,
             color2: response.data.secondary_color
         }))
+
         .catch(error => {
             console.error('Error capturando colores desde API:', error);
             return { color1: null, color2: null };
@@ -412,13 +413,22 @@ function getMessage(message, imageSrc, link) {
         anchor.target = '_blank';
         cardBody.appendChild(anchor);
     }
-
+    /*
     const p = document.createElement('p');
     p.className = 'text-break text-start d-flex order-2 card-text';
     p.style.color = '#f0f0f0';
     p.style.marginBottom = "6px";
     p.textContent = message;
-    p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios
+    p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios*/
+
+    let coso = marked(message);
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'text-start card-text'; // Alineación a la izquierda
+    messageDiv.style.fontSize = '16px'; // Ajuste del tamaño de fuente
+    messageDiv.style.lineHeight = '1.5'; // Espaciado entre líneas para mejor legibilidad
+    messageDiv.style.color = '#FFFFFF'; // Color del texto
+    messageDiv.innerHTML = coso;
+    cardBody.appendChild(messageDiv);
 
     const h4 = document.createElement('h4');
     h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
