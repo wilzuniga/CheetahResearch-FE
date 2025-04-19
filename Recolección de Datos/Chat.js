@@ -343,7 +343,7 @@ function sendMessage(message, imageSrc) {
 
 //Función para recibir un mensaje de encuestador
 function getMessage(message, imageSrc, link) {
-    const Feed = document.getElementById('Feed');//Validar Feed Vacío
+    const Feed = document.getElementById('Feed'); // Validar Feed Vacío
     const emptyFeed = document.getElementById('Empty-Feed');
     if (Feed.style.display === 'none') {
         emptyFeed.style.display = 'none';
@@ -354,11 +354,9 @@ function getMessage(message, imageSrc, link) {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
-
         hour: '2-digit',
         minute: '2-digit',
-
-        hour12: true
+        hour12: true,
     };
 
     const messageList = document.getElementById('Message-List');
@@ -392,9 +390,9 @@ function getMessage(message, imageSrc, link) {
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
 
     if (imageSrc) {
-        ruta = "https://cheetahresearch.s3.amazonaws.com/" + imageSrc;
+        const ruta = "https://cheetahresearch.s3.amazonaws.com/" + imageSrc;
         const img = document.createElement('img');
-        img.className = 'img-fluid d-flex order-1 mx-auto mb-2'
+        img.className = 'img-fluid d-flex order-1 mx-auto mb-2';
         img.src = ruta;
         img.style.maxHeight = '18rem';
         img.style.height = 'auto';
@@ -413,24 +411,23 @@ function getMessage(message, imageSrc, link) {
         anchor.target = '_blank';
         cardBody.appendChild(anchor);
     }
-    /*
-    const p = document.createElement('p');
-    p.className = 'text-break text-start d-flex order-2 card-text';
-    p.style.color = '#f0f0f0';
-    p.style.marginBottom = "6px";
-    p.textContent = message;
-    p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios*/
 
-    let coso = marked(message);
-    console.log(coso);
-    console.log("---------");
-    console.log(message);
+    // Procesar el mensaje como Markdown
     const messageDiv = document.createElement('div');
     messageDiv.className = 'text-start card-text'; // Alineación a la izquierda
     messageDiv.style.fontSize = '16px'; // Ajuste del tamaño de fuente
     messageDiv.style.lineHeight = '1.5'; // Espaciado entre líneas para mejor legibilidad
     messageDiv.style.color = '#FFFFFF'; // Color del texto
-    messageDiv.innerHTML = coso;
+
+    try {
+        // Procesar el mensaje con marked
+        const safeHTML = DOMPurify.sanitize(marked(message)); // Asegurar que el HTML sea seguro
+        messageDiv.innerHTML = safeHTML;
+    } catch (error) {
+        console.error('Error procesando Markdown:', error);
+        messageDiv.textContent = message; // Fallback al texto plano
+    }
+
     cardBody.appendChild(messageDiv);
 
     const h4 = document.createElement('h4');
@@ -449,16 +446,14 @@ function getMessage(message, imageSrc, link) {
     li.appendChild(card);
     messageList.appendChild(li);
 
-    //Scroll automático hacia abajo cuando se envía un mensaje nuevo
+    // Scroll automático hacia abajo cuando se envía un mensaje nuevo
     const scrollPanel = document.getElementById('Feed-BG');
     scrollPanel.scrollTop = scrollPanel.scrollHeight;
 
-    //Mensaje de espera de respuesta queda abajo
-    let loadingMsg = document.getElementById('Typing-Msg');
+    // Mensaje de espera de respuesta queda abajo
+    const loadingMsg = document.getElementById('Typing-Msg');
     messageList.insertBefore(loadingMsg, null);
 }
-
-
 
 //Funciones cambiar colores de botones al soltar botón (móviles)
 document.getElementById('btIMG-Cont').addEventListener('touchstart', function () {
