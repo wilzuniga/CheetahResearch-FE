@@ -422,6 +422,9 @@ function getMessage(message, imageSrc, link) {
     p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios*/
 
     let coso = marked(message);
+    console.log(coso);
+    console.log("---------");
+    console.log(message);
     const messageDiv = document.createElement('div');
     messageDiv.className = 'text-start card-text'; // Alineación a la izquierda
     messageDiv.style.fontSize = '16px'; // Ajuste del tamaño de fuente

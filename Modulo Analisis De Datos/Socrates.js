@@ -299,6 +299,9 @@ function getMessage(message, imageSrc) {
    //manejo del mensaje con marked*/
 
    let coso = marked(message);
+   console.log(coso);
+   console.log("---------");
+   console.log(message);
    const messageDiv = document.createElement('div');
    messageDiv.className = 'text-start card-text'; // Alineación a la izquierda
    messageDiv.style.fontSize = '16px'; // Ajuste del tamaño de fuente
