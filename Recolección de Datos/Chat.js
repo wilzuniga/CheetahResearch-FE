@@ -442,7 +442,6 @@ function getMessage(message, imageSrc, link) {
 
     BotIMG_Div.appendChild(BotIMG_Cont);
 
-    cardBody.appendChild(p);
     cardBody.appendChild(h4);
     card.appendChild(cardBody);
 
