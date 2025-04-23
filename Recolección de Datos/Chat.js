@@ -421,7 +421,8 @@ function getMessage(message, imageSrc, link) {
 
     try {
         // Procesar el mensaje con marked
-        messageDiv.innerHTML = message;
+        messageDiv.innerHTML = message.replace(/\n/g, '<br>');
+
         console.log('Mensaje procesado:', message); // Para depuración
     } catch (error) {
         console.error('Error procesando Markdown:', error);
