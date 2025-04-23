@@ -420,10 +420,12 @@ function getMessage(message, imageSrc, link) {
     messageDiv.style.color = '#FFFFFF'; // Color del texto
 
     try {
-        // Procesar el mensaje con marked
-        messageDiv.innerHTML = message.replace(/\n/g, '<br>');
+        //que se reemplacen los /n por <br> 
+        let processedMessage = message.replace(/\n/g, '<br>');
 
-        console.log('Mensaje procesado:', message); // Para depuración
+        messageDiv.innerHTML = processedMessage;
+
+        console.log('Mensaje procesado:', processedMessage); // Para depuración
     } catch (error) {
         console.error('Error procesando Markdown:', error);
         messageDiv.textContent = message; // Fallback al texto plano
