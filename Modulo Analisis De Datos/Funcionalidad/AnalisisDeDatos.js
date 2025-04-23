@@ -192,7 +192,7 @@ function AgregarModulos(study) {
                 ActiveModules.push(modulo);
             });
 
-            // console.log(ActiveModules);
+            console.log(ActiveModules);
 
             const ResumenGeneralBtn = document.getElementById('ResumenGeneralBtn');
             const ResumenIndividualBtn = document.getElementById('ResumenIndividualBtn');
