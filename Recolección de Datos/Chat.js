@@ -421,7 +421,7 @@ function getMessage(message, imageSrc, link) {
 
     try {
         //que se reemplacen los /n por <br> 
-        let processedMessage = message.replace(/\n/g, '<br>');
+        let processedMessage = message.replaceAll("\n", "<br>");
 
         messageDiv.innerHTML = processedMessage;
 
