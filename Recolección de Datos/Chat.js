@@ -423,6 +423,7 @@ function getMessage(message, imageSrc, link) {
         // Procesar el mensaje con marked
         const safeHTML = DOMPurify.sanitize(marked(message)); // Asegurar que el HTML sea seguro
         messageDiv.innerHTML = safeHTML;
+        console.log('Mensaje procesado:', message); // Para depuración
     } catch (error) {
         console.error('Error procesando Markdown:', error);
         messageDiv.textContent = message; // Fallback al texto plano
