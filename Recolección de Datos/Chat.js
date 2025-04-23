@@ -415,13 +415,14 @@ function getMessage(message, imageSrc, link) {
     // Procesar el mensaje como Markdown
     const messageDiv = document.createElement('div');
     messageDiv.className = 'text-start card-text'; // Alineación a la izquierda
-    messageDiv.style.fontSize = '16px'; // Ajuste del tamaño de fuente
+    messageDiv.style.fontSize = '18px'; // Ajuste del tamaño de fuente
     messageDiv.style.lineHeight = '1.5'; // Espaciado entre líneas para mejor legibilidad
     messageDiv.style.color = '#FFFFFF'; // Color del texto
 
     try {
         // Procesar el mensaje con marked
-        messageDiv.innerHTML = message;
+        messageDiv.innerHTML = message.replace(/\n/g, '<br>');
+
         console.log('Mensaje procesado:', message); // Para depuración
     } catch (error) {
         console.error('Error procesando Markdown:', error);
