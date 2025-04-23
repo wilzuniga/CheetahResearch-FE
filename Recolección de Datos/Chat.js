@@ -318,6 +318,7 @@ function sendMessage(message, imageSrc) {
         }else {
             //eliminar todo el contenido entre [] en el mensaje
             data.response = data.response.replace(/\[.*?\]/g, '');
+            
             if ('file_path' in data) {
                 if ('url' in data) {
                     getMessage(data.response, data.file_path, data.url);
@@ -420,9 +421,11 @@ function getMessage(message, imageSrc, link) {
     messageDiv.style.color = '#FFFFFF'; // Color del texto
 
     try {
-        //que se reemplacen los /n por <br> 
-        let processedMessage = message.replaceAll("\n", "<br>");
+        let unescapedMessage = message.replace(/\\n/g, '\n');
 
+        let processedMessage = unescapedMessage.replace(/\n/g, '<br>');
+        
+        // Mostrar en el HTML
         messageDiv.innerHTML = processedMessage;
 
         console.log('Mensaje procesado:', processedMessage); // Para depuración
