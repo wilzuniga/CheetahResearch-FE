@@ -9,6 +9,7 @@ function setColorsFromAPI(study_id) {
             color1: response.data.primary_color,
             color2: response.data.secondary_color
         }))
+
         .catch(error => {
             console.error('Error capturando colores desde API:', error);
             return { color1: null, color2: null };
@@ -317,6 +318,7 @@ function sendMessage(message, imageSrc) {
         }else {
             //eliminar todo el contenido entre [] en el mensaje
             data.response = data.response.replace(/\[.*?\]/g, '');
+            
             if ('file_path' in data) {
                 if ('url' in data) {
                     getMessage(data.response, data.file_path, data.url);
@@ -342,7 +344,7 @@ function sendMessage(message, imageSrc) {
 
 //Función para recibir un mensaje de encuestador
 function getMessage(message, imageSrc, link) {
-    const Feed = document.getElementById('Feed');//Validar Feed Vacío
+    const Feed = document.getElementById('Feed'); // Validar Feed Vacío
     const emptyFeed = document.getElementById('Empty-Feed');
     if (Feed.style.display === 'none') {
         emptyFeed.style.display = 'none';
@@ -353,11 +355,9 @@ function getMessage(message, imageSrc, link) {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
-
         hour: '2-digit',
         minute: '2-digit',
-
-        hour12: true
+        hour12: true,
     };
 
     const messageList = document.getElementById('Message-List');
@@ -391,9 +391,9 @@ function getMessage(message, imageSrc, link) {
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
 
     if (imageSrc) {
-        ruta = "https://cheetahresearch.s3.amazonaws.com/" + imageSrc;
+        const ruta = "https://cheetahresearch.s3.amazonaws.com/" + imageSrc;
         const img = document.createElement('img');
-        img.className = 'img-fluid d-flex order-1 mx-auto mb-2'
+        img.className = 'img-fluid d-flex order-1 mx-auto mb-2';
         img.src = ruta;
         img.style.maxHeight = '18rem';
         img.style.height = 'auto';
@@ -413,12 +413,28 @@ function getMessage(message, imageSrc, link) {
         cardBody.appendChild(anchor);
     }
 
-    const p = document.createElement('p');
-    p.className = 'text-break text-start d-flex order-2 card-text';
-    p.style.color = '#f0f0f0';
-    p.style.marginBottom = "6px";
-    p.textContent = message;
-    p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios
+    // Procesar el mensaje como Markdown
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'text-start card-text'; // Alineación a la izquierda
+    messageDiv.style.fontSize = '18px'; // Ajuste del tamaño de fuente
+    messageDiv.style.lineHeight = '1.5'; // Espaciado entre líneas para mejor legibilidad
+    messageDiv.style.color = '#FFFFFF'; // Color del texto
+
+    try {
+        let unescapedMessage = message.replace(/\\n/g, '\n');
+
+        let processedMessage = unescapedMessage.replace(/\n/g, '<br>');
+        
+        // Mostrar en el HTML
+        messageDiv.innerHTML = processedMessage;
+
+        console.log('Mensaje procesado:', processedMessage); // Para depuración
+    } catch (error) {
+        console.error('Error procesando Markdown:', error);
+        messageDiv.textContent = message; // Fallback al texto plano
+    }
+
+    cardBody.appendChild(messageDiv);
 
     const h4 = document.createElement('h4');
     h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
@@ -429,28 +445,21 @@ function getMessage(message, imageSrc, link) {
     h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
 
     BotIMG_Cont.appendChild(BotIMG);
-
     BotIMG_Div.appendChild(BotIMG_Cont);
-
-    cardBody.appendChild(p);
     cardBody.appendChild(h4);
     card.appendChild(cardBody);
-
     li.appendChild(BotIMG_Div);
     li.appendChild(card);
-
     messageList.appendChild(li);
 
-    //Scroll automático hacia abajo cuando se envía un mensaje nuevo
+    // Scroll automático hacia abajo cuando se envía un mensaje nuevo
     const scrollPanel = document.getElementById('Feed-BG');
     scrollPanel.scrollTop = scrollPanel.scrollHeight;
 
-    //Mensaje de espera de respuesta queda abajo
-    let loadingMsg = document.getElementById('Typing-Msg');
+    // Mensaje de espera de respuesta queda abajo
+    const loadingMsg = document.getElementById('Typing-Msg');
     messageList.insertBefore(loadingMsg, null);
 }
-
-
 
 //Funciones cambiar colores de botones al soltar botón (móviles)
 document.getElementById('btIMG-Cont').addEventListener('touchstart', function () {

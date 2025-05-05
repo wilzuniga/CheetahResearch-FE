@@ -115,9 +115,13 @@
                 <form class="p-3 p-xl-4" method="post" style="font-family: hedliner;">
                     <div class="mb-3" style="font-family: hedliner;">
                         <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Pregunta</p>
-                        <div class="d-xl-flex justify-content-xl-start align-items-xl-end" style="font-family: hedliner;"><input class="form-control" type="text" id="PreguntaTXT" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%;font-family: IBM Plex Sans;">
-                            <div class="d-xl-flex justify-content-xl-start align-items-xl-end" style="font-family: hedliner; margin-left: 10px;"><input class="form-control" type="text" id="PesoTXT" name="Nombre" placeholder="Ingresa el peso" style="width: 100%;font-family: IBM Plex Sans;">
+                        <div class="d-xl-flex justify-content-xl-start align-items-xl-end" style="font-family: hedliner;">
+                            <textarea class="form-control" id="PreguntaTXT" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%; height: 38px; font-family: IBM Plex Sans; line-height: 20px; overflow-y: auto;"></textarea>
+                            <div class="d-xl-flex justify-content-xl-start align-items-xl-end" style="font-family: hedliner; margin-left: 10px;">
+                                <input class="form-control" type="text" id="PesoTXT" name="Nombre" placeholder="Ingresa el peso" style="width: 100%; font-family: IBM Plex Sans;">
+                            </div>
                         </div>
+                        
                     </div>
                     <div class="mb-3" style="font-family: hedliner;">
                         <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: hedliner;">Attachment</p><input class="form-control" type="file" id="AnexoPregunta" style="font-family: hedliner;"><input class="form-control" type="text" id="AnexoPreguntaURL" name="Nombre" placeholder="URL" style="margin-top: 10px;font-family: IBM Plex Sans;">
