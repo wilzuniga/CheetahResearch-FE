@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 
+    //Deshabilitar chat hasta que Socrates se conecte
+    disableChat("Espera a que Socrates se conecte...");
+
     //Función cambiar size del Type-Box al cambiar size de Ventana
     function messageInput_resizeWindow() {
         //Re-calcular nuevos valores
@@ -214,7 +217,7 @@ function sendMessage(message, imageSrc) {
 
             getMessage(farewellMessage, null);
             loadingMsg.style.display = 'none';
-            endChat();
+            disableChat("¡Gracias por responder esta encuesta!");
         } else {
             getMessage(data.response, null);
             loadingMsg.style.display = 'none';
@@ -370,6 +373,7 @@ function load() {
         botStatus=document.getElementById('Bot-Status');
         botStatus.innerText = 'Conectado';
         botStatus.style.color = 'var(--bs-CR-orange-2)';
+        enableChat("Escribir mensaje...");
 
     }).catch((error) => {
         console.log('Error:', error);
@@ -413,14 +417,14 @@ function loadInterviewer() {
 }
 
 
-//Función para deshabilitar Chat al terminarlo
-function endChat(){
+//Función para deshabilitar Chat
+function disableChat(message) {
     const messageInput = document.getElementById("Message-Input");
     const loadingMsg = document.getElementById("Typing-Msg");
     const btSend = document.getElementById("btSend");
     const btIMG = document.getElementById("btIMG");
 
-    messageInput.placeholder= "¡Gracias por responder esta encuesta!";
+    messageInput.placeholder= message;
     loadingMsg.style.display = 'none';
     messageInput.disabled = true;
     btSend.disabled = true;
@@ -428,9 +432,27 @@ function endChat(){
     
     messageInput.parentElement.style.background = 'transparent';
     messageInput.style.background = 'transparent';
-    messageInput.style.boxShadow = 'none';
     btSend.style.color = 'var(--bs-CR-gray)';
     btIMG.style.color = 'var(--bs-CR-gray)';
+}
+
+//Función para habilitar Chat
+function enableChat(message){
+    const messageInput = document.getElementById("Message-Input");
+    const loadingMsg = document.getElementById("Typing-Msg");
+    const btSend = document.getElementById("btSend");
+    const btIMG = document.getElementById("btIMG");
+
+    messageInput.placeholder= message;
+    loadingMsg.style.display = 'none';
+    messageInput.disabled = false;
+    btSend.disabled = false;
+    btIMG.disabled = false;
+     
+    messageInput.parentElement.style.background = 'var(--bs-CR-gray-dark)';
+    messageInput.style.background = '#ffffff';
+    btSend.style.color = 'var(--bs-CR-gray)';
+    btIMG.style.color = 'var(--bs-CR-orange)';
 }
 
 //que a la hora de cerrar la ventana pregunte si se desea salir
