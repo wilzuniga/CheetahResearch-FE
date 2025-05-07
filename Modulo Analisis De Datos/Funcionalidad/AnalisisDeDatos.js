@@ -295,7 +295,7 @@ function AgregarModulos(study) {
         );
 }
 
-/*
+
 function AgregarFiltros(study) {
     let url = "https://api.cheetah-research.ai/configuration/get_filters/" + study;
 
@@ -379,62 +379,7 @@ function AgregarFiltros(study) {
         );
 
         
-}*/
-
-function AgregarFiltros(study) {
-    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + study;
-
-    axios.get(url)
-        .then(function (response) {
-            const data = response.data.filters;
-            const Demographic_Filters = ['Seleccionar filtro', 'General', ...data];
-
-            // Lista de IDs de los combobox
-            const comboBoxIDs = [
-                'ComboBox_ResumenGeneral',
-                'ComboBox_ResumenIndividual',
-                'Combobox_UserPersona',
-                'Combobox_EKMAN',
-                'Combobox_RasgosDePersonalidad',
-                'Combobox_SegmentosPsicograficos',
-                'Combobox_NPS',
-                'Combobox_EstiloDeComunicacion',
-                'Combobox_customerExperience',
-                'Combobox_Satisfaccion',
-                'Combobox_ClimaLaboral',
-                'Combobox_BrandStrenght',
-                'Combobox_BrandEquity'
-            ];
-
-            const comboBoxes = comboBoxIDs.map(id => {
-                const el = document.getElementById(id);
-                if (!el) {
-                    console.warn(`No se encontró el combobox con id '${id}'`);
-                }
-                return el;
-            });
-
-            comboBoxes.forEach(combo => {
-                if (combo) combo.innerHTML = '';
-            });
-
-            Demographic_Filters.forEach(optionText => {
-                const option = document.createElement('option');
-                option.value = optionText;
-                option.text = optionText;
-
-                comboBoxes.forEach(combo => {
-                    if (combo) combo.appendChild(option.cloneNode(true));
-                });
-            });
-
-            LLenarResumenes(study);
-        })
-        .catch(function (error) {
-            console.error('Error al obtener los filtros:', error);
-        });
 }
-
 
 
 let ResumenGeneral, ResumenIndividual, AnalisisPsicograficos;
