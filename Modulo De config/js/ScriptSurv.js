@@ -2,6 +2,8 @@ let questions = [];
 let questionsImg = [];
 
 document.addEventListener('DOMContentLoaded', () => {
+    const studyId = localStorage.getItem('selectedStudyId');
+    setColorsFromAPI(studyId);//Setea colores
     const agregarPreguntaBtn = document.getElementById('AgregarPreguntaBtn');
     const preguntaTXT = document.getElementById('PreguntaTXT');
     const pesoTXT = document.getElementById('PesoTXT');
@@ -36,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const newSpan = document.createElement('span');
             newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
             newSpan.style.fontFamily = "hedliner";
+            newSpan.style.color = 'var(--bs-CR-gray)';
+            newSpan.style.backgroundColor = 'var(--bs-CR-orange)';
             newSpan.textContent = peso;
 
             const newSmall = document.createElement('small');
@@ -65,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
             addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
             addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
             addFollowQuestionBTN.style.marginRight = '10px';
+            addFollowQuestionBTN.style.color = 'var(--bs-CR-gray)';
+            addFollowQuestionBTN.style.backgroundColor = 'var(--bs-CR-orange)';
             buttonsDiv.appendChild(addFollowQuestionBTN);
 
             const icon = document.createElement('i');
@@ -118,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 overlay.innerHTML = `
                     <div id="overlayContent">
                         <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: IBM Plex Sans;" />
-                        <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner ">Agregar pregunta</button>
+                        <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange); ">Agregar pregunta</button>
                         <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner">Cerrar</button>
                     </div>
                 `;
@@ -151,6 +157,8 @@ document.addEventListener('DOMContentLoaded', () => {
             editBtn.classList.add('btn', 'btn-primary', 'btn-sm');
             editBtn.innerText = 'Editar';
             editBtn.style.marginRight = '10px';
+            editBtn.style.color = 'var(--bs-CR-gray)';
+            editBtn.style.backgroundColor = 'var(--bs-CR-orange)';
             buttonsDiv.appendChild(editBtn);
 
             editBtn.addEventListener('click', (event) => {
@@ -163,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <input id="EditPesoTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa el peso" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
                         <input id="EditAnexoPregunta" class="form-control" type="file" name="Nombre" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
                         <input id="EditAnexoPreguntaURL" class="form-control" type="text" name="Nombre" placeholder="Ingresa la URL del anexo" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
-                        <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; margin-bottom: 5px;">Guardar</button>
+                        <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; margin-bottom: 5px;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Guardar</button>
                         <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner; margin-bottom: 5px;">Cerrar</button>
                     </div>
                 `;
@@ -459,6 +467,8 @@ function CE_DeactivateNavBy(){
                 const newSpan = document.createElement('span');
                 newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
                 newSpan.textContent = pregunta.weight;
+                newSpan.style.color = 'var(--bs-CR-gray)';
+                newSpan.style.backgroundColor = 'var(--bs-CR-orange)';
     
                 //verificar si la pregunta tiene anexo, url o ninguno y agregarlo
                 const newSmall = document.createElement('small');
@@ -499,6 +509,8 @@ function CE_DeactivateNavBy(){
                 addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
                 addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
                 addFollowQuestionBTN.style.marginRight = '10px';
+                addFollowQuestionBTN.style.color = 'var(--bs-CR-gray)';
+                addFollowQuestionBTN.style.backgroundColor = 'var(--bs-CR-orange)';
                 buttonsDiv.appendChild(addFollowQuestionBTN);
     
                 const icon = document.createElement('i');
@@ -564,7 +576,7 @@ function CE_DeactivateNavBy(){
                     overlay.innerHTML = `
                         <div id="overlayContent">
                             <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: IBM Plex Sans;" />
-                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: IBM Plex Sans">Agregar pregunta</button>
+                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: IBM Plex Sans color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Agregar pregunta</button>
                             <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" ">Cerrar</button>
                         </div>
                     `;
@@ -598,6 +610,8 @@ function CE_DeactivateNavBy(){
                 editBtn.classList.add('btn', 'btn-primary', 'btn-sm');
                 editBtn.innerText = 'Editar';
                 editBtn.style.marginRight = '10px';
+                editBtn.style.color = 'var(--bs-CR-gray)';
+                editBtn.style.backgroundColor = 'var(--bs-CR-orange)';
                 buttonsDiv.appendChild(editBtn);
 
                 editBtn.addEventListener('click', (event) => {
@@ -610,7 +624,7 @@ function CE_DeactivateNavBy(){
                             <input id="EditPesoTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa el peso" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
                             <input id="EditAnexoPregunta" class="form-control" type="file" name="Nombre" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
                             <input id="EditAnexoPreguntaURL" class="form-control" type="text" name="Nombre" placeholder="Ingresa la URL del anexo" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
-                            <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; margin-bottom: 5px;">Guardar</button>
+                            <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; margin-bottom: 5px;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Guardar</button>
                             <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner; margin-bottom: 5px;">Cerrar</button>
                         </div>
                     `;
@@ -782,3 +796,53 @@ document.getElementById('GuardarEncuestaBtn').addEventListener('click', (event) 
     //recargar la pagina
     location.reload();
 });
+
+//Colores
+function setColorsFromAPI(studyId) {
+    const url = 'https://api.cheetah-research.ai/configuration/info_study/' + studyId;
+    return axios.get(url)
+        .then(response => {
+            const colors = {
+                color1: response.data.primary_color,
+                color2: response.data.secondary_color
+            };
+
+            applyColors(colors);
+
+            return colors;
+        })
+        .catch(error => {
+            console.error('Error capturando colores desde API:', error);
+            return { color1: null, color2: null };
+        });
+}
+
+function applyColors(colors) {//Colors es un array
+    if (colors.color1) {
+        document.documentElement.style.setProperty('--bs-CR-orange', colors.color1);
+
+        document.documentElement.style.setProperty('--bs-CR-orange-2', brightColorVariant(colors.color1));
+    }
+    if (colors.color2) {
+        document.documentElement.style.setProperty('--bs-CR-gray', colors.color2);
+
+        document.documentElement.style.setProperty('--bs-CR-gray-dark', darkColorVariant(colors.color2));
+    }
+}
+function darkColorVariant (color) {
+    return adjustColor(color, -10);
+}
+function brightColorVariant (color) {
+    return adjustColor(color, 10);
+}
+function adjustColor(color, percent) {//Funcion loca de chatsito
+    const num = parseInt(color.slice(1), 16),
+          amt = Math.round(2.55 * percent),
+          R = (num >> 16) + amt,
+          G = (num >> 8 & 0x00FF) + amt,
+          B = (num & 0x0000FF) + amt;
+    return `#${(0x1000000 + (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 + 
+                (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 + 
+                (B < 255 ? (B < 1 ? 0 : B) : 255))
+                .toString(16).slice(1).toUpperCase()}`;
+}

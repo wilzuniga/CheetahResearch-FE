@@ -5,7 +5,7 @@
 function createSurveyerForm() {
     const formContainer = document.createElement('div');
     formContainer.innerHTML = `
-        <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;">Crear Encuestador</h2>
+        <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Crear Encuestador</h2>
         <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
             <div class="mb-3">
             <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;">Seleccionar Imagen</p>
@@ -70,7 +70,7 @@ function createSurveyerFormReadOnly() {
                             <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" placeholder="Ingresa el saludo del encuestador" style="font-family: 'IBM Plex Sans'">${data.interviewerGreeting}</textarea>
                         </div>
                         <div style="width: 250px;">
-                            <button class="btn btn-primary d-block w-100" id="ActualizarEncuestadorBtn" type="button" style="font-weight: bold; font-size: 20px; border-radius: 10px;">Actualizar Encuestador</button>
+                            <button class="btn btn-primary d-block w-100" id="ActualizarEncuestadorBtn" type="button" style="font-weight: bold; font-size: 20px; border-radius: 10px; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Actualizar Encuestador</button>
                         </div>
                     </form>
                 `;
@@ -144,7 +144,7 @@ function updateSurveyerFormData(data) {
 // Función para agregar el formulario al contenedor
 async function appendSurveyerForm() {
     const url = 'https://api.cheetah-research.ai/configuration/getInterviewer/';
-
+    const study_id = localStorage.getItem('selectedStudyId');
     try {
         const response = await axios.post(url, { study_id: localStorage.getItem('selectedStudyId') }, {
             headers: {
@@ -166,6 +166,7 @@ async function appendSurveyerForm() {
                 captureSurveyerFormData();
             });
         }
+        setColorsFromAPI(study_id);//Setea colores
     } catch (error) {
         const formContainer = document.getElementById('form-containerSurveyer');
         const surveyerForm = createSurveyerForm();
@@ -279,3 +280,52 @@ function CSrvyr_DeactivateNavBy(){
     }
 }
 
+//Colores
+function setColorsFromAPI(studyId) {
+    const url = 'https://api.cheetah-research.ai/configuration/info_study/' + studyId;
+    return axios.get(url)
+        .then(response => {
+            const colors = {
+                color1: response.data.primary_color,
+                color2: response.data.secondary_color
+            };
+
+            applyColors(colors);
+
+            return colors;
+        })
+        .catch(error => {
+            console.error('Error capturando colores desde API:', error);
+            return { color1: null, color2: null };
+        });
+}
+
+function applyColors(colors) {//Colors es un array
+    if (colors.color1) {
+        document.documentElement.style.setProperty('--bs-CR-orange', colors.color1);
+
+        document.documentElement.style.setProperty('--bs-CR-orange-2', brightColorVariant(colors.color1));
+    }
+    if (colors.color2) {
+        document.documentElement.style.setProperty('--bs-CR-gray', colors.color2);
+
+        document.documentElement.style.setProperty('--bs-CR-gray-dark', darkColorVariant(colors.color2));
+    }
+}
+function darkColorVariant (color) {
+    return adjustColor(color, -10);
+}
+function brightColorVariant (color) {
+    return adjustColor(color, 10);
+}
+function adjustColor(color, percent) {//Funcion loca de chatsito
+    const num = parseInt(color.slice(1), 16),
+          amt = Math.round(2.55 * percent),
+          R = (num >> 16) + amt,
+          G = (num >> 8 & 0x00FF) + amt,
+          B = (num & 0x0000FF) + amt;
+    return `#${(0x1000000 + (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 + 
+                (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 + 
+                (B < 255 ? (B < 1 ? 0 : B) : 255))
+                .toString(16).slice(1).toUpperCase()}`;
+}
