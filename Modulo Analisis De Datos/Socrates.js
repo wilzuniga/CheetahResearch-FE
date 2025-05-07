@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 
+    //Deshabilitar chat hasta que Socrates se conecte
+    disableChat("Espera a que Socrates se conecte...");
+
     //Función cambiar size del Type-Box al cambiar size de Ventana
     function messageInput_resizeWindow() {
         //Re-calcular nuevos valores
@@ -48,6 +51,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     //Resize al cambiar tamaño de Ventana
     window.addEventListener('resize', messageInput_resizeWindow);
+
+    //Setear colores
+    const study_id = new URLSearchParams(window.location.search).get('id');
+    setColorsFromAPI(study_id);
 });
 
 //Enviar mensaje al presionar enter
@@ -210,7 +217,7 @@ function sendMessage(message, imageSrc) {
 
             getMessage(farewellMessage, null);
             loadingMsg.style.display = 'none';
-            endChat();
+            disableChat("¡Gracias por responder esta encuesta!");
         } else {
             getMessage(data.response, null);
             loadingMsg.style.display = 'none';
@@ -266,7 +273,7 @@ function getMessage(message, imageSrc) {
     card.style.borderRadius = '15px';
     card.style.borderBottomLeftRadius = '0px';
     card.style.borderBottomWidth = 'medium';
-    card.style.borderColor = '#C2681A';
+    card.style.borderColor = 'var(--bs-CR-orange)';
     card.style.background = 'var(--bs-CR-orange-2)';
 
     const cardBody = document.createElement('div');
@@ -366,6 +373,7 @@ function load() {
         botStatus=document.getElementById('Bot-Status');
         botStatus.innerText = 'Conectado';
         botStatus.style.color = 'var(--bs-CR-orange-2)';
+        enableChat("Escribir mensaje...");
 
     }).catch((error) => {
         console.log('Error:', error);
@@ -409,14 +417,14 @@ function loadInterviewer() {
 }
 
 
-//Función para deshabilitar Chat al terminarlo
-function endChat(){
+//Función para deshabilitar Chat
+function disableChat(message) {
     const messageInput = document.getElementById("Message-Input");
     const loadingMsg = document.getElementById("Typing-Msg");
     const btSend = document.getElementById("btSend");
     const btIMG = document.getElementById("btIMG");
 
-    messageInput.placeholder= "¡Gracias por responder esta encuesta!";
+    messageInput.placeholder= message;
     loadingMsg.style.display = 'none';
     messageInput.disabled = true;
     btSend.disabled = true;
@@ -424,9 +432,27 @@ function endChat(){
     
     messageInput.parentElement.style.background = 'transparent';
     messageInput.style.background = 'transparent';
-    messageInput.style.boxShadow = 'none';
     btSend.style.color = 'var(--bs-CR-gray)';
     btIMG.style.color = 'var(--bs-CR-gray)';
+}
+
+//Función para habilitar Chat
+function enableChat(message){
+    const messageInput = document.getElementById("Message-Input");
+    const loadingMsg = document.getElementById("Typing-Msg");
+    const btSend = document.getElementById("btSend");
+    const btIMG = document.getElementById("btIMG");
+
+    messageInput.placeholder= message;
+    loadingMsg.style.display = 'none';
+    messageInput.disabled = false;
+    btSend.disabled = false;
+    btIMG.disabled = false;
+     
+    messageInput.parentElement.style.background = 'var(--bs-CR-gray-dark)';
+    messageInput.style.background = '#ffffff';
+    btSend.style.color = 'var(--bs-CR-gray)';
+    btIMG.style.color = 'var(--bs-CR-orange)';
 }
 
 //que a la hora de cerrar la ventana pregunte si se desea salir
@@ -485,4 +511,54 @@ function AgregarPreguntas() {
         .catch(error => {
             console.error('Error al enviar los datos:', error);
         });
+}
+
+//Colores
+function setColorsFromAPI(studyId) {
+    const url = 'https://api.cheetah-research.ai/configuration/info_study/' + studyId;
+    return axios.get(url)
+        .then(response => {
+            const colors = {
+                color1: response.data.primary_color,
+                color2: response.data.secondary_color
+            };
+
+            applyColors(colors);
+
+            return colors;
+        })
+        .catch(error => {
+            console.error('Error capturando colores desde API:', error);
+            return { color1: null, color2: null };
+        });
+}
+
+function applyColors(colors) {//Colors es un array
+    if (colors.color1) {
+        document.documentElement.style.setProperty('--bs-CR-orange', colors.color1);
+
+        document.documentElement.style.setProperty('--bs-CR-orange-2', brightColorVariant(colors.color1));
+    }
+    if (colors.color2) {
+        document.documentElement.style.setProperty('--bs-CR-gray', colors.color2);
+
+        document.documentElement.style.setProperty('--bs-CR-gray-dark', darkColorVariant(colors.color2));
+    }
+}
+function darkColorVariant (color) {
+    return adjustColor(color, -10);
+}
+function brightColorVariant (color) {
+    return adjustColor(color, 10);
+}
+function adjustColor(color, percent) {//Funcion loca de chatsito
+    const num = parseInt(color.slice(1), 16),
+          amt = Math.round(2.55 * percent),
+          R = (num >> 16) + amt,
+          G = (num >> 8 & 0x00FF) + amt,
+          B = (num & 0x0000FF) + amt;
+    return `#${(0x1000000 + (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 + 
+                (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 + 
+                (B < 255 ? (B < 1 ? 0 : B) : 255))
+                .toString(16).slice(1).toUpperCase()}`;
 }
