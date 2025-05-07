@@ -308,26 +308,34 @@ function AgregarFiltros(study) {
             });
 
 
-            const comboBoxes = [
-                'ComboBox_ResumenGeneral',
-                'ComboBox_ResumenIndividual',
-                'Combobox_UserPersona',
-                'Combobox_EKMAN',
-                'Combobox_RasgosDePersonalidad',
-                'Combobox_SegmentosPsicograficos',
-                'Combobox_NPS',
-                'Combobox_EstiloDeComunicacion',
-                'Combobox_customerExperience',
-                'Combobox_Satisfaccion',
-                'Combobox_ClimaLaboral',
-                'Combobox_BrandStrenght',
-                'Combobox_BrandEquity',
-            ];
-            
-            comboBoxes.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.innerHTML = '';
-            });
+            const comboBox = document.getElementById('ComboBox_ResumenGeneral');
+            const comboBox2 = document.getElementById('ComboBox_ResumenIndividual');
+            const comboBox3 = document.getElementById('Combobox_UserPersona');
+            const comboBox4 = document.getElementById('Combobox_EKMAN');
+            const comboBox5 = document.getElementById('Combobox_RasgosDePersonalidad');
+            const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
+            const comboBox7 = document.getElementById('Combobox_NPS');
+            const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBox9 = document.getElementById('Combobox_customerExperience');
+            const comboBox10 = document.getElementById('Combobox_Satisfaccion');
+            const comboBox11 = document.getElementById('Combobox_ClimaLaboral');
+            const comboBox12 = document.getElementById('Combobox_BrandStrenght');
+            const comboBox13 = document.getElementById('Combobox_BrandEquity');
+
+
+            comboBox.innerHTML = '';
+            comboBox2.innerHTML = '';
+            comboBox3.innerHTML = '';
+            comboBox4.innerHTML = '';
+            comboBox5.innerHTML = '';
+            comboBox6.innerHTML = '';
+            comboBox7.innerHTML = '';
+            comboBox8.innerHTML = '';
+            comboBox9.innerHTML = '';
+            comboBox10.innerHTML = '';
+            comboBox11.innerHTML = '';
+            comboBox12.innerHTML = '';
+            comboBox13.innerHTML = '';
             
 
         // Agregar opciones al combobox
