@@ -9,19 +9,13 @@ let markmapBlobUrl = null;
 import { splitMarkdown, generateCharts, splitMarkdownAndWrap } from './splitter.js';
 
 function initializePage() {
-    // console.log('Page initialized');
     const study_id = new URLSearchParams(window.location.search).get('id');
 
-    // console.log('study_id param ejemplo: ?id=66ac6dfbfc65e4742d415b60');
-    // console.log('Utilizar Puerto 8080');
-
     if (study_id) {
-        // console.log('ID de estudio:', study_id);
         document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
 
-        // Validación para mostrar subfiltros en study_id específico
         if (study_id === '67e2ac1b5bd042898764458a') {
             const subFiltros = [
                 'ComboBox_ResumenGeneral_SubFiltro',
@@ -45,10 +39,24 @@ function initializePage() {
                     element.style.display = 'block';
                 }
             });
-        }
 
-        AgregarFiltros(study_id);
-        AgregarModulos(study_id);
+            // Esperar que estén todos visibles antes de continuar
+            const allSubFiltrosVisible = subFiltros.every(id => {
+                const element = document.getElementById(id);
+                return element && element.style.display === 'block';
+            });
+
+            if (allSubFiltrosVisible) {
+                AgregarFiltros(study_id);
+                AgregarModulos(study_id);
+            } else {
+                console.warn('No todos los subfiltros están visibles. No se ejecutarán las funciones.');
+            }
+        } else {
+            // Para otros estudios, simplemente ejecutá normal
+            AgregarFiltros(study_id);
+            AgregarModulos(study_id);
+        }
     } else {
         console.error('No se encontró el parámetro id en la URL.');
     }
@@ -300,34 +308,27 @@ function AgregarFiltros(study) {
             });
 
 
-            const comboBox = document.getElementById('ComboBox_ResumenGeneral');
-            const comboBox2 = document.getElementById('ComboBox_ResumenIndividual');
-            const comboBox3 = document.getElementById('Combobox_UserPersona');
-            const comboBox4 = document.getElementById('Combobox_EKMAN');
-            const comboBox5 = document.getElementById('Combobox_RasgosDePersonalidad');
-            const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
-            const comboBox7 = document.getElementById('Combobox_NPS');
-            const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
-            const comboBox9 = document.getElementById('Combobox_customerExperience');
-            const comboBox10 = document.getElementById('Combobox_Satisfaccion');
-            const comboBox11 = document.getElementById('Combobox_ClimaLaboral');
-            const comboBox12 = document.getElementById('Combobox_BrandStrenght');
-            const comboBox13 = document.getElementById('Combobox_BrandEquity');
-
-
-            comboBox.innerHTML = '';
-            comboBox2.innerHTML = '';
-            comboBox3.innerHTML = '';
-            comboBox4.innerHTML = '';
-            comboBox5.innerHTML = '';
-            comboBox6.innerHTML = '';
-            comboBox7.innerHTML = '';
-            comboBox8.innerHTML = '';
-            comboBox9.innerHTML = '';
-            comboBox10.innerHTML = '';
-            comboBox11.innerHTML = '';
-            comboBox12.innerHTML = '';
-            comboBox13.innerHTML = '';
+            const comboBoxes = [
+                'ComboBox_ResumenGeneral',
+                'ComboBox_ResumenIndividual',
+                'Combobox_UserPersona',
+                'Combobox_EKMAN',
+                'Combobox_RasgosDePersonalidad',
+                'Combobox_SegmentosPsicograficos',
+                'Combobox_NPS',
+                'Combobox_EstiloDeComunicacion',
+                'Combobox_customerExperience',
+                'Combobox_Satisfaccion',
+                'Combobox_ClimaLaboral',
+                'Combobox_BrandStrenght',
+                'Combobox_BrandEquity',
+            ];
+            
+            comboBoxes.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = '';
+            });
+            
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
