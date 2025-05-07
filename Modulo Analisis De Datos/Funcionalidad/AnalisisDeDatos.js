@@ -20,6 +20,33 @@ function initializePage() {
         document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
+
+        // Validación para mostrar subfiltros en study_id específico
+        if (study_id === '67e2ac1b5bd042898764458a') {
+            const subFiltros = [
+                'ComboBox_ResumenGeneral_SubFiltro',
+                'ComboBox_ResumenIndividual_SubFiltro',
+                'ComboBox_UserPersona_SubFiltro',
+                'ComboBox_EKMAN_SubFiltro',
+                'ComboBox_RasgosDePersonalidad_SubFiltro',
+                'ComboBox_SegmentosPsicograficos_SubFiltro',
+                'ComboBox_EstiloDeComunicacion_SubFiltro',
+                'ComboBox_customerExperience_SubFiltro',
+                'ComboBox_Satisfaccion_SubFiltro',
+                'ComboBox_ClimaLaboral_SubFiltro',
+                'ComboBox_BrandStrenght_SubFiltro',
+                'ComboBox_BrandEquity_SubFiltro',
+                'ComboBox_NPS_SubFiltro'
+            ];
+
+            subFiltros.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.style.display = 'block';
+                }
+            });
+        }
+
         AgregarFiltros(study_id);
         AgregarModulos(study_id);
     } else {
