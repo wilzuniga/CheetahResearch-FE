@@ -9,24 +9,63 @@ let markmapBlobUrl = null;
 import { splitMarkdown, generateCharts, splitMarkdownAndWrap } from './splitter.js';
 
 function initializePage() {
-    // console.log('Page initialized');
     const study_id = new URLSearchParams(window.location.search).get('id');
 
-    // console.log('study_id param ejemplo: ?id=66ac6dfbfc65e4742d415b60');
-    // console.log('Utilizar Puerto 8080');
-
     if (study_id) {
-        // console.log('ID de estudio:', study_id);
         document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
-        AgregarFiltros(study_id);
-        AgregarModulos(study_id);
-        setColorsFromAPI(study_id);//Setea colores
+
+        if (study_id === '67e2ac1b5bd042898764458a') {
+            const subFiltros = [
+                'ComboBox_ResumenGeneral_SubFiltro',
+                'ComboBox_ResumenIndividual_SubFiltro',
+                'ComboBox_UserPersona_SubFiltro',
+                'ComboBox_EKMAN_SubFiltro',
+                'ComboBox_RasgosDePersonalidad_SubFiltro',
+                'ComboBox_SegmentosPsicograficos_SubFiltro',
+                'ComboBox_EstiloDeComunicacion_SubFiltro',
+                'ComboBox_customerExperience_SubFiltro',
+                'ComboBox_Satisfaccion_SubFiltro',
+                'ComboBox_ClimaLaboral_SubFiltro',
+                'ComboBox_BrandStrenght_SubFiltro',
+                'ComboBox_BrandEquity_SubFiltro',
+                'ComboBox_NPS_SubFiltro'
+            ];
+
+            subFiltros.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.style.display = 'block';
+                }
+            });
+
+            // Esperar ligeramente a que el DOM pinte los elementos (por si aún no están renderizados del todo)
+            setTimeout(() => {
+                const allSubFiltrosVisible = subFiltros.every(id => {
+                    const element = document.getElementById(id);
+                    return element && element.style.display === 'block';
+                });
+
+                if (allSubFiltrosVisible) {
+                    AgregarFiltros(study_id);
+                    AgregarModulos(study_id);
+                    setColorsFromAPI(study_id); // Setea colores
+                } else {
+                    console.warn('No todos los subfiltros están visibles. No se ejecutarán las funciones.');
+                }
+            }, 100); // 100 ms puede ajustarse si es necesario
+        } else {
+            // Para otros estudios, simplemente ejecutá normal
+            AgregarFiltros(study_id);
+            AgregarModulos(study_id);
+            setColorsFromAPI(study_id); // Setea colores
+        }
     } else {
         console.error('No se encontró el parámetro id en la URL.');
     }
 }
+
 
 initializePage();
 
@@ -302,6 +341,7 @@ function AgregarFiltros(study) {
             comboBox11.innerHTML = '';
             comboBox12.innerHTML = '';
             comboBox13.innerHTML = '';
+            
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -350,15 +390,18 @@ function LLenarResumenes(study) {
     //lenar el div con el resumen general y agregar el event listener al combobox con id ComboBox_ResumenGeneral
     const comboBoxRG = document.getElementById('ComboBox_ResumenGeneral');          
     comboBoxRG.addEventListener('change', (event) => {
-        // console.log(event.target.value);
-    
         const StyleSelectedOption = document.getElementById('ComboBox_ResumenGeneralTy');
         var div = document.getElementById('ResumenGeneralContent');
     
-        const selectedValue = event.target.value; // El filtro seleccionado
-    
+        const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_ResumenGeneral_SubFiltro').value;
+        
         formData = new FormData();
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'general');
         formData.append('sub_module', StyleSelectedOption.value);
     
@@ -405,19 +448,20 @@ function LLenarResumenes(study) {
 
 
     //Resumen Individual
-    //lenar el div con el resumen general y agregar el event listener al combobox con id ComboBox_ResumenIndividual
     const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
     
     comboBoxRI.addEventListener('change', (event) => {
-        // console.log(event.target.value);
-
         const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
-
         var div = document.getElementById('ResumenIndividualContent');
-        // Supongamos que `event.target.value` es el valor del combobox
-        const selectedValue = event.target.value; //el filtro seleccionado
+        const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_ResumenIndividual_SubFiltro').value;
+
         formData = new FormData();
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'individual_questions');
         formData.append('sub_module', StyleSelectedOption.value);
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
@@ -469,9 +513,14 @@ function LLenarResumenes(study) {
 
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_UserPersona_SubFiltro').value;
 
         formData = new FormData();     
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'user_personas');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
         axios.post(url, formData)
@@ -503,9 +552,14 @@ function LLenarResumenes(study) {
         var div = document.getElementById('customerExperienceContent');
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_customerExperience_SubFiltro').value;
 
         formData = new FormData();     
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'customer_experience');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
         axios.post(url, formData)
@@ -537,9 +591,14 @@ function LLenarResumenes(study) {
         var div = document.getElementById('EKMANContent');
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_EKMAN_SubFiltro').value;
 
         formData = new FormData();     
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'psicographic_questions');
         formData.append('sub_module', 'ekman');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
@@ -575,9 +634,14 @@ function LLenarResumenes(study) {
         var div = document.getElementById('RasgosDePersonalidadContent');
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_RasgosDePersonalidad_SubFiltro').value;
 
         formData = new FormData();     
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'psicographic_questions');
         formData.append('sub_module', 'personality');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
@@ -609,9 +673,14 @@ function LLenarResumenes(study) {
         var div = document.getElementById('SegmentosPsicograficosContent');
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_SegmentosPsicograficos_SubFiltro').value;
 
         formData = new FormData();     
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'psicographic_questions');
         formData.append('sub_module', 'segmentos');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
@@ -642,9 +711,14 @@ function LLenarResumenes(study) {
         var div = document.getElementById('NPSContent');
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_NPS_SubFiltro').value;
 
         formData = new FormData();     
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'psicographic_questions');
         formData.append('sub_module', 'nps');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
@@ -676,9 +750,14 @@ function LLenarResumenes(study) {
         var div = document.getElementById('SatisfaccionContent');
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_Satisfaccion_SubFiltro').value;
 
         formData = new FormData();
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'psicographic_questions');
         formData.append('sub_module', 'customer_satisfaction');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
@@ -710,9 +789,14 @@ function LLenarResumenes(study) {
         var div = document.getElementById('ClimaLaboralContent');
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_ClimaLaboral_SubFiltro').value;
 
         formData = new FormData();     
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'work_environment');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
         axios.post(url, formData)
@@ -740,9 +824,14 @@ function LLenarResumenes(study) {
         var div = document.getElementById('BrandStrenghtContent');
         var textArea = document.getElementById('BrandStrenghtTextArea');
         const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_BrandStrenght_SubFiltro').value;
 
         formData = new FormData();     
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'brand_status');
         formData.append('sub_module', 'brand_strength');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
@@ -771,11 +860,16 @@ function LLenarResumenes(study) {
         var div = document.getElementById('BrandEquityContent');
         var textArea = document.getElementById('BrandEquityTextArea');
         const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_BrandEquity_SubFiltro').value;
 
 
         
         formData = new FormData();     
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'brand_status');
         formData.append('sub_module', 'brand_equity');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
@@ -805,9 +899,14 @@ function LLenarResumenes(study) {
         var div = document.getElementById('EstiloDeComunicacionContent');
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_EstiloDeComunicacion_SubFiltro').value;
 
         formData = new FormData();     
-        formData.append('filter', selectedValue);
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
         formData.append('module', 'psicographic_questions');
         formData.append('sub_module', 'estilo');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;

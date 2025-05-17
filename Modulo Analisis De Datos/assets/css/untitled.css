@@ -47,6 +47,12 @@
   height: 34px;
 }
 
+th, td {
+  border: 1px solid black; /* Adds lines around cells */
+  padding: 8px;
+  text-align: left;
+}
+
 .switch input {
   display: none;
 }

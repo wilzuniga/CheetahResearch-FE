@@ -33,7 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const newH5 = document.createElement('h5');
             newH5.classList.add('mb-1');
             newH5.style.fontFamily = "IBM Plex Sans";
-            newH5.textContent = pregunta;
+
+            // Replace escaped newlines with actual newlines, then convert to <br> for HTML
+            let unescapedQuestion = pregunta.replace(/\\n/g, '\n');
+            let processedQuestion = unescapedQuestion.replace(/\n/g, '<br>');
+            newH5.innerHTML = processedQuestion;
 
             const newSpan = document.createElement('span');
             newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
@@ -461,7 +465,13 @@ function CE_DeactivateNavBy(){
                 const newH5 = document.createElement('h5');
                 newH5.classList.add('mb-1');
                 newH5.style.fontFamily = "IBM Plex Sans";
-                newH5.textContent = pregunta.question;
+
+                // Replace escaped newlines with actual newlines, then convert to <br> for HTML
+                let unescapedQuestion = pregunta.question.replace(/\\n/g, '\n');
+                let processedQuestion = unescapedQuestion.replace(/\n/g, '<br>');
+
+                newH5.innerHTML = processedQuestion;
+
 
     
                 const newSpan = document.createElement('span');
