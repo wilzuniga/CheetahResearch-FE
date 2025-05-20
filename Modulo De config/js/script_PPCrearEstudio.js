@@ -401,18 +401,34 @@ function loadStudies() { //Carga los estudios en la Main Page
     
         // Invertir el orden de los estudios
         const reversedStudies = studies.reverse();
+        renderStudies(reversedStudies);// Mostrar estudios inicialmente
     
-        const listGroup = document.getElementById('listgrouptudies');
-    
-        reversedStudies.forEach(study => {
-            const studyElement = createStudyElement(study);
-            listGroup.appendChild(studyElement);
-        });
+        // Mostrar los estudios con el searchBar
+        const searchBar = document.getElementById('studySearchBar');
+        if (searchBar) {
+            searchBar.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                const filtered = reversedStudies.filter(study =>
+                    study.title.toLowerCase().includes(query)
+                );
+                renderStudies(filtered);
+            });
+        }
     })
     .catch(error => {
         console.error('Error al cargar los estudios:', error);
     });
     
+}
+
+// Mostrar los estudios en MainPage
+function renderStudies(studies) {
+    const listGroup = document.getElementById('listgrouptudies');
+    listGroup.innerHTML = '';
+    studies.forEach(study => {
+        const studyElement = createStudyElement(study);
+        listGroup.appendChild(studyElement);
+    });
 }
 
 function createStudyElement(study) {
