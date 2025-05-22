@@ -355,6 +355,10 @@ function UpdateAndPostformdta() {
 
 // Llama a la función cuando la página se carga completamente
 window.addEventListener('DOMContentLoaded', (event) => {
+    // Limpiar el searchBar
+    const searchBar = document.getElementById('studySearchBar');
+    if (searchBar) searchBar.value = '';
+
     if(window.location.href.includes('https://www.cheetah-research.ai/configuration/study/')){
         if(localStorage.getItem('selectedStudyId') == null){
             console.log('Study id:', localStorage.getItem('selectedStudyId'));
@@ -407,9 +411,12 @@ function loadStudies() { //Carga los estudios en la Main Page
         const searchBar = document.getElementById('studySearchBar');
         if (searchBar) {
             searchBar.addEventListener('input', function() {
-                const query = this.value.toLowerCase();
+                const query = this.value
+                                  .toLowerCase()
+                                  .normalize('NFD').replace(/[\u0300-\u036f]/g, '');// Quita acento
+
                 const filtered = reversedStudies.filter(study =>
-                    study.title.toLowerCase().includes(query)
+                    study.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(query)
                 );
                 renderStudies(filtered);
             });
