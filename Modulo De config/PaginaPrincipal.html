@@ -50,7 +50,7 @@
     <div class="card" id="contentCard_PaginaOverview" style="margin: 0px;height: 100vh;padding: 10px; border-radius: 3px; position: relative;">
         
         <div class="my-3" style="max-width:100%; display: flex; flex-direction: row; margin: 10px;background: var(--bs-primary);border-radius: 3px;padding: 5px;font-family: hedliner;">
-            <h1 style="margin:0; width:auto; color: var(--bs-body-bg);">SELECCIONAR ESTUDIO</h1>
+            <h1 style="margin:0; width:auto; color: var(--bs-body-bg);" data-i18n="PaginaPrincipal.title">SELECCIONAR ESTUDIO</h1>
 
             <div class="input-group" style="margin-left:auto; width:50%; max-height: 100%;">
                 <span class="input-group-text bg-white border-end-0">
@@ -73,11 +73,23 @@
 
         </div>
         
-        <button class="btn btn-primary" type="button" style="margin: 10px;width: 25%;font-weight: bold;font-family: hedliner;border-radius: 3px;" onclick="window.location.href='https://www.cheetah-research.ai/configuration/study/';">Crear Estudio</button>
-        <button class="btn btn-primary" type="button" style="margin: 10px;width: 25%;font-weight: bold;font-family: hedliner;border-radius: 3px;" onclick="logOut()">Cerrar Sesion</button>
+        <button class="btn btn-primary" type="button" style="margin: 10px;width: 25%;font-weight: bold;font-family: hedliner;border-radius: 3px;" onclick="window.location.href='https://www.cheetah-research.ai/configuration/study/';" data-i18n="PaginaPrincipal.btCreate">Crear Estudio</button>
+        <button class="btn btn-primary" type="button" style="margin: 10px;width: 25%;font-weight: bold;font-family: hedliner;border-radius: 3px;" onclick="logOut()" data-i18n="PaginaPrincipal.btLogOff">Cerrar Sesion</button>
+        
         <div style="bottom: 0; left: 0; text-align: center; width: 100%;">
-            <p><strong>Cheetah Research</strong> es una marca registrada de <strong>Marketing Total S.A.</strong>. Todos los derechos reservados.</p>
+            <p>
+                <strong data-i18n="brand"></strong>
+                <span data-i18n="registered"></span>
+                <strong data-i18n="company"></strong>.
+                <span data-i18n="rights"></span>
+            </p>
         </div>
+
+        <select id="languageSwitcher" style="display: none; margin: 10px;">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+            <option value="pt">Português</option>
+        </select>
 
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
@@ -85,6 +97,7 @@
     <script src="js/script_PPCrearEstudio.js"></script>
     <script src="js/Script_LogOutAuth.js"></script>
     <script src="js/Script_CheckSession.js"></script>
+    <script src="js/i18n.js"></script>
 
 </body>
 
