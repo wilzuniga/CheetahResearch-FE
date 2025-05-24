@@ -1,6 +1,3 @@
-
-
-
 function disableNavItems() {
 
 }
@@ -21,58 +18,58 @@ function CE_DeactivateNavBy(){
 
 //FORMULARIO DE CREACION DE ESTUDIO
 function createStudyForm() {
-    const title = '<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: \'hedliner\', sans-serif;">Creación de Estudio</h2>';
+    const title = '<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: \'hedliner\', sans-serif;" data-i18n="CreacionDeEstudio.title">Creación de Estudio</h2>';
 
     const tituloDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Titulo del Estudio</p>
-            <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" placeholder="Titulo" style="font-family: 'IBM Plex Sans'; border-radius: 3px">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyTitle">Titulo del Estudio</p>
+            <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" data-i18n-placeholder="CreacionDeEstudio.inStudyTitle" style="font-family: 'IBM Plex Sans'; border-radius: 3px">
         </div>`
     ;
 
     const mercadoObjetivo = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Mercado Objetivo</p>
-            <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" placeholder="Mercado Objetivo" style="font-family: 'IBM Plex Sans'; border-radius: 3px">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hTargetAudience">Mercado Objetivo</p>
+            <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" data-i18n-placeholder="CreacionDeEstudio.inTargetAudience" style="font-family: 'IBM Plex Sans'; border-radius: 3px">
         </div>`
     ;
 
     const objetivosDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Objetivos del Estudio</p>
-            <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" placeholder="Objetivos generales del estudio, separados por comas (&quot;,&quot;)" style="font-family: 'IBM Plex Sans'; border-radius: 3px">
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyObjectives">Objetivos del Estudio</p>
+            <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" data-i18n-placeholder="CreacionDeEstudio.inStudyObjectives" style="font-family: 'IBM Plex Sans'; border-radius: 3px">
         </div>`
     ;
 
     const promptDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Prompt del Estudio</p>
-            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif;  color: #072934; border-radius: 3px"></textarea>
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hPrompt">Prompt del Estudio</p>
+            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" data-i18n-placeholder="CreacionDeEstudio.inPrompt" style="font-family: 'IBM Plex Sans', sans-serif;  color: #072934; border-radius: 3px"></textarea>
         </div>`
     ;
 
     const colorInput1 = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Color Principal del Estudio</p>
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.color1">Color Principal del Estudio</p>
             <input type="color" class="form-control" id="colorInput1" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="#C0601C">
         </div>`
     ;
 
     const colorInput2 = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Color Secundario del Estudio</p>
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.color2">Color Secundario del Estudio</p>
             <input type="color" class="form-control" id="colorInput2" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="#212121">
         </div>`
     ;
 
     const setDefaultColorButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
+            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.btDefaultColors">Colores Default</button>
         </div>`
     ;
     const saveColorsButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif;  background-color:var(--bs-CR-orange-2);">Guardar Colores</button>
+            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif;  background-color:var(--bs-CR-orange-2);" data-i18n="CreacionDeEstudio.btSaveColors">Guardar Colores</button>
         </div>`
     ;
     const colorButtonsContainer = `
@@ -84,7 +81,7 @@ function createStudyForm() {
 
     const submitButton = `
         <div style="width: 250px;font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-primary d-block w-100" id="CrearEstudioBtn" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif;">Crear Estudio</button>
+            <button class="btn btn-primary d-block w-100" id="CrearEstudioBtn" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.btCreate">Crear Estudio</button>
         </div>`
     ;
 
@@ -118,58 +115,58 @@ function createFilledStudyForm() {
 
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
 
-    const title = '<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: \'hedliner\', sans-serif;">Resumen del Estudio</h2>';
+    const title = `<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.summaryTitle">Resumen del Estudio</h2>`;
 
     const tituloDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Titulo del Estudio</p>
-            <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" placeholder="Titulo" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.tituloDelEstudio}" >
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyTitle">Titulo del Estudio</p>
+            <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" data-i18n-placeholder="CreacionDeEstudio.inStudyTitle" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.tituloDelEstudio}">
         </div>`
     ;
 
     const mercadoObjetivo = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Mercado Objetivo</p>
-            <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" placeholder="Mercado Objetivo" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.mercadoObjetivo}" >
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hTargetAudience">Mercado Objetivo</p>
+            <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" data-i18n-placeholder="CreacionDeEstudio.inTargetAudience" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.mercadoObjetivo}">
         </div>`
     ;
 
     const objetivosDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Objetivos del Estudio</p>
-            <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" placeholder="Objetivos generales del estudio, separados por comas (&quot;,&quot;)" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.objetivosDelEstudio}" >
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyObjectives">Objetivos del Estudio</p>
+            <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" data-i18n-placeholder="CreacionDeEstudio.inStudyObjectives" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.objetivosDelEstudio}">
         </div>`
     ;
 
     const promptDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Prompt del Estudio</p>
-            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" placeholder="Ingresa el prompt general de la encuesta" style="font-family: 'IBM Plex Sans', sans-serif;  color: #072934; border-radius: 3px" >${selectedStudyData.Resumen}</textarea>
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hPrompt">Prompt del Estudio</p>
+            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" data-i18n-placeholder="CreacionDeEstudio.inPrompt" style="font-family: 'IBM Plex Sans', sans-serif;  color: #072934; border-radius: 3px" >${selectedStudyData.Resumen}</textarea>
         </div>`
     ;
 
     const colorInput1 = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Color del Estudio</p>
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.color1">Color Principal del Estudio</p>
             <input type="color" class="form-control" id="colorInput1" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.color1DelEstudio}">
         </div>`
     ;
 
     const colorInput2 = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;">Color Secundario del Estudio</p>
+            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.color2">Color Secundario del Estudio</p>
             <input type="color" class="form-control" id="colorInput2" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius: 3px" value="${selectedStudyData.color2DelEstudio}">
         </div>`
     ;
 
     const setDefaultColorButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;">Colores Default</button>
+            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.btDefaultColors">Colores Default</button>
         </div>`
     ;
     const saveColorsButton = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Guardar Colores</button>
+            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="CreacionDeEstudio.btSaveColors">Guardar Colores</button>
         </div>`
     ;
     const colorButtonsContainer = `
@@ -181,7 +178,7 @@ function createFilledStudyForm() {
 
     const submitButton = `
         <div style="width: 250px;font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-primary d-block w-100" id="UpdateEstudio" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray);background-color: var(--bs-CR-orange);">Actualizar Estudio</button>
+            <button class="btn btn-primary d-block w-100" id="UpdateEstudio" type="button" style="font-weight: bold;font-size: 20px;border-radius: 3px;font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray);background-color: var(--bs-CR-orange);" data-i18n="CreacionDeEstudio.btUpdate">Actualizar Estudio</button>
         </div>`
     ;
 
