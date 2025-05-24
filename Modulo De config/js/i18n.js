@@ -24,7 +24,7 @@ const translations = {
             btLogOff: "Cerrar Sesión"
         },
         CreacionDeEstudio: {
-            title: "Creación de Estudio",               summaryTitle: "Creación de Estudio",
+            title: "Creación de Estudio",               summaryTitle: "Resumen del Estudio",
             hStudyTitle: "Titulo del Estudio",          inStudyTitle: "Titulo",
             hTargetAudience: "Mercado Objetivo",        inTargetAudience: "Mercado Objetivo",
             hStudyObjectives: "Objetivos del Estudio",  inStudyObjectives: "Objetivos generales del estudio, separados por comas (\",\")",
@@ -33,6 +33,15 @@ const translations = {
             btSaveColors: "Guardar Colores",            btDefaultColors: "Colores Predefinidos",
             btCreate: "Crear Estudio",                  btUpdate: "Actualizar Estudio",
         },
+        CrearEncuestador: {
+            title: "Encuestador",                       createTitle: "Crear Encuestador",
+            hImg: "",                                   selectImg: "Seleccionar Imagen",
+            hInterviewerName: "Nombre del Encuestador", inInterviewerName: "Ingresa el Nombre del encuestador",
+            hTone: "Tono Encuestador",                  inTone: "Ingresa el tono en el cual hablará el encuestador",
+            hObservations: "Observaciones Importantes", inObservations: "Observaciones Importantes para el encuestador",
+            hGreeting: "Saludo",                        inGreeting: "Ingresa el saludo del encuestador",
+            btCreate: "Crear Encuestador",              btUpdate: "Actualizar Encuestador",
+        }
     },
 
     en: {
@@ -66,7 +75,7 @@ const translations = {
             btCreate: "Create Study",                   btUpdate: "Update Study",
         }
     },
-    
+
     pt: {
         brand: "Cheetah Research",
         registered: "é uma marca registrada de",
