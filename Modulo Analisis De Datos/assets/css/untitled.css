@@ -83,7 +83,7 @@ select{
   border-radius: 2px;
 }
 
-.Content-Divs div {
+.Content-Divs {
 background: white;
 color: black ;
 padding: 15px;
