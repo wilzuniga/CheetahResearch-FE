@@ -64,7 +64,6 @@ select{
 .Content-Divs h6 {
   position: relative;
   padding-left: 15px;
-  font-weight: bold;
 }
 
 .Content-Divs h1::before,
@@ -84,6 +83,16 @@ select{
   border-radius: 2px;
 }
 
+.Content-Divs div {
+background: white;
+color: black ;
+padding: 15px;
+border-radius: 13px;
+}
+
+button {
+  border-radius: 5px;
+}
 
 
 .switch {
