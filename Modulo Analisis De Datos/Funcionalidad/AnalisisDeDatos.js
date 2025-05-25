@@ -161,6 +161,100 @@ document.addEventListener('DOMContentLoaded', function () {
                 html2pdf().set(options).from(contentDiv).save();            }
         });
     });
+
+    // User Persona and User Archetype functionality
+    const userPersonaBtn = document.getElementById('UserPersonaBtn');
+    const userArchetypeBtn = document.getElementById('UserArchetypeBtn');
+    const userPersonaContent = document.getElementById('UserPersonaContent');
+    const userArchetypeContent = document.getElementById('UserArchetypeContent');
+    const comboboxUserPersona = document.getElementById('Combobox_UserPersona');
+    const comboboxUserArchetype = document.getElementById('Combobox_UserArchetype');
+    const comboboxUserPersonaSubFiltro = document.getElementById('ComboBox_UserPersona_SubFiltro');
+    const comboboxUserArchetypeSubFiltro = document.getElementById('ComboBox_UserArchetype_SubFiltro');
+    const exportUserPersonaBtn = document.getElementById('export_UserPersona');
+    const exportUserArchetypeBtn = document.getElementById('export_UserArchetype');
+
+    // Function to load data for both User Persona and User Archetype
+    async function loadUserData(type, contentDiv, combobox, subFiltro) {
+        try {
+            const endpoint = type === 'persona' ? 'user_persona' : 'user_archetype';
+            const response = await fetch(`/api/${endpoint}`);
+            const data = await response.json();
+
+            // Populate combobox with filters
+            combobox.innerHTML = '<option value="">Selecciona un filtro</option>';
+            data.filters.forEach(filter => {
+                const option = document.createElement('option');
+                option.value = filter;
+                option.textContent = filter;
+                combobox.appendChild(option);
+            });
+
+            // Show/hide subfiltro based on selected filter
+            combobox.addEventListener('change', function() {
+                if (this.value === 'Temporal') {
+                    subFiltro.style.display = 'inline-block';
+                } else {
+                    subFiltro.style.display = 'none';
+                }
+            });
+
+            // Load initial content
+            if (data.content) {
+                contentDiv.innerHTML = data.content;
+            }
+        } catch (error) {
+            console.error(`Error loading ${type} data:`, error);
+            contentDiv.innerHTML = `<p>Error loading ${type} data. Please try again later.</p>`;
+        }
+    }
+
+    // Event listeners for User Persona
+    userPersonaBtn.addEventListener('click', () => {
+        loadUserData('persona', userPersonaContent, comboboxUserPersona, comboboxUserPersonaSubFiltro);
+    });
+
+    comboboxUserPersona.addEventListener('change', async function() {
+        const filter = this.value;
+        const subFilter = comboboxUserPersonaSubFiltro.value;
+        try {
+            const response = await fetch(`/api/user_persona?filter=${filter}&subFilter=${subFilter}`);
+            const data = await response.json();
+            if (data.content) {
+                userPersonaContent.innerHTML = data.content;
+            }
+        } catch (error) {
+            console.error('Error updating User Persona content:', error);
+        }
+    });
+
+    // Event listeners for User Archetype
+    userArchetypeBtn.addEventListener('click', () => {
+        loadUserData('archetype', userArchetypeContent, comboboxUserArchetype, comboboxUserArchetypeSubFiltro);
+    });
+
+    comboboxUserArchetype.addEventListener('change', async function() {
+        const filter = this.value;
+        const subFilter = comboboxUserArchetypeSubFiltro.value;
+        try {
+            const response = await fetch(`/api/user_archetype?filter=${filter}&subFilter=${subFilter}`);
+            const data = await response.json();
+            if (data.content) {
+                userArchetypeContent.innerHTML = data.content;
+            }
+        } catch (error) {
+            console.error('Error updating User Archetype content:', error);
+        }
+    });
+
+    // Export functionality for both
+    exportUserPersonaBtn.addEventListener('click', () => {
+        exportContent(userPersonaContent, 'user_persona');
+    });
+
+    exportUserArchetypeBtn.addEventListener('click', () => {
+        exportContent(userArchetypeContent, 'user_archetype');
+    });
 });
 
 function generateMarkmapHTML(content , filter) {

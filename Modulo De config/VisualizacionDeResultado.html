@@ -93,6 +93,7 @@
                             <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#ResumenGeneral" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner, sans-serif;font-weight: bold;">Resumen General</a>
                             <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#ResumenIndividual" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-weight: bold;font-family: hedliner;">Resumen Individual</a>
                             <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#UserPersona" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;">User Persona</a>
+                            <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#UserArchetype" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;">Arquetipo de Persona</a>
                             <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#customerExperience" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;">Customer Experience</a>
                             <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#AnalisisPsicograficos" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;">Análisis Psicograficos</a>
                             <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#NPSySatisfaccion" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;">NPS y satisfacción</a>
@@ -220,34 +221,85 @@
                             
 
                             <div id="UserPersona" class="tab-pane fade" role="tabpanel">
-                                <h3>User Persona</h3>
-                                <p>En esta sección se muestra información sobre el perfil del usuario objetivo, conocido como User Persona. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
-                                
-                                <!-- Comboboxes y botón en una fila -->
-                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                                    <!-- Combobox para seleccionar filtro -->
-                                    <div>
-                                        <label for="Combobox_UserPersona" style="font-family: hedliner;">Selecciona un Filtro:</label>
-                                        <select id="Combobox_UserPersona" style="font-family: hedliner;">
-                                            <!-- Opciones se agregarán dinámicamente aquí -->
-                                        </select>
-                                    </div>
-                            
-                                    <!-- Botón para mostrar/ocultar el textarea -->
-                                    <button id="toggle-textarea_UserPersona" style="border-radius : 13px;">Editar</button>
-                                    <button id="save-textarea_UserPersona" style="border-radius : 13px;">Guardar Cambios</button>
-                                    <button id="export_UserPersona" style="border-radius : 13px;">Exportar</button>
-
-
+                                <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                    <a class="list-group-item list-group-item-action" href="#A_UserPersona" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">User Persona</a>
                                 </div>
-                                
-                                <!-- Contenedor para el textarea y el contenido del User Persona -->
-                                <div style="display: flex; gap: 20px;">
-                                    <!-- Textarea -->
-                                    <textarea id="UserPersonaTextArea" style="flex: 1;"></textarea>
-                            
-                                    <!-- Contenido del User Persona -->
-                                    <div class="Content-Divs" id="UserPersonaContent" style="flex: 1;">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="tab-content">
+                                            <div id="A_UserPersona" class="tab-pane fade" role="tabpanel">
+                                                <h3>User Persona</h3>
+                                                <p>En esta sección se muestra información sobre el perfil del usuario objetivo, conocido como User Persona. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
+                                                
+                                                <!-- Comboboxes y botón en una fila -->
+                                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                                    <!-- Combobox para seleccionar filtro -->
+                                                    <div>
+                                                        <label for="Combobox_UserPersona" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                        <select id="Combobox_UserPersona" style="font-family: hedliner;">
+                                                            <!-- Opciones se agregarán dinámicamente aquí -->
+                                                        </select>
+                                                    </div>
+                                            
+                                                    <!-- Botón para mostrar/ocultar el textarea -->
+                                                    <button id="toggle-textarea_UserPersona" style="border-radius : 13px;">Editar</button>
+                                                    <button id="save-textarea_UserPersona" style="border-radius : 13px;">Guardar Cambios</button>
+                                                    <button id="export_UserPersona" style="border-radius : 13px;">Exportar</button>
+                                                </div>
+                                                
+                                                <!-- Contenedor para el textarea y el contenido del User Persona -->
+                                                <div style="display: flex; gap: 20px;">
+                                                    <!-- Textarea -->
+                                                    <textarea id="UserPersonaTextArea" style="flex: 1;"></textarea>
+                                            
+                                                    <!-- Contenido del User Persona -->
+                                                    <div class="Content-Divs" id="UserPersonaContent" style="flex: 1;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="UserArchetype" class="tab-pane fade" role="tabpanel">
+                                <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                    <a class="list-group-item list-group-item-action" href="#A_UserArchetype" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Arquetipo de Persona</a>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="tab-content">
+                                            <div id="A_UserArchetype" class="tab-pane fade" role="tabpanel">
+                                                <h3>Arquetipo de Persona</h3>
+                                                <p>En esta sección se muestra información sobre el arquetipo de persona, que representa patrones universales de comportamiento y personalidad. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
+                                                
+                                                <!-- Comboboxes y botón en una fila -->
+                                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                                    <!-- Combobox para seleccionar filtro -->
+                                                    <div>
+                                                        <label for="Combobox_UserArchetype" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                        <select id="Combobox_UserArchetype" style="font-family: hedliner;">
+                                                            <!-- Opciones se agregarán dinámicamente aquí -->
+                                                        </select>
+                                                    </div>
+                                            
+                                                    <!-- Botón para mostrar/ocultar el textarea -->
+                                                    <button id="toggle-textarea_UserArchetype" style="border-radius : 13px;">Editar</button>
+                                                    <button id="save-textarea_UserArchetype" style="border-radius : 13px;">Guardar Cambios</button>
+                                                    <button id="export_UserArchetype" style="border-radius : 13px;">Exportar</button>
+                                                </div>
+                                                
+                                                <!-- Contenedor para el textarea y el contenido del Arquetipo -->
+                                                <div style="display: flex; gap: 20px;">
+                                                    <!-- Textarea -->
+                                                    <textarea id="UserArchetypeTextArea" style="flex: 1;"></textarea>
+                                            
+                                                    <!-- Contenido del Arquetipo -->
+                                                    <div class="Content-Divs" id="UserArchetypeContent" style="flex: 1;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
