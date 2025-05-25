@@ -44,6 +44,11 @@ select{
   padding: 5px;
 }
 
+::selection {
+  background-color: var(--bs-CR-orange);/* Fondo de selección */
+  color: white;              /* Color del texto seleccionado */
+}
+
 
 .Content-Divs h1,
 .Content-Divs h2,
