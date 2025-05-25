@@ -51,7 +51,7 @@ th {
 }
 
 select{
-  border-radius: 5px;
+  border-radius : 13px;
   padding: 5px;
 }
 
@@ -80,18 +80,18 @@ select{
   width: 5px;
   height: 60%; /* Ajustá según se vea mejor */
   background-color: var(--bs-CR-orange);
-  border-radius: 2px;
+  border-radius : 13px;
 }
 
 .Content-Divs {
 background: white;
 color: black ;
 padding: 15px;
-border-radius: 13px;
+border-radius : 13px;
 }
 
 button {
-  border-radius: 5px;
+  border-radius : 13px;
 }
 
 ::selection {
@@ -146,7 +146,7 @@ input:focus + .slider {
 }
 
 .slider.round {
-  border-radius: 34px;
+  border-radius : 13px;
 }
 
 .slider.round:before {
@@ -203,7 +203,7 @@ input:checked + .slider:before {
 }
 
 .slider.round {
-  border-radius: 34px;
+  border-radius : 13px;
 }
 
 .slider.round:before {
@@ -267,7 +267,7 @@ input:checked + .slider:before {
 #overlayContent {
   background: var(--bs-CR-white);
   padding: 20px;
-  border-radius: 5px;
+  border-radius : 13px;
 
   width: 50%;
   max-width: 600px; /* Opcional: limita el ancho máximo */
