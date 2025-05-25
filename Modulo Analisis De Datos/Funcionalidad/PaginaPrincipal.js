@@ -327,13 +327,24 @@ async function contenido(study) {
                                 .study-content {
                                     margin-bottom: 15px;
                                 }
+                                .study-bullets {
+                                    text-align: left;
+                                    margin: 0 auto;
+                                    max-width: 700px;
+                                }
+                                .study-bullets li {
+                                    margin-bottom: 8px;
+                                    font-size: 1.1rem;
+                                }
                             </style>
                             <div class="study-content">
                                 <h2 class="study-title">${estudioActual.title}</h2>
-                                <p class="study-section"><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
-                                <p class="study-section"><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
-                                <p class="study-section"><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
-                                <p class="study-section"><strong>Resumen:</strong> ${estudioActual.prompt}</p>
+                                <ul class="study-bullets">
+                                    <li><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</li>
+                                    <li><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</li>
+                                    <li><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</li>
+                                    <li><strong>Resumen:</strong> ${estudioActual.prompt}</li>
+                                </ul>
                             </div>
                         `;
 
