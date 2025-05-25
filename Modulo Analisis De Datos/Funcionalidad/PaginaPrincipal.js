@@ -329,8 +329,6 @@ async function contenido(study) {
                                 }
                                 .study-bullets {
                                     text-align: left;
-                                    margin: 0 auto;
-                                    max-width: 700px;
                                 }
                                 .study-bullets li {
                                     margin-bottom: 8px;
