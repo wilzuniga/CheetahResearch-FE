@@ -1,5 +1,5 @@
 img {
-  border-radius : 13px;
+  border-radius: 5px;
 }
 
 /* Feed Scrollbar */
@@ -10,12 +10,12 @@ img {
 
 #Feed-BG::-webkit-scrollbar-track {
   background: rgba(46,46,46,0.72);
-  border-radius : 13px;
+  border-radius: 3px;
 }
 
 #Feed-BG::-webkit-scrollbar-thumb {
   background: #797979;
-  border-radius : 13px;
+  border-radius: 15px;
 }
 
 /* Type-Box Scrollbar */
@@ -26,10 +26,10 @@ img {
 
 #Message-Input::-webkit-scrollbar-track {
   background: #aaa7aa;
-  border-radius : 13px;
+  border-radius: 2px;
 }
 
 #Message-Input::-webkit-scrollbar-thumb {
   background: var(--bs-CR-gray);
-  border-radius : 13px;
+  border-radius: 15px;
 }

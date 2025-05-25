@@ -14,7 +14,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Aldrich&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 
 img {
-  border-radius : 13px;
+  border-radius: 5px;
 }
 
 * {
@@ -39,12 +39,12 @@ img {
 
 #Feed-BG::-webkit-scrollbar-track {
   background: rgba(46,46,46,0.72);
-  border-radius : 13px;
+  border-radius: 3px;
 }
 
 #Feed-BG::-webkit-scrollbar-thumb {
   background: #797979;
-  border-radius : 13px;
+  border-radius: 15px;
 }
 
 /* Type-Box Scrollbar */
@@ -55,10 +55,10 @@ img {
 
 #Message-Input::-webkit-scrollbar-track {
   background: #aaa7aa;
-  border-radius : 13px;
+  border-radius: 2px;
 }
 
 #Message-Input::-webkit-scrollbar-thumb {
   background: var(--bs-CR-gray);
-  border-radius : 13px;
+  border-radius: 15px;
 }
