@@ -81,6 +81,7 @@ function AgregarFiltros() {
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');
             const comboBox2 = document.getElementById('ComboBox_ResumenIndividual');
             const comboBox3 = document.getElementById('Combobox_UserPersona');
+            const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBox4 = document.getElementById('Combobox_EKMAN');
             const comboBox5 = document.getElementById('Combobox_RasgosDePersonalidad');
             const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
@@ -95,6 +96,7 @@ function AgregarFiltros() {
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
             comboBox3.innerHTML = '';
+            comboBoxUA.innerHTML = '';
             comboBox4.innerHTML = '';
             comboBox5.innerHTML = '';
             comboBox6.innerHTML = '';
@@ -114,6 +116,7 @@ function AgregarFiltros() {
             comboBox.appendChild(option);
             comboBox2.appendChild(option.cloneNode(true));
             comboBox3.appendChild(option.cloneNode(true));
+            comboBoxUA.appendChild(option.cloneNode(true));
             comboBox4.appendChild(option.cloneNode(true));
             comboBox5.appendChild(option.cloneNode(true));
             comboBox6.appendChild(option.cloneNode(true));
@@ -153,6 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'save-textarea_ResumenGeneral': 'ResumenGeneralTextArea',
                 'save-textarea_ResumenIndividual': 'ResumenIndividualTextArea',
                 'save-textarea_UserPersona': 'UserPersonaTextArea',
+                'save-textarea_UserArchetype': 'UserArchetypeTextArea',
                 'save-textarea_AP_Ekman': 'EKMANTextArea',
                 'save-textarea_AP_RasgosDePersonalidad': 'RasgosDePersonalidadTextArea',
                 'save-textarea_AP_SegmentosPsicograficos': 'SegmentosPsicograficosTextArea',
@@ -172,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const comboBoxRG = document.getElementById('ComboBox_ResumenGeneral');
             const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
             const comboBoxUP = document.getElementById('Combobox_UserPersona');
+            const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBoxEK = document.getElementById('Combobox_EKMAN');
             const comboBoxRP = document.getElementById('Combobox_RasgosDePersonalidad');
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
@@ -187,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionRG = comboBoxRG.options[comboBoxRG.selectedIndex];
             const StyleSelectedOptionRI = comboBoxRI.options[comboBoxRI.selectedIndex];
             const StyleSelectedOptionUP = comboBoxUP.options[comboBoxUP.selectedIndex];
+            const StyleSelectedOptionUA = comboBoxUA.options[comboBoxUA.selectedIndex];
             const StyleSelectedOptionEK = comboBoxEK.options[comboBoxEK.selectedIndex];
             const StyleSelectedOptionRP = comboBoxRP.options[comboBoxRP.selectedIndex];
             const StyleSelectedOptionSP = comboBoxSP.options[comboBoxSP.selectedIndex];
@@ -202,6 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionRGValue = StyleSelectedOptionRG.value;
             const StyleSelectedOptionRIValue = StyleSelectedOptionRI.value;
             const StyleSelectedOptionUPValue = StyleSelectedOptionUP.value;
+            const StyleSelectedOptionUAValue = StyleSelectedOptionUA.value;
             const StyleSelectedOptionEKValue = StyleSelectedOptionEK.value;
             const StyleSelectedOptionRPValue = StyleSelectedOptionRP.value;
             const StyleSelectedOptionSPValue = StyleSelectedOptionSP.value;
@@ -287,6 +294,26 @@ document.addEventListener('DOMContentLoaded', function () {
                     axios.post(url, formDataUP)
                         .then(function (response) {
                             // console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+                case 'save-textarea_UserArchetype':
+                    {
+                    const formDataUA = new FormData();
+                    formDataUA.append('filter', StyleSelectedOptionUAValue);
+                    formDataUA.append('module', 'user_archetype');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionUAValue + '.md';
+
+                    formDataUA.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataUA)
+                        .then(function (response) {
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -643,6 +670,7 @@ function LLenarResumenes(){
 
             //Analisis Psicograficos, no tienen narrativo ni factual. Solo filtros
             const comboBoxUP = document.getElementById('Combobox_UserPersona');
+            const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBoxEK = document.getElementById('Combobox_EKMAN');
             const comboBoxRP = document.getElementById('Combobox_RasgosDePersonalidad');
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
@@ -1049,6 +1077,35 @@ function LLenarResumenes(){
                     });
             });
 
+            // User Archetype
+            comboBoxUA.addEventListener('change', (event) => {
+                var div = document.getElementById('UserArchetypeContent');
+                var textArea = document.getElementById('UserArchetypeTextArea');
+                const selectedValue = event.target.value;
+
+                formData = new FormData();     
+                formData.append('filter', selectedValue);
+                formData.append('module', 'user_archetype'); // API endpoint for User Archetype
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        const coso = marked(data);                          
+                        div.innerHTML = coso;          
+                        textArea.value = data;            
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            });
 }
 
 // insertar lorem ipsilum en el div coon id ResumenGeneral al cargarlo 
