@@ -13,7 +13,7 @@ function otp(study_id) {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border-radius: 10px;
+            border-radius : 13px;
             text-align: center;
             text-color: black;
             padding: 20px;
@@ -22,12 +22,12 @@ function otp(study_id) {
             <input type="text" id="otpInput" style="
                 width: 75%;
                 padding: 10px;
-                border-radius: 5px;
+                border-radius : 13px;
                 margin: 10px;
             ">
             <button onclick="verificarOTP('${study_id}')" style="
                 padding: 10px;
-                border-radius: 5px;
+                border-radius : 13px;
                 margin: 10px;
                 background-color: #c0601c;
                 color: white;
@@ -37,7 +37,7 @@ function otp(study_id) {
 
            <button onclick="solicitarOTP('${study_id}')" style="
                 padding: 10px;
-                border-radius: 5px;
+                border-radius : 13px;
                 margin: 10px;
                 background-color: #4CAF50;
                 color: white;
@@ -64,7 +64,7 @@ function solicitarOTP(study_id) {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border-radius: 10px;
+            border-radius : 13px;
             text-align: center;
             text-color: black;
             padding: 20px;
@@ -73,13 +73,13 @@ function solicitarOTP(study_id) {
             <input type="email" id="emailInput" placeholder="Correo electrónico" style="
                 width: 75%;
                 padding: 10px;
-                border-radius: 5px;
+                border-radius : 13px;
                 margin: 10px;
             ">
 
             <button onclick="enviarOTP('${study_id}')" style="
                 padding: 10px;
-                border-radius: 5px;
+                border-radius : 13px;
                 margin: 10px;
                 background-color: #4CAF50;
                 color: white;
@@ -147,7 +147,7 @@ async function LegalDisclaimer(study_id) {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border-radius: 10px;
+            border-radius : 13px;
             text-align: center;
             color: black;
             padding: 20px;
@@ -174,7 +174,7 @@ async function LegalDisclaimer(study_id) {
                 </p>
             <button id="verifyButton" style="
                 padding: 10px;
-                border-radius: 5px;
+                border-radius : 13px;
                 margin: 10px;
                 background-color: var(--bs-CR-orange);
                 color: var(--bs-CR-gray);
@@ -327,13 +327,22 @@ async function contenido(study) {
                                 .study-content {
                                     margin-bottom: 15px;
                                 }
+                                .study-bullets {
+                                    text-align: left;
+                                }
+                                .study-bullets li {
+                                    margin-bottom: 8px;
+                                    font-size: 1.1rem;
+                                }
                             </style>
                             <div class="study-content">
                                 <h2 class="study-title">${estudioActual.title}</h2>
-                                <p class="study-section"><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
-                                <p class="study-section"><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
-                                <p class="study-section"><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
-                                <p class="study-section"><strong>Resumen:</strong> ${estudioActual.prompt}</p>
+                                <ul class="study-bullets">
+                                    <li><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</li>
+                                    <li><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</li>
+                                    <li><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</li>
+                                    <li><strong>Resumen:</strong> ${estudioActual.prompt}</li>
+                                </ul>
                             </div>
                         `;
 
@@ -419,7 +428,7 @@ function linkDesactivado() {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border-radius: 10px;
+            border-radius : 13px;
             text-align: center;
             text-color: black;
             padding: 20px;

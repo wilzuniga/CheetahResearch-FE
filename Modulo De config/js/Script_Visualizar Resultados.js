@@ -81,6 +81,7 @@ function AgregarFiltros() {
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');
             const comboBox2 = document.getElementById('ComboBox_ResumenIndividual');
             const comboBox3 = document.getElementById('Combobox_UserPersona');
+            const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBox4 = document.getElementById('Combobox_EKMAN');
             const comboBox5 = document.getElementById('Combobox_RasgosDePersonalidad');
             const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
@@ -95,6 +96,7 @@ function AgregarFiltros() {
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
             comboBox3.innerHTML = '';
+            comboBoxUA.innerHTML = '';
             comboBox4.innerHTML = '';
             comboBox5.innerHTML = '';
             comboBox6.innerHTML = '';
@@ -114,6 +116,7 @@ function AgregarFiltros() {
             comboBox.appendChild(option);
             comboBox2.appendChild(option.cloneNode(true));
             comboBox3.appendChild(option.cloneNode(true));
+            comboBoxUA.appendChild(option.cloneNode(true));
             comboBox4.appendChild(option.cloneNode(true));
             comboBox5.appendChild(option.cloneNode(true));
             comboBox6.appendChild(option.cloneNode(true));
@@ -153,6 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'save-textarea_ResumenGeneral': 'ResumenGeneralTextArea',
                 'save-textarea_ResumenIndividual': 'ResumenIndividualTextArea',
                 'save-textarea_UserPersona': 'UserPersonaTextArea',
+                'save-textarea_UserArchetype': 'UserArchetypeTextArea',
                 'save-textarea_AP_Ekman': 'EKMANTextArea',
                 'save-textarea_AP_RasgosDePersonalidad': 'RasgosDePersonalidadTextArea',
                 'save-textarea_AP_SegmentosPsicograficos': 'SegmentosPsicograficosTextArea',
@@ -172,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const comboBoxRG = document.getElementById('ComboBox_ResumenGeneral');
             const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
             const comboBoxUP = document.getElementById('Combobox_UserPersona');
+            const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBoxEK = document.getElementById('Combobox_EKMAN');
             const comboBoxRP = document.getElementById('Combobox_RasgosDePersonalidad');
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
@@ -187,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionRG = comboBoxRG.options[comboBoxRG.selectedIndex];
             const StyleSelectedOptionRI = comboBoxRI.options[comboBoxRI.selectedIndex];
             const StyleSelectedOptionUP = comboBoxUP.options[comboBoxUP.selectedIndex];
+            const StyleSelectedOptionUA = comboBoxUA.options[comboBoxUA.selectedIndex];
             const StyleSelectedOptionEK = comboBoxEK.options[comboBoxEK.selectedIndex];
             const StyleSelectedOptionRP = comboBoxRP.options[comboBoxRP.selectedIndex];
             const StyleSelectedOptionSP = comboBoxSP.options[comboBoxSP.selectedIndex];
@@ -202,6 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionRGValue = StyleSelectedOptionRG.value;
             const StyleSelectedOptionRIValue = StyleSelectedOptionRI.value;
             const StyleSelectedOptionUPValue = StyleSelectedOptionUP.value;
+            const StyleSelectedOptionUAValue = StyleSelectedOptionUA.value;
             const StyleSelectedOptionEKValue = StyleSelectedOptionEK.value;
             const StyleSelectedOptionRPValue = StyleSelectedOptionRP.value;
             const StyleSelectedOptionSPValue = StyleSelectedOptionSP.value;
@@ -287,6 +294,26 @@ document.addEventListener('DOMContentLoaded', function () {
                     axios.post(url, formDataUP)
                         .then(function (response) {
                             // console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+                case 'save-textarea_UserArchetype':
+                    {
+                    const formDataUA = new FormData();
+                    formDataUA.append('filter', StyleSelectedOptionUAValue);
+                    formDataUA.append('module', 'user_archetype');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionUAValue + '.md';
+
+                    formDataUA.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataUA)
+                        .then(function (response) {
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -643,6 +670,7 @@ function LLenarResumenes(){
 
             //Analisis Psicograficos, no tienen narrativo ni factual. Solo filtros
             const comboBoxUP = document.getElementById('Combobox_UserPersona');
+            const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBoxEK = document.getElementById('Combobox_EKMAN');
             const comboBoxRP = document.getElementById('Combobox_RasgosDePersonalidad');
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
@@ -1049,6 +1077,35 @@ function LLenarResumenes(){
                     });
             });
 
+            // User Archetype
+            comboBoxUA.addEventListener('change', (event) => {
+                var div = document.getElementById('UserArchetypeContent');
+                var textArea = document.getElementById('UserArchetypeTextArea');
+                const selectedValue = event.target.value;
+
+                formData = new FormData();     
+                formData.append('filter', selectedValue);
+                formData.append('module', 'user_archetype'); // API endpoint for User Archetype
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        const coso = marked(data);                          
+                        div.innerHTML = coso;          
+                        textArea.value = data;            
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            });
 }
 
 // insertar lorem ipsilum en el div coon id ResumenGeneral al cargarlo 
@@ -1333,3 +1390,164 @@ function adjustColor(color, percent) {//Funcion loca de chatsito
                 (B < 255 ? (B < 1 ? 0 : B) : 255))
                 .toString(16).slice(1).toUpperCase()}`;
 }
+
+// User Persona and User Archetype functionality
+const userPersonaBtn = document.getElementById('UserPersonaBtn');
+const userArchetypeBtn = document.getElementById('UserArchetypeBtn');
+const userPersonaContent = document.getElementById('UserPersonaContent');
+const userArchetypeContent = document.getElementById('UserArchetypeContent');
+const comboboxUserPersona = document.getElementById('Combobox_UserPersona');
+const comboboxUserArchetype = document.getElementById('Combobox_UserArchetype');
+const comboboxUserPersonaSubFiltro = document.getElementById('ComboBox_UserPersona_SubFiltro');
+const comboboxUserArchetypeSubFiltro = document.getElementById('ComboBox_UserArchetype_SubFiltro');
+const exportUserPersonaBtn = document.getElementById('export_UserPersona');
+const exportUserArchetypeBtn = document.getElementById('export_UserArchetype');
+const toggleTextareaUserPersonaBtn = document.getElementById('toggle-textarea_UserPersona');
+const toggleTextareaUserArchetypeBtn = document.getElementById('toggle-textarea_UserArchetype');
+const saveTextareaUserPersonaBtn = document.getElementById('save-textarea_UserPersona');
+const saveTextareaUserArchetypeBtn = document.getElementById('save-textarea_UserArchetype');
+const userPersonaTextArea = document.getElementById('UserPersonaTextArea');
+const userArchetypeTextArea = document.getElementById('UserArchetypeTextArea');
+
+// Function to load data for both User Persona and User Archetype
+async function loadUserData(type, contentDiv, combobox, subFiltro, textarea) {
+    try {
+        const endpoint = type === 'persona' ? 'user_persona' : 'user_archetype';
+        const response = await fetch(`/api/${endpoint}`);
+        const data = await response.json();
+
+        // Populate combobox with filters
+        combobox.innerHTML = '<option value="">Selecciona un filtro</option>';
+        data.filters.forEach(filter => {
+            const option = document.createElement('option');
+            option.value = filter;
+            option.textContent = filter;
+            combobox.appendChild(option);
+        });
+
+        // Show/hide subfiltro based on selected filter
+        combobox.addEventListener('change', function() {
+            if (this.value === 'Temporal') {
+                subFiltro.style.display = 'inline-block';
+            } else {
+                subFiltro.style.display = 'none';
+            }
+        });
+
+        // Load initial content
+        if (data.content) {
+            contentDiv.innerHTML = data.content;
+            textarea.value = data.content;
+        }
+    } catch (error) {
+        console.error(`Error loading ${type} data:`, error);
+        contentDiv.innerHTML = `<p>Error loading ${type} data. Please try again later.</p>`;
+    }
+}
+
+// Event listeners for User Persona
+userPersonaBtn.addEventListener('click', () => {
+    loadUserData('persona', userPersonaContent, comboboxUserPersona, comboboxUserPersonaSubFiltro, userPersonaTextArea);
+});
+
+comboboxUserPersona.addEventListener('change', async function() {
+    const filter = this.value;
+    const subFilter = comboboxUserPersonaSubFiltro.value;
+    try {
+        const response = await fetch(`/api/user_persona?filter=${filter}&subFilter=${subFilter}`);
+        const data = await response.json();
+        if (data.content) {
+            userPersonaContent.innerHTML = data.content;
+            userPersonaTextArea.value = data.content;
+        }
+    } catch (error) {
+        console.error('Error updating User Persona content:', error);
+    }
+});
+
+// Event listeners for User Archetype
+userArchetypeBtn.addEventListener('click', () => {
+    loadUserData('archetype', userArchetypeContent, comboboxUserArchetype, comboboxUserArchetypeSubFiltro, userArchetypeTextArea);
+});
+
+comboboxUserArchetype.addEventListener('change', async function() {
+    const filter = this.value;
+    const subFilter = comboboxUserArchetypeSubFiltro.value;
+    try {
+        const response = await fetch(`/api/user_archetype?filter=${filter}&subFilter=${subFilter}`);
+        const data = await response.json();
+        if (data.content) {
+            userArchetypeContent.innerHTML = data.content;
+            userArchetypeTextArea.value = data.content;
+        }
+    } catch (error) {
+        console.error('Error updating User Archetype content:', error);
+    }
+});
+
+// Toggle textarea visibility for User Persona
+toggleTextareaUserPersonaBtn.addEventListener('click', () => {
+    userPersonaTextArea.style.display = userPersonaTextArea.style.display === 'none' ? 'block' : 'none';
+});
+
+// Toggle textarea visibility for User Archetype
+toggleTextareaUserArchetypeBtn.addEventListener('click', () => {
+    userArchetypeTextArea.style.display = userArchetypeTextArea.style.display === 'none' ? 'block' : 'none';
+});
+
+// Save changes for User Persona
+saveTextareaUserPersonaBtn.addEventListener('click', async () => {
+    try {
+        const response = await fetch('/api/user_persona', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                content: userPersonaTextArea.value,
+                filter: comboboxUserPersona.value,
+                subFilter: comboboxUserPersonaSubFiltro.value
+            })
+        });
+        if (response.ok) {
+            userPersonaContent.innerHTML = userPersonaTextArea.value;
+            alert('Changes saved successfully!');
+        }
+    } catch (error) {
+        console.error('Error saving User Persona changes:', error);
+        alert('Error saving changes. Please try again.');
+    }
+});
+
+// Save changes for User Archetype
+saveTextareaUserArchetypeBtn.addEventListener('click', async () => {
+    try {
+        const response = await fetch('/api/user_archetype', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                content: userArchetypeTextArea.value,
+                filter: comboboxUserArchetype.value,
+                subFilter: comboboxUserArchetypeSubFiltro.value
+            })
+        });
+        if (response.ok) {
+            userArchetypeContent.innerHTML = userArchetypeTextArea.value;
+            alert('Changes saved successfully!');
+        }
+    } catch (error) {
+        console.error('Error saving User Archetype changes:', error);
+        alert('Error saving changes. Please try again.');
+    }
+});
+
+// Export functionality for both
+exportUserPersonaBtn.addEventListener('click', () => {
+    exportContent(userPersonaContent, 'user_persona');
+});
+
+exportUserArchetypeBtn.addEventListener('click', () => {
+    exportContent(userArchetypeContent, 'user_archetype');
+});

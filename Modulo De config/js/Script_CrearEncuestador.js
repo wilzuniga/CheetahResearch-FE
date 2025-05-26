@@ -26,7 +26,7 @@ function createSurveyerForm() {
             <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" data-i18n-placeholder="CrearEncuestador.inGreeting" style="font-family: 'IBM Plex Sans'"></textarea>
             </div>
             <div style="width: 250px;">
-            <button class="btn btn-primary d-block w-100" id="CrearEncuestadorBtn" type="submit" style="font-weight: bold; font-size: 20px; border-radius: 10px;" data-i18n="CrearEncuestador.btCreate">Crear Encuestador</button>
+            <button class="btn btn-primary d-block w-100" id="CrearEncuestadorBtn" type="submit" style="font-weight: bold; font-size: 20px; border-radius : 13px;" data-i18n="CrearEncuestador.btCreate">Crear Encuestador</button>
             </div>
         </form>
         `;
@@ -67,7 +67,7 @@ function createSurveyerFormReadOnly() {
                     <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" data-i18n-placeholder="CrearEncuestador.inGreeting" style="font-family: 'IBM Plex Sans'">${data.interviewerGreeting}</textarea>
                 </div>
                 <div style="width: 250px;">
-                    <button class="btn btn-primary d-block w-100" id="ActualizarEncuestadorBtn" type="button" style="font-weight: bold; font-size: 20px; border-radius: 10px; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="CrearEncuestador.btUpdate">Actualizar Encuestador</button>
+                    <button class="btn btn-primary d-block w-100" id="ActualizarEncuestadorBtn" type="button" style="font-weight: bold; font-size: 20px; border-radius : 13px; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="CrearEncuestador.btUpdate">Actualizar Encuestador</button>
                 </div>
             </form>
         `;

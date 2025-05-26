@@ -307,15 +307,14 @@ function AgregarFiltros(study) {
             Demographic_Filters.push('Seleccionar filtro');
             Demographic_Filters.push('General');
 
-            //ciclar la data a partir de la segunda section para ver la estructura del json en la consola
             data.forEach(filtro => {
                 Demographic_Filters.push(filtro);
             });
 
-
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');
             const comboBox2 = document.getElementById('ComboBox_ResumenIndividual');
             const comboBox3 = document.getElementById('Combobox_UserPersona');
+            const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBox4 = document.getElementById('Combobox_EKMAN');
             const comboBox5 = document.getElementById('Combobox_RasgosDePersonalidad');
             const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
@@ -361,6 +360,7 @@ function AgregarFiltros(study) {
             comboBox11.appendChild(option.cloneNode(true));
             comboBox12.appendChild(option.cloneNode(true));
             comboBox13.appendChild(option.cloneNode(true));
+            comboBoxUA.appendChild(option.cloneNode(true));
 
         });
 
@@ -490,6 +490,7 @@ function LLenarResumenes(study) {
 
     //Analisis Psicograficos, no tienen narrativo ni factual. Solo filtros
     const comboBoxUP = document.getElementById('Combobox_UserPersona');
+    const comboBoxUA = document.getElementById('Combobox_UserArchetype');
     const comboBoxEK = document.getElementById('Combobox_EKMAN');
     const comboBoxRP = document.getElementById('Combobox_RasgosDePersonalidad');
     const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
@@ -920,6 +921,34 @@ function LLenarResumenes(study) {
                 const coso = marked(data);                          
                 div.innerHTML = coso;                      
                 // console.log(data);
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+    });
+
+    // User Archetype
+    comboBoxUA.addEventListener('change', (event) => {
+        var div = document.getElementById('UserArchetypeContent');
+        const selectedValue = event.target.value;
+
+        formData = new FormData();     
+        formData.append('filter', selectedValue);
+        formData.append('module', 'user_archetype'); // API endpoint for User Archetype
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                const coso = marked(data);                          
+                div.innerHTML = coso;                      
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
