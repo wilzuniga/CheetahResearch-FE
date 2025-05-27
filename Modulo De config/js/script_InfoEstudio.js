@@ -59,6 +59,49 @@ function llenar() {
         console.error('Elemento con ID "DescargarTranscrptBtn" no encontrado.');
     }
 
+    /**
+     * DELETE /configuration/files/<study_id>
+
+{
+  "status": "success",
+  "message": "Successfully deleted 1 files from <>",
+  "deleted_count": 1
+}
+
+boton BorrarBtn
+
+     */
+
+    // Evento para manejar la eliminación de archivos cuando se hace clic en el botón
+    const deleteButton = document.getElementById('BorrarBtn');
+    if (deleteButton) {
+        deleteButton.addEventListener('click', () => {
+            const studyId = localStorage.getItem('selectedStudyId');
+            if (!studyId) {
+                console.error('No se encontró "selectedStudyId" en localStorage.');
+                return;
+            }
+
+            // Confirmación antes de eliminar
+            const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar los archivos de este estudio? Esta acción no se puede deshacer.');
+            if (!confirmDelete) {
+                return;
+            }
+
+            axios.delete(`https://api.cheetah-research.ai/configuration/files/${studyId}`)
+                .then((response) => {
+                    const deletedCount = response.data.deleted_count || 0;
+                    alert(`Se eliminaron correctamente ${deletedCount} archivo(s).`);
+                    console.log('Respuesta de eliminación:', response.data);
+                    // Aquí puedes manejar la respuesta de la API según sea necesario
+                })
+                .catch((error) => {
+                    console.error('Error al realizar la solicitud:', error);
+                });
+        });
+    } else {
+        console.error('Elemento con ID "BorrarBtn" no encontrado.');
+    }
 
     //descargar transcripciones de backup con boton DescargarTranscrptBtnBckup y con link https://api.cheetah-research.ai/chatbot/download_logs_bckup/
     const downloadLogsButtonBckup = document.getElementById('DescargarTranscrptBtnBckup');
