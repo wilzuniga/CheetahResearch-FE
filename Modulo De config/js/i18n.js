@@ -1,6 +1,7 @@
 // bt: button
 // h: header
 // in: input
+// out: output
 
 const translations = {
     es: {
@@ -41,6 +42,17 @@ const translations = {
             hObservations: "Observaciones Importantes", inObservations: "Observaciones Importantes para el encuestador",
             hGreeting: "Saludo",                        inGreeting: "Ingresa el saludo del encuestador",
             btCreate: "Crear Encuestador",              btUpdate: "Actualizar Encuestador",
+        },
+        Encuesta: {
+            title: "Crear Encuesta",
+            hQuestion: "Pregunta",                      inQuestion: "Ingresa tu pregunta",                   inWeight: "Ingresa el peso",
+            hAttachment: "Archivo",
+            btAddQuestion: "Agregar Pregunta",
+            btDelQuestion: "Eliminar",                  btAddSubQuestion: "Agregar Pregunta de Seguimiento", btEdtQuestion: "Editar",                   btDelSubQuestion: "Eliminar Preguntas de Seguimiento",
+            inAddSubQuestion: "Ingresa tu Pregunta de Seguimiento", btSaveSubQuestion: "Agregar Pregunta",   btCloseSubQuestion: "Cerrar",
+            //Poner los de arriba en Editar Pregunta
+            btSaveQuestionEdit: "Guardar",              btCloseQuestionEdit: "Cerrar",
+            btSaveSurvey: "Crear Encuesta"
         }
     },
 
