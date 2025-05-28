@@ -514,10 +514,11 @@ function LLenarResumenes(study) {
 
         // Supongamos que `event.target.value` es el valor del combobox
         const selectedValue = event.target.value;
-        const subFilterValue = document.getElementById('ComboBox_UserPersona_SubFiltro').value;
 
         formData = new FormData();     
         if (study === '67e2ac1b5bd042898764458a') {
+                    const subFilterValue = document.getElementById('ComboBox_UserPersona_SubFiltro').value;
+
             formData.append('filter', `${selectedValue} ${subFilterValue}`);
         } else {
             formData.append('filter', selectedValue);
