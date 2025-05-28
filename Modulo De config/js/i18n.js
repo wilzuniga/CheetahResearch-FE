@@ -77,6 +77,14 @@ const translations = {
             hAnalysisModule: "Módulo de Recolección de Datos",  aAnalysisModule: "AnalisisDeDatos.com",
             btChangeState: "Cambiar Estado",            btOTP: "Generar OTP",
             btLaunch: "Lanzar Estudio"
+        },
+        InformacionDelEstudio: {
+            title: "Transcripción de Encuestas",
+            hSurveyCount: "Encuestas Aplicadas:",
+            btTranscriptions: "Descargar Transcripciones",
+            btNonProcessedTranscriptions: "Descargar Transcripciones No Procesadas",
+            btLogOTP: "Descargar Log de OTP",
+            btDelFiles: "Eliminar Archivos",
         }
     },
 
@@ -131,6 +139,14 @@ const translations = {
             hAnalysisModule: "Data Analysis Module",    aAnalysisModule: "DataAnalysis.com",
             btChangeState: "Change State",              btOTP: "Generate OTP",
             btLaunch: "Launch Study"
+        },
+        InformacionDelEstudio: {
+            title: "Survey Transcriptions",
+            hSurveyCount: "Surveys Applied:",
+            btTranscriptions: "Download Transcriptions",
+            btNonProcessedTranscriptions: "Download Non-Processed Transcriptions",
+            btLogOTP: "Download OTP Log",
+            btDelFiles: "Delete Files",
         }
     },
 
@@ -185,6 +201,14 @@ const translations = {
             hAnalysisModule: "Módulo de Análise de Dados",  aAnalysisModule: "AnaliseDeDados.com",
             btChangeState: "Alterar Estado",            btOTP: "Gerar OTP",
             btLaunch: "Lançar Estudo"
+        },
+        InformacionDelEstudio: {
+            title: "Transcrição de Pesquisas",
+            hSurveyCount: "Pesquisas Aplicadas:",
+            btTranscriptions: "Baixar Transcrições",
+            btNonProcessedTranscriptions: "Baixar Transcrições Não Processadas",
+            btLogOTP: "Baixar Log de OTP",
+            btDelFiles: "Excluir Arquivos",
         }
     }
 };
