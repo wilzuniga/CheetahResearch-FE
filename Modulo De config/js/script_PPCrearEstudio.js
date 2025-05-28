@@ -414,6 +414,7 @@ function loadStudies() { //Carga los estudios en la Main Page
 
                 const filtered = reversedStudies.filter(study =>
                     study.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(query)
+                    || (study._id && study._id.toLowerCase().includes(query))//Búsqueda por ID
                 );
                 renderStudies(filtered);
             });
