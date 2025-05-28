@@ -1,5 +1,6 @@
 // bt: button
 // h: header
+// a: anchor
 // in: input
 // out: output
 
@@ -48,11 +49,34 @@ const translations = {
             hQuestion: "Pregunta",                      inQuestion: "Ingresa tu pregunta",                   inWeight: "Ingresa el peso",
             hAttachment: "Archivo",
             btAddQuestion: "Agregar Pregunta",
-            btDelQuestion: "Eliminar",                  btAddSubQuestion: "Agregar Pregunta de Seguimiento", btEdtQuestion: "Editar",                   btDelSubQuestion: "Eliminar Preguntas de Seguimiento",
+            btDelQuestion: "Eliminar",                  btAddSubQuestion: "Agregar Pregunta de Seguimiento", btEdtQuestion: "Editar",       btDelSubQuestion: "Eliminar Preguntas de Seguimiento",
             inAddSubQuestion: "Ingresa tu Pregunta de Seguimiento", btSaveSubQuestion: "Agregar Pregunta",   btCloseSubQuestion: "Cerrar",
             //Poner los de arriba en Editar Pregunta
             btSaveQuestionEdit: "Guardar",              btCloseQuestionEdit: "Cerrar",
             btSaveSurvey: "Crear Encuesta"
+            //Falta el html en JS
+        },
+        LanzarEstudio: {
+            title: "Lanzar Estudio",                    hStudyTitle: "Titulo del Estudio",//Verificar que no sobreponga titulo actual
+            btAdd: "Agregar",                           btSave: "Guardar",
+            hFilters: "Filtros",                        inFilters: "Agrega filtros para el Módulo de Análisis",
+            hDomains: "Dominios Autorizados",
+            hDeployConfig: "Configurar Despliegue de analisis de datos",
+            //Modulos en ComboBox
+            modGeneral: "Módulo de Análisis General",
+            modAnalysis: "Módulo de Análisis Individual",
+            modPsicographic: "Módulo de Análisis Psicográficos",
+            modUserPersona: "Módulo de User Personas",
+            modCustomerExperience: "Módulo Customer Experience",
+            modCustomerSatisfaction: "Módulo NPS y Satisfacción",
+            modBrandStatus: "Módulo Brand Status",
+            modClimaLaboral: "Módulo Clima Laboral",
+
+            hSuggQuestion: "Preguntas Sugeridas",       inSuggQuestion: "Agrega preguntas sugeridas para Sócrates",
+            hRecollectionModule: "Módulo de Recolección de Datos", aRecollectionModule: "RecoleccionDeDatos.com",
+            hAnalysisModule: "Módulo de Recolección de Datos",  aAnalysisModule: "AnalisisDeDatos.com",
+            btChangeState: "Cambiar Estado",            btOTP: "Generar OTP",
+            btLaunch: "Lanzar Estudio"
         }
     },
 
@@ -85,6 +109,28 @@ const translations = {
             color1: "Primary Color of the Study",       color2: "Secondary Color of the Study",
             btSaveColors: "Save Colors",                btDefaultColors: "Default Colors",
             btCreate: "Create Study",                   btUpdate: "Update Study",
+        },
+        LanzarEstudio: {
+            title: "Launch Study",                      hStudyTitle: "Study Title",
+            btAdd: "Add",                               btSave: "Save",
+            hFilters: "Filters",                        inFilters: "Add filters for the Analysis Module",
+            hDomains: "Authorized Domains",
+            hDeployConfig: "Configure Data Analysis Deployment",
+            //Modulos en ComboBox
+            modGeneral: "General Analysis Module",
+            modAnalysis: "Individual Analysis Module",
+            modPsicographic: "Psychographic Analysis Module",
+            modUserPersona: "User Personas Module",
+            modCustomerExperience: "Customer Experience Module",
+            modCustomerSatisfaction: "NPS and Satisfaction Module",
+            modBrandStatus: "Brand Status Module",
+            modClimaLaboral: "Work Environment Module",
+
+            hSuggQuestion: "Suggested Questions",       inSuggQuestion: "Add suggested questions for Socrates",
+            hRecollectionModule: "Data Collection Module", aRecollectionModule: "DataCollection.com",
+            hAnalysisModule: "Data Analysis Module",    aAnalysisModule: "DataAnalysis.com",
+            btChangeState: "Change State",              btOTP: "Generate OTP",
+            btLaunch: "Launch Study"
         }
     },
 
@@ -117,6 +163,28 @@ const translations = {
             color1: "Cor Primária do Estudo",           color2: "Cor Secundária do Estudo",
             btSaveColors: "Salvar Cores",               btDefaultColors: "Cores Padrão",
             btCreate: "Criar Estudo",                   btUpdate: "Atualizar Estudo",
+        },
+        LanzarEstudio: {
+            title: "Lançar Estudo",                     hStudyTitle: "Título do Estudo",
+            btAdd: "Adicionar",                         btSave: "Salvar",
+            hFilters: "Filtros",                        inFilters: "Adicione filtros para o Módulo de Análise",
+            hDomains: "Domínios Autorizados",
+            hDeployConfig: "Configurar Desdobramento de análise de dados",
+            //Modulos en ComboBox
+            modGeneral: "Módulo de Análise Geral",
+            modAnalysis: "Módulo de Análise Individual",
+            modPsicographic: "Módulo de Análise Psicográfica",
+            modUserPersona: "Módulo de User Personas",
+            modCustomerExperience: "Módulo Customer Experience",
+            modCustomerSatisfaction: "Módulo NPS e Satisfação",
+            modBrandStatus: "Módulo Brand Status",
+            modClimaLaboral: "Módulo Clima Laboral",
+
+            hSuggQuestion: "Perguntas Sugeridas",       inSuggQuestion: "Adicione perguntas sugeridas para Sócrates",
+            hRecollectionModule: "Módulo de Coleta de Dados", aRecollectionModule: "ColetaDeDados.com",
+            hAnalysisModule: "Módulo de Análise de Dados",  aAnalysisModule: "AnaliseDeDados.com",
+            btChangeState: "Alterar Estado",            btOTP: "Gerar OTP",
+            btLaunch: "Lançar Estudo"
         }
     }
 };
