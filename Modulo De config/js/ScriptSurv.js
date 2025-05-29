@@ -1,5 +1,4 @@
 let questions = [];
-let defaultquestions = [];
 let questionsImg = [];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -434,7 +433,6 @@ function CE_DeactivateNavBy(){
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
     
     questions = [];
-    defaultquestions = [];
 
     const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId') ;
     axios.get(url)
@@ -444,125 +442,13 @@ function CE_DeactivateNavBy(){
             questions.push(pregunta);
         });
 
-        response.data.default_questions.forEach((pregunta) => {
-            defaultquestions.push(pregunta);
-        });
-        // console.log(questions);
-        /*{
-    "prompt": "wjnefkwjnef",
-    "test": true,
-    "questions": [
-        {
-            "question": "rgegr",
-            "weight": "5"
-        }
-    ],
-    "default_questions": [
-        {
-            "question": "Hola, te entrevistaré el día de hoy. Cómo deseas que me dirija hacia ti a lo largo de esta entrevista?",
-            "status": 1
-        },
-        {
-            "question": "Para que la entrevista fluya más rápida trata de ser lo más amplio posible en sus respuestas y evita contestar solo con un \"Si, No, \" Esta bien, Esta bueno\" ya que ese tipo de respuestas me obligaran a formularte más preguntas. Estás dispuesto a continuar? Solamente contesta \"Deseo continuar\" ó \"No deseo Continuar\"",
-            "status": 1
-        },
-        {
-            "question": "Primero deseamos saber un poco mas de tu forma de pensar..... Si pudieras describir un día perfecto en tu vida, desde la mañana hasta la noche, ¿Cómo sería? Cuéntame con detalle para imaginarlo contigo",
-            "status": 1
-        }
-    ],
-    "study_id": "6837cc69ac7cba8049e77458"
-}*/
-
-        
-        // console.log(defaultquestions);
-        if(defaultquestions.length > 0){
-            //Agregar preguntas por defecto al listado de preguntas
-            // las preguntas por defecto no tienen peso ni anexo, solo se agregan al listado de preguntas
-            // se pueden editar, desactivar y activar (status)
-            // las preguntas por defecto no se pueden ni deben arrastrarse
-
-            const listGroup = document.querySelector('.list-group');
-            listGroup.innerHTML = '';
-            defaultquestions.forEach((pregunta, index) => {
-                const newListItem = document.createElement('div');
-                newListItem.classList.add('list-group-item', 'list-group-item-action', 'align-items-start');
-                newListItem.style.fontFamily = "hedliner";
-                newListItem.style.display = 'flex';
-                newListItem.style.flexDirection = 'column';
-                newListItem.style.gap = '0.5rem';
-
-                const newDiv = document.createElement('div');
-                newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
-
-                const newH5 = document.createElement('h5');
-                newH5.classList.add('mb-1');
-                newH5.style.fontFamily = "IBM Plex Sans";
-
-                // Replace escaped newlines with actual newlines, then convert to <br> for HTML
-                let unescapedQuestion = pregunta.question.replace(/\\n/g, '\n');
-                let processedQuestion = unescapedQuestion.replace(/\n/g, '<br>');
-                newH5.innerHTML = processedQuestion;
-
-                const statusBadge = document.createElement('span');
-                statusBadge.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
-                statusBadge.style.color = 'var(--bs-CR-gray)';
-                statusBadge.style.backgroundColor = pregunta.status === 1 ? 'var(--bs-CR-orange)' : '#6c757d'; // Orange for active, gray for inactive
-                statusBadge.textContent = pregunta.status === 1 ? 'Activo' : 'Inactivo';
-
-                const buttonsDiv = document.createElement('div');
-                buttonsDiv.style.marginTop = '10px';
-
-                const activarBtn = document.createElement('button');
-                activarBtn.classList.add('btn', 'btn-success', 'btn-sm');
-                activarBtn.innerText = 'Activar';
-                activarBtn.style.marginRight = '10px';
-                
-                if(pregunta.status === 1){
-                    activarBtn.disabled = true;
-                    activarBtn.style.display = 'none';
-                    statusBadge.textContent = 'Activo';
-                    statusBadge.style.backgroundColor = 'var(--bs-CR-orange)';
-                    activarBtn.style.display = 'none';
-                    
-                }else{
-                    activarBtn.addEventListener('click', () => {
-                        pregunta.status = 1;
-                        statusBadge.textContent = 'Activo';
-                        statusBadge.style.backgroundColor = 'var(--bs-CR-orange)';
-                        activarBtn.disabled = true;
-                    });
-                }
-
-                buttonsDiv.appendChild(activarBtn);
-
-                newDiv.appendChild(newH5);
-                newDiv.appendChild(statusBadge);
-                newDiv.appendChild(buttonsDiv);
-                newListItem.appendChild(newDiv);
-                listGroup.appendChild(newListItem);
-            });
-        }
-
         if(questions.length > 0){
             //AGREGAR PREGUNTAS AL LISTADO DE PREGUNTAS
             // console.log("pregunta entra 11");
     
             const listGroup = document.querySelector('.list-group');
-
-            // separador con preguntas por defecto  
-            const separator = document.createElement('div');
-            separator.classList.add('list-group-item', 'list-group-item-action', 'align-items-start');
-            separator.style.fontFamily = "hedliner";
-            separator.style.display = 'flex';
-            separator.style.flexDirection = 'column';
-            separator.style.gap = '0.5rem';
-            separator.style.backgroundColor = 'var(--bs-CR-gray)';
-            separator.style.color = 'var(--bs-CR-white)';
-            separator.style.fontSize = '1.2rem';
-            listGroup.appendChild(separator);
-
-
+            listGroup.innerHTML = '';
+    
             questions.forEach((pregunta, index) => {
                 // console.log("pregunta entra");
     
