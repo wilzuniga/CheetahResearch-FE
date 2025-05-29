@@ -1,4 +1,5 @@
 let questions = [];
+let defaultQuestions = [];
 let questionsImg = [];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pesoTXT = document.getElementById('PesoTXT');
     const anexoPregunta = document.getElementById('AnexoPregunta');
     const anexoPreguntaURL = document.getElementById('AnexoPreguntaURL');
-    const listGroup = document.querySelector('.list-group');
+    const listGroup = document.querySelector('.list-group.list-group-custom');
 
     agregarPreguntaBtn.addEventListener('click', (event) => {
         event.preventDefault();
@@ -345,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function guardarPreguntas() {
-    const listGroup = document.querySelector('.list-group');    
+    const listGroup = document.querySelector('.list-group.list-group-custom');    
     const listItems = listGroup.querySelectorAll('.list-group-item');
 
     listItems.forEach((listItem, index) => {
@@ -433,6 +434,7 @@ function CE_DeactivateNavBy(){
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
     
     questions = [];
+    defaultQuestions = [];
 
     const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId') ;
     axios.get(url)
@@ -442,12 +444,127 @@ function CE_DeactivateNavBy(){
             questions.push(pregunta);
         });
         
+        response.data.default_questions.forEach((pregunta) => {
+            // Ensure each default question has a status, defaulting to 0 (Desactivado) if not present
+            if (pregunta.status === undefined) {
+                pregunta.status = 0; 
+            }
+            defaultQuestions.push(pregunta);
+        });
+
+        if(defaultQuestions.length > 0){
+            const defaultListGroup = document.querySelector('.list-group');
+            if (!defaultListGroup) {
+                console.error('Default questions list group (.list-group) not found in HTML.');
+            } else {
+                defaultListGroup.innerHTML = ''; // Clear only the default list
+
+                defaultQuestions.forEach((pregunta) => { 
+                    const newListItem = document.createElement('div');
+                    newListItem.classList.add('list-group-item', 'list-group-item-action', 'align-items-start');
+                    newListItem.style.fontFamily = "hedliner";
+                    newListItem.style.display = 'flex';
+                    newListItem.style.flexDirection = 'column';
+                    newListItem.style.gap = '0.5rem';
+
+                    const contentDiv = document.createElement('div');
+                    contentDiv.classList.add('d-flex', 'w-100', 'justify-content-between', 'align-items-center');
+                    contentDiv.style.fontFamily = "hedliner";
+
+                    const questionTextElement = document.createElement('h5');
+                    questionTextElement.classList.add('mb-1');
+                    questionTextElement.style.fontFamily = "IBM Plex Sans";
+                    questionTextElement.style.marginRight = '1rem'; // Add some space before the dropdown
+
+                    let unescapedQuestionText = pregunta.question.replace(/\\\\n/g, '\\n').replace(/\\n/g, '\\n');
+                    let processedQuestionHTML = unescapedQuestionText.replace(/\\n/g, '<br>');
+                    questionTextElement.innerHTML = processedQuestionHTML;
+                    contentDiv.appendChild(questionTextElement);
+
+                    const statusSelect = document.createElement('select');
+                    statusSelect.classList.add('form-select', 'form-select-sm');
+                    statusSelect.style.width = '150px'; 
+                    statusSelect.style.marginLeft = 'auto'; 
+
+                    const optionActivado = document.createElement('option');
+                    optionActivado.value = '1';
+                    optionActivado.textContent = 'Activado';
+                    statusSelect.appendChild(optionActivado);
+
+                    const optionDesactivado = document.createElement('option');
+                    optionDesactivado.value = '0';
+                    optionDesactivado.textContent = 'Desactivado';
+                    statusSelect.appendChild(optionDesactivado);
+                    
+                    statusSelect.value = pregunta.status ? pregunta.status.toString() : '0'; 
+                                        
+                    statusSelect.addEventListener('change', () => {
+                        pregunta.status = parseInt(statusSelect.value, 10);
+                        // console.log(`Default question '${pregunta.question}' status changed to: ${pregunta.status}`);
+                    });
+                    contentDiv.appendChild(statusSelect);
+                    newListItem.appendChild(contentDiv);
+
+                    const buttonsDiv = document.createElement('div');
+                    buttonsDiv.style.display = 'flex';
+                    buttonsDiv.style.marginTop = '10px';
+
+                    const editButton = document.createElement('button');
+                    editButton.classList.add('btn', 'btn-primary', 'btn-sm');
+                    editButton.innerText = 'Editar';
+                    editButton.style.marginRight = '10px'; 
+                    editButton.style.color = 'var(--bs-CR-gray)';
+                    editButton.style.backgroundColor = 'var(--bs-CR-orange)';
+                    
+                    editButton.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        const overlay = document.getElementById('overlay');
+                        overlay.innerHTML = `
+                            <div id="overlayContent">
+                                <label for="EditDefaultPreguntaTXT" style="font-family: IBM Plex Sans; margin-bottom: 5px;">Editar Pregunta:</label>
+                                <textarea id="EditDefaultPreguntaTXT" class="form-control" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 10px; min-height: 80px;" placeholder="Ingresa tu pregunta"></textarea>
+                                <button id="GuardarDefaultEdit" class="btn btn-primary" style="margin-right: 10px; font-family: hedliner; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Guardar</button>
+                                <button id="CerrarOverlayDefault" class="btn btn-secondary" style="font-family: hedliner;">Cerrar</button>
+                            </div>
+                        `;
+                        
+                        const editPreguntaTextarea = document.getElementById('EditDefaultPreguntaTXT');
+                        // Populate with current question text (raw, with \n)
+                        editPreguntaTextarea.value = pregunta.question.replace(/\\\\n/g, '\\n').replace(/\\n/g, '\\n');
+
+                        overlay.style.display = 'flex';
+
+                        document.getElementById('CerrarOverlayDefault').addEventListener('click', () => {
+                            overlay.style.display = 'none';
+                        });
+
+                        document.getElementById('GuardarDefaultEdit').addEventListener('click', () => {
+                            const newQuestionText = editPreguntaTextarea.value;
+                            if (newQuestionText.trim()) {
+                                pregunta.question = newQuestionText; 
+                                
+                                let unescapedUpdate = newQuestionText.replace(/\\\\n/g, '\\n').replace(/\\n/g, '\\n');
+                                let processedUpdateHTML = unescapedUpdate.replace(/\\n/g, '<br>');
+                                questionTextElement.innerHTML = processedUpdateHTML; 
+
+                                overlay.style.display = 'none';
+                            } else {
+                                alert('La pregunta no puede estar vacía.');
+                            }
+                        });
+                    });
+                    buttonsDiv.appendChild(editButton);
+                    newListItem.appendChild(buttonsDiv);
+                    defaultListGroup.appendChild(newListItem);
+                });
+            }
+        }
 
         if(questions.length > 0){
             //AGREGAR PREGUNTAS AL LISTADO DE PREGUNTAS
             // console.log("pregunta entra 11");
     
-            const listGroup = document.querySelector('.list-group');
+            const listGroup = document.querySelector('.list-group.list-group-custom');
             listGroup.innerHTML = '';
     
             questions.forEach((pregunta, index) => {
@@ -746,7 +863,7 @@ function CE_DeactivateNavBy(){
 
         const target = event.target;
         if (draggedItem !== target && target.classList.contains('list-group-item')) {
-            const listGroup = document.querySelector('.list-group');  
+            const listGroup = document.querySelector('.list-group.list-group-custom');  
             const items = [...listGroup.querySelectorAll('.list-group-item')];
             const draggedIndex = items.indexOf(draggedItem);
             const targetIndex = items.indexOf(target);
