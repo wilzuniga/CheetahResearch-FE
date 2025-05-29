@@ -420,7 +420,7 @@ function enviarDatos(preguntas, defaultQuestions) {
     const defaultQuestionsData = {
         default_questions: defaultQuestions.map(q => ({
             question: q.question,
-            status: q.status.toString() // Convert status to string for consistency
+            status: parseInt(q.status, 10) // Ensure status is an integer
         }))
     };
 
