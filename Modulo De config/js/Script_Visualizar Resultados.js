@@ -1140,25 +1140,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
 //que al presionar los botones toggle-textarea_* aparezcan las text area 
 document.addEventListener('DOMContentLoaded', function () {
-
-    const studyId = localStorage.getItem('selectedStudyId');
-    setColorsFromAPI(studyId);//Setea colores
-
     const toggleButtons = document.querySelectorAll('[id^="toggle-textarea_"]');
     
     toggleButtons.forEach(button => {
         button.addEventListener('click', function () {
-            // Encontrar el textarea dentro de la misma sección del botón
             const section = button.closest('.tab-pane');
+            if (!section) return; 
+
             const textarea = section.querySelector('textarea');
-            
-            if (textarea) {
-                // Alternar visibilidad del textarea
-                if (textarea.style.display === 'none' || textarea.style.display === '') {
-                    textarea.style.display = 'block';
-                } else {
-                    textarea.style.display = 'none';
-                }
+            if (!textarea) return;
+
+            const wrapper = textarea.closest('.toolbar-wrapper-cheetah');
+            if (!wrapper) return; 
+
+            const toolbar = wrapper.querySelector('.barra-estilo-cheetah');
+            if (!toolbar) return;
+
+            // Alternar visibilidad del textarea
+            if (textarea.style.display === 'none' || textarea.style.display === '') {
+                textarea.style.display = 'block';
+                toolbar.style.display = 'flex'; // Show toolbar
+            } else {
+                textarea.style.display = 'none';
+                toolbar.style.display = 'none'; // Hide toolbar
             }
         });
     });
@@ -1581,7 +1585,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const barra = document.createElement("div");
         barra.classList.add("barra-estilo-cheetah");
-        barra.style.display = "flex";
+        barra.style.display = "none"; // Hidden by default
         barra.style.flexWrap = "wrap";
         barra.style.gap = "8px";
         barra.style.padding = "10px 12px";
@@ -1601,6 +1605,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         function insertarWrapper(abrir, cerrar, isHtml) {
+            const scrollTop = editor.scrollTop; // Save scroll position
+            const scrollLeft = editor.scrollLeft; // Save scroll position
             const start = editor.selectionStart;
             const end = editor.selectionEnd;
             const seleccionado = editor.value.substring(start, end);
@@ -1623,10 +1629,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
             editor.value = antes + abrir + seleccionado + cierreFinal + despues;
             editor.focus();
+            editor.selectionStart = antes.length + abrir.length + seleccionado.length + cierreFinal.length;
+            editor.selectionEnd = editor.selectionStart;
+            editor.scrollTop = scrollTop; // Restore scroll position
+            editor.scrollLeft = scrollLeft; // Restore scroll position
             editor.dispatchEvent(new Event("input", { bubbles: true }));
         }
 
         function insertarBloque(icono, color = null) {
+            const scrollTop = editor.scrollTop; // Save scroll position
+            const scrollLeft = editor.scrollLeft; // Save scroll position
             const start = editor.selectionStart;
             const end = editor.selectionEnd;
             const textoSeleccionado = editor.value.substring(start, end);
@@ -1640,14 +1652,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const bloque = `
 <div style="display:flex; align-items:flex-start; background-color:#F8F9FA; padding:12px 15px; border-radius:6px; color:#212529; margin: 10px 0; border: 1px solid #DEE2E6;">
   <div${estiloIcono}>${icono}</div>
-  <div style="flex:1; line-height:1.5;">${textoContenido.replace(/\n/g, '<br>')}</div>
+  <div style="flex:1; line-height:1.5;">${textoContenido.replace(/\\n/g, '<br>')}</div>
 </div>`;
             
             // Insert the block and move cursor after it
             editor.value = antes + bloque + despues;
             editor.focus();
             // Set cursor position after the inserted block
-            editor.selectionStart = editor.selectionEnd = antes.length + bloque.length;
+            const newCursorPosition = antes.length + bloque.length;
+            editor.selectionStart = newCursorPosition;
+            editor.selectionEnd = newCursorPosition;
+            editor.scrollTop = scrollTop; // Restore scroll position
+            editor.scrollLeft = scrollLeft; // Restore scroll position
             editor.dispatchEvent(new Event("input", { bubbles: true }));
         }
 
@@ -1657,7 +1673,7 @@ document.addEventListener('DOMContentLoaded', function () {
             { texto: "U", type: "html", abrir: "<u>", cerrar: "</u>", title: "Subrayado (HTML)" },
             { texto: "🟠", type: "html", abrir: '<span style="color:#c0601c;">', cerrar: "</span>", title: "Texto Naranja Oscuro" },
             { texto: "⚫", type: "html", abrir: '<span style="color:#000000;">', cerrar: "</span>", title: "Texto Negro" },
-            { texto: "⬜", type: "html", abrir: '<span style="color:#FFFFFF;">', cerrar: "</span>", title: "Texto Blanco" },
+            { texto: "⬜", type: "html", abrir: '<span style="color:#FFFFFF;">', cerrar: "</span>", title: "Texto Blanco (puede no ser visible en fondo blanco sin seleccionar)" },
             { texto: "H FN", type: "html", abrir: '<span style="background-color:#000000; color:#FFFFFF; padding: 2px 4px; border-radius: 3px;">', cerrar: "</span>", title: "Highlight Fondo Negro" },
             { texto: "H FO", type: "html", abrir: '<span style="background-color:#c0601c; color:#FFFFFF; padding: 2px 4px; border-radius: 3px;">', cerrar: "</span>", title: "Highlight Fondo Naranja" },
             { texto: "Destacar", icono: "⚠️", type: "bloque", title: "Insertar bloque de advertencia" },
@@ -1705,6 +1721,6 @@ document.addEventListener('DOMContentLoaded', function () {
         createFloatingToolbar(textarea);
     });
     if (allTextareas.length > 0) {
-        console.log("✅ Barras de edición flotantes con fondo blanco aplicadas a todos los textareas.");
+        console.log("✅ Barras de edición flotantes (ocultas por defecto) aplicadas a todos los textareas.");
     }
 });
