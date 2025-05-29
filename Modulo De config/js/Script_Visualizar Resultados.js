@@ -1445,10 +1445,11 @@ async function loadUserData(type, contentDiv, combobox, subFiltro, textarea) {
     }
 }
 
+/*
 // Event listeners for User Persona
 userPersonaBtn.addEventListener('click', () => {
     loadUserData('persona', userPersonaContent, comboboxUserPersona, comboboxUserPersonaSubFiltro, userPersonaTextArea);
-});
+});*/
 
 comboboxUserPersona.addEventListener('change', async function() {
     const filter = this.value;
