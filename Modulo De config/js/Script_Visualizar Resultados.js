@@ -1630,11 +1630,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const textToInsert = abrir + seleccionado + cierreFinal;
             editor.value = antes + textToInsert + despues;
             
-            // Set focus and selection
-            editor.focus();
             const newCursorPosition = antes.length + textToInsert.length;
             editor.selectionStart = newCursorPosition;
             editor.selectionEnd = newCursorPosition;
+
+            editor.focus({ preventScroll: true }); // Prevent browser from scrolling on focus
             
             // Restore scroll position AFTER focus and selection
             editor.scrollTop = scrollTop;
@@ -1664,11 +1664,11 @@ document.addEventListener('DOMContentLoaded', function () {
             
             editor.value = antes + bloque + despues;
 
-            // Set focus and selection
-            editor.focus();
             const newCursorPosition = antes.length + bloque.length;
             editor.selectionStart = newCursorPosition;
             editor.selectionEnd = newCursorPosition;
+
+            editor.focus({ preventScroll: true }); // Prevent browser from scrolling on focus
 
             // Restore scroll position AFTER focus and selection
             editor.scrollTop = scrollTop;
