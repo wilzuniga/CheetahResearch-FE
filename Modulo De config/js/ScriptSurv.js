@@ -441,6 +441,7 @@ function CE_DeactivateNavBy(){
         response.data.questions.forEach((pregunta) => {
             questions.push(pregunta);
         });
+        
 
         if(questions.length > 0){
             //AGREGAR PREGUNTAS AL LISTADO DE PREGUNTAS
