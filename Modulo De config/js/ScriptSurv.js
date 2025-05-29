@@ -364,14 +364,28 @@ function guardarPreguntas() {
         }
     }
     );
+    
+    const defaultListGroup = document.querySelector('.list-group');
+    const defaultListItems = defaultListGroup.querySelectorAll('.list-group-item');
 
-    enviarDatos(questions);
+    defaultListItems.forEach((defaultListItem, index) => {
+        const statusSelect = defaultListItem.querySelector('select');
+
+        statusSelect.addEventListener('change', (event) => {
+            const selectedValue = event.target.value;
+            defaultQuestions[index].status = selectedValue;
+        });
+    });
+
+
+    enviarDatos(questions, defaultQuestions);
     // console.log(questions);
     questions = [];
+    defaultQuestions = [];
     questionsImg = [];;
 }
 
-function enviarDatos(preguntas) {
+function enviarDatos(preguntas, defaultQuestions) {
     const formData = new FormData();
     formData.append('questions', JSON.stringify(preguntas));
     questionsImg.forEach((questionImg) => {
@@ -392,6 +406,30 @@ function enviarDatos(preguntas) {
     .catch(error => {
         console.error('Error al enviar los datos:', error);
     });
+
+    // Enviar defaultQuestions
+    /*se envian en formato JSON
+    PUT
+    "default_questions":[{"question":"Hola, te entrevistaré el día de hoy. Cómo deseas que me dirija hacia ti a lo largo de esta entrevista?","status":{"$numberInt":"1"}},{"question":"Para que la entrevista fluya más rápida trata de ser lo más amplio posible en sus respuestas y evita contestar solo con un \"Si, No, \" Esta bien, Esta bueno\" ya que ese tipo de respuestas me obligaran a formularte más preguntas. Estás dispuesto a continuar? Solamente contesta \"Deseo continuar\" ó \"No deseo Continuar\"","status":{"$numberInt":"1"}},{"question":"Primero deseamos saber un poco mas de tu forma de pensar..... Si pudieras describir un día perfecto en tu vida, desde la mañana hasta la noche, ¿Cómo sería? Cuéntame con detalle para imaginarlo contigo","status":{"$numberInt":"1"}}]}
+
+    Iconfiguration/updateDefaultQuestions/[ID del estudio]
+    */
+    const defaultQuestionsData = {
+        default_questions: defaultQuestions.map(q => ({
+            question: q.question,
+            status: q.status.toString() // Convert status to string for consistency
+        }))
+    };
+
+    const urlDefault = 'https://api.cheetah-research.ai/configuration/updateDefaultQuestions/' + localStorage.getItem('selectedStudyId') + '/';
+    axios.put(urlDefault, defaultQuestionsData)
+    .then(response => {
+        // Manejar la respuesta de la API
+    })
+    .catch(error => {
+        console.error('Error al enviar las preguntas por defecto:', error);
+    });
+    
 
     //formdata con el siguiente formato study_id
     const url2 = 'https://api.cheetah-research.ai/chatbot/updateLogs/' 
