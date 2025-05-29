@@ -1605,8 +1605,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         function insertarWrapper(abrir, cerrar, isHtml) {
-            const scrollTop = editor.scrollTop; // Save scroll position
-            const scrollLeft = editor.scrollLeft; // Save scroll position
+            const scrollTop = editor.scrollTop;
+            const scrollLeft = editor.scrollLeft;
             const start = editor.selectionStart;
             const end = editor.selectionEnd;
             const seleccionado = editor.value.substring(start, end);
@@ -1627,18 +1627,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            editor.value = antes + abrir + seleccionado + cierreFinal + despues;
+            const textToInsert = abrir + seleccionado + cierreFinal;
+            editor.value = antes + textToInsert + despues;
+            
+            // Set focus and selection
             editor.focus();
-            editor.selectionStart = antes.length + abrir.length + seleccionado.length + cierreFinal.length;
-            editor.selectionEnd = editor.selectionStart;
-            editor.scrollTop = scrollTop; // Restore scroll position
-            editor.scrollLeft = scrollLeft; // Restore scroll position
+            const newCursorPosition = antes.length + textToInsert.length;
+            editor.selectionStart = newCursorPosition;
+            editor.selectionEnd = newCursorPosition;
+            
+            // Restore scroll position AFTER focus and selection
+            editor.scrollTop = scrollTop;
+            editor.scrollLeft = scrollLeft;
+            
             editor.dispatchEvent(new Event("input", { bubbles: true }));
         }
 
         function insertarBloque(icono, color = null) {
-            const scrollTop = editor.scrollTop; // Save scroll position
-            const scrollLeft = editor.scrollLeft; // Save scroll position
+            const scrollTop = editor.scrollTop;
+            const scrollLeft = editor.scrollLeft;
             const start = editor.selectionStart;
             const end = editor.selectionEnd;
             const textoSeleccionado = editor.value.substring(start, end);
@@ -1655,15 +1662,18 @@ document.addEventListener('DOMContentLoaded', function () {
   <div style="flex:1; line-height:1.5;">${textoContenido.replace(/\\n/g, '<br>')}</div>
 </div>`;
             
-            // Insert the block and move cursor after it
             editor.value = antes + bloque + despues;
+
+            // Set focus and selection
             editor.focus();
-            // Set cursor position after the inserted block
             const newCursorPosition = antes.length + bloque.length;
             editor.selectionStart = newCursorPosition;
             editor.selectionEnd = newCursorPosition;
-            editor.scrollTop = scrollTop; // Restore scroll position
-            editor.scrollLeft = scrollLeft; // Restore scroll position
+
+            // Restore scroll position AFTER focus and selection
+            editor.scrollTop = scrollTop;
+            editor.scrollLeft = scrollLeft;
+            
             editor.dispatchEvent(new Event("input", { bubbles: true }));
         }
 
