@@ -1,5 +1,4 @@
 let questions = [];
-let defaultquestions = [];
 let questionsImg = [];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -434,7 +433,6 @@ function CE_DeactivateNavBy(){
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
     
     questions = [];
-    defaultquestions = [];
 
     const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId') ;
     axios.get(url)
@@ -443,44 +441,6 @@ function CE_DeactivateNavBy(){
         response.data.questions.forEach((pregunta) => {
             questions.push(pregunta);
         });
-
-        response.data.default_questions.forEach((pregunta) => {
-            defaultquestions.push(pregunta);
-        });
-        // console.log(questions);
-        /*{
-    "prompt": "wjnefkwjnef",
-    "test": true,
-    "questions": [
-        {
-            "question": "rgegr",
-            "weight": "5"
-        }
-    ],
-    "default_questions": [
-        {
-            "question": "Hola, te entrevistaré el día de hoy. Cómo deseas que me dirija hacia ti a lo largo de esta entrevista?",
-            "status": 1
-        },
-        {
-            "question": "Para que la entrevista fluya más rápida trata de ser lo más amplio posible en sus respuestas y evita contestar solo con un \"Si, No, \" Esta bien, Esta bueno\" ya que ese tipo de respuestas me obligaran a formularte más preguntas. Estás dispuesto a continuar? Solamente contesta \"Deseo continuar\" ó \"No deseo Continuar\"",
-            "status": 1
-        },
-        {
-            "question": "Primero deseamos saber un poco mas de tu forma de pensar..... Si pudieras describir un día perfecto en tu vida, desde la mañana hasta la noche, ¿Cómo sería? Cuéntame con detalle para imaginarlo contigo",
-            "status": 1
-        }
-    ],
-    "study_id": "6837cc69ac7cba8049e77458"
-}*/
-
-        
-        // console.log(defaultquestions);
-        if(defaultquestions.length > 0){
-            //Agregar preguntas por defecto al listado de preguntas
-            // las preguntas por defecto no tienen peso ni anexo, solo se agregan al listado de preguntas
-            // se pueden editar, desactivar y 
-        }
 
         if(questions.length > 0){
             //AGREGAR PREGUNTAS AL LISTADO DE PREGUNTAS
