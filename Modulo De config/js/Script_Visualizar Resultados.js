@@ -1551,3 +1551,158 @@ exportUserPersonaBtn.addEventListener('click', () => {
 exportUserArchetypeBtn.addEventListener('click', () => {
     exportContent(userArchetypeContent, 'user_archetype');
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    function createFloatingToolbar(editor) {
+        if (!editor) return;
+
+        let wrapper = editor.parentElement;
+        let toolbarExistedPreviously = false;
+
+        if (wrapper.classList.contains('toolbar-wrapper-cheetah')) {
+            const existingToolbar = wrapper.querySelector(".barra-estilo-cheetah");
+            if (existingToolbar) {
+                existingToolbar.remove();
+                toolbarExistedPreviously = true;
+            }
+        } else {
+            const newWrapper = document.createElement("div");
+            newWrapper.classList.add('toolbar-wrapper-cheetah');
+            newWrapper.style.display = "flex";
+            newWrapper.style.flexDirection = "column";
+            newWrapper.style.position = "relative"; // Context for sticky
+            // newWrapper.style.gap = "10px"; // Gap between toolbar and textarea handled by toolbar margin
+            editor.parentElement.insertBefore(newWrapper, editor);
+            newWrapper.appendChild(editor);
+            wrapper = newWrapper;
+        }
+
+        const barra = document.createElement("div");
+        barra.classList.add("barra-estilo-cheetah");
+        barra.style.display = "flex";
+        barra.style.flexWrap = "wrap";
+        barra.style.gap = "8px";
+        barra.style.padding = "10px 12px";
+        barra.style.backgroundColor = "#FFFFFF";
+        barra.style.borderRadius = "8px 8px 0 0"; // Rounded top corners if textarea is directly below
+        barra.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)";
+        barra.style.position = "sticky";
+        barra.style.top = "0px";
+        barra.style.zIndex = "1000";
+        barra.style.marginBottom = "5px"; // Small space between toolbar and textarea
+        
+        // Ensure wrapper is the direct parent for sticky positioning to work as expected
+        if (editor.parentElement !== wrapper) {
+            wrapper.appendChild(editor); // Should already be the case if newWrapper was made
+        }
+        wrapper.insertBefore(barra, editor);
+
+
+        function insertarWrapper(abrir, cerrar, isHtml) {
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const seleccionado = editor.value.substring(start, end);
+            const antes = editor.value.substring(0, start);
+            const despues = editor.value.substring(end);
+            
+            let cierreFinal = cerrar;
+            if (!cierreFinal) {
+                if (isHtml && abrir.startsWith("<") && abrir.endsWith(">")) {
+                    const tagNameMatch = abrir.match(/^<([a-zA-Z0-9]+)/);
+                    if (tagNameMatch && tagNameMatch[1]) {
+                        cierreFinal = `</${tagNameMatch[1]}>`;
+                    } else {
+                        cierreFinal = abrir; 
+                    }
+                } else {
+                    cierreFinal = abrir;
+                }
+            }
+
+            editor.value = antes + abrir + seleccionado + cierreFinal + despues;
+            editor.focus();
+            editor.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+
+        function insertarBloque(icono, color = null) {
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const textoSeleccionado = editor.value.substring(start, end);
+            const textoPlaceholder = "Texto aquí...";
+            const textoContenido = textoSeleccionado || textoPlaceholder;
+            
+            const antes = editor.value.substring(0, start);
+            const despues = editor.value.substring(end);
+            
+            const estiloIcono = color ? ` style="color:${color}; font-size:1.2em; margin-right:10px; flex-shrink:0;"` : ` style="font-size:1.2em; margin-right:10px; flex-shrink:0;"`;
+            const bloque = `
+<div style="display:flex; align-items:flex-start; background-color:#F8F9FA; padding:12px 15px; border-radius:6px; color:#212529; margin: 10px 0; border: 1px solid #DEE2E6;">
+  <div${estiloIcono}>${icono}</div>
+  <div style="flex:1; line-height:1.5;">${textoContenido.replace(/\n/g, '<br>')}</div>
+</div>`;
+            
+            // Insert the block and move cursor after it
+            editor.value = antes + bloque + despues;
+            editor.focus();
+            // Set cursor position after the inserted block
+            editor.selectionStart = editor.selectionEnd = antes.length + bloque.length;
+            editor.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+
+        const botones = [
+            { texto: "B", type: "html", abrir: "<strong>", cerrar: "</strong>", title: "Negrita (HTML)" },
+            { texto: "I", type: "markdown", abrir: "*", cerrar: "*", title: "Itálica (Markdown)" },
+            { texto: "U", type: "html", abrir: "<u>", cerrar: "</u>", title: "Subrayado (HTML)" },
+            { texto: "🟠", type: "html", abrir: '<span style="color:#c0601c;">', cerrar: "</span>", title: "Texto Naranja Oscuro" },
+            { texto: "⚫", type: "html", abrir: '<span style="color:#000000;">', cerrar: "</span>", title: "Texto Negro" },
+            { texto: "⬜", type: "html", abrir: '<span style="color:#FFFFFF;">', cerrar: "</span>", title: "Texto Blanco" },
+            { texto: "H FN", type: "html", abrir: '<span style="background-color:#000000; color:#FFFFFF; padding: 2px 4px; border-radius: 3px;">', cerrar: "</span>", title: "Highlight Fondo Negro" },
+            { texto: "H FO", type: "html", abrir: '<span style="background-color:#c0601c; color:#FFFFFF; padding: 2px 4px; border-radius: 3px;">', cerrar: "</span>", title: "Highlight Fondo Naranja" },
+            { texto: "Destacar", icono: "⚠️", type: "bloque", title: "Insertar bloque de advertencia" },
+            { texto: "Positivo", icono: "✅", type: "bloque", title: "Insertar bloque positivo" },
+            { texto: "Negativo", icono: "❌", type: "bloque", title: "Insertar bloque negativo", color: "#D32F2F" } // Darker red for better contrast
+        ];
+
+        botones.forEach(({ texto, abrir, cerrar, icono, type, title, color }) => {
+            const btn = document.createElement("button");
+            btn.textContent = texto;
+            btn.title = title || texto;
+            btn.style.padding = "5px 8px";
+            btn.style.backgroundColor = "#F1F3F5";
+            btn.style.color = "#212529";
+            btn.style.border = "1px solid #CED4DA";
+            btn.style.borderRadius = "4px";
+            btn.style.cursor = "pointer";
+            btn.style.fontFamily = "inherit"; 
+            btn.style.fontSize = "0.875rem";
+            btn.style.transition = "background-color 0.2s ease";
+
+            btn.onmouseover = () => btn.style.backgroundColor = "#E9ECEF";
+            btn.onmouseout = () => btn.style.backgroundColor = "#F1F3F5";
+            
+            btn.onclick = (e) => {
+                e.preventDefault(); // Prevent any default form submission if toolbar is in a form
+                if (type === "bloque") {
+                    insertarBloque(icono, color);
+                } else {
+                    insertarWrapper(abrir, cerrar, type === "html");
+                }
+            };
+            barra.appendChild(btn);
+        });
+
+        editor.style.width = "100%";
+        editor.style.flex = "1 1 auto";
+        if (!toolbarExistedPreviously) { // Only log on initial creation for this editor
+          // console.log(`Toolbar cargado para: ${editor.id || 'textarea'}`);
+        }
+    }
+
+    const allTextareas = document.querySelectorAll('textarea');
+    allTextareas.forEach(textarea => {
+        createFloatingToolbar(textarea);
+    });
+    if (allTextareas.length > 0) {
+        console.log("✅ Barras de edición flotantes con fondo blanco aplicadas a todos los textareas.");
+    }
+});
