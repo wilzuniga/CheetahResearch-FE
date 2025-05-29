@@ -1484,7 +1484,7 @@ comboboxUserArchetype.addEventListener('change', async function() {
         console.error('Error updating User Archetype content:', error);
     }
 });
-
+/*
 // Toggle textarea visibility for User Persona
 toggleTextareaUserPersonaBtn.addEventListener('click', () => {
     userPersonaTextArea.style.display = userPersonaTextArea.style.display === 'none' ? 'block' : 'none';
@@ -1494,7 +1494,7 @@ toggleTextareaUserPersonaBtn.addEventListener('click', () => {
 toggleTextareaUserArchetypeBtn.addEventListener('click', () => {
     userArchetypeTextArea.style.display = userArchetypeTextArea.style.display === 'none' ? 'block' : 'none';
 });
-
+*/
 // Save changes for User Persona
 saveTextareaUserPersonaBtn.addEventListener('click', async () => {
     try {
