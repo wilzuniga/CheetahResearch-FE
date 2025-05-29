@@ -2,6 +2,9 @@ let questions = [];
 let defaultQuestions = [];
 let questionsImg = [];
 
+const token = localStorage.getItem('token');
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const studyId = localStorage.getItem('selectedStudyId');
     setColorsFromAPI(studyId);//Setea colores
@@ -422,14 +425,19 @@ function enviarDatos(preguntas, defaultQuestions) {
     };
 
     const urlDefault = 'https://api.cheetah-research.ai/configuration/updateDefaultQuestions/' + localStorage.getItem('selectedStudyId') + '/';
-    axios.put(urlDefault, defaultQuestionsData)
+    axios.put(urlDefault, defaultQuestionsData, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`,
+
+        },
+    })
     .then(response => {
         // Manejar la respuesta de la API
     })
     .catch(error => {
         console.error('Error al enviar las preguntas por defecto:', error);
     });
-    
 
     //formdata con el siguiente formato study_id
     const url2 = 'https://api.cheetah-research.ai/chatbot/updateLogs/' 
