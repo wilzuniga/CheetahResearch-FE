@@ -1651,31 +1651,36 @@ document.addEventListener('DOMContentLoaded', function () {
             const textoSeleccionado = editor.value.substring(start, end);
             const textoPlaceholder = "Texto aquí...";
             const textoContenido = textoSeleccionado || textoPlaceholder;
-            
+        
             const antes = editor.value.substring(0, start);
             const despues = editor.value.substring(end);
-            
-            const estiloIcono = color ? ` style="color:${color}; font-size:1.2em; margin-right:10px; flex-shrink:0;"` : ` style="font-size:1.2em; margin-right:10px; flex-shrink:0;"`;
-            const bloque = `
-<div style="display:flex; align-items:flex-start; background-color:#F8F9FA; padding:12px 15px; border-radius:6px; color:#212529; margin: 10px 0; border: 1px solid #DEE2E6;">
-  <div${estiloIcono}>${icono}</div>
-  <div style="flex:1; line-height:1.5;">${textoContenido.replace(/\\n/g, '<br>')}</div>
-</div>`;
-            
-            editor.value = antes + bloque + despues;
-
-            // Set focus and selection
-            editor.focus();
+        
+            const estiloIcono = color 
+                ? ` style="color:${color}; font-size:1.2em; margin-right:10px; flex-shrink:0;"` 
+                : ` style="font-size:1.2em; margin-right:10px; flex-shrink:0;"`;
+        
+            const bloque = 
+        `<div style="display:flex; align-items:flex-start; background-color:#F8F9FA; padding:12px 15px; border-radius:6px; color:#212529; margin: 10px 0; border: 1px solid #DEE2E6;">
+          <div${estiloIcono}>${icono}</div>
+          <div style="flex:1; line-height:1.5;">${textoContenido.replace(/\n/g, '<br>')}</div>
+        </div>`;
+        
             const newCursorPosition = antes.length + bloque.length;
-            editor.selectionStart = newCursorPosition;
-            editor.selectionEnd = newCursorPosition;
-
-            // Restore scroll position AFTER focus and selection
-            editor.scrollTop = scrollTop;
-            editor.scrollLeft = scrollLeft;
-            
+        
+            // Insert content and restore focus
+            editor.value = antes + bloque + despues;
+        
+            requestAnimationFrame(() => {
+                editor.selectionStart = newCursorPosition;
+                editor.selectionEnd = newCursorPosition;
+                editor.focus();
+                editor.scrollTop = scrollTop;
+                editor.scrollLeft = scrollLeft;
+            });
+        
             editor.dispatchEvent(new Event("input", { bubbles: true }));
         }
+        
 
         const botones = [
             { texto: "B", type: "html", abrir: "<strong>", cerrar: "</strong>", title: "Negrita (HTML)" },
