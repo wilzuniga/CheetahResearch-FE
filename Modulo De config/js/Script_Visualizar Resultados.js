@@ -1466,10 +1466,11 @@ comboboxUserPersona.addEventListener('change', async function() {
     }
 });
 
+/*
 // Event listeners for User Archetype
 userArchetypeBtn.addEventListener('click', () => {
     loadUserData('archetype', userArchetypeContent, comboboxUserArchetype, comboboxUserArchetypeSubFiltro, userArchetypeTextArea);
-});
+});*/
 
 comboboxUserArchetype.addEventListener('change', async function() {
     const filter = this.value;
