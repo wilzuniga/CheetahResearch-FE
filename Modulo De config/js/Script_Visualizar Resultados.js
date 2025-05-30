@@ -1657,7 +1657,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             const estiloIcono = color ? ` style="color:${color}; font-size:1.2em; margin-right:10px; flex-shrink:0;"` : ` style="font-size:1.2em; margin-right:10px; flex-shrink:0;"`;
             const bloque = `
-<div style="display:flex; align-items:flex-start; background-color:#F8F9FA; padding:12px 15px; border-radius:6px; color:#212529; margin: 10px 0; border: 1px solid #DEE2E6;">
+<div style="display:flex; align-items:flex-start; background-color:#292929; padding:12px 15px; border-radius:6px; color:#FFFFFF; margin: 10px 0; border: 1px solid #DEE2E6;">
   <div${estiloIcono}>${icono}</div>
   <div style="flex:1; line-height:1.5;">${textoContenido.replace(/\\n/g, '<br>')}</div>
 </div>`;
@@ -1731,6 +1731,6 @@ document.addEventListener('DOMContentLoaded', function () {
         createFloatingToolbar(textarea);
     });
     if (allTextareas.length > 0) {
-        console.log("✅ Barras de edición flotantes (ocultas por defecto) aplicadas a todos los textareas.");
+
     }
 });
