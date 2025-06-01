@@ -53,7 +53,7 @@ const translations = {
             inAddSubQuestion: "Ingresa tu Pregunta de Seguimiento", btSaveSubQuestion: "Agregar Pregunta",   btCloseSubQuestion: "Cerrar",
             //Poner los de arriba en Editar Pregunta
             btSaveQuestionEdit: "Guardar",              btCloseQuestionEdit: "Cerrar",
-            btSaveSurvey: "Crear Encuesta"
+            btSaveSurvey: "Guardar Encuesta"
             //Falta el html en JS
         },
         LanzarEstudio: {

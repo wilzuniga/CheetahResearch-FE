@@ -318,6 +318,7 @@ function sendMessage(message, imageSrc) {
         }else {
             //eliminar todo el contenido entre [] en el mensaje
             data.response = data.response.replace(/\[.*?\]/g, '');
+            console.log('Respuesta del encuestador:', data.response);
             
             if ('file_path' in data) {
                 if ('url' in data) {
@@ -424,6 +425,9 @@ function getMessage(message, imageSrc, link) {
         let unescapedMessage = message.replace(/\\n/g, '\n');
 
         let processedMessage = unescapedMessage.replace(/\n/g, '<br>');
+        processedMessage = processedMessage.replace(/\[.*?\]/g, '');
+
+
         
         // Mostrar en el HTML
         messageDiv.innerHTML = processedMessage;
