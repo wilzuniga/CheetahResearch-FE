@@ -18,7 +18,7 @@ function otp(study_id) {
             text-color: black;
             padding: 20px;
         ">
-            <p>Para acceder a esta información, necesitas un código de acceso. Por favor, ingresa el código de acceso que te proporcionaron. Si no posees un OTP, selecciona el botón "Solicitar OTP" para obtener uno.</p>
+            <p data-i18n="Overview.warningOTP">Para acceder a esta información, necesitas un código de acceso. Por favor, ingresa el código de acceso que te proporcionaron. Si no posees un OTP, selecciona el botón "Solicitar OTP" para obtener uno.</p>
             <input type="text" id="otpInput" style="
                 width: 75%;
                 padding: 10px;
@@ -33,7 +33,7 @@ function otp(study_id) {
                 color: white;
                 border: none;
                 cursor: pointer;
-            ">Verificar</button>
+            " data-i18n="Overview.btVerifyOTP">Verificar</button>
 
            <button onclick="solicitarOTP('${study_id}')" style="
                 padding: 10px;
@@ -43,7 +43,7 @@ function otp(study_id) {
                 color: white;
                 border: none;
                 cursor: pointer;
-            ">Solicitar OTP</button>
+            " data-i18n="Overview.btRequestOTP">Solicitar OTP</button>
 
 
 
@@ -69,8 +69,8 @@ function solicitarOTP(study_id) {
             text-color: black;
             padding: 20px;
         ">
-            <p>Por favor, ingresa tu correo electrónico para solicitar el OTP.</p>
-            <input type="email" id="emailInput" placeholder="Correo electrónico" style="
+            <p data-i18n="Overview.sMailOTP">Por favor, ingresa tu correo electrónico para solicitar el OTP.</p>
+            <input type="email" id="emailInput" data-i18n-placeholder="Overview.inMailOTP" style="
                 width: 75%;
                 padding: 10px;
                 border-radius : 13px;
@@ -85,7 +85,7 @@ function solicitarOTP(study_id) {
                 color: white;
                 border: none;
                 cursor: pointer;
-            ">Solicitar</button>
+            " data-i18n="Overview.btRequestOTP">Solicitar</button>
             
         </div>
     `;
@@ -152,23 +152,23 @@ async function LegalDisclaimer(study_id) {
             color: black;
             padding: 20px;
         ">
-             <h1>AVISO LEGAL</h1>
-             <p><strong>Sobre el Contenido:</strong></p>
-                <p>
+             <h1 data-i18n="Overview.overlayTitle">AVISO LEGAL</h1>
+             <p><strong data-i18n="Overview.s1Overlay">Sobre el Contenido:</strong></p>
+                <p data-i18n="Overview.desc1Overlay">
                     Los datos recopilados y presentados en este estudio son confidenciales y propiedad exclusiva del cliente. 
                     El acceso está restringido por un código distribuido solo a usuarios autorizados. 
                     Cualquier reproducción total o parcial, distribución a terceros o modificación de este contenido fuera de esta plataforma será responsabilidad del cliente.
                 </p>
                 
-                <p><strong>Sobre la Plataforma:</strong></p>
-                <p>
+                <p><strong data-i18n="Overview.s2Overlay">Sobre la Plataforma:</strong></p>
+                <p data-i18n="Overview.desc2Overlay">
                     Todos los elementos metodológicos, análisis, diseño, estructura y presentación de resultados en la plataforma Cheetah Research 
                     son propiedad intelectual de Marketing Total y protegidos por la ley de Derechos de Autor y Derechos Conexos. 
                     No deben ser objeto de plagio, reproducción, muestra o utilización por otro proveedor, ejecutor, contratista, 
                     ni transmisión a terceros o cualquier otro uso no previsto.
                 </p>
                 
-                <p>
+                <p data-i18n="Overview.desc3Overlay">
                     Al acceder al reporte, los usuarios aceptan cumplir con estas condiciones y dan por entendidas las responsabilidades 
                     de cualquier infracción que pueda surgir del uso indebido de la información o la plataforma.
                 </p>
@@ -180,7 +180,7 @@ async function LegalDisclaimer(study_id) {
                 color: var(--bs-CR-gray);
                 border: none;
                 cursor: pointer;
-            ">Acceder Al Reporte</button>
+            " data-i18n="Overview.btAccept">Acceder Al Reporte</button>
         </div>
     `;
 
@@ -338,21 +338,21 @@ async function contenido(study) {
                             <div class="study-content">
                                 <h2 class="study-title">${estudioActual.title}</h2>
                                 <ul class="study-bullets">
-                                    <li><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</li>
-                                    <li><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</li>
-                                    <li><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</li>
-                                    <li><strong>Resumen:</strong> ${estudioActual.prompt}</li>
+                                    <li><strong data-i18n="Overview.sStudyObjectives">Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</li>
+                                    <li><strong data-i18n="Overview.sTargetAudience">Mercado Objetivo:</strong> ${estudioActual.marketTarget}</li>
+                                    <li><strong data-i18n="Overview.sStudyDate">Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</li>
+                                    <li><strong data-i18n="Overview.sStudySummary">Resumen:</strong> ${estudioActual.prompt}</li>
                                 </ul>
                             </div>
                         `;
 
                         div.innerHTML = htmlContent;
                     } else {
-                        div.innerHTML = "<p>No se encontró el estudio solicitado.</p>";
+                        div.innerHTML = `<p data-i18n="Overview.eRequestedStudy">No se encontró el estudio solicitado.</p>`;
                     }
                 })
                 .catch(function (error) {
-                    div.innerHTML = "<p>Ocurrió un error al cargar los estudios.</p>";
+                    div.innerHTML = `<p data-i18n="Overview.eLoadStudies">Ocurrió un error al cargar los estudios.</p>`;
                     console.error(error);
                 });
         } else {
@@ -392,20 +392,20 @@ async function contenido(study) {
                                 </style>
                                 <div class="study-content">
                                     <h2 class="study-title">${estudioActual.title}</h2>
-                                    <p class="study-section"><strong>Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
-                                    <p class="study-section"><strong>Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
-                                    <p class="study-section"><strong>Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
-                                    <p class="study-section"><strong>Resumen:</strong> ${estudioActual.prompt}</p>
+                                    <p class="study-section"><strong data-i18n="Overview.sStudyObjectives">Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
+                                    <p class="study-section"><strong data-i18n="Overview.sTargetAudience">Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
+                                    <p class="study-section"><strong data-i18n="Overview.sStudyDate">Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
+                                    <p class="study-section"><strong data-i18n="Overview.sStudySummary">Resumen:</strong> ${estudioActual.prompt}</p>
                                 </div>
                             `;
 
                             div.innerHTML = htmlContent;
                         } else {
-                            div.innerHTML = "<p>No se encontró el estudio solicitado.</p>";
+                            div.innerHTML = `<p data-i18n="Overview.eRequestedStudy">No se encontró el estudio solicitado.</p>`;
                         }
                     })
                     .catch(function (error) {
-                        div.innerHTML = "<p>Ocurrió un error al cargar los estudios.</p>";
+                        div.innerHTML = `<p data-i18n="Overview.eLoadStudies">Ocurrió un error al cargar los estudios.</p>`;
                         console.error(error);
                     });
             }
@@ -433,7 +433,7 @@ function linkDesactivado() {
             text-color: black;
             padding: 20px;
         ">
-            <p>Parece que el enlace ya no está disponible. Si necesitas acceder a esta información, no dudes en contactarnos, ¡estamos aquí para ayudarte a resolverlo!</p>
+            <p data-i18n="Overview.eUnavailableLink">Parece que el enlace ya no está disponible. Si necesitas acceder a esta información, no dudes en contactarnos, ¡estamos aquí para ayudarte a resolverlo!</p>
         </div>
     `;
 

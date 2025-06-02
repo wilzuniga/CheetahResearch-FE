@@ -6,7 +6,15 @@
 // out: output
 // opt: option
 
-//Faltan Alertas
+/*
+Faltan:
+Alertas
+Encuesta.html
+
+Lanzar Estudio:
+Links
+btEliminar Modulo
+*/
 
 const translations = {
     es: {
@@ -150,7 +158,7 @@ const translations = {
             btAccess: "Conceder Acceso",
             hDelStudy: "Eliminar Estudio",
             btDelStudy: "Eliminar"
-        }
+        },
     },
 
     en: {
