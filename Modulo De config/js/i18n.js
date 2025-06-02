@@ -98,7 +98,7 @@ const translations = {
             btLogOTP: "Descargar Log de OTP",
             btDelFiles: "Eliminar Archivos",
         },
-        VisualizacionDeResultado: {//Falta Bullet Points en EKMAN
+        VisualizacionDeResultado: {
             //Resumen General
             titleGeneral:"Resumen General", descGeneral:"En esta sección se muestra un resumen general de los resultados obtenidos. Puedes seleccionar un estilo de visualización y aplicar filtros para obtener información específica.",
             
