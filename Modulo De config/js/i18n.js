@@ -6,7 +6,7 @@
 // out: output
 // opt: option
 
-//Faltan Alertas y Bullet Points en VisualizacionDeResultado->EKMAN
+//Faltan Alertas
 
 const translations = {
     es: {
@@ -143,6 +143,13 @@ const translations = {
             optVisualGraphics:"Visualización grafica", optVisualText:"Visualización textual",
             btEdit:"Editar",                           btSave:"Guardar Cambios",              btExport:"Exportar",
             btForceAnalysis:"Forzar Análisis",         btImport:"Importar Resultados",
+        },
+        HerramientasDelAdministrador: {
+            title: "Herramientas del Administrador",
+            hAccess: "Solicitudes de Acceso",
+            btAccess: "Conceder Acceso",
+            hDelStudy: "Eliminar Estudio",
+            btDelStudy: "Eliminar"
         }
     },
 
@@ -258,6 +265,13 @@ const translations = {
             optVisualGraphics: "Graphic Visualization", optVisualText: "Textual Visualization",
             btEdit: "Edit", btSave: "Save Changes", btExport: "Export",
             btForceAnalysis: "Force Analysis", btImport: "Import Results",
+        },
+        HerramientasDelAdministrador: {
+            title: "Admin Tools",
+            hAccess: "Access Requests",
+            btAccess: "Grant Access",
+            hDelStudy: "Delete Study",
+            btDelStudy: "Delete"
         }
     },
 
@@ -373,6 +387,13 @@ const translations = {
             optVisualGraphics: "Visualização Gráfica", optVisualText: "Visualização Textual",
             btEdit: "Editar", btSave: "Salvar Alterações", btExport: "Exportar",
             btForceAnalysis: "Forçar Análise", btImport: "Importar Resultados",
+        },
+        HerramientasDelAdministrador: {
+            title: "Ferramentas do Administrador",
+            hAccess: "Solicitações de Acesso",
+            btAccess: "Conceder Acesso",
+            hDelStudy: "Excluir Estudo",
+            btDelStudy: "Excluir"
         }
     }
 };
