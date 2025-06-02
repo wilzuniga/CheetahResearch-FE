@@ -58,13 +58,14 @@
                     <li class="nav-item" style="font-family: hedliner">
                         <a id="home-link2" class="nav-link" href="#">
                             <i class="fas fa-window-maximize" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
-                            <span style="font-family: hedliner;">PAGINA PRINCIPAL</span>
+                            <span style="font-family: hedliner;" data-i18n="AnalysisNavbar.mainPage">PAGINA PRINCIPAL</span>
                         </a>
                     </li>
-
-                    <li class="nav-item" style="font-family: hedliner">
+                    
+                    <li class="nav-item active" style="font-family: hedliner">
                         <a id="analis-link" class="nav-link" href="#">
-                            <i class="far fa-chart-bar" style="font-size: 20px;color: var(--bs-CR-orange);"></i><span style="font-family: hedliner;" >ANALISIS DE DATOS</span>
+                            <i class="far fa-chart-bar" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
+                            <span style="font-family: hedliner;" data-i18n="AnalysisNavbar.dataAnalysis">ANALISIS DE DATOS</span>
                         </a>
                     </li>
                     <li class="nav-item" style="font-family: hedliner">
@@ -74,7 +75,12 @@
                         </a>
                     </li>
                 </ul>
-
+                <!-- Test de Idiomas -->
+                <select id="languageSwitcher" style="display: none; margin: 10px;">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                    <option value="pt">Português</option>
+                </select>
             </div>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper" style="position: relative;">
@@ -84,14 +90,14 @@
                     <div class="row" style="height: 95vh;">
                         <div class="col-lg-4" style="background: var(--bs-list-group-active-border-color); ">
                             <div id="BAOColumn" class="d-xxl-flex justify-content-xxl-start align-items-xxl-center list-group" style="background: var(--bs-CR-black-dark);border-width: 20px;border-color: var(--bs-emphasis-color);height: 100%;padding-right: 10px;">
-                                <a id="ResumenGeneralBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#ResumenGeneral" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner, sans-serif;font-weight: bold;">Resumen General</a>
-                                <a id="ResumenIndividualBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#ResumenIndividual" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-weight: bold;font-family: hedliner;">Resumen Individual</a>
-                                <a id="UserPersonaBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#UserPersona&ArchBtn" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;">User Persona & Archetype</a>
-                                <a id="AnalisisPsicograficosBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#AnalisisPsicograficos" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;">Análisis Psicograficos</a>
-                                <a id="customerExperienceBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#customerExperience" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;">Experiencia de Usuario</a>
-                                <a id="NPSySatisfaccionBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#NPSySatisfaccion" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;">NPS y satisfacción</a>
-                                <a id="BrandStatusBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#BrandStatus" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;">Brand Status</a>
-                                <a id="ClimaLaboralBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#ClimaLaboral" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;">Clima Laboral</a>
+                                <a id="ResumenGeneralBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#ResumenGeneral" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner, sans-serif;font-weight: bold;" data-i18n="AnalisisDeDatos.titleGeneral">Resumen General</a>
+                                <a id="ResumenIndividualBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#ResumenIndividual" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-weight: bold;font-family: hedliner;" data-i18n="AnalisisDeDatos.titleIndividual">Resumen Individual</a>
+                                <a id="UserPersonaBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#UserPersona&ArchBtn" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.btUP_Archetype">User Persona & Archetype</a>
+                                <a id="AnalisisPsicograficosBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#AnalisisPsicograficos" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.titleCustomerExperience">Análisis Psicograficos</a>
+                                <a id="customerExperienceBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#customerExperience" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.btPsicographics">Experiencia de Usuario</a>
+                                <a id="NPSySatisfaccionBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#NPSySatisfaccion" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.btNPS_Satisfaction">NPS y satisfacción</a>
+                                <a id="BrandStatusBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#BrandStatus" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.btBrandStatus">Brand Status</a>
+                                <a id="ClimaLaboralBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#ClimaLaboral" data-bs-toggle="list" style="width: 95%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.btClimaLaboral">Clima Laboral</a>
                                 
                                 <div style="height: 95%;"></div>
                             </div>
@@ -101,31 +107,31 @@
                             <div class="tab-content">
     
                                 <div id="ResumenGeneral" class="tab-pane fade" role="tabpanel">
-                                    <h3>Resumen General</h3>
-                                    <p>En esta sección se muestra un resumen general de los resultados obtenidos. Puedes seleccionar un estilo de visualización y aplicar filtros para obtener información específica.</p>
+                                    <h3 data-i18n="AnalisisDeDatos.titleGeneral">Resumen General</h3>
+                                    <p data-i18n="AnalisisDeDatos.descGeneral">En esta sección se muestra un resumen general de los resultados obtenidos. Puedes seleccionar un estilo de visualización y aplicar filtros para obtener información específica.</p>
                                     
                                     <!-- Comboboxes y botón en una fila -->
                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                         <!-- Combobox para seleccionar estilo -->
                                         <div>
-                                            <label for="ComboBox_ResumenGeneralTy" style="font-family: hedliner;">Selecciona un estilo:</label>
+                                            <label for="ComboBox_ResumenGeneralTy" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectStyle">Selecciona un estilo:</label>
                                             <select id="ComboBox_ResumenGeneralTy" style="font-family: hedliner;">
                                                 <option value="---" style="font-family: hedliner;">---</option>
-                                                <option value="narrative" style="font-family: hedliner;">Narrativo</option>
-                                                <option value="factual" style="font-family: hedliner;">Factual</option>
+                                                <option value="narrative" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.optNarrative">Narrativo</option>
+                                                <option value="factual" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.optFactual">Factual</option>
                                             </select>
                                         </div>
                                 
                                         <!-- Combobox para seleccionar filtro -->
                                         <div>
-                                            <label for="ComboBox_ResumenGeneral" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                            <label for="ComboBox_ResumenGeneral" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                             <select id="ComboBox_ResumenGeneral" style="font-family: hedliner;">
                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                             </select>
 
                                             <select id="ComboBox_ResumenGeneral_SubFiltro" style="font-family: hedliner; display: none;">
                                                 <option value="---">---</option>
-                                                <option value="General">General</option>
+                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                 <option value="2024-Oct">2024-Oct</option>
                                                 <option value="2024-Nov">2024-Nov</option>
                                                 <option value="2024-Dic">2024-Dic</option>
@@ -137,7 +143,7 @@
                                         </div>
                                 
                                         
-                                        <button id="export_ResumenGeneral" style="border-radius : 13px;">Exportar</button>
+                                        <button id="export_ResumenGeneral" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
                                         <button id="download_markmap" style="display: none;">Descargar Mapa Mental</button>
                                     </div>
                                 
@@ -150,31 +156,31 @@
                                 
     
                                 <div id="ResumenIndividual" class="tab-pane fade" role="tabpanel">
-                                    <h3>Resumen Individual</h3>
-                                    <p>En esta sección se muestra un resumen individual por pregunta. Puedes seleccionar un estilo de visualización y aplicar filtros para obtener información específica.</p>
+                                    <h3 data-i18n="AnalisisDeDatos.titleIndividual">Resumen Individual</h3>
+                                    <p data-i18n="AnalisisDeDatos.descIndividual">En esta sección se muestra un resumen individual por pregunta. Puedes seleccionar un estilo de visualización y aplicar filtros para obtener información específica.</p>
                                     
                                     <!-- Comboboxes y botón en una fila -->
                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                         <!-- Combobox para seleccionar estilo -->
                                         <div>
-                                            <label for="ComboBox_ResumenIndividualTy" style="font-family: hedliner;">Selecciona un estilo:</label>
+                                            <label for="ComboBox_ResumenIndividualTy" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectStyle">Selecciona un estilo:</label>
                                             <select id="ComboBox_ResumenIndividualTy" style="font-family: hedliner;">
                                                 <option value="---">---</option>
-                                                <option value="individual_narrative">Narrativo</option>
-                                                <option value="percentage">Porcentual</option>
+                                                <option value="individual_narrative" data-i18n="AnalisisDeDatos.optNarrative">Narrativo</option>
+                                                <option value="percentage" data-i18n="AnalisisDeDatos.optPercentage">Porcentual</option>
                                             </select>
                                         </div>
                                     
                                         <!-- Combobox para seleccionar filtro -->
                                         <div>
-                                            <label for="ComboBox_ResumenIndividual" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                            <label for="ComboBox_ResumenIndividual" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                             <select id="ComboBox_ResumenIndividual" style="font-family: hedliner;">
                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                             </select>
 
                                             <select id="ComboBox_ResumenIndividual_SubFiltro" style="font-family: hedliner; display: none;">
                                                 <option value="---">---</option>
-                                                <option value="General">General</option>
+                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                 <option value="2024-Oct">2024-Oct</option>
                                                 <option value="2024-Nov">2024-Nov</option>
                                                 <option value="2024-Dic">2024-Dic</option>
@@ -184,18 +190,17 @@
                                         </div>
                                     
                           
-                                        <button id="export_ResumenIndividual" style="border-radius : 13px;">Exportar</button>
-    
+                                        <button id="export_ResumenIndividual" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
                                     </div>
 
                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                         <!-- Combobox para seleccionar display style -->
                                         <div>
-                                            <label id="ComboBox_ResumenIndividualDSLBL" for="ComboBox_ResumenIndividualDS" style="font-family: hedliner;">Selecciona visualizacion:</label>
+                                            <label id="ComboBox_ResumenIndividualDSLBL" for="ComboBox_ResumenIndividualDS" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectVisual">Selecciona visualizacion:</label>
                                             <select id="ComboBox_ResumenIndividualDS" style="font-family: hedliner;">
                                                 <option value="---">---</option>
-                                                <option value="individual_Cat">Visualización grafica</option>
-                                                <option value="percentage_nonCat">Visualización textual</option>
+                                                <option value="individual_Cat" data-i18n="AnalisisDeDatos.optVisualGraphics">Visualización grafica</option>
+                                                <option value="percentage_nonCat" data-i18n="AnalisisDeDatos.optVisualText">Visualización textual</option>
                                             </select>
                                         </div>
                                     </div>
@@ -218,38 +223,38 @@
     
                                 <div id="UserPersona&ArchBtn" class="tab-pane fade" role="tabpanel">
                                     <div class="d-xls-flex flex-row justify-content-xl-start align-items-xl-end list-group">
-                                        <a class="list-group-item list-group-item-action" href="#A_UserPersona" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">User Persona</a>
-                                        <a class="list-group-item list-group-item-action" href="#A_UserArchetype" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">User Archetype</a>
+                                        <a class="list-group-item list-group-item-action" href="#A_UserPersona" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.titleUserPersona">User Persona</a>
+                                        <a class="list-group-item list-group-item-action" href="#A_UserArchetype" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.titleUserArchetype">User Archetype</a>
                                     </div>
                                     <div class="row">
                                         <div class="col">
                                             <div class="tab-content">
                                                 <div id="A_UserPersona" class="tab-pane fade" role="tabpanel">
-                                                    <h3>User Persona</h3>
-                                                    <p>En esta sección se muestra información sobre el perfil del usuario objetivo, conocido como User Persona. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
+                                                    <h3 data-i18n="AnalisisDeDatos.titleUserPersona">User Persona</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descUserPersona">En esta sección se muestra información sobre el perfil del usuario objetivo, conocido como User Persona. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
                                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                                         <div>
-                                                            <label for="Combobox_UserPersona" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <label for="Combobox_UserPersona" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                             <select id="Combobox_UserPersona" style="font-family: hedliner;">
                                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                                             </select>
                                                         </div>
-                                                        <button id="export_UserPersona" style="border-radius : 13px;">Exportar</button>
+                                                        <button id="export_UserPersona" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
                                                     </div>
                                                     <div class="Content-Divs" id="UserPersonaContent" style="flex: 1;">
                                                     </div>
                                                 </div>
                                                 <div id="A_UserArchetype" class="tab-pane fade" role="tabpanel">
-                                                    <h3>User Archetype</h3>
-                                                    <p>En esta sección se muestra información sobre el arquetipo de persona. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
+                                                    <h3 data-i18n="AnalisisDeDatos.titleUserArchetype">User Archetype</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descUserArchetype">En esta sección se muestra información sobre el arquetipo de persona. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
                                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                                         <div>
-                                                            <label for="Combobox_UserArchetype" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <label for="Combobox_UserArchetype" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                             <select id="Combobox_UserArchetype" style="font-family: hedliner;">
                                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                                             </select>
                                                         </div>
-                                                        <button id="export_UserArchetype" style="border-radius : 13px;">Exportar</button>
+                                                        <button id="export_UserArchetype" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
                                                     </div>
                                                     <div class="Content-Divs" id="UserArchetypeContent" style="flex: 1;">
                                                     </div>
@@ -260,21 +265,21 @@
                                 </div>
 
                                 <div id="customerExperience" class="tab-pane fade" role="tabpanel">
-                                    <h3>Experiencia de Usuario                                </h3>
-                                    <p>En esta sección se evalúa las percepciones, emociones y comportamiento de los clientes en cada punto de interacción con una marca, para identificar áreas de mejora y fortalecer la satisfacción y fidelización. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
+                                    <h3 data-i18n="AnalisisDeDatos.titleCustomerExperience">Experiencia de Usuario                                </h3>
+                                    <p data-i18n="AnalisisDeDatos.descCustomerExperience">En esta sección se evalúa las percepciones, emociones y comportamiento de los clientes en cada punto de interacción con una marca, para identificar áreas de mejora y fortalecer la satisfacción y fidelización. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
                                     
                                     <!-- Comboboxes y botón en una fila -->
                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                         <!-- Combobox para seleccionar filtro -->
                                         <div>
-                                            <label for="Combobox_customerExperience" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                            <label for="Combobox_customerExperience" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                             <select id="Combobox_customerExperience" style="font-family: hedliner;">
                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                             </select>
 
                                             <select id="ComboBox_customerExperience_SubFiltro" style="font-family: hedliner; display: none;">
                                                 <option value="---">---</option>
-                                                <option value="General">General</option>
+                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                 <option value="2024-Oct">2024-Oct</option>
                                                 <option value="2024-Nov">2024-Nov</option>
                                                 <option value="2024-Dic">2024-Dic</option>
@@ -285,7 +290,7 @@
                                         </div>
                                 
                                         <!-- Botón para mostrar/ocultar el textarea -->                                
-                                        <button id="export_customerExperience" style="border-radius : 13px;">Exportar</button>
+                                        <button id="export_customerExperience" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
     
     
                                     </div>
@@ -301,27 +306,27 @@
 
                                 <div id="ClimaLaboral" class="tab-pane fade" role="tabpanel">
                                     <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
-                                        <a class="list-group-item list-group-item-action" href="#A_ClimaLaboral" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Analisis de Clima Laboral</a>
+                                        <a class="list-group-item list-group-item-action" href="#A_ClimaLaboral" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btClimaLaboral">Analisis de Clima Laboral</a>
                                     </div> <!-- 🔧 Cierre agregado aquí -->
                                 
                                     <div class="row">
                                         <div class="col">
                                             <div class="tab-content">
                                                 <div id="A_ClimaLaboral" class="tab-pane fade" role="tabpanel">
-                                                    <h3>Análisis de Clima Laboral</h3>
-                                                    <p>Este análisis integral evalúa el clima laboral a través de un estudio detallado que identifica factores clave, tendencias en los comentarios y áreas críticas de mejora. Se examinan correlaciones, se segmentan los empleados y se aplican modelos como Kano y ACSI para ofrecer una visión profunda de la situación actual y recomendaciones estratégicas.</p>
+                                                    <h3 data-i18n="AnalisisDeDatos.titleClimaLaboral">Análisis de Clima Laboral</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descClimaLaboral">Este análisis integral evalúa el clima laboral a través de un estudio detallado que identifica factores clave, tendencias en los comentarios y áreas críticas de mejora. Se examinan correlaciones, se segmentan los empleados y se aplican modelos como Kano y ACSI para ofrecer una visión profunda de la situación actual y recomendaciones estratégicas.</p>
                                 
                                                     <!-- Comboboxes y botón en una fila -->
                                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                                         <div>
-                                                            <label for="Combobox_ClimaLaboral" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <label for="Combobox_ClimaLaboral" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                             <select id="Combobox_ClimaLaboral" style="font-family: hedliner;">
                                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                                             </select>
 
                                                             <select id="ComboBox_ClimaLaboral_SubFiltro" style="font-family: hedliner; display: none;">
                                                                 <option value="---">---</option>
-                                                                <option value="General">General</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
                                                                 <option value="2024-Nov">2024-Nov</option>
                                                                 <option value="2024-Dic">2024-Dic</option>
@@ -331,7 +336,7 @@
 
                                                             
                                                         </div>
-                                                        <button id="export_AP_ClimaLaboral" style="border-radius : 13px;">Exportar</button>
+                                                        <button id="export_AP_ClimaLaboral" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
                                                     </div>
                                 
                                                     <div class="Content-Divs" id="ClimaLaboralContent" style="flex: 1;"></div>
@@ -345,27 +350,27 @@
                                 
                                 <div id="BrandStatus" class="tab-pane fade" role="tabpanel">
                                     <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
-                                        <a class="list-group-item list-group-item-action" href="#A_BrandStrenght" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Analisis de Brand Strenght</a>
-                                        <a class="list-group-item list-group-item-action" href="#A_BrandEquity" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Analisis de Brand Equity</a>
+                                        <a class="list-group-item list-group-item-action" href="#A_BrandStrenght" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btBrandStrength">Analisis de Brand Strenght</a>
+                                        <a class="list-group-item list-group-item-action" href="#A_BrandEquity" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btBrandEquity">Analisis de Brand Equity</a>
                                     </div>
                                     <div class="row">
                                         <div class="col">
                                             <div class="tab-content">
                                                 <div id="A_BrandStrenght" class="tab-pane fade" role="tabpanel">
-                                                    <h3>Análisis de Brand Strength</h3>
-                                                    <p>Este análisis integral evalúa la fortaleza de la marca a través de un estudio detallado que identifica factores clave, percepciones del consumidor y áreas de oportunidad. Se examinan atributos de marca, asociaciones, lealtad y métricas como el reconocimiento y la relevancia para ofrecer una visión profunda de la situación actual y recomendaciones estratégicas.</p>
+                                                    <h3 data-i18n="AnalisisDeDatos.titleBrandStrength">Análisis de Brand Strength</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descBrandStrength">Este análisis integral evalúa la fortaleza de la marca a través de un estudio detallado que identifica factores clave, percepciones del consumidor y áreas de oportunidad. Se examinan atributos de marca, asociaciones, lealtad y métricas como el reconocimiento y la relevancia para ofrecer una visión profunda de la situación actual y recomendaciones estratégicas.</p>
                                                     <!-- Comboboxes y botón en una fila -->
                                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                                         <!-- Combobox para seleccionar filtro -->
                                                         <div>
-                                                            <label for="Combobox_BrandStrenght" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <label for="Combobox_BrandStrenght" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                             <select id="Combobox_BrandStrenght" style="font-family: hedliner;">
                                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                                             </select>
 
                                                             <select id="ComboBox_BrandStrenght_SubFiltro" style="font-family: hedliner; display: none;">
                                                                 <option value="---">---</option>
-                                                                <option value="General">General</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
                                                                 <option value="2024-Nov">2024-Nov</option>
                                                                 <option value="2024-Dic">2024-Dic</option>
@@ -377,7 +382,7 @@
                                                         </div>
                                                 
                                                         <!-- Botón para mostrar/ocultar el textarea -->
-                                                        <button id="export_AP_BrandStrenght" style="border-radius : 13px;">Exportar</button>
+                                                        <button id="export_AP_BrandStrenght" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
                                 
                                                     </div>
                                                     
@@ -389,21 +394,21 @@
                                 
                                 
                                                 <div id="A_BrandEquity" class="tab-pane fade" role="tabpanel">
-                                                    <h3>Análisis de Brand Equity</h3>
-                                                    <p>Este análisis integral evalúa el valor de marca a través de un estudio detallado que identifica factores clave, percepciones del consumidor y áreas de oportunidad. Se examinan atributos de marca, asociaciones, lealtad y métricas como el Net Promoter Score (NPS) para ofrecer una visión profunda de la fortaleza de la marca y recomendaciones estratégicas.</p>
+                                                    <h3 data-i18n="AnalisisDeDatos.titleBrandEquity">Análisis de Brand Equity</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descBrandEquity">Este análisis integral evalúa el valor de marca a través de un estudio detallado que identifica factores clave, percepciones del consumidor y áreas de oportunidad. Se examinan atributos de marca, asociaciones, lealtad y métricas como el Net Promoter Score (NPS) para ofrecer una visión profunda de la fortaleza de la marca y recomendaciones estratégicas.</p>
                                                 
                                                     <!-- Comboboxes y botón en una fila -->
                                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                                         <!-- Combobox para seleccionar filtro -->
                                                         <div>
-                                                            <label for="Combobox_BrandEquity" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <label for="Combobox_BrandEquity" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                             <select id="Combobox_BrandEquity" style="font-family: hedliner;">
                                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                                             </select>
 
                                                             <select id="ComboBox_BrandEquity_SubFiltro" style="font-family: hedliner; display: none;">
                                                                 <option value="---">---</option>
-                                                                <option value="General">General</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
                                                                 <option value="2024-Nov">2024-Nov</option>
                                                                 <option value="2024-Dic">2024-Dic</option>
@@ -414,7 +419,7 @@
                                                         </div>
                                                 
                                                         <!-- Botón para mostrar/ocultar el textarea -->
-                                                        <button id="export_AP_BrandEquity" style="border-radius : 13px;">Exportar</button>
+                                                        <button id="export_AP_BrandEquity" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
                                 
                                                     </div>
                                                     
@@ -437,27 +442,29 @@
 
                                 
                                 <div id="NPSySatisfaccion" class="tab-pane fade" role="tabpanel">
-                                    <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group"><a class="list-group-item list-group-item-action" href="#A_Satisfaccion" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Analisis de Satisfacción</a><a class="list-group-item list-group-item-action" href="#AP_NPS" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">NPS</a></div>
+                                    <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                        <a class="list-group-item list-group-item-action" href="#A_Satisfaccion" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btCustomerSatisfaction">Analisis de Satisfacción</a>
+                                        <a class="list-group-item list-group-item-action" href="#AP_NPS" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btNPS">NPS</a></div>
                                     <div class="row">
                                         <div class="col">
                                             <div class="tab-content">
                                                 <div id="A_Satisfaccion" class="tab-pane fade" role="tabpanel">
-                                                    <h3>Análisis de Satisfacción</h3>
-                                                    <p>Este análisis integral evalúa la satisfacción del cliente a través de un estudio detallado que identifica factores clave, tendencias en los comentarios y áreas críticas de mejora. Se examinan correlaciones, se segmentan los clientes y se aplican modelos como Kano y ACSI para ofrecer una visión profunda de la situación actual y recomendaciones estratégicas.</p>
+                                                    <h3 data-i18n="AnalisisDeDatos.titleCustomerSatisfaction">Análisis de Satisfacción</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descCustomerSatisfaction">Este análisis integral evalúa la satisfacción del cliente a través de un estudio detallado que identifica factores clave, tendencias en los comentarios y áreas críticas de mejora. Se examinan correlaciones, se segmentan los clientes y se aplican modelos como Kano y ACSI para ofrecer una visión profunda de la situación actual y recomendaciones estratégicas.</p>
                                                  
                                                 
                                                     <!-- Comboboxes y botón en una fila -->
                                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                                         <!-- Combobox para seleccionar filtro -->
                                                         <div>
-                                                            <label for="Combobox_Satisfaccion" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <label for="Combobox_Satisfaccion" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                             <select id="Combobox_Satisfaccion" style="font-family: hedliner;">
                                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                                             </select>
 
                                                             <select id="ComboBox_Satisfaccion_SubFiltro" style="font-family: hedliner; display: none;">
                                                                 <option value="---">---</option>
-                                                                <option value="General">General</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
                                                                 <option value="2024-Nov">2024-Nov</option>
                                                                 <option value="2024-Dic">2024-Dic</option>
@@ -469,7 +476,7 @@
                                                         </div>
                                                 
                                                         <!-- Botón para mostrar/ocultar el textarea -->
-                                                        <button id="export_AP_Satisfaccion" style="border-radius : 13px;">Exportar</button>
+                                                        <button id="export_AP_Satisfaccion" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
                                                     </div>
                                                     
                                                     
@@ -478,21 +485,21 @@
                                                 </div>
                                                 
                                                 <div id="AP_NPS" class="tab-pane fade" role="tabpanel">
-                                                    <h3>Análisis de NPS</h3>
-                                                    <p>En esta sección se realiza un análisis del Net Promoter Score (NPS) a partir de las respuestas escritas. El NPS es una métrica utilizada para medir la lealtad de los clientes y su disposición a recomendar un producto o servicio.</p>
+                                                    <h3 data-i18n="AnalisisDeDatos.titleNPS">Análisis de NPS</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descNPS">En esta sección se realiza un análisis del Net Promoter Score (NPS) a partir de las respuestas escritas. El NPS es una métrica utilizada para medir la lealtad de los clientes y su disposición a recomendar un producto o servicio.</p>
                                                 
                                                     <!-- Comboboxes y botón en una fila -->
                                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                                         <!-- Combobox para seleccionar filtro -->
                                                         <div>
-                                                            <label for="Combobox_NPS" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <label for="Combobox_NPS" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                             <select id="Combobox_NPS" style="font-family: hedliner;">
                                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                                             </select>
 
                                                             <select id="ComboBox_NPS_SubFiltro" style="font-family: hedliner; display: none;">
                                                                 <option value="---">---</option>
-                                                                <option value="General">General</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
                                                                 <option value="2024-Nov">2024-Nov</option>
                                                                 <option value="2024-Dic">2024-Dic</option>
@@ -504,7 +511,7 @@
                                                         </div>
                                                 
                                                         
-                                                        <button id="export_AP_NPS" style="border-radius : 13px;">Exportar</button>
+                                                        <button id="export_AP_NPS" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
     
                                                     </div>
                                                 
@@ -529,30 +536,41 @@
 
                                 
                                 <div id="AnalisisPsicograficos" class="tab-pane fade" role="tabpanel">
-                                    <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group"><a class="list-group-item list-group-item-action" href="#AP_Ekman" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">EKMAN</a><a class="list-group-item list-group-item-action" href="#AP_RasgosDePersonalidad" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Rasgos de Personalidad</a><a class="list-group-item list-group-item-action" href="#AP_SegmentosPsicograficos" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Segmentos Psicograficos</a><a class="list-group-item list-group-item-action" href="#AP_EstiloDeComunicacion" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;">Estilo de Comunicacion</a></div>
+                                    <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                        <a class="list-group-item list-group-item-action" href="#AP_Ekman" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btEKMAN">EKMAN</a>
+                                        <a class="list-group-item list-group-item-action" href="#AP_RasgosDePersonalidad" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btPersonality">Rasgos de Personalidad</a>
+                                        <a class="list-group-item list-group-item-action" href="#AP_SegmentosPsicograficos" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btPsicSegments">Segmentos Psicograficos</a>
+                                        <a class="list-group-item list-group-item-action" href="#AP_EstiloDeComunicacion" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btCommStyles">Estilo de Comunicacion</a>
+                                    </div>
                                     <div class="row">
                                         <div class="col">
                                             <div class="tab-content">
                                                 <div id="AP_Ekman" class="tab-pane fade" role="tabpanel">
-                                                    <h3>Análisis Psicográfico - Ekman</h3>
-                                                    <p>En esta sección se presenta un análisis psicográfico basado en las respuestas escritas, utilizando el modelo de Ekman. Este análisis se desglosa en los siguientes aspectos:</p>
+                                                    <h3 data-i18n="AnalisisDeDatos.titleEKMAN">Análisis Psicográfico - Ekman</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descEKMAN">En esta sección se presenta un análisis psicográfico basado en las respuestas escritas, utilizando el modelo de Ekman. Este análisis se desglosa en los siguientes aspectos:</p>
                                                     <ul>
-                                                        <li><strong>Emociones Básicas:</strong> Se identifican y clasifican las emociones primarias reflejadas en el contenido textual.</li>
-                                                        <li><strong>Microexpresiones Textuales:</strong> Se detectan y analizan sutiles indicios emocionales que podrían estar presentes en la redacción, similares a las microexpresiones faciales.</li>
+                                                        <li>
+                                                            <strong data-i18n="AnalisisDeDatos.s1EKMAN">Emociones Básicas:</strong> 
+                                                            <span data-i18n="AnalisisDeDatos.desc1EKMAN">Se identifican y clasifican las emociones primarias reflejadas en el contenido textual.</span>
+                                                        </li>
+                                                        <li>
+                                                            <strong data-i18n="AnalisisDeDatos.s2EKMAN">Microexpresiones Textuales:</strong> 
+                                                            <span data-i18n="AnalisisDeDatos.desc2EKMAN">Se detectan y analizan sutiles indicios emocionales que podrían estar presentes en la redacción, similares a las microexpresiones faciales.</span>
+                                                        </li>
                                                     </ul>
                                                 
                                                     <!-- Comboboxes y botón en una fila -->
                                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                                         <!-- Combobox para seleccionar filtro -->
                                                         <div>
-                                                            <label for="Combobox_EKMAN" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <label for="Combobox_EKMAN" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                             <select id="Combobox_EKMAN" style="font-family: hedliner;">
                                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                                             </select>
 
                                                             <select id="ComboBox_EKMAN_SubFiltro" style="font-family: hedliner; display: none;">
                                                                 <option value="---">---</option>
-                                                                <option value="General">General</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
                                                                 <option value="2024-Nov">2024-Nov</option>
                                                                 <option value="2024-Dic">2024-Dic</option>
@@ -563,7 +581,7 @@
                                                         </div>
                                                 
                                                         
-                                                        <button id="export_AP_Ekman" style="border-radius : 13px;">Exportar</button>
+                                                        <button id="export_AP_Ekman" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
     
                                                     </div>
                                                     
@@ -574,21 +592,21 @@
                                                 </div>
                                                 
                                                 <div id="AP_RasgosDePersonalidad" class="tab-pane fade" role="tabpanel">
-                                                    <h3>Análisis de Rasgos de Personalidad</h3>
-                                                    <p>En esta sección se lleva a cabo un análisis exhaustivo de los rasgos de personalidad reflejados en las respuestas escritas, identificando y clasificando estos rasgos para obtener una visión más detallada del perfil del usuario objetivo.</p>
+                                                    <h3 data-i18n="AnalisisDeDatos.titlePersonality">Análisis de Rasgos de Personalidad</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descPersonality">En esta sección se lleva a cabo un análisis exhaustivo de los rasgos de personalidad reflejados en las respuestas escritas, identificando y clasificando estos rasgos para obtener una visión más detallada del perfil del usuario objetivo.</p>
                                                 
                                                     <!-- Comboboxes y botón en una fila -->
                                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                                         <!-- Combobox para seleccionar filtro -->
                                                         <div>
-                                                            <label for="Combobox_RasgosDePersonalidad" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <label for="Combobox_RasgosDePersonalidad" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                             <select id="Combobox_RasgosDePersonalidad" style="font-family: hedliner;">
                                                                 <!-- Las opciones se agregarán dinámicamente aquí -->
                                                             </select>
 
                                                             <select id="ComboBox_RasgosDePersonalidad_SubFiltro" style="font-family: hedliner; display: none;">
                                                                 <option value="---">---</option>
-                                                                <option value="General">General</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
                                                                 <option value="2024-Nov">2024-Nov</option>
                                                                 <option value="2024-Dic">2024-Dic</option>
@@ -600,7 +618,7 @@
                                                         </div>
                                                 
                                                         
-                                                        <button id="export_AP_RasgosDePersonalidad" style="border-radius : 13px;">Exportar</button>
+                                                        <button id="export_AP_RasgosDePersonalidad" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
     
     
                                                     </div>
@@ -612,21 +630,21 @@
                                                 
                                                 
                                                 <div id="AP_SegmentosPsicograficos" class="tab-pane fade" role="tabpanel">
-                                                    <h3>Análisis de Segmentos Psicográficos</h3>
-                                                    <p>En esta sección se realiza un análisis detallado de los segmentos psicográficos a partir de las respuestas escritas, con el objetivo de identificar y clasificar diferentes perfiles de usuarios en función de sus características psicológicas, comportamientos, valores y estilos de vida. Los segmentos incluyen perfiles como usuarios leales, indistintos y críticos.</p>
+                                                    <h3 data-i18n="AnalisisDeDatos.titlePersonality">Análisis de Segmentos Psicográficos</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descPersonality">En esta sección se realiza un análisis detallado de los segmentos psicográficos a partir de las respuestas escritas, con el objetivo de identificar y clasificar diferentes perfiles de usuarios en función de sus características psicológicas, comportamientos, valores y estilos de vida. Los segmentos incluyen perfiles como usuarios leales, indistintos y críticos.</p>
                                                 
                                                     <!-- Comboboxes y botón en una fila -->
                                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                                         <!-- Combobox para seleccionar filtro -->
                                                         <div>
-                                                            <label for="Combobox_SegmentosPsicograficos" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <label for="Combobox_SegmentosPsicograficos" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                             <select id="Combobox_SegmentosPsicograficos" style="font-family: hedliner;">
                                                                 <!-- Las opciones se agregarán dinámicamente aquí -->
                                                             </select>
                                                             
                                                             <select id="ComboBox_SegmentosPsicograficos_SubFiltro" style="font-family: hedliner; display: none;">
                                                                 <option value="---">---</option>
-                                                                <option value="General">General</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
                                                                 <option value="2024-Nov">2024-Nov</option>
                                                                 <option value="2024-Dic">2024-Dic</option>
@@ -636,33 +654,33 @@
                                                         </div>
                                                 
                                                         <!-- Botón para mostrar/ocultar el textarea -->
-                                                        <button id="export_AP_SegmentosPsicograficos" style="border-radius : 13px;">Exportar</button>
+                                                        <button id="export_AP_SegmentosPsicograficos" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
     
     
                                                     </div>
                                                     
                                                     <!-- Contenedor para el textarea y el contenido del análisis -->
                                                     
-                                                        <div class="Content-Divs" id="SegmentosPsicograficosContent" style="flex: 1;">
-                                                        </div>
+                                                    <div class="Content-Divs" id="SegmentosPsicograficosContent" style="flex: 1;">
+                                                    </div>
                                                 </div>
                                                 
                                                 
                                                 <div id="AP_EstiloDeComunicacion" class="tab-pane fade" role="tabpanel">
-                                                    <h3>Análisis de Estilos de Comunicación</h3>
-                                                    <p>En esta sección se realiza un análisis de los estilos de comunicación de los encuestados, categorizándolos en Reveladores, Factuales, Informativos y Buscadores de Acción. Estos estilos se determinan en base a cómo los encuestados expresan sus opiniones y preferencias.</p>
+                                                    <h3 data-i18n="AnalisisDeDatos.titleCommStyles">Análisis de Estilos de Comunicación</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descCommStyles">En esta sección se realiza un análisis de los estilos de comunicación de los encuestados, categorizándolos en Reveladores, Factuales, Informativos y Buscadores de Acción. Estos estilos se determinan en base a cómo los encuestados expresan sus opiniones y preferencias.</p>
                                                 
                                                     <!-- Comboboxes y botón en una fila -->
                                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                                                         <!-- Combobox para seleccionar filtro -->
                                                         <div>
-                                                            <label for="Combobox_EstiloDeComunicacion" style="font-family: hedliner;">Selecciona un Filtro:</label>
+                                                            <label for="Combobox_EstiloDeComunicacion" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                             <select id="Combobox_EstiloDeComunicacion" style="font-family: hedliner;">
                                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                                             </select>
                                                             <select id="ComboBox_EstiloDeComunicacion_SubFiltro" style="font-family: hedliner; display: none;">
                                                                 <option value="---">---</option>
-                                                                <option value="General">General</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
                                                                 <option value="2024-Nov">2024-Nov</option>
                                                                 <option value="2024-Dic">2024-Dic</option>
@@ -672,7 +690,7 @@
                                                         </div>
                                                 
                                                         <!-- Botón para mostrar/ocultar el textarea -->
-                                                        <button id="export_AP_EstiloDeComunicacion" style="border-radius : 13px;">Exportar</button>
+                                                        <button id="export_AP_EstiloDeComunicacion" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
     
                                                     </div>
                                                 
@@ -680,45 +698,42 @@
                                                         <!-- Contenido del análisis de estilo de comunicación -->
                                                         <div class="Content-Divs" id="EstiloDeComunicacionContent" style="flex: 1;">
                                                         </div>
-                                                    
-                                                </div>
-                                                
+                                                    </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                
-
-                            </div>
                         </div>
                     </div>
                 </div>
-                <div style="position: absolute; bottom: 0; left: 0; text-align: center; width: 100%; margin-top: 10px; margin-bottom: -5px; background-color: #f0f0f0;">
-                <p><strong>Cheetah Research</strong> es una marca registrada de <strong>Marketing Total S.A.</strong>. Todos los derechos reservados.</p>
+            </div>
+            <div style="position: absolute; bottom: 0; left: 0; text-align: center; width: 100%; margin-top: 10px; margin-bottom: -5px; background-color: #f0f0f0;">
+                <strong data-i18n="brand"></strong>
+                <span data-i18n="registered"></span>
+                <strong data-i18n="company"></strong>.
+                <span data-i18n="rights"></span>
             </div>
         </div>
-
-            
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/theme.js"></script>
-        <script>
-            function getParameterByName(name) {
-                const urlParams = new URLSearchParams(window.location.search);
-                return urlParams.get(name);
-            }
-            const studyId = getParameterByName('id');
-            var link = document.getElementById('socrates-link');
-            var link2 = document.getElementById('analis-link');
-            var link3 = document.getElementById('home-link');
-            var link4 = document.getElementById('home-link2');
-            link.href = 'https://www.cheetah-research.ai/analysis/Socrates?id=' + studyId;
-            link2.href = 'https://www.cheetah-research.ai/analysis/DataAnalysis/?id=' + studyId;
-            link3.href = 'https://www.cheetah-research.ai/analysis/home/?id=' + studyId;
-            link4.href = 'https://www.cheetah-research.ai/analysis/home/?id=' + studyId;
-        </script>
+    <script src="Funcionalidad/i18n.js"></script>
+    <script>
+        function getParameterByName(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        const studyId = getParameterByName('id');
+        var link = document.getElementById('socrates-link');
+        var link2 = document.getElementById('analis-link');
+        var link3 = document.getElementById('home-link');
+        var link4 = document.getElementById('home-link2');
+        link.href = 'https://www.cheetah-research.ai/analysis/Socrates?id=' + studyId;
+        link2.href = 'https://www.cheetah-research.ai/analysis/DataAnalysis/?id=' + studyId;
+        link3.href = 'https://www.cheetah-research.ai/analysis/home/?id=' + studyId;
+        link4.href = 'https://www.cheetah-research.ai/analysis/home/?id=' + studyId;
+    </script>
 </body>
 
 </html>
