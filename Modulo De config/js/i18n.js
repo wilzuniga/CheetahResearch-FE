@@ -14,6 +14,8 @@ Encuesta.html
 Lanzar Estudio:
 Links
 btEliminar Modulo
+
+Encuesta: Nuevo Formato
 */
 
 const translations = {
@@ -60,13 +62,12 @@ const translations = {
             title: "Crear Encuesta",
             hQuestion: "Pregunta",                                  inQuestion: "Ingresa tu pregunta",                   inWeight: "Ingresa el peso",
             hAttachment: "Archivo",
+            hEdtQuestion: "Editar Pregunta:",
             btAddQuestion: "Agregar Pregunta",
             btDelQuestion: "Eliminar",                              btAddSubQuestion: "Agregar Pregunta de Seguimiento", btEdtQuestion: "Editar",      btDelSubQuestion: "Eliminar Preguntas de Seguimiento",
             inAddSubQuestion: "Ingresa tu Pregunta de Seguimiento", btSaveSubQuestion: "Agregar Pregunta",               btCloseSubQuestion: "Cerrar",
-            //Poner los de arriba en Editar Pregunta
             btSaveQuestionEdit: "Guardar",                          btCloseQuestionEdit: "Cerrar",
             btSaveSurvey: "Guardar Encuesta"
-            //Falta el html en JS
         },
         LanzarEstudio: {
             title: "Lanzar Estudio",                    hStudyTitle: "Titulo del Estudio",//Verificar que no sobreponga titulo actual
@@ -191,6 +192,17 @@ const translations = {
             btSaveColors: "Save Colors",                btDefaultColors: "Default Colors",
             btCreate: "Create Study",                   btUpdate: "Update Study",
         },
+        Encuesta: {
+            title: "Create Survey",
+            hQuestion: "Question",                                  inQuestion: "Enter your question",                   inWeight: "Enter the weight",
+            hAttachment: "Attachment",
+            hEdtQuestion: "Edit Question:",
+            btAddQuestion: "Add Question",
+            btDelQuestion: "Delete",                                btAddSubQuestion: "Add Follow-up Question",          btEdtQuestion: "Edit",      btDelSubQuestion: "Delete Follow-up Questions",
+            inAddSubQuestion: "Enter your follow-up question",      btSaveSubQuestion: "Add Question",                   btCloseSubQuestion: "Close",
+            btSaveQuestionEdit: "Save",                             btCloseQuestionEdit: "Close",
+            btSaveSurvey: "Save Survey"
+        },
         LanzarEstudio: {
             title: "Launch Study",                      hStudyTitle: "Study Title",
             btAdd: "Add",                               btSave: "Save",
@@ -312,6 +324,17 @@ const translations = {
             color1: "Cor Primária do Estudo",           color2: "Cor Secundária do Estudo",
             btSaveColors: "Salvar Cores",               btDefaultColors: "Cores Padrão",
             btCreate: "Criar Estudo",                   btUpdate: "Atualizar Estudo",
+        },
+        Encuesta: {
+            title: "Criar Pesquisa",
+            hQuestion: "Pergunta",                                  inQuestion: "Digite sua pergunta",                   inWeight: "Digite o peso",
+            hAttachment: "Anexo",
+            hEdtQuestion: "Editar Pergunta:",
+            btAddQuestion: "Adicionar Pergunta",
+            btDelQuestion: "Excluir",                               btAddSubQuestion: "Adicionar Pergunta de Seguimento", btEdtQuestion: "Editar",      btDelSubQuestion: "Excluir Perguntas de Seguimento",
+            inAddSubQuestion: "Digite sua pergunta de seguimento",  btSaveSubQuestion: "Adicionar Pergunta",              btCloseSubQuestion: "Fechar",
+            btSaveQuestionEdit: "Salvar",                           btCloseQuestionEdit: "Fechar",
+            btSaveSurvey: "Salvar Pesquisa"
         },
         LanzarEstudio: {
             title: "Lançar Estudo",                     hStudyTitle: "Título do Estudo",
