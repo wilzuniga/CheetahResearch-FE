@@ -8,6 +8,7 @@ const token = localStorage.getItem('token');
 document.addEventListener('DOMContentLoaded', () => {
     const studyId = localStorage.getItem('selectedStudyId');
     setColorsFromAPI(studyId);//Setea colores
+    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
     const agregarPreguntaBtn = document.getElementById('AgregarPreguntaBtn');
     const preguntaTXT = document.getElementById('PreguntaTXT');
     const pesoTXT = document.getElementById('PesoTXT');
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const eliminarBtn = document.createElement('button');
             eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-            eliminarBtn.innerText = 'Eliminar';
+            eliminarBtn.innerText = getNestedTranslation(translations[lang], 'Encuesta.btDelQuestion');
             eliminarBtn.style.marginRight = '10px';
             eliminarBtn.addEventListener('click', () => {
                 newListItem.remove();
@@ -75,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const addFollowQuestionBTN = document.createElement('button');
             addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
-            addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
+            addFollowQuestionBTN.innerText = getNestedTranslation(translations[lang], 'Encuesta.btAddSubQuestion');
             addFollowQuestionBTN.style.marginRight = '10px';
             addFollowQuestionBTN.style.color = 'var(--bs-CR-gray)';
             addFollowQuestionBTN.style.backgroundColor = 'var(--bs-CR-orange)';
@@ -131,9 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const overlay = document.getElementById('overlay');
                 overlay.innerHTML = `
                     <div id="overlayContent">
-                        <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: IBM Plex Sans;" />
-                        <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange); ">Agregar pregunta</button>
-                        <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner">Cerrar</button>
+                        <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" data-i18n-placeholder="Encuesta.inAddSubQuestion" style="width: 100%; font-family: IBM Plex Sans;" />
+                        <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="Encuesta.btAddQuestion">Agregar pregunta</button>
+                        <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" data-i18n="Encuesta.btCloseQuestionEdit">Cerrar</button>
                     </div>
                 `;
             
@@ -163,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
             //boton editar
             const editBtn = document.createElement('button');
             editBtn.classList.add('btn', 'btn-primary', 'btn-sm');
-            editBtn.innerText = 'Editar';
+            editBtn.innerText = getNestedTranslation(translations[lang], 'Encuesta.btEdtQuestion');
             editBtn.style.marginRight = '10px';
             editBtn.style.color = 'var(--bs-CR-gray)';
             editBtn.style.backgroundColor = 'var(--bs-CR-orange)';
@@ -175,12 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 //que en el overlay se pueda editar la pregunta, el peso y el anexo ya sea archivo o url
                 overlay.innerHTML = `
                     <div id="overlayContent">
-                        <input id="EditPreguntaTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
-                        <input id="EditPesoTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa el peso" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                        <input id="EditPreguntaTXT" class="form-control" type="text" name="Nombre" data-i18n-placeholder="Encuesta.inQuestion" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                        <input id="EditPesoTXT" class="form-control" type="text" name="Nombre" data-i18n-placeholder="Encuesta.inWeight" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
                         <input id="EditAnexoPregunta" class="form-control" type="file" name="Nombre" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
-                        <input id="EditAnexoPreguntaURL" class="form-control" type="text" name="Nombre" placeholder="Ingresa la URL del anexo" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
-                        <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; margin-bottom: 5px;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Guardar</button>
-                        <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner; margin-bottom: 5px;">Cerrar</button>
+                        <input id="EditAnexoPreguntaURL" class="form-control" type="text" name="Nombre" placeholder="URL" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                        <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; margin-bottom: 5px;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="Encuesta.btSaveQuestionEdit">Guardar</button>
+                        <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner; margin-bottom: 5px;" data-i18n="Encuesta.btCloseQuestionEdit">Cerrar</button>
                     </div>
                 `;
 
@@ -232,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
             //eliminar todas las preguntas de seguimiento
             const deleteFollowQuestionsBtn = document.createElement('button');
             deleteFollowQuestionsBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-            deleteFollowQuestionsBtn.innerText = 'Eliminar preguntas de seguimiento';
+            deleteFollowQuestionsBtn.innerText = getNestedTranslation(translations[lang], 'Encuesta.btDelSubQuestion');
             deleteFollowQuestionsBtn.style.marginRight = '10px';
             buttonsDiv.appendChild(deleteFollowQuestionsBtn);
 
@@ -504,6 +505,7 @@ function CE_DeactivateNavBy(){
                 console.error('Default questions list group (.list-group) not found in HTML.');
             } else {
                 defaultListGroup.innerHTML = ''; // Clear only the default list
+                const lang = localStorage.getItem('language') || 'es'; // Get del idioma
 
                 defaultQuestions.forEach((pregunta) => { 
                     const newListItem = document.createElement('div');
@@ -557,7 +559,7 @@ function CE_DeactivateNavBy(){
 
                     const editButton = document.createElement('button');
                     editButton.classList.add('btn', 'btn-primary', 'btn-sm');
-                    editButton.innerText = 'Editar';
+                    editButton.innerText = getNestedTranslation(translations[lang], 'Encuesta.btEdtQuestion');
                     editButton.style.marginRight = '10px'; 
                     editButton.style.color = 'var(--bs-CR-gray)';
                     editButton.style.backgroundColor = 'var(--bs-CR-orange)';
@@ -567,10 +569,10 @@ function CE_DeactivateNavBy(){
                         const overlay = document.getElementById('overlay');
                         overlay.innerHTML = `
                             <div id="overlayContent">
-                                <label for="EditDefaultPreguntaTXT" style="font-family: IBM Plex Sans; margin-bottom: 5px;">Editar Pregunta:</label>
-                                <textarea id="EditDefaultPreguntaTXT" class="form-control" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 10px; min-height: 80px;" placeholder="Ingresa tu pregunta"></textarea>
-                                <button id="GuardarDefaultEdit" class="btn btn-primary" style="margin-right: 10px; font-family: hedliner; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Guardar</button>
-                                <button id="CerrarOverlayDefault" class="btn btn-secondary" style="font-family: hedliner;">Cerrar</button>
+                                <label for="EditDefaultPreguntaTXT" style="font-family: IBM Plex Sans; margin-bottom: 5px;" data-i18n="Encuesta.hEdtQuestion">Editar Pregunta:</label>
+                                <textarea id="EditDefaultPreguntaTXT" class="form-control" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 10px; min-height: 80px;" data-i18n-placeholder="Encuesta.inQuestion"></textarea>
+                                <button id="GuardarDefaultEdit" class="btn btn-primary" style="margin-right: 10px; font-family: hedliner; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="Encuesta.btSaveQuestionEdit">Guardar</button>
+                                <button id="CerrarOverlayDefault" class="btn btn-secondary" style="font-family: hedliner;" data-i18n="Encuesta.btCloseQuestionEdit">Cerrar</button>
                             </div>
                         `;
                         
@@ -615,6 +617,7 @@ function CE_DeactivateNavBy(){
     
             questions.forEach((pregunta, index) => {
                 // console.log("pregunta entra");
+                const lang = localStorage.getItem('language') || 'es'; // Get del idioma
     
                 const newListItem = document.createElement('div');
                 newListItem.classList.add('list-group-item', 'list-group-item-action', 'align-items-start');
@@ -665,7 +668,7 @@ function CE_DeactivateNavBy(){
     
                 const eliminarBtn = document.createElement('button');
                 eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-                eliminarBtn.innerText = 'Eliminar';
+                eliminarBtn.innerText = getNestedTranslation(translations[lang], 'Encuesta.btDelQuestion');
                 eliminarBtn.style.marginRight = '10px';
                 eliminarBtn.addEventListener('click', () => {
                     newListItem.remove();
@@ -681,7 +684,7 @@ function CE_DeactivateNavBy(){
     
                 const addFollowQuestionBTN = document.createElement('button');
                 addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
-                addFollowQuestionBTN.innerText = 'Agregar pregunta de Seguimiento';
+                addFollowQuestionBTN.innerText = getNestedTranslation(translations[lang], 'Encuesta.btAddSubQuestion');
                 addFollowQuestionBTN.style.marginRight = '10px';
                 addFollowQuestionBTN.style.color = 'var(--bs-CR-gray)';
                 addFollowQuestionBTN.style.backgroundColor = 'var(--bs-CR-orange)';
@@ -749,9 +752,9 @@ function CE_DeactivateNavBy(){
                     const overlay = document.getElementById('overlay');
                     overlay.innerHTML = `
                         <div id="overlayContent">
-                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta de seguimiento" style="width: 100%; font-family: IBM Plex Sans;" />
-                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: IBM Plex Sans color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Agregar pregunta</button>
-                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" ">Cerrar</button>
+                            <input id="FollowUpQuestionTXT" class="form-control" type="text" name="Nombre" data-i18n-placeholder="Encuesta.inAddSubQuestion" style="width: 100%; font-family: IBM Plex Sans;" />
+                            <button id="AgregarPreguntaOverlay" class="btn btn-primary" style="margin: 10px 10px 0 0; font-family: IBM Plex Sans color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="Encuesta.btAddQuestion">Agregar pregunta</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner" " data-i18n="Encuesta.btCloseQuestionEdit">Cerrar</button>
                         </div>
                     `;
     
@@ -782,7 +785,7 @@ function CE_DeactivateNavBy(){
                 //boton editar
                 const editBtn = document.createElement('button');
                 editBtn.classList.add('btn', 'btn-primary', 'btn-sm');
-                editBtn.innerText = 'Editar';
+                editBtn.innerText = getNestedTranslation(translations[lang], 'Encuesta.btEdtQuestion');
                 editBtn.style.marginRight = '10px';
                 editBtn.style.color = 'var(--bs-CR-gray)';
                 editBtn.style.backgroundColor = 'var(--bs-CR-orange)';
@@ -794,12 +797,12 @@ function CE_DeactivateNavBy(){
                     //que en el overlay se pueda editar la pregunta, el peso y el anexo ya sea archivo o url
                     overlay.innerHTML = `
                         <div id="overlayContent">
-                            <input id="EditPreguntaTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa tu pregunta" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
-                            <input id="EditPesoTXT" class="form-control" type="text" name="Nombre" placeholder="Ingresa el peso" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                            <input id="EditPreguntaTXT" class="form-control" type="text" name="Nombre" data-i18n-placeholder="Encuesta.inQuestion" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                            <input id="EditPesoTXT" class="form-control" type="text" name="Nombre" data-i18n-placeholder="Encuesta.inWeight" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
                             <input id="EditAnexoPregunta" class="form-control" type="file" name="Nombre" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
-                            <input id="EditAnexoPreguntaURL" class="form-control" type="text" name="Nombre" placeholder="Ingresa la URL del anexo" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
-                            <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; margin-bottom: 5px;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Guardar</button>
-                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner; margin-bottom: 5px;">Cerrar</button>
+                            <input id="EditAnexoPreguntaURL" class="form-control" type="text" name="Nombre" placeholder="URL" style="width: 100%; font-family: IBM Plex Sans; margin-bottom: 5px;" />
+                            <button id="GuardarEdit" class="btn btn-primary" style="margin: 10px 10px 0 0;font-family: hedliner; margin-bottom: 5px;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="Encuesta.btSaveQuestionEdit">Guardar</button>
+                            <button id="CerrarOverlay" class="btn btn-secondary" style="margin: 10px 0 0 0;font-family: hedliner; margin-bottom: 5px;" data-i18n="Encuesta.btCloseQuestionEdit">Cerrar</button>
                         </div>
                     `;
 
@@ -851,7 +854,7 @@ function CE_DeactivateNavBy(){
                 //eliminar todas las preguntas de seguimiento
                 const deleteFollowQuestionsBtn = document.createElement('button');
                 deleteFollowQuestionsBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-                deleteFollowQuestionsBtn.innerText = 'Eliminar preguntas de seguimiento';
+                deleteFollowQuestionsBtn.innerText = getNestedTranslation(translations[lang], 'Encuesta.btDelSubQuestion');
                 deleteFollowQuestionsBtn.style.marginRight = '10px';
                 buttonsDiv.appendChild(deleteFollowQuestionsBtn);
 
