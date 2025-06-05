@@ -255,7 +255,7 @@ function AgregarModulos(study) {
             ClimaLaboralBtn.style.display = 'none';
 
             ActiveModules.forEach(modulo => {
-                if (modulo === 'Modulo de Analisis General') {
+                if (modulo === 'Módulo de Análisis General') {
                     ResumenGeneralBtn.style.display = 'block';
                 }
                 if (modulo === 'Modulo de Analisis Individuales') {
