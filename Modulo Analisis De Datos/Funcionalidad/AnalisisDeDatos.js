@@ -258,25 +258,25 @@ function AgregarModulos(study) {
                 if (modulo === 'Módulo de Análisis General') {
                     ResumenGeneralBtn.style.display = 'block';
                 }
-                if (modulo === 'Modulo de Analisis Individuales') {
+                if (modulo === 'Módulo de Análisis Individual') {
                     ResumenIndividualBtn.style.display = 'block';
                 }
-                if (modulo === 'Modulo de User Personas') {
+                if (modulo === 'Módulo de User Personas') {
                     UserPersonaBtn.style.display = 'block';
                 }
-                if (modulo === 'Modulo de Analisis Psicograficos') {
+                if (modulo === 'Módulo de Análisis Psicográficos') {
                     AnalisisPsicograficosBtn.style.display = 'block';
                 }
-                if (modulo === 'Modulo Customer Experience') {
+                if (modulo === 'Módulo Customer Experience') {
                     CustomerEcperienceBtn.style.display = 'block';
                 }
-                if (modulo === 'Modulo NPS y Satisfaccion') {
+                if (modulo === 'Módulo NPS y Satisfacción') {
                     NPSySatisfaccionBtn.style.display = 'block';
                 }
-                if (modulo === 'Modulo Brand Status') {
+                if (modulo === 'Módulo Brand Status') {
                     BrandStatusBtn.style.display = 'block';
                 }
-                if (modulo === 'Modulo Clima Laboral') {
+                if (modulo === 'Módulo Clima Laboral') {
                     ClimaLaboralBtn.style.display = 'block';
                 }
             });
