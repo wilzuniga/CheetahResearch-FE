@@ -13,9 +13,11 @@ Encuesta.html
 
 Lanzar Estudio:
 Links
-btEliminar Modulo
+OTP No Generado
+btEliminar Filtro/Modulo/Dominio
 
 Encuesta: Nuevo Formato
+Activado/Desactivado
 */
 
 const translations = {
@@ -436,6 +438,9 @@ function getNestedTranslation(obj, key) {
 
 // Setea el idioma en el DOM
 function setLanguage(lang) {
+    //Guarda idioma
+    localStorage.setItem('language', lang);
+
     // Texto
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -460,6 +465,7 @@ document.addEventListener('DOMContentLoaded', function () {
         switcher.addEventListener('change', function () {
             setLanguage(this.value);
         });
-        setLanguage(switcher.value || 'es');
+        setLanguage(localStorage.getItem('language') || switcher.value || 'es');
+        switcher.value = localStorage.getItem('language') || switcher.value || 'es';
     }
 });

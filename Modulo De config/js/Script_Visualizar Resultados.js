@@ -145,6 +145,10 @@ function AgregarFiltros() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    //Idioma
+    const lang = localStorage.getItem('language') || 'es';
+    setLanguage(lang);
+    
     // Asocia el evento a todos los botones save-textarea
     document.querySelectorAll("button[id^='save-textarea_']").forEach(button => {
         button.addEventListener('click', function () {

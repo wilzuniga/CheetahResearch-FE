@@ -352,6 +352,10 @@ function UpdateAndPostformdta() {
 
 // Llama a la función cuando la página se carga completamente
 window.addEventListener('DOMContentLoaded', (event) => {
+    //Idioma
+    const lang = localStorage.getItem('language') || 'es';
+    setLanguage(lang);
+
     // Limpiar el searchBar
     const searchBar = document.getElementById('studySearchBar');
     if (searchBar) searchBar.value = '';
