@@ -8,6 +8,10 @@ let formData = new FormData();
 
 
 function load(){    // Actualizar el título del estudio desde localStorage
+    //Idioma
+    const lang = localStorage.getItem('language') || 'es';
+    setLanguage(lang);
+    
     const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
         tituloDelEstudio: studyData.title,

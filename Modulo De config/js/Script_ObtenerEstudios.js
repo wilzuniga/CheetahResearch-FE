@@ -33,6 +33,14 @@ function listNonActiveUsers() {
 
 document.addEventListener('DOMContentLoaded', listNonActiveUsers);
 
+document.addEventListener('DOMContentLoaded', function () {
+    // Idioma
+    const lang = localStorage.getItem('language') || 'es';
+    setLanguage(lang);
+
+    setColorsFromAPI();//Setea colores en LocalStorage y en la interfaz
+});
+
 
 //Colores
 function setColorsFromAPI(studyId) {

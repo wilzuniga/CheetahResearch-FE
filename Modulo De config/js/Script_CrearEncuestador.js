@@ -241,8 +241,12 @@ function captureSurveyerFormData() {
 
 
 window.onload = () => {
+    //Idioma
+    const lang = localStorage.getItem('language') || 'es';
+    setLanguage(lang);
+    
     CSrvyr_DeactivateNavBy();
-    appendSurveyerForm();  
+    appendSurveyerForm();
 }
 
 
