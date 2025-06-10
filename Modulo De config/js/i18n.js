@@ -2,6 +2,7 @@
 // h: header
 // s: span
 // a: anchor
+// w: warning
 // in: input
 // out: output
 // opt: option
@@ -50,6 +51,10 @@ const translations = {
             color1: "Color Principal del Estudio",      color2: "Color Secundario del Estudio",
             btSaveColors: "Guardar Colores",            btDefaultColors: "Colores Predefinidos",
             btCreate: "Crear Estudio",                  btUpdate: "Actualizar Estudio",
+
+            wStudyCreated: "Estudio Creado Exitosamente",
+            wStudyUpdated: "Estudio Actualizado Exitosamente",
+            wColorsSaved: "Colores Guardados Exitosamente",
         },
         CrearEncuestador: {
             title: "Encuestador",                       createTitle: "Crear Encuestador",
