@@ -202,26 +202,28 @@ function createFilledStudyForm() {
 }
 
 function appendStudyForm() {
+    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
     const formContainer = document.getElementById('form-containerStudy');
     formContainer.innerHTML = createStudyForm();
 
     document.getElementById('CrearEstudioBtn').addEventListener('click', () => {
         const studyData = CaptureAndPostformdta();
         // console.log(studyData);
-        alert('Estudio creado exitosamente');
+        alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyCreated'));
         //guardar en localsotrage el estudio creado
         localStorage.setItem('selectedStudyData', JSON.stringify(studyData));
     });
 }
 
 function appendFilledStudyForm() {
+    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
 
     document.getElementById('UpdateEstudio').addEventListener('click', () => {
         const studyData = UpdateAndPostformdta();
         //actualizar el estudio salvado en localstorage
         localStorage.setItem('selectedStudyData', JSON.stringify(studyData));
         // console.log(studyData);
-        alert('Estudio actualizado exitosamente');
+        alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyUpdated'));
     });
 
     //Color Change: Colores Default
@@ -265,6 +267,7 @@ function deleteFromLocStrg() {
 }
 
 function CaptureAndPostformdta() {
+    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
     const tituloDelEstudio = document.getElementById('TituloDelEstudioTXT').value;
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
@@ -289,7 +292,7 @@ function CaptureAndPostformdta() {
         }
     })
     .then(response => {
-        alert('Estudio creado exitosamente');
+        alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyCreated'));
         localStorage.setItem('selectedStudyId', response.data.study_id);
         localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
     
@@ -309,6 +312,7 @@ function CaptureAndPostformdta() {
 }
 
 function UpdateAndPostformdta() {
+    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
     const tituloDelEstudio = document.getElementById('TituloDelEstudioTXT').value;
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
@@ -334,7 +338,7 @@ function UpdateAndPostformdta() {
         }
     })
     .then(response => {
-        alert('Estudio actualizado exitosamente');
+        alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyUpdated'));
         localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
     })
     .catch(error => {
@@ -500,6 +504,7 @@ function createStudyElement(study) {
 
 // Color Change
 function saveColorsToStudy() {
+    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
     const studyId = localStorage.getItem('selectedStudyId');
     const primaryColor = document.getElementById('colorInput1').value;
     const secondaryColor = document.getElementById('colorInput2').value;
@@ -511,7 +516,7 @@ function saveColorsToStudy() {
 
     axios.post(url, data)
         .then(response => {
-            alert('Colores guardados exitosamente');
+            alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wColorsSaved'));
             // console.log(response.data);
             setColorsLocally(primaryColor, secondaryColor);
         })
