@@ -38,7 +38,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const lang = localStorage.getItem('language') || 'es';
     setLanguage(lang);
 
-    setColorsFromAPI();//Setea colores en LocalStorage y en la interfaz
+    const studyId = localStorage.getItem('selectedStudyId');
+    setColorsFromAPI(studyId);//Setea colores en LocalStorage y en la interfaz
 });
 
 

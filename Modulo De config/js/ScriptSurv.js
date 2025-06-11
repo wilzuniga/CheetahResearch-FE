@@ -6,9 +6,9 @@ const token = localStorage.getItem('token');
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
     const studyId = localStorage.getItem('selectedStudyId');
     setColorsFromAPI(studyId);//Setea colores
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
     const agregarPreguntaBtn = document.getElementById('AgregarPreguntaBtn');
     const preguntaTXT = document.getElementById('PreguntaTXT');
     const pesoTXT = document.getElementById('PesoTXT');
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.getElementById('FollowUpQuestionTXT').value = ''; // Limpiar el campo de texto
                         overlay.style.display = 'none'; // Ocultar el overlay
                     } else {
-                        alert('Por favor, ingresa una pregunta de seguimiento.');
+                        alert(getNestedTranslation(translations[lang], 'Encuesta.wFollowUp'));
                     }
                 });
             });
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         newSmall.textContent = editAnexo;
                         overlay.style.display = 'none'; // Ocultar el overlay
                     } else {
-                        alert('Por favor, ingresa tanto la pregunta como el peso.');
+                        alert(getNestedTranslation(translations[lang], 'Encuesta.wQuestionWeight'));
                     }
                 });
 
@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
 
         } else {
-            alert('Por favor, ingresa tanto la pregunta como el peso.');
+            alert(getNestedTranslation(translations[lang], 'Encuesta.wQuestionWeight'));
         }
     });
 
@@ -597,7 +597,7 @@ function CE_DeactivateNavBy(){
 
                                 overlay.style.display = 'none';
                             } else {
-                                alert('La pregunta no puede estar vacía.');
+                                alert(getNestedTranslation(translations[lang], 'Encuesta.wEmptyQuestion'));
                             }
                         });
                     });
@@ -776,7 +776,7 @@ function CE_DeactivateNavBy(){
                             document.getElementById('FollowUpQuestionTXT').value = ''; // Limpiar el campo de texto
                             overlay.style.display = 'none'; // Ocultar el overlay
                         } else {
-                            alert('Por favor, ingresa una pregunta de seguimiento.');
+                            alert(getNestedTranslation(translations[lang], 'Encuesta.wFollowUp'));
                         }
                     });
                 });
@@ -845,7 +845,7 @@ function CE_DeactivateNavBy(){
                             newSmall.textContent = editAnexo;
                             overlay.style.display = 'none'; // Ocultar el overlay
                         } else {
-                            alert('Por favor, ingresa tanto la pregunta como el peso.');
+                            alert(getNestedTranslation(translations[lang], 'Encuesta.wQuestionWeight'));
                         }
                     });
                     
@@ -961,7 +961,7 @@ function CE_DeactivateNavBy(){
 document.getElementById('AnexoPregunta').addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file.size > 524288 ) {
-        alert('La imagen es muy grande, por favor selecciona una imagen de menos de 0.5 MB (500 kb).');
+        alert(getNestedTranslation(translations[lang], 'Encuesta.wImageTooLarge'));
         event.target.value = '';
     }
 });
@@ -969,7 +969,7 @@ document.getElementById('AnexoPregunta').addEventListener('change', (event) => {
 document.getElementById('GuardarEncuestaBtn').addEventListener('click', (event) => {
     event.preventDefault();
     guardarPreguntas(); 
-    alert('Encuesta guardada exitosamente');
+    alert(getNestedTranslation(translations[lang], 'Encuesta.wSurveySaved'));
     //recargar la pagina
     location.reload();
 });
