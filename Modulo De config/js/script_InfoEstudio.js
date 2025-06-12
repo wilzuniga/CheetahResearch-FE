@@ -69,7 +69,7 @@ function llenar() {
 {
   "status": "success",
   "message": "Successfully deleted 1 files from <>",
-  "deleted_count": 1
+  "deleted_count": 1
 }
 
 boton BorrarBtn
@@ -184,8 +184,118 @@ boton BorrarBtn
         console.error('Elemento con ID "EncuestasLBL" no encontrado.');
     }
 
+    const token = localStorage.getItem('token');
+    const studyIdForSurveys = localStorage.getItem('selectedStudyId');
+    const surveyContainer = document.getElementById('contenedorDeTexto');
+    const prevButton = document.getElementById('botonAnterior');
+    const nextButton = document.getElementById('botonSiguiente');
+    const deleteSurveyButton = document.getElementById('botonEliminar');
+    const surveyNavContainer = document.getElementById('divEncuestas');
 
+    let surveyData = [];
+    let currentIndex = -1;
 
+    function updateSurveyDisplay() {
+        if (surveyData.length > 0 && surveyNavContainer) {
+            surveyNavContainer.style.display = 'block';
+            if (currentIndex >= 0 && currentIndex < surveyData.length) {
+                const currentSurvey = surveyData[currentIndex];
+                surveyContainer.innerText = currentSurvey.transcription;
+            }
+        } else if (surveyNavContainer) {
+            surveyNavContainer.style.display = 'none';
+        }
+    }
+
+    if (surveyNavContainer) {
+        surveyNavContainer.style.display = 'none';
+    }
+
+    if (studyIdForSurveys && token) {
+        const getSurveysUrl = `https://api.cheetah-research.ai/configuration/delete_survey_answer/${studyIdForSurveys}`;
+        
+        axios.post(getSurveysUrl, {}, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        }).then(response => {
+            const surveys = response.data;
+            if (surveys && typeof surveys === 'object' && !Array.isArray(surveys)) {
+                surveyData = Object.keys(surveys).map(key => ({
+                    id: key,
+                    transcription: surveys[key]
+                }));
+            }
+            
+            if (surveyData.length > 0) {
+                currentIndex = 0;
+            }
+            updateSurveyDisplay();
+        }).catch(error => {
+            console.error('Error al obtener las transcripciones de las encuestas:', error);
+            if (surveyContainer) {
+                surveyContainer.innerText = 'Error al cargar las encuestas.';
+            }
+            if (surveyNavContainer) {
+                surveyNavContainer.style.display = 'block';
+            }
+        });
+    }
+
+    if(nextButton) {
+        nextButton.addEventListener('click', () => {
+            if (currentIndex < surveyData.length - 1) {
+                currentIndex++;
+                updateSurveyDisplay();
+            }
+        });
+    }
+
+    if(prevButton) {
+        prevButton.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateSurveyDisplay();
+            }
+        });
+    }
+
+    if(deleteSurveyButton) {
+        deleteSurveyButton.addEventListener('click', () => {
+            if (currentIndex < 0 || currentIndex >= surveyData.length) {
+                alert('No hay encuesta seleccionada para eliminar.');
+                return;
+            }
+
+            const surveyToDelete = surveyData[currentIndex];
+            const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar esta transcripción?`);
+
+            if (confirmDelete) {
+                const deleteUrl = `https://api.cheetah-research.ai/configuration/delete_survey_answer/${studyIdForSurveys}/${surveyToDelete.id}`;
+                axios.post(deleteUrl, {}, {
+                    headers: {
+                        'Authorization': `Token ${token}`
+                    }
+                }).then(() => {
+                    alert('Transcripción eliminada exitosamente.');
+                    surveyData.splice(currentIndex, 1);
+                    
+                    if (currentIndex >= surveyData.length) {
+                        currentIndex = surveyData.length - 1;
+                    }
+
+                    if (surveyData.length === 0) {
+                        currentIndex = -1;
+                    }
+
+                    updateSurveyDisplay();
+                }).catch(error => {
+                    console.error('Error al eliminar la encuesta:', error);
+                    alert('Error al eliminar la transcripción.');
+                });
+            }
+        });
+    }
 }
 
 //Colores
