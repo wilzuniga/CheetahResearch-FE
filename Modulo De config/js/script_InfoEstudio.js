@@ -1,4 +1,8 @@
 function llenar() {
+    //Idioma
+    const lang = localStorage.getItem('language') || 'es';
+    setLanguage(lang);
+    
     const studyDataJSON = localStorage.getItem('selectedStudyData');
     
     if (!studyDataJSON) {

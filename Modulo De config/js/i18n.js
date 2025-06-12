@@ -2,6 +2,7 @@
 // h: header
 // s: span
 // a: anchor
+// w: warning
 // in: input
 // out: output
 // opt: option
@@ -13,9 +14,11 @@ Encuesta.html
 
 Lanzar Estudio:
 Links
-btEliminar Modulo
+OTP No Generado
+btEliminar Filtro/Modulo/Dominio
 
 Encuesta: Nuevo Formato
+Activado/Desactivado
 */
 
 const translations = {
@@ -48,6 +51,10 @@ const translations = {
             color1: "Color Principal del Estudio",      color2: "Color Secundario del Estudio",
             btSaveColors: "Guardar Colores",            btDefaultColors: "Colores Predefinidos",
             btCreate: "Crear Estudio",                  btUpdate: "Actualizar Estudio",
+
+            wStudyCreated: "Estudio Creado Exitosamente",
+            wStudyUpdated: "Estudio Actualizado Exitosamente",
+            wColorsSaved: "Colores Guardados Exitosamente",
         },
         CrearEncuestador: {
             title: "Encuestador",                       createTitle: "Crear Encuestador",
@@ -57,6 +64,10 @@ const translations = {
             hObservations: "Observaciones Importantes", inObservations: "Observaciones Importantes para el encuestador",
             hGreeting: "Saludo",                        inGreeting: "Ingresa el saludo del encuestador",
             btCreate: "Crear Encuestador",              btUpdate: "Actualizar Encuestador",
+
+            wUpdated: "Encuestador actualizado exitosamente",
+            wCreated: "Encuestador creado exitosamente",
+            wCreate: "Error al crear el encuestador"
         },
         Encuesta: {
             title: "Crear Encuesta",
@@ -67,7 +78,13 @@ const translations = {
             btDelQuestion: "Eliminar",                              btAddSubQuestion: "Agregar Pregunta de Seguimiento", btEdtQuestion: "Editar",      btDelSubQuestion: "Eliminar Preguntas de Seguimiento",
             inAddSubQuestion: "Ingresa tu Pregunta de Seguimiento", btSaveSubQuestion: "Agregar Pregunta",               btCloseSubQuestion: "Cerrar",
             btSaveQuestionEdit: "Guardar",                          btCloseQuestionEdit: "Cerrar",
-            btSaveSurvey: "Guardar Encuesta"
+            btSaveSurvey: "Guardar Encuesta",
+
+            wFollowUp: "Por favor, ingresa una pregunta de seguimiento.",
+            wQuestionWeight: "Por favor, ingresa tanto la pregunta como el peso.",
+            wEmptyQuestion: "La pregunta no puede estar vacía.",
+            wImageTooLarge: "La imagen es muy grande, por favor selecciona una imagen de menos de 0.5 MB (500 kb).",
+            wSurveySaved: "Encuesta guardada exitosamente.",
         },
         LanzarEstudio: {
             title: "Lanzar Estudio",                    hStudyTitle: "Titulo del Estudio",//Verificar que no sobreponga titulo actual
@@ -191,6 +208,23 @@ const translations = {
             color1: "Primary Color of the Study",       color2: "Secondary Color of the Study",
             btSaveColors: "Save Colors",                btDefaultColors: "Default Colors",
             btCreate: "Create Study",                   btUpdate: "Update Study",
+
+            wStudyCreated: "Study Created Successfully",
+            wStudyUpdated: "Study Updated Successfully",
+            wColorsSaved: "Colors Saved Successfully",
+        },
+        CrearEncuestador: {
+            title: "Interviewer",                       createTitle: "Create Interviewer",
+            hImg: "",                                   selectImg: "Select Image",
+            hInterviewerName: "Interviewer Name",      inInterviewerName: "Enter the interviewer's name",
+            hTone: "Interviewer Tone",                 inTone: "Enter the tone in which the interviewer will speak",
+            hObservations: "Important Observations",  inObservations: "Important observations for the interviewer",
+            hGreeting: "Greeting",                     inGreeting: "Enter the interviewer's greeting",
+            btCreate: "Create Interviewer",            btUpdate: "Update Interviewer",
+
+            wUpdated: "Interviewer updated successfully",
+            wCreated: "Interviewer created successfully",
+            wCreate: "Error creating interviewer"
         },
         Encuesta: {
             title: "Create Survey",
@@ -201,7 +235,13 @@ const translations = {
             btDelQuestion: "Delete",                                btAddSubQuestion: "Add Follow-up Question",          btEdtQuestion: "Edit",      btDelSubQuestion: "Delete Follow-up Questions",
             inAddSubQuestion: "Enter your follow-up question",      btSaveSubQuestion: "Add Question",                   btCloseSubQuestion: "Close",
             btSaveQuestionEdit: "Save",                             btCloseQuestionEdit: "Close",
-            btSaveSurvey: "Save Survey"
+            btSaveSurvey: "Save Survey",
+
+            wFollowUp: "Please enter a follow-up question.",
+            wQuestionWeight: "Please enter both the question and the weight.",
+            wEmptyQuestion: "The question cannot be empty.",
+            wImageTooLarge: "The image is too large, please select an image smaller than 0.5 MB (500 kb).",
+            wSurveySaved: "Survey saved successfully.",
         },
         LanzarEstudio: {
             title: "Launch Study",                      hStudyTitle: "Study Title",
@@ -324,6 +364,23 @@ const translations = {
             color1: "Cor Primária do Estudo",           color2: "Cor Secundária do Estudo",
             btSaveColors: "Salvar Cores",               btDefaultColors: "Cores Padrão",
             btCreate: "Criar Estudo",                   btUpdate: "Atualizar Estudo",
+
+            wStudyCreated: "Estudo Criado com Sucesso",
+            wStudyUpdated: "Estudo Atualizado com Sucesso",
+            wColorsSaved: "Cores Salvas com Sucesso",
+        },
+        CrearEncuestador: {
+            title: "Entrevistador",                     createTitle: "Criar Entrevistador",
+            hImg: "",                                   selectImg: "Selecionar Imagem",
+            hInterviewerName: "Nome do Entrevistador", inInterviewerName: "Insira o nome do entrevistador",
+            hTone: "Tom do Entrevistador",              inTone: "Insira o tom no qual o entrevistador falará",
+            hObservations: "Observações Importantes",  inObservations: "Observações importantes para o entrevistador",
+            hGreeting: "Saudação",                      inGreeting: "Insira a saudação do entrevistador",
+            btCreate: "Criar Entrevistador",            btUpdate: "Atualizar Entrevistador",
+
+            wUpdated: "Entrevistador atualizado com sucesso",
+            wCreated: "Entrevistador criado com sucesso",
+            wCreate: "Erro ao criar o entrevistador"
         },
         Encuesta: {
             title: "Criar Pesquisa",
@@ -334,7 +391,13 @@ const translations = {
             btDelQuestion: "Excluir",                               btAddSubQuestion: "Adicionar Pergunta de Seguimento", btEdtQuestion: "Editar",      btDelSubQuestion: "Excluir Perguntas de Seguimento",
             inAddSubQuestion: "Digite sua pergunta de seguimento",  btSaveSubQuestion: "Adicionar Pergunta",              btCloseSubQuestion: "Fechar",
             btSaveQuestionEdit: "Salvar",                           btCloseQuestionEdit: "Fechar",
-            btSaveSurvey: "Salvar Pesquisa"
+            btSaveSurvey: "Salvar Pesquisa",
+
+            wFollowUp: "Por favor, insira uma pergunta de seguimento.",
+            wQuestionWeight: "Por favor, insira tanto a pergunta quanto o peso.",
+            wEmptyQuestion: "A pergunta não pode estar vazia.",
+            wImageTooLarge: "A imagem é muito grande, por favor selecione uma imagem menor que 0.5 MB (500 kb).",
+            wSurveySaved: "Pesquisa salva com sucesso.",
         },
         LanzarEstudio: {
             title: "Lançar Estudo",                     hStudyTitle: "Título do Estudo",
@@ -436,6 +499,9 @@ function getNestedTranslation(obj, key) {
 
 // Setea el idioma en el DOM
 function setLanguage(lang) {
+    //Guarda idioma
+    localStorage.setItem('language', lang);
+
     // Texto
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -460,6 +526,7 @@ document.addEventListener('DOMContentLoaded', function () {
         switcher.addEventListener('change', function () {
             setLanguage(this.value);
         });
-        setLanguage(switcher.value || 'es');
+        setLanguage(localStorage.getItem('language') || switcher.value || 'es');
+        switcher.value = localStorage.getItem('language') || switcher.value || 'es';
     }
 });

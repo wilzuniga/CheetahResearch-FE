@@ -87,7 +87,7 @@ function createSurveyerFormReadOnly() {
 }
 
 function updateSurveyerFormData(data) {
-    
+    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
     const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
     const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
     const saludoEncuestador = document.getElementById('SaludoEncuestadorTXT').value;
@@ -116,7 +116,7 @@ function updateSurveyerFormData(data) {
 
         // console.log(response);
         //Alert coso guardado
-        alert('Encuestador actualizado  exitosamente');
+        alert(getNestedTranslation(translations[lang], 'CrearEncuestador.wUpdated'));
 
     })
     .catch(error => {
@@ -178,6 +178,7 @@ async function appendSurveyerForm() {
 
 // Función para capturar y guardar datos del formulario del encuestador
 function captureSurveyerFormData() {
+    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
     const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
     const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
     const observacionesImportantes = document.getElementById('ObservacionesImportantesTXT').value;
@@ -208,11 +209,11 @@ function captureSurveyerFormData() {
     .then(response => {
         // console.log(response);
         //enviar mensaje para confirmar que se creo el encuestador
-        alert('Encuestador creado exitosamente');
+        alert(getNestedTranslation(translations[lang], 'CrearEncuestador.wCreated'));
     })
     .catch(error => {
         console.error(error);
-        alert('Error al crear el encuestador');
+        alert(getNestedTranslation(translations[lang], 'CrearEncuestador.wCreate'));
     });
 
     // Guardar en localStorage
@@ -241,8 +242,12 @@ function captureSurveyerFormData() {
 
 
 window.onload = () => {
+    //Idioma
+    const lang = localStorage.getItem('language') || 'es';
+    setLanguage(lang);
+    
     CSrvyr_DeactivateNavBy();
-    appendSurveyerForm();  
+    appendSurveyerForm();
 }
 
 
