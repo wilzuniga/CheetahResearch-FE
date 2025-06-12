@@ -102,6 +102,12 @@
                         </li>
                     </ul>
                 </div>
+                <!-- Test de Idiomas -->
+                <select id="languageSwitcher" style="display: none; margin: 10px;">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                    <option value="pt">Português</option>
+                </select>
             </nav>
 
         </nav>
@@ -117,22 +123,38 @@
                         </div>
 
                         <hr>
-                        <div>
-                            <div class="d-xxl-flex justify-content-xxl-start align-items-xxl-end" style="width: 25%;margin-top: 10px;font-family: hedliner;">
-                                <button class="btn btn-primary d-block w-100" id="DescargarTranscrptBtn" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-right: 10px;margin-bottom: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="InformacionDelEstudio.btTranscriptions">Descargar Transcripciones</button>
+                        <div class="d-flex">
+                            <div id="divBotones" style="flex: 1; padding-right: 15px;">
+                                <div class="d-xxl-flex justify-content-xxl-start align-items-xxl-end" style="width: 100%;margin-top: 10px;font-family: hedliner;">
+                                    <button class="btn btn-primary d-block w-100" id="DescargarTranscrptBtn" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-right: 10px;margin-bottom: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="InformacionDelEstudio.btTranscriptions">Descargar Transcripciones</button>
+                                </div>
+                                <div class="d-xxl-flex justify-content-xxl-start align-items-xxl-end" style="width: 100%;margin-top: 10px;font-family: hedliner;">
+                                    <button class="btn btn-primary d-block w-100" id="DescargarTranscrptBtnBckup" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-right: 10px;margin-bottom: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="InformacionDelEstudio.btNonProcessedTranscriptions">Descargar Transcripciones No Procesadas</button>
+                                </div>
+                                <div class="d-xxl-flex justify-content-xxl-start align-items-xxl-end" style="width: 100%;margin-top: 10px;font-family: hedliner;">
+                                    <button class="btn btn-primary d-block w-100" id="DescargarLogOTPBtn" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-right: 10px;margin-bottom: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="InformacionDelEstudio.btLogOTP">Descargar Log OTP</button>
+                                </div>
+                                <div class="d-xxl-flex justify-content-xxl-start align-items-xxl-end" style="width: 100%;margin-top: 10px;font-family: hedliner;">
+                                    <button class="btn btn-primary d-block w-100" id="BorrarBtn" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-right: 10px;margin-bottom: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="InformacionDelEstudio.btDelFiles">Borrar Archivos</button>
+                                </div>
                             </div>
-                            <div class="d-xxl-flex justify-content-xxl-start align-items-xxl-end" style="width: 25%;margin-top: 10px;font-family: hedliner;">
-                                <button class="btn btn-primary d-block w-100" id="DescargarTranscrptBtnBckup" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-right: 10px;margin-bottom: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="InformacionDelEstudio.btNonProcessedTranscriptions">Descargar Transcripciones No Procesadas</button>
-                            </div>
-                            <div class="d-xxl-flex justify-content-xxl-start align-items-xxl-end" style="width: 25%;margin-top: 10px;font-family: hedliner;">
-                                <button class="btn btn-primary d-block w-100" id="DescargarLogOTPBtn" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-right: 10px;margin-bottom: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="InformacionDelEstudio.btLogOTP">Descargar Log OTP</button>
-                            </div>
-
-                            <div class="d-xxl-flex justify-content-xxl-start align-items-xxl-end" style="width: 25%;margin-top: 10px;font-family: hedliner;">
-                                <button class="btn btn-primary d-block w-100" id="BorrarBtn" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-right: 10px;margin-bottom: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="InformacionDelEstudio.btDelFiles">Borrar Archivos</button>
+                            <div id="divEncuestas" style="flex: 2; padding-left: 15px;">
+                                <div class="d-flex align-items-center" style="margin-bottom: 10px;">
+                                    <button class="btn btn-primary" id="botonAnterior" type="button" style="font-weight: bold;font-size: 20px;border-radius: 10px;margin-right: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange); border-color: var(--bs-CR-orange);">
+                                        <i class="icon ion-arrow-left-c"></i>
+                                    </button>
+                                    <button class="btn btn-primary" id="botonSiguiente" type="button" style="font-weight: bold;font-size: 20px;border-radius: 10px;margin-right: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange); border-color: var(--bs-CR-orange);">
+                                        <i class="icon ion-arrow-right-c"></i>
+                                    </button>
+                                    <button class="btn btn-danger" id="botonEliminar" type="button" style="font-weight: bold;font-size: 20px;border-radius: 10px;font-family: hedliner;">
+                                        <span data-i18n="InformacionDelEstudio.deleteButton">Eliminar</span>
+                                    </button>
+                                </div>
+                                <div id="contenedorDeTexto" style="border: 1px solid #e3e6f0; border-radius: 10px; padding: 15px; min-height: 150px;">
+                                    <!-- El texto de la encuesta se mostrará aquí -->
+                                </div>
                             </div>
                         </div>
-
 
                     </div>
                     <div style="position: absolute; bottom: 0; left: 0; text-align: center; width: 100%; margin-top: 10px; margin-bottom: -5px;">
