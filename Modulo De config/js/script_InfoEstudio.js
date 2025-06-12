@@ -212,7 +212,7 @@ boton BorrarBtn
     }
 
     if (studyIdForSurveys && token) {
-        const getSurveysUrl = `https://api.cheetah-research.ai/configuration/delete_survey_answer/${studyIdForSurveys}`;
+        const getSurveysUrl = `https://api.cheetah-research.ai/configuration/get_surveys/${studyIdForSurveys}`;
         
         axios.post(getSurveysUrl, {}, {
             headers: {
