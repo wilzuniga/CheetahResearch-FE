@@ -405,7 +405,7 @@ function enviarDatos(preguntas, defaultQuestions) {
         },
     })
     .then(response => {
-        // console.log(response.data);
+        console.log(response.data);
     })
     .catch(error => {
         console.error('Error al enviar los datos:', error);
