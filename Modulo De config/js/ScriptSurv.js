@@ -406,6 +406,7 @@ function enviarDatos(preguntas, defaultQuestions) {
     })
     .then(response => {
         console.log(response.data);
+        alert('Encuesta guardada correctamente');
     })
     .catch(error => {
         console.error('Error al enviar los datos:', error);
