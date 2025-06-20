@@ -202,8 +202,18 @@ boton BorrarBtn
                 const currentSurvey = surveyData[currentIndex];
                 surveyContainer.innerText = currentSurvey.transcription;
             }
+            // Actualizar el label de número de entrevista
+            const labelEntrevistaActual = document.getElementById('labelEntrevistaActual');
+            if (labelEntrevistaActual) {
+                labelEntrevistaActual.innerText = `Entrevista ${surveyData.length > 0 ? (currentIndex + 1) : 0} de ${surveyData.length}`;
+            }
         } else if (surveyNavContainer) {
             surveyNavContainer.style.display = 'none';
+            // Limpiar el label si no hay encuestas
+            const labelEntrevistaActual = document.getElementById('labelEntrevistaActual');
+            if (labelEntrevistaActual) {
+                labelEntrevistaActual.innerText = '';
+            }
         }
     }
 
