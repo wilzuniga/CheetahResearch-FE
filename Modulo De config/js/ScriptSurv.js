@@ -384,9 +384,7 @@ function guardarPreguntas() {
     
     enviarDatos(questions, defaultQuestions);
     console.log(questions);
-    questions = [];
-    defaultQuestions = [];
-    questionsImg = [];;
+
 }
 
 function enviarDatos(preguntas, defaultQuestions) {
