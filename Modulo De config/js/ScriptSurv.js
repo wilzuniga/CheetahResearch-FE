@@ -381,9 +381,9 @@ function guardarPreguntas() {
         });
     });
 
-
+    
     enviarDatos(questions, defaultQuestions);
-    // console.log(questions);
+    console.log(questions);
     questions = [];
     defaultQuestions = [];
     questionsImg = [];;
