@@ -381,12 +381,10 @@ function guardarPreguntas() {
         });
     });
 
-
+    
     enviarDatos(questions, defaultQuestions);
-    // console.log(questions);
-    questions = [];
-    defaultQuestions = [];
-    questionsImg = [];;
+    console.log(questions);
+
 }
 
 function enviarDatos(preguntas, defaultQuestions) {
