@@ -186,34 +186,76 @@ boton BorrarBtn
 
     const token = localStorage.getItem('token');
     const studyIdForSurveys = localStorage.getItem('selectedStudyId');
-    const surveyContainer = document.getElementById('contenedorDeTexto');
-    const prevButton = document.getElementById('botonAnterior');
-    const nextButton = document.getElementById('botonSiguiente');
-    const deleteSurveyButton = document.getElementById('botonEliminar');
+    const surveyTableBody = document.getElementById('tablaEncuestas');
     const surveyNavContainer = document.getElementById('divEncuestas');
 
     let surveyData = [];
-    let currentIndex = -1;
 
-    function updateSurveyDisplay() {
+    function updateSurveyTable() {
         if (surveyData.length > 0 && surveyNavContainer) {
             surveyNavContainer.style.display = 'block';
-            if (currentIndex >= 0 && currentIndex < surveyData.length) {
-                const currentSurvey = surveyData[currentIndex];
-                surveyContainer.innerText = currentSurvey.transcription;
-            }
-            // Actualizar el label de número de entrevista
-            const labelEntrevistaActual = document.getElementById('labelEntrevistaActual');
-            if (labelEntrevistaActual) {
-                labelEntrevistaActual.innerText = `Entrevista ${surveyData.length > 0 ? (currentIndex + 1) : 0} de ${surveyData.length}`;
-            }
+            
+            // Limpiar tabla
+            surveyTableBody.innerHTML = '';
+            
+            // Generar filas de la tabla
+            surveyData.forEach((survey, index) => {
+                const row = document.createElement('tr');
+                
+                // Número de encuesta
+                const tdNumero = document.createElement('td');
+                tdNumero.textContent = index + 1;
+                tdNumero.style.fontWeight = 'bold';
+                row.appendChild(tdNumero);
+                
+                // ID
+                const tdId = document.createElement('td');
+                tdId.textContent = survey.id;
+                row.appendChild(tdId);
+                
+                // Respuesta (truncada para mejor visualización)
+                const tdRespuesta = document.createElement('td');
+                const respuestaTruncada = survey.transcription.length > 100 
+                    ? survey.transcription.substring(0, 100) + '...' 
+                    : survey.transcription;
+                tdRespuesta.textContent = respuestaTruncada;
+                tdRespuesta.title = survey.transcription; // Tooltip con texto completo
+                row.appendChild(tdRespuesta);
+                
+                // Botón eliminar
+                const tdAcciones = document.createElement('td');
+                const btnEliminar = document.createElement('button');
+                btnEliminar.className = 'btn btn-danger btn-sm';
+                btnEliminar.innerHTML = '<i class="icon ion-trash-a"></i>';
+                btnEliminar.title = 'Eliminar encuesta';
+                btnEliminar.style.fontSize = '14px';
+                
+                btnEliminar.addEventListener('click', () => {
+                    const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar la encuesta ${index + 1}?`);
+                    if (confirmDelete) {
+                        const deleteUrl = `https://api.cheetah-research.ai/configuration/delete_survey_answer/${studyIdForSurveys}/${survey.id}`;
+                        axios.post(deleteUrl, {}, {
+                            headers: {
+                                'Authorization': `Token ${token}`
+                            }
+                        }).then(() => {
+                            alert('Encuesta eliminada exitosamente.');
+                            surveyData.splice(index, 1);
+                            updateSurveyTable();
+                        }).catch(error => {
+                            console.error('Error al eliminar la encuesta:', error);
+                            alert('Error al eliminar la encuesta.');
+                        });
+                    }
+                });
+                
+                tdAcciones.appendChild(btnEliminar);
+                row.appendChild(tdAcciones);
+                
+                surveyTableBody.appendChild(row);
+            });
         } else if (surveyNavContainer) {
             surveyNavContainer.style.display = 'none';
-            // Limpiar el label si no hay encuestas
-            const labelEntrevistaActual = document.getElementById('labelEntrevistaActual');
-            if (labelEntrevistaActual) {
-                labelEntrevistaActual.innerText = '';
-            }
         }
     }
 
@@ -237,72 +279,14 @@ boton BorrarBtn
                 }));
             }
             
-            if (surveyData.length > 0) {
-                currentIndex = 0;
-            }
-            updateSurveyDisplay();
+            updateSurveyTable();
         }).catch(error => {
             console.error('Error al obtener las transcripciones de las encuestas:', error);
-            if (surveyContainer) {
-                surveyContainer.innerText = 'Error al cargar las encuestas.';
+            if (surveyTableBody) {
+                surveyTableBody.innerHTML = '<tr><td colspan="4" class="text-center">Error al cargar las encuestas.</td></tr>';
             }
             if (surveyNavContainer) {
                 surveyNavContainer.style.display = 'block';
-            }
-        });
-    }
-
-    if(nextButton) {
-        nextButton.addEventListener('click', () => {
-            if (currentIndex < surveyData.length - 1) {
-                currentIndex++;
-                updateSurveyDisplay();
-            }
-        });
-    }
-
-    if(prevButton) {
-        prevButton.addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateSurveyDisplay();
-            }
-        });
-    }
-
-    if(deleteSurveyButton) {
-        deleteSurveyButton.addEventListener('click', () => {
-            if (currentIndex < 0 || currentIndex >= surveyData.length) {
-                alert('No hay encuesta seleccionada para eliminar.');
-                return;
-            }
-
-            const surveyToDelete = surveyData[currentIndex];
-            const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar esta transcripción?`);
-
-            if (confirmDelete) {
-                const deleteUrl = `https://api.cheetah-research.ai/configuration/delete_survey_answer/${studyIdForSurveys}/${surveyToDelete.id}`;
-                axios.post(deleteUrl, {}, {
-                    headers: {
-                        'Authorization': `Token ${token}`
-                    }
-                }).then(() => {
-                    alert('Transcripción eliminada exitosamente.');
-                    surveyData.splice(currentIndex, 1);
-                    
-                    if (currentIndex >= surveyData.length) {
-                        currentIndex = surveyData.length - 1;
-                    }
-
-                    if (surveyData.length === 0) {
-                        currentIndex = -1;
-                    }
-
-                    updateSurveyDisplay();
-                }).catch(error => {
-                    console.error('Error al eliminar la encuesta:', error);
-                    alert('Error al eliminar la transcripción.');
-                });
             }
         });
     }
