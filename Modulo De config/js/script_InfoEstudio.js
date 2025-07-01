@@ -213,13 +213,79 @@ boton BorrarBtn
                 tdId.textContent = survey.id;
                 row.appendChild(tdId);
                 
-                // Respuesta (truncada para mejor visualización)
+                // Respuesta con botón "Leer Más"
                 const tdRespuesta = document.createElement('td');
-                const respuestaTruncada = survey.transcription.length > 100 
+                tdRespuesta.style.position = 'relative';
+                
+                // Contenedor para el texto
+                const textoContainer = document.createElement('div');
+                textoContainer.id = `texto-${index}`;
+                
+                // Texto truncado inicial
+                const textoTruncado = document.createElement('span');
+                textoTruncado.id = `texto-truncado-${index}`;
+                textoTruncado.textContent = survey.transcription.length > 100 
                     ? survey.transcription.substring(0, 100) + '...' 
                     : survey.transcription;
-                tdRespuesta.textContent = respuestaTruncada;
-                tdRespuesta.title = survey.transcription; // Tooltip con texto completo
+                textoContainer.appendChild(textoTruncado);
+                
+                // Texto completo (oculto inicialmente)
+                const textoCompleto = document.createElement('span');
+                textoCompleto.id = `texto-completo-${index}`;
+                textoCompleto.textContent = survey.transcription;
+                textoCompleto.style.display = 'none';
+                textoContainer.appendChild(textoCompleto);
+                
+                tdRespuesta.appendChild(textoContainer);
+                
+                // Botón "Leer Más" (solo si el texto es largo)
+                if (survey.transcription.length > 100) {
+                    const btnLeerMas = document.createElement('button');
+                    btnLeerMas.className = 'btn btn-link btn-sm';
+                    btnLeerMas.id = `btn-leer-mas-${index}`;
+                    btnLeerMas.textContent = 'Leer Más';
+                    btnLeerMas.style.fontSize = '12px';
+                    btnLeerMas.style.padding = '2px 8px';
+                    btnLeerMas.style.marginTop = '5px';
+                    btnLeerMas.style.color = 'var(--bs-CR-orange)';
+                    
+                    btnLeerMas.addEventListener('click', () => {
+                        // Colapsar todos los otros textos expandidos
+                        surveyData.forEach((_, otherIndex) => {
+                            if (otherIndex !== index) {
+                                const otherTruncado = document.getElementById(`texto-truncado-${otherIndex}`);
+                                const otherCompleto = document.getElementById(`texto-completo-${otherIndex}`);
+                                const otherBtn = document.getElementById(`btn-leer-mas-${otherIndex}`);
+                                
+                                if (otherTruncado && otherCompleto && otherBtn) {
+                                    otherTruncado.style.display = 'inline';
+                                    otherCompleto.style.display = 'none';
+                                    otherBtn.textContent = 'Leer Más';
+                                }
+                            }
+                        });
+                        
+                        // Toggle del texto actual
+                        const textoTruncado = document.getElementById(`texto-truncado-${index}`);
+                        const textoCompleto = document.getElementById(`texto-completo-${index}`);
+                        const btn = document.getElementById(`btn-leer-mas-${index}`);
+                        
+                        if (textoTruncado.style.display !== 'none') {
+                            // Expandir
+                            textoTruncado.style.display = 'none';
+                            textoCompleto.style.display = 'inline';
+                            btn.textContent = 'Leer Menos';
+                        } else {
+                            // Colapsar
+                            textoTruncado.style.display = 'inline';
+                            textoCompleto.style.display = 'none';
+                            btn.textContent = 'Leer Más';
+                        }
+                    });
+                    
+                    tdRespuesta.appendChild(btnLeerMas);
+                }
+                
                 row.appendChild(tdRespuesta);
                 
                 // Botón eliminar
