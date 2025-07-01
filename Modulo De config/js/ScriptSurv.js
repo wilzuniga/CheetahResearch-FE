@@ -1036,15 +1036,27 @@ document.getElementById('ExportarEncuestaBtn').addEventListener('click', functio
     studyName = studyName.replace(/[^a-zA-Z0-9\s\-]/g, '').trim();
     const fileName = `${studyName} - Encuesta.CSV`;
 
-    // Encabezado CSV
-    let csvContent = 'Peso de la pregunta,Pregunta\n';
+    // Función para escapar caracteres especiales en CSV
+    function escapeCSV(text) {
+        if (text === null || text === undefined) return '';
+        // Convertir a string y escapar comillas dobles
+        let escaped = String(text).replace(/"/g, '""');
+        // Reemplazar saltos de línea con espacios
+        escaped = escaped.replace(/\n/g, ' ').replace(/\r/g, ' ');
+        return escaped;
+    }
+
+    // Encabezado CSV con BOM para UTF-8
+    let csvContent = '\uFEFF'; // BOM para UTF-8
+    csvContent += 'Número de pregunta,Peso de la pregunta,Pregunta\n';
+    
     // Recorrer las preguntas
-    questions.forEach(q => {
-        // Reemplazar saltos de línea y comas en la pregunta
-        let pregunta = (q.question || '').replace(/\n/g, ' ').replace(/,/g, ' ');
-        let peso = q.weight !== undefined ? q.weight : '';
-        csvContent += `"${peso}","${pregunta}"
-`;
+    questions.forEach((q, index) => {
+        let pregunta = escapeCSV(q.question || '');
+        let peso = escapeCSV(q.weight !== undefined ? q.weight : '');
+        let numeroPregunta = index; // Número de pregunta iniciando en 0
+        
+        csvContent += `"${numeroPregunta}","${peso}","${pregunta}"\n`;
     });
 
     // Crear blob y descargar
