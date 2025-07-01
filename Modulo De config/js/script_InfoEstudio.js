@@ -147,17 +147,39 @@ boton BorrarBtn
                 const sanitizedTitle = selectedStudyData.tituloDelEstudio.replace(/\s+/g, '_').replace(/[\/\\?*:|"<>]/g, '');
                 const filename = 'logOTP_' + sanitizedTitle + '.csv';
 
-                // Descargar archivo usando un Blob
-                const blob = new Blob([content], { type: 'text/csv' });
-                const url = window.URL.createObjectURL(blob);
-                const tempLink = document.createElement('a');
-                tempLink.href = url;
-                tempLink.download = filename;
-                tempLink.style.display = 'none'; // Ocultar el enlace
-                document.body.appendChild(tempLink); // Agregar el enlace al DOM
-                tempLink.click();
-                document.body.removeChild(tempLink); // Eliminar el enlace temporal
-                window.URL.revokeObjectURL(url); // Liberar recursos
+                // Usar la función de descarga compartida si está disponible
+                if (window.csvUtils && window.csvUtils.downloadCSV) {
+                    window.csvUtils.downloadCSV(content, filename);
+                } else {
+                    // Fallback al método original
+                    // Función para escapar caracteres especiales en CSV
+                    function escapeCSV(text) {
+                        if (text === null || text === undefined) return '';
+                        // Convertir a string y escapar comillas dobles
+                        let escaped = String(text).replace(/"/g, '""');
+                        // Reemplazar saltos de línea con espacios
+                        escaped = escaped.replace(/\n/g, ' ').replace(/\r/g, ' ');
+                        return escaped;
+                    }
+
+                    // Agregar BOM para UTF-8 si el contenido no lo tiene ya
+                    let csvContent = content;
+                    if (!content.startsWith('\uFEFF')) {
+                        csvContent = '\uFEFF' + content;
+                    }
+
+                    // Descargar archivo usando un Blob
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const url = window.URL.createObjectURL(blob);
+                    const tempLink = document.createElement('a');
+                    tempLink.href = url;
+                    tempLink.download = filename;
+                    tempLink.style.display = 'none'; // Ocultar el enlace
+                    document.body.appendChild(tempLink); // Agregar el enlace al DOM
+                    tempLink.click();
+                    document.body.removeChild(tempLink); // Eliminar el enlace temporal
+                    window.URL.revokeObjectURL(url); // Liberar recursos
+                }
 
 
             })
