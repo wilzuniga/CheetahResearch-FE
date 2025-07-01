@@ -1022,3 +1022,43 @@ function adjustColor(color, percent) {//Funcion loca de chatsito
                 (B < 255 ? (B < 1 ? 0 : B) : 255))
                 .toString(16).slice(1).toUpperCase()}`;
 }
+
+document.getElementById('ExportarEncuestaBtn').addEventListener('click', function() {
+    // Obtener el nombre del estudio
+    let studyName = '';
+    try {
+        const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+        studyName = studyData && studyData.title ? studyData.title : 'Estudio';
+    } catch (e) {
+        studyName = 'Estudio';
+    }
+    // Limpiar el nombre para el archivo
+    studyName = studyName.replace(/[^a-zA-Z0-9\s\-]/g, '').trim();
+    const fileName = `${studyName} - Encuesta.CSV`;
+
+    // Encabezado CSV
+    let csvContent = 'Peso de la pregunta,Pregunta\n';
+    // Recorrer las preguntas
+    questions.forEach(q => {
+        // Reemplazar saltos de línea y comas en la pregunta
+        let pregunta = (q.question || '').replace(/\n/g, ' ').replace(/,/g, ' ');
+        let peso = q.weight !== undefined ? q.weight : '';
+        csvContent += `"${peso}","${pregunta}"
+`;
+    });
+
+    // Crear blob y descargar
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, fileName);
+    } else {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', fileName);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+});
