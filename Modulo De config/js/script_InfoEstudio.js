@@ -69,7 +69,7 @@ function llenar() {
 {
   "status": "success",
   "message": "Successfully deleted 1 files from <>",
-  "deleted_count": 1
+  "deleted_count": 1
 }
 
 boton BorrarBtn
@@ -147,17 +147,39 @@ boton BorrarBtn
                 const sanitizedTitle = selectedStudyData.tituloDelEstudio.replace(/\s+/g, '_').replace(/[\/\\?*:|"<>]/g, '');
                 const filename = 'logOTP_' + sanitizedTitle + '.csv';
 
-                // Descargar archivo usando un Blob
-                const blob = new Blob([content], { type: 'text/csv' });
-                const url = window.URL.createObjectURL(blob);
-                const tempLink = document.createElement('a');
-                tempLink.href = url;
-                tempLink.download = filename;
-                tempLink.style.display = 'none'; // Ocultar el enlace
-                document.body.appendChild(tempLink); // Agregar el enlace al DOM
-                tempLink.click();
-                document.body.removeChild(tempLink); // Eliminar el enlace temporal
-                window.URL.revokeObjectURL(url); // Liberar recursos
+                // Usar la función de descarga compartida si está disponible
+                if (window.csvUtils && window.csvUtils.downloadCSV) {
+                    window.csvUtils.downloadCSV(content, filename);
+                } else {
+                    // Fallback al método original
+                    // Función para escapar caracteres especiales en CSV
+                    function escapeCSV(text) {
+                        if (text === null || text === undefined) return '';
+                        // Convertir a string y escapar comillas dobles
+                        let escaped = String(text).replace(/"/g, '""');
+                        // Reemplazar saltos de línea con espacios
+                        escaped = escaped.replace(/\n/g, ' ').replace(/\r/g, ' ');
+                        return escaped;
+                    }
+
+                    // Agregar BOM para UTF-8 si el contenido no lo tiene ya
+                    let csvContent = content;
+                    if (!content.startsWith('\uFEFF')) {
+                        csvContent = '\uFEFF' + content;
+                    }
+
+                    // Descargar archivo usando un Blob
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const url = window.URL.createObjectURL(blob);
+                    const tempLink = document.createElement('a');
+                    tempLink.href = url;
+                    tempLink.download = filename;
+                    tempLink.style.display = 'none'; // Ocultar el enlace
+                    document.body.appendChild(tempLink); // Agregar el enlace al DOM
+                    tempLink.click();
+                    document.body.removeChild(tempLink); // Eliminar el enlace temporal
+                    window.URL.revokeObjectURL(url); // Liberar recursos
+                }
 
 
             })
@@ -184,8 +206,178 @@ boton BorrarBtn
         console.error('Elemento con ID "EncuestasLBL" no encontrado.');
     }
 
+    const token = localStorage.getItem('token');
+    const studyIdForSurveys = localStorage.getItem('selectedStudyId');
+    const surveyTableBody = document.getElementById('tablaEncuestas');
+    const surveyNavContainer = document.getElementById('divEncuestas');
 
+    let surveyData = [];
 
+    function updateSurveyTable() {
+        if (surveyData.length > 0 && surveyNavContainer) {
+            surveyNavContainer.style.display = 'block';
+            
+            // Limpiar tabla
+            surveyTableBody.innerHTML = '';
+            
+            // Generar filas de la tabla
+            surveyData.forEach((survey, index) => {
+                const row = document.createElement('tr');
+                
+                // Número de encuesta
+                const tdNumero = document.createElement('td');
+                tdNumero.textContent = index + 1;
+                tdNumero.style.fontWeight = 'bold';
+                row.appendChild(tdNumero);
+                
+                // ID
+                const tdId = document.createElement('td');
+                tdId.textContent = survey.id;
+                row.appendChild(tdId);
+                
+                // Respuesta con botón "Leer Más"
+                const tdRespuesta = document.createElement('td');
+                tdRespuesta.style.position = 'relative';
+                
+                // Contenedor para el texto
+                const textoContainer = document.createElement('div');
+                textoContainer.id = `texto-${index}`;
+                
+                // Texto truncado inicial
+                const textoTruncado = document.createElement('span');
+                textoTruncado.id = `texto-truncado-${index}`;
+                textoTruncado.textContent = survey.transcription.length > 100 
+                    ? survey.transcription.substring(0, 100) + '...' 
+                    : survey.transcription;
+                textoContainer.appendChild(textoTruncado);
+                
+                // Texto completo (oculto inicialmente)
+                const textoCompleto = document.createElement('span');
+                textoCompleto.id = `texto-completo-${index}`;
+                textoCompleto.textContent = survey.transcription;
+                textoCompleto.style.display = 'none';
+                textoContainer.appendChild(textoCompleto);
+                
+                tdRespuesta.appendChild(textoContainer);
+                
+                // Botón "Leer Más" (solo si el texto es largo)
+                if (survey.transcription.length > 100) {
+                    const btnLeerMas = document.createElement('button');
+                    btnLeerMas.className = 'btn btn-link btn-sm';
+                    btnLeerMas.id = `btn-leer-mas-${index}`;
+                    btnLeerMas.textContent = 'Leer Más';
+                    btnLeerMas.style.fontSize = '12px';
+                    btnLeerMas.style.padding = '2px 8px';
+                    btnLeerMas.style.marginTop = '5px';
+                    btnLeerMas.style.color = 'var(--bs-CR-orange)';
+                    
+                    btnLeerMas.addEventListener('click', () => {
+                        // Colapsar todos los otros textos expandidos
+                        surveyData.forEach((_, otherIndex) => {
+                            if (otherIndex !== index) {
+                                const otherTruncado = document.getElementById(`texto-truncado-${otherIndex}`);
+                                const otherCompleto = document.getElementById(`texto-completo-${otherIndex}`);
+                                const otherBtn = document.getElementById(`btn-leer-mas-${otherIndex}`);
+                                
+                                if (otherTruncado && otherCompleto && otherBtn) {
+                                    otherTruncado.style.display = 'inline';
+                                    otherCompleto.style.display = 'none';
+                                    otherBtn.textContent = 'Leer Más';
+                                }
+                            }
+                        });
+                        
+                        // Toggle del texto actual
+                        const textoTruncado = document.getElementById(`texto-truncado-${index}`);
+                        const textoCompleto = document.getElementById(`texto-completo-${index}`);
+                        const btn = document.getElementById(`btn-leer-mas-${index}`);
+                        
+                        if (textoTruncado.style.display !== 'none') {
+                            // Expandir
+                            textoTruncado.style.display = 'none';
+                            textoCompleto.style.display = 'inline';
+                            btn.textContent = 'Leer Menos';
+                        } else {
+                            // Colapsar
+                            textoTruncado.style.display = 'inline';
+                            textoCompleto.style.display = 'none';
+                            btn.textContent = 'Leer Más';
+                        }
+                    });
+                    
+                    tdRespuesta.appendChild(btnLeerMas);
+                }
+                
+                row.appendChild(tdRespuesta);
+                
+                // Botón eliminar
+                const tdAcciones = document.createElement('td');
+                const btnEliminar = document.createElement('button');
+                btnEliminar.className = 'btn btn-danger btn-sm';
+                btnEliminar.innerHTML = '<i class="icon ion-trash-a"></i>';
+                btnEliminar.title = 'Eliminar encuesta';
+                btnEliminar.style.fontSize = '14px';
+                
+                btnEliminar.addEventListener('click', () => {
+                    const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar la encuesta ${index + 1}?`);
+                    if (confirmDelete) {
+                        const deleteUrl = `https://api.cheetah-research.ai/configuration/delete_survey_answer/${studyIdForSurveys}/${survey.id}`;
+                        axios.post(deleteUrl, {}, {
+                            headers: {
+                                'Authorization': `Token ${token}`
+                            }
+                        }).then(() => {
+                            alert('Encuesta eliminada exitosamente.');
+                            surveyData.splice(index, 1);
+                            updateSurveyTable();
+                        }).catch(error => {
+                            console.error('Error al eliminar la encuesta:', error);
+                            alert('Error al eliminar la encuesta.');
+                        });
+                    }
+                });
+                
+                tdAcciones.appendChild(btnEliminar);
+                row.appendChild(tdAcciones);
+                
+                surveyTableBody.appendChild(row);
+            });
+        } else if (surveyNavContainer) {
+            surveyNavContainer.style.display = 'none';
+        }
+    }
+
+    if (surveyNavContainer) {
+        surveyNavContainer.style.display = 'none';
+    }
+
+    if (studyIdForSurveys && token) {
+        const getSurveysUrl = `https://api.cheetah-research.ai/configuration/get_surveys/${studyIdForSurveys}`;
+        
+        axios.post(getSurveysUrl, {}, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        }).then(response => {
+            const surveys = response.data;
+            if (surveys && typeof surveys === 'object' && !Array.isArray(surveys)) {
+                surveyData = Object.keys(surveys).map(key => ({
+                    id: key,
+                    transcription: surveys[key]
+                }));
+            }
+            
+            updateSurveyTable();
+        }).catch(error => {
+            console.error('Error al obtener las transcripciones de las encuestas:', error);
+            if (surveyTableBody) {
+                surveyTableBody.innerHTML = '<tr><td colspan="4" class="text-center">Error al cargar las encuestas.</td></tr>';
+            }
+            if (surveyNavContainer) {
+                surveyNavContainer.style.display = 'block';
+            }
+        });
+    }
 }
 
 //Colores

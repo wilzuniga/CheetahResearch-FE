@@ -1142,7 +1142,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-//que al presionar los botones toggle-textarea_* aparezcan las text area 
+//que al presionar los botones toggle-textarea_* aparezcan las text area y colapsen/expandan la columna izquierda
 document.addEventListener('DOMContentLoaded', function () {
     const toggleButtons = document.querySelectorAll('[id^="toggle-textarea_"]');
     
@@ -1160,13 +1160,28 @@ document.addEventListener('DOMContentLoaded', function () {
             const toolbar = wrapper.querySelector('.barra-estilo-cheetah');
             if (!toolbar) return;
 
+            // Obtener las columnas para colapsar/expandir
+            const baoColumn = document.getElementById('BAOColumn');
+            const rightColumn = baoColumn.parentElement.nextElementSibling; // La columna derecha
+
             // Alternar visibilidad del textarea
             if (textarea.style.display === 'none' || textarea.style.display === '') {
                 textarea.style.display = 'block';
                 toolbar.style.display = 'flex'; // Show toolbar
+                
+                // Colapsar la columna izquierda y expandir la derecha
+                baoColumn.parentElement.style.display = 'none';
+                rightColumn.classList.remove('col');
+                rightColumn.classList.add('col-12');
+                
             } else {
                 textarea.style.display = 'none';
                 toolbar.style.display = 'none'; // Hide toolbar
+                
+                // Restaurar el layout original
+                baoColumn.parentElement.style.display = 'block';
+                rightColumn.classList.remove('col-12');
+                rightColumn.classList.add('col');
             }
         });
     });
