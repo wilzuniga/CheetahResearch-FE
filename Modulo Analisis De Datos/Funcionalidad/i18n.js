@@ -105,7 +105,7 @@ const translations = {
             optNarrative:"Narrativo", optFactual:"Factual", optPercentage:"Porcentual", optGeneral:"General",
             optVisualGraphics:"Visualización grafica", optVisualText:"Visualización textual",
             btEdit:"Editar",                           btSave:"Guardar Cambios",              btExport:"Exportar",
-            btForceAnalysis:"Forzar Análisis",         btImport:"Importar Resultados",
+            btForceAnalysis:"Ejecutar Análisis",         btImport:"Importar Resultados",
         },
         //data-i18n="AnalisisDeDatos."
         //data-i18n-placeholder="AnalisisDeDatos."
