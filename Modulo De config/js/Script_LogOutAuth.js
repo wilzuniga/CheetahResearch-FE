@@ -4,17 +4,14 @@ async function logOut(){
         let response = await fetch('https://api.cheetah-research.ai/configuration/logout/', {
             method: 'POST',
             headers: {
-                'Authorization': `Token ${localStorage.getItem('token')}`
+                'Authorization': `Token ${sessionStorage.getItem('token')}`
 
             }
 
         });
         if (response.status === 200) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user_id');
-            // Usar el nuevo sistema de study_id por usuario
-            removeStudyIdForUser();
-            localStorage.removeItem('selectedStudyData');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('user_id');
             window.location.href = 'https://www.cheetah-research.ai/login/';
 
         }

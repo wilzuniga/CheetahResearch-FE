@@ -7,12 +7,12 @@ let formData = new FormData();
 
 
 
-function load(){    // Actualizar el título del estudio desde localStorage
+function load(){    // Actualizar el título del estudio desde sessionStorage
     //Idioma
-    const lang = localStorage.getItem('language') || 'es';
+    const lang = sessionStorage.getItem('language') || 'es';
     setLanguage(lang);
     
-    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    const studyData = JSON.parse(sessionStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
         tituloDelEstudio: studyData.title,
         mercadoObjetivo: studyData.marketTarget,
@@ -21,7 +21,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
     };
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
     
-    const datos = localStorage.getItem('selectedStudyData');
+    const datos = sessionStorage.getItem('selectedStudyData');
     // console.log(datos);
     if (datos) {
         const estudio = JSON.parse(datos);
@@ -35,10 +35,10 @@ function load(){    // Actualizar el título del estudio desde localStorage
         document.getElementById('TituloEstudioLBL').innerText = estudio.title;
     }
 
-    const studyId = localStorage.getItem('selectedStudyId');
+    const studyId = sessionStorage.getItem('selectedStudyId');
     setColorsFromAPI(studyId);//Setea colores
 
-    url = 'https://api.cheetah-research.ai/configuration/info_study/' + localStorage.getItem('selectedStudyId');
+    url = 'https://api.cheetah-research.ai/configuration/info_study/' + sessionStorage.getItem('selectedStudyId');
     //{"status": "success", "studyDate": "2024-08-04T21:07:30.632822-06:00", "studyStatus": 0}
     axios.get(url)
         .then(response => {
@@ -71,7 +71,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
             if(studyStatus == 0 || studyStatus == 1){
                 url = 'https://api.cheetah-research.ai/configuration/activateAnalisis/';
                 formData = new FormData();
-                formData.append('study_id', localStorage.getItem('selectedStudyId'));
+                formData.append('study_id', sessionStorage.getItem('selectedStudyId'));
                 axios.post(url ,formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -95,7 +95,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
             }else if(studyStatus == 3 || studyStatus == 2){ 
                 url = 'https://api.cheetah-research.ai/configuration/deactivateAnalisis/';
                 formData = new FormData();
-                formData.append('study_id', localStorage.getItem('selectedStudyId'));
+                formData.append('study_id', sessionStorage.getItem('selectedStudyId'));
                 axios.post(url, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -125,7 +125,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
             if(studyStatus == 0 || studyStatus == 2){
                 url = 'https://api.cheetah-research.ai/configuration/activateCollection/';
                 formData = new FormData();
-                formData.append('study_id', localStorage.getItem('selectedStudyId'));
+                formData.append('study_id', sessionStorage.getItem('selectedStudyId'));
                 axios.post(url, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -148,7 +148,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
             }else if(studyStatus == 3 || studyStatus == 1){ 
                 url = 'https://api.cheetah-research.ai/configuration/deactivateCollection/';
                 formData = new FormData();
-                formData.append('study_id', localStorage.getItem('selectedStudyId'));
+                formData.append('study_id', sessionStorage.getItem('selectedStudyId'));
                 axios.post(url, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -176,7 +176,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
 
     URLOTP = 'https://api.cheetah-research.ai/configuration/api/get-otp/'
     formData = new FormData();
-    formData.append('mongo_studio_id', localStorage.getItem('selectedStudyId'));
+    formData.append('mongo_studio_id', sessionStorage.getItem('selectedStudyId'));
 
     //post 
     /*
@@ -206,7 +206,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
 
     URLOTP = 'https://api.cheetah-research.ai/configuration/api/generate_otp_from_platform/'
     let formDataa = new FormData();
-    formDataa.append('mongo_studio_id', localStorage.getItem('selectedStudyId'));
+    formDataa.append('mongo_studio_id', sessionStorage.getItem('selectedStudyId'));
     //agregar un event listener para el boton OTPBtn_Analisis para generar el otp
     /*
     {
@@ -374,7 +374,7 @@ function load(){    // Actualizar el título del estudio desde localStorage
     const comboboxModules = document.getElementById('Combobox_Modules');
 
 function AgregarFiltros() {
-    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + localStorage.getItem('selectedStudyId');
+    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + sessionStorage.getItem('selectedStudyId');
     axios.get(url)
         .then(response => {
             // console.log(response.data);
@@ -415,7 +415,7 @@ function AgregarFiltros() {
 
 //Agrefar Preguntas  
 function AgregarPreguntas() {
-    const url = "https://api.cheetah-research.ai/configuration/get_questions/" + localStorage.getItem('selectedStudyId');
+    const url = "https://api.cheetah-research.ai/configuration/get_questions/" + sessionStorage.getItem('selectedStudyId');
     axios.get(url)
         .then(response => {
             // console.log(response.data);
@@ -456,7 +456,7 @@ function AgregarPreguntas() {
 
 
 function eliminarDominio(dominio) {
-    const studyId = localStorage.getItem('selectedStudyId');
+    const studyId = sessionStorage.getItem('selectedStudyId');
     const formData = new FormData();
     formData.append('study_id', studyId);
     formData.append('domain', dominio);
@@ -484,7 +484,7 @@ function AgregarDominios() {
     const url = "https://api.cheetah-research.ai/configuration/api/get-list-domains/"
 
     formData = new FormData();
-    formData.append('study_id', localStorage.getItem('selectedStudyId'));
+    formData.append('study_id', sessionStorage.getItem('selectedStudyId'));
 
 
     axios.post(url, formData, {
@@ -534,7 +534,7 @@ function AgregarDominios() {
 }
 
 function AgregarModulos() {
-    const url = "https://api.cheetah-research.ai/configuration/get_modules/" + localStorage.getItem('selectedStudyId');
+    const url = "https://api.cheetah-research.ai/configuration/get_modules/" + sessionStorage.getItem('selectedStudyId');
     axios.get(url)
         .then(response => {
             // console.log(response.data);
@@ -641,7 +641,7 @@ guardarFitroBTN.addEventListener('click', (e) => {
     const filtrosString = JSON.stringify(filtros);
     formData.append('filters', filtrosString);
 
-    axios.post('https://api.cheetah-research.ai/configuration/filters/' + localStorage.getItem('selectedStudyId') , formData, {
+    axios.post('https://api.cheetah-research.ai/configuration/filters/' + sessionStorage.getItem('selectedStudyId') , formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }
@@ -673,7 +673,7 @@ guardarPreguntaBTN.addEventListener('click', (e) => {
     };
 
     axios.post(
-        `https://api.cheetah-research.ai/configuration/suggested_questions/${localStorage.getItem('selectedStudyId')}`,
+        `https://api.cheetah-research.ai/configuration/suggested_questions/${sessionStorage.getItem('selectedStudyId')}`,
         data,
         {
             headers: {
@@ -702,7 +702,7 @@ guardarDominioBTN.addEventListener('click', (e) => {
     }
 
     // Ciclar los dominios y enviarlos uno por uno
-    const studyId = localStorage.getItem('selectedStudyId');
+    const studyId = sessionStorage.getItem('selectedStudyId');
     const apiUrl = `https://api.cheetah-research.ai/configuration/api/add-domain/`;
     const enviarDominio = (dominio) => {
         const formData = new FormData();
@@ -745,7 +745,7 @@ guardarModuloBTN.addEventListener('click', (e) => {
     const modulosString = JSON.stringify(modules);
     formData.append('modules', modulosString);
 
-    axios.post('https://api.cheetah-research.ai/configuration/modules/' + localStorage.getItem('selectedStudyId'), formData, {
+    axios.post('https://api.cheetah-research.ai/configuration/modules/' + sessionStorage.getItem('selectedStudyId'), formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }

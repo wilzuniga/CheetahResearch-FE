@@ -21,7 +21,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         if (response.ok) {
             let successContainer = document.getElementById('Success-Cont');
             const data = await response.json();
-            localStorage.setItem('token', data.token);
+            sessionStorage.setItem('token', data.token);
 
             successContainer.style.display = 'flex';
         } else {

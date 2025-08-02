@@ -37,7 +37,7 @@ function createSurveyerFormReadOnly() {
     const formContainer = document.createElement('div');
     url = 'https://api.cheetah-research.ai/configuration/getInterviewer/';
 
-    axios.post(url, { study_id: localStorage.getItem('selectedStudyId') }, {
+    axios.post(url, { study_id: sessionStorage.getItem('selectedStudyId') }, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }
@@ -87,7 +87,7 @@ function createSurveyerFormReadOnly() {
 }
 
 function updateSurveyerFormData(data) {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
     const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
     const saludoEncuestador = document.getElementById('SaludoEncuestadorTXT').value;
@@ -101,7 +101,7 @@ function updateSurveyerFormData(data) {
     data0.append('interviewerTone', tonoEncuestador);
     data0.append('interviewerGreeting', saludoEncuestador);
     data0.append('importantObservation', observacionesImportantes);
-    data0.append('_id', localStorage.getItem('selectedStudyId'));
+    data0.append('_id', sessionStorage.getItem('selectedStudyId'));
 
     for (let pair of data0.entries()) {
         // console.log(pair[0]+ ': ' + pair[1]);
@@ -123,11 +123,11 @@ function updateSurveyerFormData(data) {
         console.error(error);
     });
 
-    // Guardar en localStorage
-    localStorage.setItem('nombreEncuestador', nombreEncuestador);
-    localStorage.setItem('tonoEncuestador', tonoEncuestador);
-    localStorage.setItem('observacionesImportantes', observacionesImportantes);
-    localStorage.setItem('saludoEncuestador', saludoEncuestador);
+    // Guardar en sessionStorage
+    sessionStorage.setItem('nombreEncuestador', nombreEncuestador);
+    sessionStorage.setItem('tonoEncuestador', tonoEncuestador);
+    sessionStorage.setItem('observacionesImportantes', observacionesImportantes);
+    sessionStorage.setItem('saludoEncuestador', saludoEncuestador);
 
     
     CSrvyr_DeactivateNavBy();
@@ -140,9 +140,9 @@ function updateSurveyerFormData(data) {
 // Función para agregar el formulario al contenedor
 async function appendSurveyerForm() {
     const url = 'https://api.cheetah-research.ai/configuration/getInterviewer/';
-    const study_id = localStorage.getItem('selectedStudyId');
+    const study_id = sessionStorage.getItem('selectedStudyId');
     try {
-        const response = await axios.post(url, { study_id: localStorage.getItem('selectedStudyId') }, {
+        const response = await axios.post(url, { study_id: sessionStorage.getItem('selectedStudyId') }, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
@@ -178,7 +178,7 @@ async function appendSurveyerForm() {
 
 // Función para capturar y guardar datos del formulario del encuestador
 function captureSurveyerFormData() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
     const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
     const observacionesImportantes = document.getElementById('ObservacionesImportantesTXT').value;
@@ -194,7 +194,7 @@ function captureSurveyerFormData() {
     data.append('interviewerTone', tonoEncuestador);
     data.append('interviewerGreeting', saludoEncuestador);
     data.append('importantObservation', observacionesImportantes);
-    data.append('study_id', localStorage.getItem('selectedStudyId'));
+    data.append('study_id', sessionStorage.getItem('selectedStudyId'));
 
     for (let pair of data.entries()) {
         // console.log(pair[0]+ ': ' + pair[1]);
@@ -216,11 +216,11 @@ function captureSurveyerFormData() {
         alert(getNestedTranslation(translations[lang], 'CrearEncuestador.wCreate'));
     });
 
-    // Guardar en localStorage
-    localStorage.setItem('nombreEncuestador', nombreEncuestador);
-    localStorage.setItem('tonoEncuestador', tonoEncuestador);
-    localStorage.setItem('observacionesImportantes', observacionesImportantes);
-    localStorage.setItem('saludoEncuestador', saludoEncuestador);
+    // Guardar en sessionStorage
+    sessionStorage.setItem('nombreEncuestador', nombreEncuestador);
+    sessionStorage.setItem('tonoEncuestador', tonoEncuestador);
+    sessionStorage.setItem('observacionesImportantes', observacionesImportantes);
+    sessionStorage.setItem('saludoEncuestador', saludoEncuestador);
 
     //hacer el formulario solo lectura y que cada que se cargue la pagina regresen los datos
     document.getElementById('NombreEncuestadorTXT').readOnly = true;
@@ -233,17 +233,17 @@ function captureSurveyerFormData() {
     CSrvyr_DeactivateNavBy();
 
     //log
-    // console.log(localStorage.getItem('nombreEncuestador'));
-    // console.log(localStorage.getItem('tonoEncuestador'));
-    // console.log(localStorage.getItem('observacionesImportantes'));
-    // console.log(localStorage.getItem('saludoEncuestador'));
+    // console.log(sessionStorage.getItem('nombreEncuestador'));
+    // console.log(sessionStorage.getItem('tonoEncuestador'));
+    // console.log(sessionStorage.getItem('observacionesImportantes'));
+    // console.log(sessionStorage.getItem('saludoEncuestador'));
     // console.log('Encuestador creado exitosamente');
 }
 
 
 window.onload = () => {
     //Idioma
-    const lang = localStorage.getItem('language') || 'es';
+    const lang = sessionStorage.getItem('language') || 'es';
     setLanguage(lang);
     
     CSrvyr_DeactivateNavBy();
@@ -260,7 +260,7 @@ function enableNavItems() {
 }
 
 function CSrvyr_DeactivateNavBy(){
-    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    const studyData = JSON.parse(sessionStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
         tituloDelEstudio: studyData.title,
         mercadoObjetivo: studyData.marketTarget,
@@ -272,7 +272,7 @@ function CSrvyr_DeactivateNavBy(){
 
 
     // console.log('Verificando si se activan los botones');
-    if(localStorage.getItem('nombreEncuestador') != null){
+    if(sessionStorage.getItem('nombreEncuestador') != null){
         enableNavItems();
         // console.log('Activando botones');
     }else{
