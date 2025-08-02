@@ -261,7 +261,8 @@ function deleteFromLocStrg() {
         localStorage.removeItem('saludoEncuestador');
         localStorage.removeItem('preguntas');
 
-        localStorage.removeItem('selectedStudyId');
+        // Usar el nuevo sistema de study_id por usuario
+        removeStudyIdForUser();
         localStorage.removeItem('selectedStudyData');
     }
 }
@@ -293,7 +294,8 @@ function CaptureAndPostformdta() {
     })
     .then(response => {
         alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyCreated'));
-        localStorage.setItem('selectedStudyId', response.data.study_id);
+        // Usar el nuevo sistema de study_id por usuario
+        setStudyIdForUser(response.data.study_id);
         localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
     
         CE_DeactivateNavBy();
@@ -495,7 +497,8 @@ function createStudyElement(study) {
 
     // Guardar el study id en localStorage y los datos en un json al hacer clic
     a.addEventListener('click', () => {
-        localStorage.setItem('selectedStudyId', study._id);
+        // Usar el nuevo sistema de study_id por usuario
+        setStudyIdForUser(study._id);
         localStorage.setItem('selectedStudyData', JSON.stringify(study));
     });
 
