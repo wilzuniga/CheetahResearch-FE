@@ -2,12 +2,12 @@ let questions = [];
 let defaultQuestions = [];
 let questionsImg = [];
 
-const token = localStorage.getItem('token');
+const token = sessionStorage.getItem('token');
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
-    const studyId = localStorage.getItem('selectedStudyId');
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
+    const studyId = sessionStorage.getItem('selectedStudyId');
     setColorsFromAPI(studyId);//Setea colores
     const agregarPreguntaBtn = document.getElementById('AgregarPreguntaBtn');
     const preguntaTXT = document.getElementById('PreguntaTXT');
@@ -395,7 +395,7 @@ function enviarDatos(preguntas, defaultQuestions) {
         formData.append(questionImg.index + 1, questionImg.file);
     });
 
-    const url = 'https://api.cheetah-research.ai/configuration/createQuestion/' + localStorage.getItem('selectedStudyId') + '/';
+    const url = 'https://api.cheetah-research.ai/configuration/createQuestion/' + sessionStorage.getItem('selectedStudyId') + '/';
 
     axios.post(url, formData, {
         headers: {
@@ -424,7 +424,7 @@ function enviarDatos(preguntas, defaultQuestions) {
         }))
     };
 
-    const urlDefault = 'https://api.cheetah-research.ai/configuration/updateDefaultQuestions/' + localStorage.getItem('selectedStudyId') + '/';
+    const urlDefault = 'https://api.cheetah-research.ai/configuration/updateDefaultQuestions/' + sessionStorage.getItem('selectedStudyId') + '/';
     axios.put(urlDefault, defaultQuestionsData, {
         headers: {
             'Content-Type': 'application/json',
@@ -442,7 +442,7 @@ function enviarDatos(preguntas, defaultQuestions) {
     //formdata con el siguiente formato study_id
     const url2 = 'https://api.cheetah-research.ai/chatbot/updateLogs/' 
     const formData2 = new FormData();
-    formData2.append('study_id', localStorage.getItem('selectedStudyId'));
+    formData2.append('study_id', sessionStorage.getItem('selectedStudyId'));
     axios.post(url2, formData2, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -469,7 +469,7 @@ function enableNavItems() {
 
 function CE_DeactivateNavBy(){
 
-    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    const studyData = JSON.parse(sessionStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
         tituloDelEstudio: studyData.title,
         mercadoObjetivo: studyData.marketTarget,
@@ -482,7 +482,7 @@ function CE_DeactivateNavBy(){
     questions = [];
     defaultQuestions = [];
 
-    const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + localStorage.getItem('selectedStudyId') ;
+    const url = 'https://api.cheetah-research.ai/configuration/get_survey/' + sessionStorage.getItem('selectedStudyId') ;
     axios.get(url)
     .then(response => {
         console.log(response.data);
@@ -504,7 +504,7 @@ function CE_DeactivateNavBy(){
                 console.error('Default questions list group (.list-group) not found in HTML.');
             } else {
                 defaultListGroup.innerHTML = ''; // Clear only the default list
-                const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+                const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
 
                 defaultQuestions.forEach((pregunta) => { 
                     const newListItem = document.createElement('div');
@@ -616,7 +616,7 @@ function CE_DeactivateNavBy(){
     
             questions.forEach((pregunta, index) => {
                 // console.log("pregunta entra");
-                const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+                const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     
                 const newListItem = document.createElement('div');
                 newListItem.classList.add('list-group-item', 'list-group-item-action', 'align-items-start');
@@ -1028,7 +1028,7 @@ document.getElementById('ExportarEncuestaBtn').addEventListener('click', functio
     const studyName = window.csvUtils ? window.csvUtils.getStudyName() : (() => {
         let studyName = '';
         try {
-            const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+            const studyData = JSON.parse(sessionStorage.getItem('selectedStudyData'));
             studyName = studyData && studyData.title ? studyData.title : 'Estudio';
         } catch (e) {
             studyName = 'Estudio';

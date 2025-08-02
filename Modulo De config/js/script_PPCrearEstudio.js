@@ -8,8 +8,8 @@ function enableNavItems() {
 
 function CE_DeactivateNavBy(){
     // console.log('Verificando si se activan los botones');
-    if(localStorage.getItem('selectedStudyId') != null){
-        // console.log('Study id:', localStorage.getItem('selectedStudyId'));
+    if(sessionStorage.getItem('selectedStudyId') != null){
+        // console.log('Study id:', sessionStorage.getItem('selectedStudyId'));
         enableNavItems();
     }else{
         disableNavItems();
@@ -102,8 +102,8 @@ function createStudyForm() {
 
 function createFilledStudyForm() {
 
-    //crear u¿el formulario lleno sin el boton de crear estudio y en vez de que sea el prompt que sea el  resumen del estudio. Todo con el localstorage selectedStudyData. Solo lectura
-    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    //crear u¿el formulario lleno sin el boton de crear estudio y en vez de que sea el prompt que sea el  resumen del estudio. Todo con el sessionStorage selectedStudyData. Solo lectura
+    const studyData = JSON.parse(sessionStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
         tituloDelEstudio: studyData.title,
         mercadoObjetivo: studyData.marketTarget,
@@ -202,7 +202,7 @@ function createFilledStudyForm() {
 }
 
 function appendStudyForm() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     const formContainer = document.getElementById('form-containerStudy');
     formContainer.innerHTML = createStudyForm();
 
@@ -211,17 +211,17 @@ function appendStudyForm() {
         // console.log(studyData);
         alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyCreated'));
         //guardar en localsotrage el estudio creado
-        localStorage.setItem('selectedStudyData', JSON.stringify(studyData));
+        sessionStorage.setItem('selectedStudyData', JSON.stringify(studyData));
     });
 }
 
 function appendFilledStudyForm() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
 
     document.getElementById('UpdateEstudio').addEventListener('click', () => {
         const studyData = UpdateAndPostformdta();
-        //actualizar el estudio salvado en localstorage
-        localStorage.setItem('selectedStudyData', JSON.stringify(studyData));
+        //actualizar el estudio salvado en sessionStorage
+        sessionStorage.setItem('selectedStudyData', JSON.stringify(studyData));
         // console.log(studyData);
         alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyUpdated'));
     });
@@ -237,44 +237,43 @@ function appendFilledStudyForm() {
 }
 
 function StudysaveToLocStrg() {//Funcion de prueba
-    localStorage.setItem('tituloDelEstudio', document.getElementById('TituloDelEstudioTXT').value);
-    localStorage.setItem('mercadoObjetivo', document.getElementById('MercadoObjetivoTXT').value);
-    localStorage.setItem('objetivosDelEstudio', document.getElementById('ObjetivosDelEstudioTXT').value);
-    localStorage.setItem('promptDelEstudio', document.getElementById('PromptGeneralTXT').value);
-    localStorage.setItem('color1DelEstudio', document.getElementById('colorInput1').value);
-    localStorage.setItem('color2DelEstudio', document.getElementById('colorInput2').value);
+    sessionStorage.setItem('tituloDelEstudio', document.getElementById('TituloDelEstudioTXT').value);
+    sessionStorage.setItem('mercadoObjetivo', document.getElementById('MercadoObjetivoTXT').value);
+    sessionStorage.setItem('objetivosDelEstudio', document.getElementById('ObjetivosDelEstudioTXT').value);
+    sessionStorage.setItem('promptDelEstudio', document.getElementById('PromptGeneralTXT').value);
+    sessionStorage.setItem('color1DelEstudio', document.getElementById('colorInput1').value);
+    sessionStorage.setItem('color2DelEstudio', document.getElementById('colorInput2').value);
 }
 
 function deleteFromLocStrg() {
     //verificar si se esta en PaginaPrincipal.html o CreacionDeEstudio.html
     if(window.location.href.includes('home')){
         // console.log('Borrando datos del estudio');
-        localStorage.removeItem('tituloDelEstudio');
-        localStorage.removeItem('mercadoObjetivo');
-        localStorage.removeItem('objetivosDelEstudio');
-        localStorage.removeItem('promptDelEstudio');
-        localStorage.removeItem('color1DelEstudio');
-        localStorage.removeItem('color2DelEstudio');
-        localStorage.removeItem('nombreEncuestador');
-        localStorage.removeItem('tonoEncuestador');
-        localStorage.removeItem('observacionesImportantes');
-        localStorage.removeItem('saludoEncuestador');
-        localStorage.removeItem('preguntas');
+        sessionStorage.removeItem('tituloDelEstudio');
+        sessionStorage.removeItem('mercadoObjetivo');
+        sessionStorage.removeItem('objetivosDelEstudio');
+        sessionStorage.removeItem('promptDelEstudio');
+        sessionStorage.removeItem('color1DelEstudio');
+        sessionStorage.removeItem('color2DelEstudio');
+        sessionStorage.removeItem('nombreEncuestador');
+        sessionStorage.removeItem('tonoEncuestador');
+        sessionStorage.removeItem('observacionesImportantes');
+        sessionStorage.removeItem('saludoEncuestador');
+        sessionStorage.removeItem('preguntas');
 
-        // Usar el nuevo sistema de study_id por usuario
-        removeStudyIdForUser();
-        localStorage.removeItem('selectedStudyData');
+        sessionStorage.removeItem('selectedStudyId');
+        sessionStorage.removeItem('selectedStudyData');
     }
 }
 
 function CaptureAndPostformdta() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     const tituloDelEstudio = document.getElementById('TituloDelEstudioTXT').value;
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
     
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     const url = 'https://api.cheetah-research.ai/configuration/createStudy/';
     
     // Armamos el body como JSON
@@ -288,15 +287,14 @@ function CaptureAndPostformdta() {
     // Hacemos el POST con headers explícitos
     axios.post(url, data, {
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Authorization': `Token ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     })
     .then(response => {
         alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyCreated'));
-        // Usar el nuevo sistema de study_id por usuario
-        setStudyIdForUser(response.data.study_id);
-        localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
+        sessionStorage.setItem('selectedStudyId', response.data.study_id);
+        sessionStorage.setItem('selectedStudyData', JSON.stringify(response.data));
     
         CE_DeactivateNavBy();
     })
@@ -314,14 +312,14 @@ function CaptureAndPostformdta() {
 }
 
 function UpdateAndPostformdta() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     const tituloDelEstudio = document.getElementById('TituloDelEstudioTXT').value;
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
     
-    const token = localStorage.getItem('token');
-    const studyId = localStorage.getItem('selectedStudyId');
+    const token = sessionStorage.getItem('token');
+    const studyId = sessionStorage.getItem('selectedStudyId');
     const url = `https://api.cheetah-research.ai/configuration/updateStudy/${studyId}`;
     
     // Armamos el body como JSON
@@ -335,13 +333,13 @@ function UpdateAndPostformdta() {
     // Hacemos el POST con los headers adecuados
     axios.post(url, data, {
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Authorization': `Token ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     })
     .then(response => {
         alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyUpdated'));
-        localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
+        sessionStorage.setItem('selectedStudyData', JSON.stringify(response.data));
     })
     .catch(error => {
         console.error('Error al actualizar el estudio:', error);
@@ -363,46 +361,46 @@ window.addEventListener('DOMContentLoaded', (event) => {
     if (searchBar) searchBar.value = '';
 
     if(window.location.href.includes('https://www.cheetah-research.ai/configuration/study/')){
-        if(localStorage.getItem('selectedStudyId') == null){//PaginaPrincipal
-            console.log('Study id:', localStorage.getItem('selectedStudyId'));
+        if(sessionStorage.getItem('selectedStudyId') == null){//PaginaPrincipal
+            console.log('Study id:', sessionStorage.getItem('selectedStudyId'));
             CE_DeactivateNavBy();
             appendStudyForm();
         }else{//CreacionDeEstudio
             //Idioma
-            const lang = localStorage.getItem('language') || 'es';
+            const lang = sessionStorage.getItem('language') || 'es';
             setLanguage(lang);
 
             const formContainer = document.getElementById('form-containerStudy');
             formContainer.innerHTML = createFilledStudyForm();       
             appendFilledStudyForm();  
-            setColorsFromAPI();//Setea colores en LocalStorage y en la interfaz
+            setColorsFromAPI();//Setea colores en sessionStorage y en la interfaz
         }
     }else if(window.location.href.includes('home')){
 
-        console.log('Study id:', localStorage.getItem('selectedStudyId'));
+        console.log('Study id:', sessionStorage.getItem('selectedStudyId'));
         loadStudies();
     }
 });
 
 function ApendStudies(){
-    document.getElementById('TituloDelEstudioTXT').value = localStorage.getItem('tituloDelEstudio');
-    document.getElementById('MercadoObjetivoTXT').value = localStorage.getItem('mercadoObjetivo');
-    document.getElementById('ObjetivosDelEstudioTXT').value = localStorage.getItem('objetivosDelEstudio');
-    document.getElementById('PromptGeneralTXT').value = localStorage.getItem('promptDelEstudio');
-    document.getElementById('colorInput1').value = localStorage.getItem('color1DelEstudio');
-    document.getElementById('colorInput2').value = localStorage.getItem('color2DelEstudio');
+    document.getElementById('TituloDelEstudioTXT').value = sessionStorage.getItem('tituloDelEstudio');
+    document.getElementById('MercadoObjetivoTXT').value = sessionStorage.getItem('mercadoObjetivo');
+    document.getElementById('ObjetivosDelEstudioTXT').value = sessionStorage.getItem('objetivosDelEstudio');
+    document.getElementById('PromptGeneralTXT').value = sessionStorage.getItem('promptDelEstudio');
+    document.getElementById('colorInput1').value = sessionStorage.getItem('color1DelEstudio');
+    document.getElementById('colorInput2').value = sessionStorage.getItem('color2DelEstudio');
 }
 
 function loadStudies() { //Carga los estudios en la Main Page
 
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('user_id'); // Asegurate que no sea NaN
+    const token = sessionStorage.getItem('token');
+    const userId = sessionStorage.getItem('user_id'); // Asegurate que no sea NaN
     
     const url = `https://api.cheetah-research.ai/configuration/get_studies_by_user_id/${userId}/`;
     
     axios.get(url, {
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Authorization': `Token ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     })
@@ -495,11 +493,10 @@ function createStudyElement(study) {
     small.textContent = formattedDate;
     a.appendChild(small);
 
-    // Guardar el study id en localStorage y los datos en un json al hacer clic
+    // Guardar el study id en sessionStorage y los datos en un json al hacer clic
     a.addEventListener('click', () => {
-        // Usar el nuevo sistema de study_id por usuario
-        setStudyIdForUser(study._id);
-        localStorage.setItem('selectedStudyData', JSON.stringify(study));
+        sessionStorage.setItem('selectedStudyId', study._id);
+        sessionStorage.setItem('selectedStudyData', JSON.stringify(study));
     });
 
     return a;
@@ -507,8 +504,8 @@ function createStudyElement(study) {
 
 // Color Change
 function saveColorsToStudy() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
-    const studyId = localStorage.getItem('selectedStudyId');
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
+    const studyId = sessionStorage.getItem('selectedStudyId');
     const primaryColor = document.getElementById('colorInput1').value;
     const secondaryColor = document.getElementById('colorInput2').value;
 
@@ -535,15 +532,15 @@ function setColorsLocally(color1, color2) {
     applyColors({ color1, color2 });
 
     //Enviar colores a Chatbot
-    const selectedStudyData = JSON.parse(localStorage.getItem('selectedStudyData')) || {};
+    const selectedStudyData = JSON.parse(sessionStorage.getItem('selectedStudyData')) || {};
     selectedStudyData.primary_color = color1;
     selectedStudyData.secondary_color = color2;
-    localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
+    sessionStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
 }
 
 //Colores
 function setColorsFromAPI() {
-    const studyId = localStorage.getItem('selectedStudyId');
+    const studyId = sessionStorage.getItem('selectedStudyId');
     const url = 'https://api.cheetah-research.ai/configuration/info_study/' + studyId;
     return axios.get(url)
         .then(response => {

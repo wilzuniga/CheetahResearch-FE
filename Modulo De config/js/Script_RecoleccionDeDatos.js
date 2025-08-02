@@ -1,6 +1,6 @@
 document.getElementById('LanzarEstudioBtn').addEventListener('click', (e) => {
     e.preventDefault();
-    const studioID = localStorage.getItem('selectedStudyId');
+    const studioID = sessionStorage.getItem('selectedStudyId');
     if (studioID.trim() !== '') {
 
         const nuevaURL = `https://www.cheetah-research.ai/chatbot?id=${studioID}`;

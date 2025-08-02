@@ -62,7 +62,7 @@ function generateMarkmapHTML(content , filter) {
 
 
 function AgregarFiltros() {
-    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + localStorage.getItem('selectedStudyId');
+    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + sessionStorage.getItem('selectedStudyId');
 
     axios.get(url)
         .then(function (response) {
@@ -146,7 +146,7 @@ function AgregarFiltros() {
 
 document.addEventListener('DOMContentLoaded', function () {
     //Idioma
-    const lang = localStorage.getItem('language') || 'es';
+    const lang = sessionStorage.getItem('language') || 'es';
     setLanguage(lang);
     
     // Asocia el evento a todos los botones save-textarea
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionRGValue + '.md';
 
                     formDataRG.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataRG)
                         .then(function (response) {
                             // console.log(response.data);
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionRIValue + '.md';
 
                     formDataRI.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataRI)
                         .then(function (response) {
                             // console.log(response.data);
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionUPValue + '.md';
 
                     formDataUP.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataUP)
                         .then(function (response) {
                             // console.log(response.data);
@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionUAValue + '.md';
 
                     formDataUA.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataUA)
                         .then(function (response) {
                             alert('Resumen guardado exitosamente');
@@ -337,7 +337,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionEKValue + '.md';
 
                     formDataEK.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataEK)
                         .then(function (response) {
                             // console.log(response.data);
@@ -359,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionRPValue + '.md';
 
                     formDataRP.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataRP)
                         .then(function (response) {
                             // console.log(response.data);
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionSPValue + '.md';
 
                     formDataSP.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataSP)
                         .then(function (response) {
                             // console.log(response.data);
@@ -404,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionNPSValue + '.md';
 
                     formDataNPS.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataNPS)
                         .then(function (response) {
                             // console.log(response.data);
@@ -427,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionECValue + '.md';
 
                     formDataEC.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataEC)
                         .then(function (response) {
                             // console.log(response.data);
@@ -450,7 +450,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionCEValue + '.md';
 
                     formDataCE.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataCE)
                         .then(function (response) {
                             // console.log(response.data);
@@ -474,7 +474,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionSatValue + '.md';
 
                     formDataSat.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataSat)
                         .then(function (response) {
                             // console.log(response.data);
@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionCLValue + '.md';
 
                     formDataCL.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataCL)
                         .then(function (response) {
 
@@ -523,7 +523,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionBSValue + '.md';
 
                     formDataBS.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataBS)
                         .then(function (response) {
 
@@ -547,7 +547,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionBEValue + '.md';
 
                     formDataBE.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataBE)
                         .then(function (response) {
                             alert('Resumen guardado exitosamente');
@@ -585,7 +585,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'general');
                 formData.append('sub_module', StyleSelectedOption.value);
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -646,7 +646,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'individual_questions');
                 formData.append('sub_module', StyleSelectedOption.value);
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -703,7 +703,7 @@ function LLenarResumenes(){
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
                 formData.append('module', 'user_personas');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -739,7 +739,7 @@ function LLenarResumenes(){
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
                 formData.append('module', 'customer_experience');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -777,7 +777,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'ekman');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -817,7 +817,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'personality');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -853,7 +853,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'segmentos');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -888,7 +888,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'nps');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -925,7 +925,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'customer_satisfaction');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -962,7 +962,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'estilo');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -996,7 +996,7 @@ function LLenarResumenes(){
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
                 formData.append('module', 'work_environment');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -1028,7 +1028,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'brand_status');
                 formData.append('sub_module', 'brand_strength');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -1060,7 +1060,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'brand_status');
                 formData.append('sub_module', 'brand_equity');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -1090,7 +1090,7 @@ function LLenarResumenes(){
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
                 formData.append('module', 'user_archetype'); // API endpoint for User Archetype
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -1114,7 +1114,7 @@ function LLenarResumenes(){
 
 // insertar lorem ipsilum en el div coon id ResumenGeneral al cargarlo 
 document.addEventListener('DOMContentLoaded', () => {
-    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    const studyData = JSON.parse(sessionStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
         tituloDelEstudio: studyData.title,
         mercadoObjetivo: studyData.marketTarget,
@@ -1278,7 +1278,7 @@ botonImportar.addEventListener('click', () => {
     fileChooser.addEventListener('change', (event) => {
         const files = event.target.files;
 
-        const url = "https://api.cheetah-research.ai/configuration/upload_files/" + localStorage.getItem('selectedStudyId');
+        const url = "https://api.cheetah-research.ai/configuration/upload_files/" + sessionStorage.getItem('selectedStudyId');
 
         const formData = new FormData();
         for (const file of files) {
@@ -1306,7 +1306,7 @@ botonImportar.addEventListener('click', () => {
 // LLAMAR A /configuration/forzar/<study_id> para forzar el analisis al presionarl el boton botonForzarA
 const botonForzarA = document.getElementById('botonForzarA');
 botonForzarA.addEventListener('click', () => {
-    const url = "https://api.cheetah-research.ai/configuration/forzar/" + localStorage.getItem('selectedStudyId');
+    const url = "https://api.cheetah-research.ai/configuration/forzar/" + sessionStorage.getItem('selectedStudyId');
 
     axios.get(url)
         .then(response => {

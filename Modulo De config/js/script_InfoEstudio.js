@@ -1,12 +1,12 @@
 function llenar() {
     //Idioma
-    const lang = localStorage.getItem('language') || 'es';
+    const lang = sessionStorage.getItem('language') || 'es';
     setLanguage(lang);
     
-    const studyDataJSON = localStorage.getItem('selectedStudyData');
+    const studyDataJSON = sessionStorage.getItem('selectedStudyData');
     
     if (!studyDataJSON) {
-        console.error('No se encontró el estudio seleccionado en localStorage.');
+        console.error('No se encontró el estudio seleccionado en sessionStorage.');
         return;
     }
 
@@ -28,9 +28,9 @@ function llenar() {
 
     const url = 'https://api.cheetah-research.ai/chatbot/download_logs/';
     const formData = new FormData();
-    const studyId = localStorage.getItem('selectedStudyId');
+    const studyId = sessionStorage.getItem('selectedStudyId');
     if (!studyId) {
-        console.error('No se encontró "selectedStudyId" en localStorage.');
+        console.error('No se encontró "selectedStudyId" en sessionStorage.');
         return;
     }
     formData.append('study_id', studyId);
@@ -80,9 +80,9 @@ boton BorrarBtn
     const deleteButton = document.getElementById('BorrarBtn');
     if (deleteButton) {
         deleteButton.addEventListener('click', () => {
-            const studyId = localStorage.getItem('selectedStudyId');
+            const studyId = sessionStorage.getItem('selectedStudyId');
             if (!studyId) {
-                console.error('No se encontró "selectedStudyId" en localStorage.');
+                console.error('No se encontró "selectedStudyId" en sessionStorage.');
                 return;
             }
 
@@ -206,8 +206,8 @@ boton BorrarBtn
         console.error('Elemento con ID "EncuestasLBL" no encontrado.');
     }
 
-    const token = localStorage.getItem('token');
-    const studyIdForSurveys = localStorage.getItem('selectedStudyId');
+    const token = sessionStorage.getItem('token');
+    const studyIdForSurveys = sessionStorage.getItem('selectedStudyId');
     const surveyTableBody = document.getElementById('tablaEncuestas');
     const surveyNavContainer = document.getElementById('divEncuestas');
 

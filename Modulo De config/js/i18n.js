@@ -500,7 +500,7 @@ function getNestedTranslation(obj, key) {
 // Setea el idioma en el DOM
 function setLanguage(lang) {
     //Guarda idioma
-    localStorage.setItem('language', lang);
+    sessionStorage.setItem('language', lang);
 
     // Texto
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -526,7 +526,7 @@ document.addEventListener('DOMContentLoaded', function () {
         switcher.addEventListener('change', function () {
             setLanguage(this.value);
         });
-        setLanguage(localStorage.getItem('language') || switcher.value || 'es');
-        switcher.value = localStorage.getItem('language') || switcher.value || 'es';
+        setLanguage(sessionStorage.getItem('language') || switcher.value || 'es');
+        switcher.value = sessionStorage.getItem('language') || switcher.value || 'es';
     }
 });

@@ -63,13 +63,13 @@ function sanitizeFilename(filename) {
 }
 
 /**
- * Gets study name from localStorage
+ * Gets study name from sessionStorage
  * @returns {string} - Study name or default
  */
 function getStudyName() {
     let studyName = '';
     try {
-        const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+        const studyData = JSON.parse(sessionStorage.getItem('selectedStudyData'));
         studyName = studyData && studyData.title ? studyData.title : 'Estudio';
     } catch (e) {
         studyName = 'Estudio';

@@ -3,7 +3,7 @@ async function checkSession(){
         let response = await fetch('https://api.cheetah-research.ai/configuration/check-session/', {
             method: 'GET',
             headers: {
-                'Authorization': `Token ${localStorage.getItem('token')}`
+                'Authorization': `Token ${sessionStorage.getItem('token')}`
             }
         });
         if (response.status === 200) {
