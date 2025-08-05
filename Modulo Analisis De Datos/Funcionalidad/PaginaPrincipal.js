@@ -105,6 +105,9 @@ function enviarOTP(study_id) {
             recipients: [email] // Convertir a un arreglo, ya que el endpoint espera un array
         };
 
+        console.log('Enviando OTP a:', body.recipients);
+        console.log('ID de estudio:', study_id);
+
         // Usar axios para enviar la solicitud con el encabezado adecuado
         axios.post(url, body, {
             headers: {
