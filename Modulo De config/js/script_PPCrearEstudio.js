@@ -457,6 +457,7 @@ function createStudyElement(study) {
     const h5 = document.createElement('h5');
     h5.classList.add('mb-1');
     h5.style.fontFamily = "'hedliner', sans-serif";
+    h5.style.fontWeight = 'bold';
     h5.textContent = study.title;
 
     const span = document.createElement('span');
