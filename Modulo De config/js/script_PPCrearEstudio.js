@@ -458,8 +458,7 @@ function createStudyElement(study) {
     h5.classList.add('mb-1');
     h5.style.fontFamily = "'hedliner', sans-serif";
     h5.style.fontWeight = 'bold';
-    h5.textContent =  `${study._id}`;
-    h5.textContent += ` - ${study.title}`; // Agregar el título del estudio
+    h5.textContent = study.title;
 
     const span = document.createElement('span');
     span.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
@@ -494,6 +493,13 @@ function createStudyElement(study) {
     const formattedDate = `${studyDate.toLocaleDateString()} ${studyDate.toLocaleTimeString()}`;
     small.textContent = `Creado el: ${formattedDate}`;
     a.appendChild(small);
+
+    // Añadir un atributo data-id para identificar el estudio
+    const smallId = document.createElement('small');
+    smallId.classList.add('text-muted');
+    smallId.style.fontFamily = "'hedliner', sans-serif";
+    smallId.textContent = `ID: ${study._id}`;
+    a.appendChild(smallId);
 
     // Guardar el study id en sessionStorage y los datos en un json al hacer clic
     a.addEventListener('click', () => {
