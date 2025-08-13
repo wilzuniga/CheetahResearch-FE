@@ -458,7 +458,8 @@ function createStudyElement(study) {
     h5.classList.add('mb-1');
     h5.style.fontFamily = "'hedliner', sans-serif";
     h5.style.fontWeight = 'bold';
-    h5.textContent = study.title;
+    h5.textContent =  `${study._id}`;
+    h5.textContent += ` - ${study.title}`; // Agregar el título del estudio
 
     const span = document.createElement('span');
     span.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
