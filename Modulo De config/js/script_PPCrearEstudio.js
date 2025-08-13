@@ -498,7 +498,7 @@ function createStudyElement(study) {
     const smallId = document.createElement('small');
     smallId.classList.add('text-muted');
     smallId.style.fontFamily = "'hedliner', sans-serif";
-    smallId.textContent = `ID: ${study._id}`;
+    smallId.textContent = `     ID: ${study._id}`;
     a.appendChild(smallId);
 
     // Guardar el study id en sessionStorage y los datos en un json al hacer clic
