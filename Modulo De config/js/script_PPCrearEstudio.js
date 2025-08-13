@@ -491,7 +491,7 @@ function createStudyElement(study) {
     // Formatear la fecha
     const studyDate = new Date(study.studyDate);
     const formattedDate = `${studyDate.toLocaleDateString()} ${studyDate.toLocaleTimeString()}`;
-    small.textContent = formattedDate;
+    small.textContent = `Creado el: ${formattedDate}`;
     a.appendChild(small);
 
     // Guardar el study id en sessionStorage y los datos en un json al hacer clic
