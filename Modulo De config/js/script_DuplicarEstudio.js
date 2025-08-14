@@ -1,6 +1,7 @@
 // Script para duplicar estudios
 // Funcionalidad: Duplica todos los datos del estudio actual con el título "[Título] - COPIA"
 // FASE 2: También duplica el encuestador asociado al estudio
+// FASE 3: También duplica la encuesta asociada al estudio
 
 function duplicateStudy() {
     console.log('Iniciando proceso de duplicación de estudio...');
@@ -126,14 +127,15 @@ async function duplicateInterviewer(newStudyId) {
         // Verificar si existe un encuestador para duplicar
         if (!interviewerData.interviewerName) {
             console.log('No hay encuestador para duplicar en el estudio original');
-            alert('¡Estudio duplicado exitosamente! No había encuestador para duplicar.');
+            console.log('Iniciando duplicación de la encuesta...');
+            duplicateSurvey(newStudyId);
             return;
         }
         
         // CREATE: Crear el encuestador en el nuevo estudio
         console.log('Creando encuestador en el nuevo estudio...');
         const createUrl = 'https://api.cheetah-research.ai/configuration/addInterviewer/';
-
+        
         //crear un archivo png vacio
         const photoFile = new File([], 'interviewerPhoto.png', { type: 'image/png' });
         
@@ -161,8 +163,9 @@ async function duplicateInterviewer(newStudyId) {
         
         console.log('Encuestador duplicado exitosamente:', createResponse.data);
         
-        // Mostrar mensaje de éxito completo
-        alert('¡Estudio duplicado exitosamente! Se han copiado todos los datos incluyendo los colores y el encuestador.');
+        // Después de duplicar el encuestador, duplicar la encuesta
+        console.log('Iniciando duplicación de la encuesta...');
+        duplicateSurvey(newStudyId);
         
     } catch (error) {
         console.error('Error al duplicar el encuestador:', error);
@@ -172,7 +175,89 @@ async function duplicateInterviewer(newStudyId) {
             console.error('Estado HTTP:', error.response.status);
         }
         
-        alert('Estudio duplicado pero hubo un problema al duplicar el encuestador. Puedes crearlo manualmente.');
+        console.log('Intentando duplicar la encuesta sin encuestador...');
+        duplicateSurvey(newStudyId);
+    }
+}
+
+// Función para duplicar la encuesta del estudio original
+async function duplicateSurvey(newStudyId) {
+    console.log('Iniciando duplicación de la encuesta...');
+    
+    try {
+        const originalStudyId = sessionStorage.getItem('selectedStudyId');
+        console.log('ID del estudio original para encuesta:', originalStudyId);
+        console.log('ID del nuevo estudio para encuesta:', newStudyId);
+        
+        // GET: Obtener datos de la encuesta del estudio original
+        console.log('Obteniendo datos de la encuesta original...');
+        const getSurveyUrl = `https://api.cheetah-research.ai/configuration/get_survey/${originalStudyId}`;
+        
+        const getSurveyResponse = await axios.get(getSurveyUrl);
+        const surveyData = getSurveyResponse.data;
+        console.log('Datos de la encuesta obtenidos:', surveyData);
+        
+        // Verificar si existe una encuesta para duplicar
+        if (!surveyData.questions || surveyData.questions.length === 0) {
+            console.log('No hay encuesta para duplicar en el estudio original');
+            alert('¡Estudio duplicado exitosamente! Se han copiado todos los datos incluyendo los colores y el encuestador. No había encuesta para duplicar.');
+            return;
+        }
+        
+        // Filtrar solo las preguntas personalizadas (ignorar las 3 preguntas predeterminadas)
+        const customQuestions = surveyData.questions.filter(question => {
+            // Las preguntas predeterminadas suelen tener IDs específicos o estar marcadas de cierta manera
+            // Por ahora, asumimos que todas las preguntas en questions son personalizadas
+            return question && question.question && question.weight;
+        });
+        
+        console.log('Preguntas personalizadas filtradas:', customQuestions);
+        
+        if (customQuestions.length === 0) {
+            console.log('No hay preguntas personalizadas para duplicar');
+            alert('¡Estudio duplicado exitosamente! Se han copiado todos los datos incluyendo los colores y el encuestador. No había preguntas personalizadas para duplicar.');
+            return;
+        }
+        
+        // CREATE: Crear la encuesta en el nuevo estudio
+        console.log('Creando encuesta en el nuevo estudio...');
+        const createSurveyUrl = `https://api.cheetah-research.ai/configuration/createQuestion/${newStudyId}/`;
+        
+        // Preparar los datos de la encuesta
+        const surveyFormData = new FormData();
+        surveyFormData.append('questions', JSON.stringify(customQuestions));
+        
+        console.log('Datos de la encuesta preparados para duplicación:', {
+            questionsCount: customQuestions.length,
+            questions: customQuestions.map(q => ({
+                question: q.question,
+                weight: q.weight,
+                url: q.url || null,
+                file_path: q.file_path || null,
+                feedback_questions: q.feedback_questions || []
+            }))
+        });
+        
+        const createSurveyResponse = await axios.post(createSurveyUrl, surveyFormData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        
+        console.log('Encuesta duplicada exitosamente:', createSurveyResponse.data);
+        
+        // Mostrar mensaje de éxito completo
+        alert('¡Estudio duplicado exitosamente! Se han copiado todos los datos incluyendo los colores, el encuestador y la encuesta completa.');
+        
+    } catch (error) {
+        console.error('Error al duplicar la encuesta:', error);
+        
+        if (error.response) {
+            console.error('Respuesta del servidor:', error.response.data);
+            console.error('Estado HTTP:', error.response.status);
+        }
+        
+        alert('Estudio duplicado pero hubo un problema al duplicar la encuesta. Puedes crearla manualmente.');
     }
 }
 
