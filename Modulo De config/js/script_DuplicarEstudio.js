@@ -96,88 +96,42 @@ function duplicateStudy() {
     }
 }
 
-// Función para agregar el botón de duplicación al formulario
-function addDuplicateButton() {
-    console.log('Agregando botón de duplicación...');
-    
-    // Buscar el contenedor del formulario
-    const formContainer = document.getElementById('form-containerStudy');
-    
-    if (!formContainer) {
-        console.error('No se encontró el contenedor del formulario');
-        return;
-    }
-    
-    // Verificar si el botón ya existe para evitar duplicados
-    if (document.getElementById('duplicateStudyBtn')) {
-        console.log('El botón de duplicación ya existe');
-        return;
-    }
-    
-    // Crear el botón de duplicación
-    const duplicateButton = document.createElement('div');
-    duplicateButton.className = 'mb-3';
-    duplicateButton.style.fontFamily = "'hedliner', sans-serif";
-    duplicateButton.style.textAlign = 'center';
-    
-    duplicateButton.innerHTML = `
-        <button class="btn btn-warning" id="duplicateStudyBtn" type="button" 
-                style="font-family: 'hedliner', sans-serif; font-weight: bold; border-radius: 13px; padding: 10px 20px; font-size: 18px;" 
-                data-i18n="CreacionDeEstudio.btDuplicate">
-            🔄 Duplicar Estudio
-        </button>
-    `;
-    
-    // Insertar el botón después del botón de actualizar
-    const updateButton = formContainer.querySelector('#UpdateEstudio');
-    if (updateButton) {
-        // Buscar el contenedor del botón de actualizar
-        const updateButtonContainer = updateButton.closest('.mb-3') || updateButton.parentNode;
-        updateButtonContainer.parentNode.insertBefore(duplicateButton, updateButtonContainer.nextSibling);
-        console.log('Botón de duplicación agregado después del botón de actualizar');
-    } else {
-        // Si no hay botón de actualizar, agregarlo al final del formulario
-        formContainer.appendChild(duplicateButton);
-        console.log('Botón de duplicación agregado al final del formulario');
-    }
-    
-    // Agregar el event listener al botón
-    document.getElementById('duplicateStudyBtn').addEventListener('click', duplicateStudy);
-    console.log('Event listener agregado al botón de duplicación');
-}
-
 // Función para inicializar la funcionalidad de duplicación
 function initDuplicateStudy() {
     console.log('Inicializando funcionalidad de duplicación de estudios...');
     
     // Verificar si estamos en la página de información del estudio
-    if (window.location.href.includes('https://www.cheetah-research.ai/configuration/study/')) {
-        // Verificar si hay un estudio seleccionado (modo edición)
+    if (window.location.href.includes('https://www.cheetah-research.ai/configuration/studyInfo/')) {
+        // Verificar si hay un estudio seleccionado
         if (sessionStorage.getItem('selectedStudyId') != null) {
-            console.log('Estudio seleccionado encontrado, agregando botón de duplicación...');
+            console.log('Estudio seleccionado encontrado, configurando botón de duplicación...');
             
-            // Esperar a que el DOM esté completamente cargado y el formulario renderizado
-            const checkFormInterval = setInterval(() => {
-                const formContainer = document.getElementById('form-containerStudy');
-                const updateButton = document.getElementById('UpdateEstudio');
+            // Buscar el botón de duplicación
+            const duplicateButton = document.getElementById('duplicateStudyBtn');
+            if (duplicateButton) {
+                // Agregar el event listener al botón
+                duplicateButton.addEventListener('click', duplicateStudy);
+                console.log('Event listener agregado al botón de duplicación');
                 
-                if (formContainer && updateButton) {
-                    clearInterval(checkFormInterval);
-                    console.log('Formulario encontrado, agregando botón de duplicación...');
-                    addDuplicateButton();
-                }
-            }, 100);
-            
-            // Timeout de seguridad para evitar bucles infinitos
-            setTimeout(() => {
-                clearInterval(checkFormInterval);
-                console.log('Timeout alcanzado al buscar el formulario');
-            }, 10000);
+                // Habilitar el botón
+                duplicateButton.disabled = false;
+                duplicateButton.style.opacity = '1';
+            } else {
+                console.error('No se encontró el botón de duplicación');
+            }
         } else {
-            console.log('No hay estudio seleccionado, no se agrega botón de duplicación');
+            console.log('No hay estudio seleccionado, deshabilitando botón de duplicación...');
+            
+            // Deshabilitar el botón si no hay estudio seleccionado
+            const duplicateButton = document.getElementById('duplicateStudyBtn');
+            if (duplicateButton) {
+                duplicateButton.disabled = true;
+                duplicateButton.style.opacity = '0.5';
+                duplicateButton.title = 'Selecciona un estudio para poder duplicarlo';
+            }
         }
     } else {
-        console.log('No estamos en la página de estudio, no se agrega botón de duplicación');
+        console.log('No estamos en la página de información del estudio, no se configura botón de duplicación');
     }
 }
 
@@ -185,6 +139,6 @@ function initDuplicateStudy() {
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initDuplicateStudy);
 } else {
-    // Si el DOM ya está cargado, esperar un poco más para asegurar que el formulario esté renderizado
-    setTimeout(initDuplicateStudy, 1000);
+    // Si el DOM ya está cargado, ejecutar inmediatamente
+    initDuplicateStudy();
 }
