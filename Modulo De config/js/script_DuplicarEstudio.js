@@ -107,19 +107,32 @@ async function obtenerDatosEstudio(studyId, token) {
         
         // 2. Información del encuestador
         try {
+            console.log('Obteniendo información del encuestador...');
             const interviewerResponse = await axios.post('https://api.cheetah-research.ai/configuration/getInterviewer/', 
                 { study_id: studyId },
                 { headers: { 'Content-Type': 'multipart/form-data' } }
             );
             const interviewer = interviewerResponse.data;
+            console.log('Respuesta del encuestador:', interviewer);
             
             studyData.nombreEncuestador = interviewer.interviewerName || '';
             studyData.tonoEncuestador = interviewer.interviewerTone || '';
             studyData.observacionesImportantes = interviewer.importantObservation || '';
             studyData.saludoEncuestador = interviewer.interviewerGreeting || '';
             studyData.fotoEncuestador = interviewer.interviewerProfilePicture || null;
+            
+            console.log('Datos del encuestador extraídos:', {
+                nombre: studyData.nombreEncuestador,
+                tono: studyData.tonoEncuestador,
+                observaciones: studyData.observacionesImportantes,
+                saludo: studyData.saludoEncuestador,
+                tieneFoto: !!studyData.fotoEncuestador
+            });
         } catch (error) {
             console.log('No se encontró información del encuestador:', error.message);
+            if (error.response) {
+                console.log('Detalles del error:', error.response.data);
+            }
         }
         
         // 3. Encuesta completa
@@ -248,6 +261,14 @@ async function duplicarComponentesEstudio(studyIdOriginal, nuevoStudyId, token, 
         if (studyData.nombreEncuestador) {
             try {
                 console.log('Duplicando encuestador:', studyData.nombreEncuestador);
+                console.log('Datos del encuestador a duplicar:', {
+                    nombre: studyData.nombreEncuestador,
+                    tono: studyData.tonoEncuestador,
+                    saludo: studyData.saludoEncuestador,
+                    observaciones: studyData.observacionesImportantes,
+                    nuevoStudyId: nuevoStudyId
+                });
+                
                 const interviewerData = new FormData();
                 interviewerData.append('interviewerName', studyData.nombreEncuestador);
                 interviewerData.append('interviewerTone', studyData.tonoEncuestador);
@@ -256,22 +277,36 @@ async function duplicarComponentesEstudio(studyIdOriginal, nuevoStudyId, token, 
                 interviewerData.append('study_id', nuevoStudyId);
                 
                 if (studyData.fotoEncuestador) {
+                    console.log('Procesando foto del encuestador...');
                     // Convertir base64 a blob si es necesario
                     if (typeof studyData.fotoEncuestador === 'string' && studyData.fotoEncuestador.startsWith('data:')) {
                         const response = await fetch(studyData.fotoEncuestador);
                         const blob = await response.blob();
                         interviewerData.append('interviewerProfilePicture', blob, 'profile.jpg');
+                        console.log('Foto convertida de base64 a blob');
                     } else {
                         interviewerData.append('interviewerProfilePicture', studyData.fotoEncuestador);
+                        console.log('Foto agregada directamente');
                     }
+                } else {
+                    console.log('No hay foto del encuestador para duplicar');
                 }
                 
-                await axios.post('https://api.cheetah-research.ai/configuration/addInterviewer/', interviewerData, {
+                console.log('Enviando datos del encuestador...');
+                const response = await axios.post('https://api.cheetah-research.ai/configuration/addInterviewer/', interviewerData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
+                console.log('Respuesta de creación del encuestador:', response.data);
                 console.log('Encuestador duplicado correctamente');
             } catch (error) {
                 console.log('Error al duplicar encuestador:', error.message);
+                if (error.response) {
+                    console.log('Detalles del error del servidor:', {
+                        status: error.response.status,
+                        data: error.response.data,
+                        headers: error.response.headers
+                    });
+                }
                 // No fallar si no se puede duplicar el encuestador
             }
         }
@@ -388,6 +423,20 @@ async function duplicarComponentesEstudio(studyIdOriginal, nuevoStudyId, token, 
         }
         
         console.log('Todos los componentes del estudio han sido duplicados exitosamente');
+        
+        // Resumen de la duplicación
+        console.log('=== RESUMEN DE DUPLICACIÓN ===');
+        console.log('Estudio original ID:', studyIdOriginal);
+        console.log('Nuevo estudio ID:', nuevoStudyId);
+        console.log('Componentes duplicados:');
+        console.log('- Encuestador:', studyData.nombreEncuestador ? 'SÍ' : 'NO');
+        console.log('- Encuesta:', studyData.encuesta && Object.keys(studyData.encuesta).length > 0 ? 'SÍ' : 'NO');
+        console.log('- Filtros:', studyData.filtros && studyData.filtros.length > 0 ? 'SÍ' : 'NO');
+        console.log('- Dominios:', studyData.dominios && studyData.dominios.length > 0 ? 'SÍ' : 'NO');
+        console.log('- Módulos:', studyData.modulos && studyData.modulos.length > 0 ? 'SÍ' : 'NO');
+        console.log('- Preguntas sugeridas:', studyData.preguntas && studyData.preguntas.length > 0 ? 'SÍ' : 'NO');
+        console.log('- Preguntas por defecto:', studyData.preguntasPorDefecto && studyData.preguntasPorDefecto.length > 0 ? 'SÍ' : 'NO');
+        console.log('==============================');
     }
 
 // Agregar el event listener cuando se carga la página
