@@ -134,12 +134,8 @@ async function duplicateInterviewer(newStudyId) {
         console.log('Creando encuestador en el nuevo estudio...');
         const createUrl = 'https://api.cheetah-research.ai/configuration/addInterviewer/';
 
-        //convertir el link de la foto a archivo png
-        const photoUrl = interviewerData.interviewerPhoto;
-        const photoResponse = await axios.get(photoUrl, { responseType: 'arraybuffer' });
-        const photoBuffer = Buffer.from(photoResponse.data);
-        const photoFile = new File([photoBuffer], 'interviewerPhoto.png', { type: 'image/png' });
-
+        //crear un archivo png vacio
+        const photoFile = new File([], 'interviewerPhoto.png', { type: 'image/png' });
         
         const createData = new FormData();
         createData.append('interviewerName', interviewerData.interviewerName);
