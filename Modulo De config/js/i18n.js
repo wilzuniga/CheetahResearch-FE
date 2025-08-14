@@ -115,7 +115,6 @@ const translations = {
             btNonProcessedTranscriptions: "Descargar Transcripciones No Procesadas",
             btLogOTP: "Descargar Log de OTP",
             btDelFiles: "Eliminar Archivos",
-            btDuplicateStudy: "Duplicar Estudio",
         },
         VisualizacionDeResultado: {
             //Resumen General
@@ -273,7 +272,6 @@ const translations = {
             btNonProcessedTranscriptions: "Download Non-Processed Transcriptions",
             btLogOTP: "Download OTP Log",
             btDelFiles: "Delete Files",
-            btDuplicateStudy: "Duplicate Study",
         },
         VisualizacionDeResultado: {
             // General Summary
@@ -430,7 +428,6 @@ const translations = {
             btNonProcessedTranscriptions: "Baixar Transcrições Não Processadas",
             btLogOTP: "Baixar Log de OTP",
             btDelFiles: "Excluir Arquivos",
-            btDuplicateStudy: "Duplicar Estudo",
         },
         VisualizacionDeResultado: {
             //Resumo Geral
