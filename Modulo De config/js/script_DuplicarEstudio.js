@@ -72,16 +72,38 @@ async function obtenerDatosEstudio(studyId, token) {
     const studyData = {};
     
     try {
-        // 1. Información básica del estudio
-        const infoResponse = await axios.get(`https://api.cheetah-research.ai/configuration/info_study/${studyId}`);
-        const info = infoResponse.data;
+        // Obtener datos básicos del estudio desde sessionStorage
+        const studyDataJSON = sessionStorage.getItem('selectedStudyData');
+        if (!studyDataJSON) {
+            throw new Error('No se encontraron datos del estudio en sessionStorage');
+        }
         
-        studyData.titulo = info.title || 'Estudio sin título';
-        studyData.mercadoObjetivo = info.marketTarget || '';
-        studyData.objetivos = info.objective || '';
-        studyData.prompt = info.prompt || '';
-        studyData.colorPrincipal = info.primary_color || '#FF6B35';
-        studyData.colorSecundario = info.secondary_color || '#004E89';
+        const sessionStudyData = JSON.parse(studyDataJSON);
+        console.log('Datos del estudio desde sessionStorage:', sessionStudyData);
+        
+        // 1. Información básica del estudio desde sessionStorage
+        studyData.titulo = sessionStudyData.title || 'Estudio sin título';
+        studyData.mercadoObjetivo = sessionStudyData.marketTarget || '';
+        studyData.objetivos = sessionStudyData.studyObjectives || '';
+        studyData.prompt = sessionStudyData.prompt || '';
+        
+        console.log('Datos extraídos de sessionStorage:');
+        console.log('- Título:', studyData.titulo);
+        console.log('- Mercado objetivo:', studyData.mercadoObjetivo);
+        console.log('- Objetivos:', studyData.objetivos);
+        console.log('- Prompt:', studyData.prompt);
+        
+        // Obtener colores desde la API (esto sí necesitamos llamar a la API)
+        try {
+            const infoResponse = await axios.get(`https://api.cheetah-research.ai/configuration/info_study/${studyId}`);
+            const info = infoResponse.data;
+            studyData.colorPrincipal = info.primary_color || '#FF6B35';
+            studyData.colorSecundario = info.secondary_color || '#004E89';
+        } catch (error) {
+            console.log('No se pudieron obtener los colores del estudio:', error.message);
+            studyData.colorPrincipal = '#FF6B35';
+            studyData.colorSecundario = '#004E89';
+        }
         
         // 2. Información del encuestador
         try {
@@ -154,11 +176,12 @@ async function obtenerDatosEstudio(studyId, token) {
             studyData.preguntasPorDefecto = [];
         }
         
-    } catch (error) {
-        throw new Error('Error al obtener los datos del estudio: ' + error.message);
-    }
-    
-    return studyData;
+            } catch (error) {
+            throw new Error('Error al obtener los datos del estudio: ' + error.message);
+        }
+        
+        console.log('Datos del estudio obtenidos exitosamente:', studyData);
+        return studyData;
 }
 
 // Función para crear el nuevo estudio
