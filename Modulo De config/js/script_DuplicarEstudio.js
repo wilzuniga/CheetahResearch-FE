@@ -1,5 +1,6 @@
 // Script para duplicar estudios
 // Funcionalidad: Duplica todos los datos del estudio actual con el título "[Título] - COPIA"
+// FASE 2: También duplica el encuestador asociado al estudio
 
 function duplicateStudy() {
     console.log('Iniciando proceso de duplicación de estudio...');
@@ -70,19 +71,23 @@ function duplicateStudy() {
                     .then(colorsResponse => {
                         console.log('Colores configurados exitosamente:', colorsResponse.data);
                         
-                        // Mostrar mensaje de éxito
-                        alert('¡Estudio duplicado exitosamente! Se han copiado todos los datos incluyendo los colores.');
+                        // Después de configurar los colores, duplicar el encuestador
+                        console.log('Iniciando duplicación del encuestador...');
+                        duplicateInterviewer(newStudyId);
                         
-                        // Opcional: Redirigir al nuevo estudio o recargar la página
-                        // window.location.reload();
                     })
                     .catch(colorsError => {
                         console.error('Error al configurar los colores:', colorsError);
                         alert('Estudio duplicado pero hubo un problema al configurar los colores. Puedes configurarlos manualmente.');
+                        
+                        // Aún así, intentar duplicar el encuestador
+                        console.log('Intentando duplicar el encuestador sin colores...');
+                        duplicateInterviewer(newStudyId);
                     });
             } else {
                 console.log('No se encontraron colores para copiar');
-                alert('¡Estudio duplicado exitosamente! Se han copiado todos los datos del estudio.');
+                console.log('Iniciando duplicación del encuestador...');
+                duplicateInterviewer(newStudyId);
             }
         })
         .catch(error => {
@@ -93,6 +98,78 @@ function duplicateStudy() {
     } catch (error) {
         console.error('Error en el proceso de duplicación:', error);
         alert('Error inesperado al duplicar el estudio. Por favor, inténtalo de nuevo.');
+    }
+}
+
+// Función para duplicar el encuestador del estudio original
+async function duplicateInterviewer(newStudyId) {
+    console.log('Iniciando duplicación del encuestador...');
+    
+    try {
+        const originalStudyId = sessionStorage.getItem('selectedStudyId');
+        console.log('ID del estudio original:', originalStudyId);
+        console.log('ID del nuevo estudio:', newStudyId);
+        
+        // GET: Obtener datos del encuestador del estudio original
+        console.log('Obteniendo datos del encuestador original...');
+        const getUrl = 'https://api.cheetah-research.ai/configuration/getInterviewer/';
+        
+        const getResponse = await axios.post(getUrl, { study_id: originalStudyId }, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        
+        const interviewerData = getResponse.data;
+        console.log('Datos del encuestador obtenidos:', interviewerData);
+        
+        // Verificar si existe un encuestador para duplicar
+        if (!interviewerData.interviewerName) {
+            console.log('No hay encuestador para duplicar en el estudio original');
+            alert('¡Estudio duplicado exitosamente! No había encuestador para duplicar.');
+            return;
+        }
+        
+        // CREATE: Crear el encuestador en el nuevo estudio
+        console.log('Creando encuestador en el nuevo estudio...');
+        const createUrl = 'https://api.cheetah-research.ai/configuration/addInterviewer/';
+        
+        const createData = new FormData();
+        createData.append('interviewerName', interviewerData.interviewerName);
+        createData.append('interviewerProfilePicture', interviewerData.interviewerProfilePicture);
+        createData.append('interviewerTone', interviewerData.interviewerTone);
+        createData.append('interviewerGreeting', interviewerData.interviewerGreeting);
+        createData.append('importantObservation', interviewerData.importantObservation);
+        createData.append('study_id', newStudyId);
+        
+        console.log('Datos del encuestador preparados para duplicación:', {
+            interviewerName: interviewerData.interviewerName,
+            interviewerTone: interviewerData.interviewerTone,
+            interviewerGreeting: interviewerData.interviewerGreeting,
+            importantObservation: interviewerData.importantObservation,
+            study_id: newStudyId
+        });
+        
+        const createResponse = await axios.post(createUrl, createData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        
+        console.log('Encuestador duplicado exitosamente:', createResponse.data);
+        
+        // Mostrar mensaje de éxito completo
+        alert('¡Estudio duplicado exitosamente! Se han copiado todos los datos incluyendo los colores y el encuestador.');
+        
+    } catch (error) {
+        console.error('Error al duplicar el encuestador:', error);
+        
+        if (error.response) {
+            console.error('Respuesta del servidor:', error.response.data);
+            console.error('Estado HTTP:', error.response.status);
+        }
+        
+        alert('Estudio duplicado pero hubo un problema al duplicar el encuestador. Puedes crearlo manualmente.');
     }
 }
 
