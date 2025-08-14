@@ -1,463 +1,190 @@
-/**
- * Script para duplicar estudios
- * Duplica todos los datos del estudio actual incluyendo:
- * - Título del estudio (con sufijo "- COPIA")
- * - Mercado objetivo
- * - Objetivos del estudio
- * - Prompt del estudio
- * - Colores principal y secundario
- * - Nombre del encuestador
- * - Tono del encuestador
- * - Observaciones importantes del encuestador
- * - Saludo del encuestador
- * - Encuesta completa
- * - Filtros del estudio
- * - Dominios autorizados
- * - Módulos activos en el estudio
- * - Preguntas sugeridas
- */
+// Script para duplicar estudios
+// Funcionalidad: Duplica todos los datos del estudio actual con el título "[Título] - COPIA"
 
-// Función principal para duplicar el estudio
-async function duplicarEstudio() {
-    const studyId = sessionStorage.getItem('selectedStudyId');
-    const token = sessionStorage.getItem('token');
-    
-    if (!studyId || !token) {
-        alert('Error: No se encontró el ID del estudio o el token de autenticación.');
-        return;
-    }
-
-    console.log('Iniciando duplicación del estudio:', studyId);
-
-    try {
-        // Mostrar indicador de carga
-        const btnDuplicar = document.getElementById('DuplicarEstudioBtn');
-        const textoOriginal = btnDuplicar.textContent;
-        btnDuplicar.textContent = 'Duplicando...';
-        btnDuplicar.disabled = true;
-
-        // Obtener todos los datos del estudio actual
-        console.log('Obteniendo datos del estudio original...');
-        const studyData = await obtenerDatosEstudio(studyId, token);
-        console.log('Datos obtenidos:', studyData);
-        
-        // Crear el nuevo estudio
-        console.log('Creando nuevo estudio...');
-        const nuevoStudyId = await crearNuevoEstudio(studyData, token);
-        console.log('Nuevo estudio creado con ID:', nuevoStudyId);
-        
-        // Duplicar todos los componentes del estudio
-        console.log('Duplicando componentes...');
-        await duplicarComponentesEstudio(studyId, nuevoStudyId, token, studyData);
-        
-        // Mostrar mensaje de éxito
-        alert('Estudio duplicado exitosamente. El nuevo estudio se ha creado con el título: "' + studyData.titulo + ' - COPIA"');
-        
-        // Recargar la página para mostrar el nuevo estudio
-        location.reload();
-        
-    } catch (error) {
-        console.error('Error al duplicar el estudio:', error);
-        alert('Error al duplicar el estudio: ' + error.message);
-        
-        // Restaurar el botón
-        const btnDuplicar = document.getElementById('DuplicarEstudioBtn');
-        btnDuplicar.textContent = 'Duplicar Estudio';
-        btnDuplicar.disabled = false;
-    }
-}
-
-// Función para obtener todos los datos del estudio actual
-async function obtenerDatosEstudio(studyId, token) {
-    const studyData = {};
+function duplicateStudy() {
+    console.log('Iniciando proceso de duplicación de estudio...');
     
     try {
-        // Obtener datos básicos del estudio desde sessionStorage
-        const studyDataJSON = sessionStorage.getItem('selectedStudyData');
-        if (!studyDataJSON) {
-            throw new Error('No se encontraron datos del estudio en sessionStorage');
+        // Obtener los datos del estudio actual desde sessionStorage
+        const studyData = JSON.parse(sessionStorage.getItem('selectedStudyData'));
+        
+        if (!studyData) {
+            console.error('No se encontraron datos del estudio en sessionStorage');
+            alert('Error: No se encontraron datos del estudio para duplicar');
+            return;
         }
         
-        const sessionStudyData = JSON.parse(studyDataJSON);
-        console.log('Datos del estudio desde sessionStorage:', sessionStudyData);
+        console.log('Datos del estudio a duplicar:', studyData);
         
-        // 1. Información básica del estudio desde sessionStorage
-        studyData.titulo = sessionStudyData.title || 'Estudio sin título';
-        studyData.mercadoObjetivo = sessionStudyData.marketTarget || '';
-        studyData.objetivos = sessionStudyData.studyObjectives || '';
-        studyData.prompt = sessionStudyData.prompt || '';
+        // Crear el nuevo título con "- COPIA"
+        const newTitle = `${studyData.title} - COPIA`;
+        console.log('Nuevo título del estudio:', newTitle);
         
-        console.log('Datos extraídos de sessionStorage:');
-        console.log('- Título:', studyData.titulo);
-        console.log('- Mercado objetivo:', studyData.mercadoObjetivo);
-        console.log('- Objetivos:', studyData.objetivos);
-        console.log('- Prompt:', studyData.prompt);
-        
-        // Obtener colores desde la API (esto sí necesitamos llamar a la API)
-        try {
-            const infoResponse = await axios.get(`https://api.cheetah-research.ai/configuration/info_study/${studyId}`);
-            const info = infoResponse.data;
-            studyData.colorPrincipal = info.primary_color || '#FF6B35';
-            studyData.colorSecundario = info.secondary_color || '#004E89';
-        } catch (error) {
-            console.log('No se pudieron obtener los colores del estudio:', error.message);
-            studyData.colorPrincipal = '#FF6B35';
-            studyData.colorSecundario = '#004E89';
-        }
-        
-        // 2. Información del encuestador
-        try {
-            console.log('Obteniendo información del encuestador...');
-            const interviewerResponse = await axios.post('https://api.cheetah-research.ai/configuration/getInterviewer/', 
-                { study_id: studyId },
-                { headers: { 'Content-Type': 'multipart/form-data' } }
-            );
-            const interviewer = interviewerResponse.data;
-            console.log('Respuesta del encuestador:', interviewer);
-            
-            studyData.nombreEncuestador = interviewer.interviewerName || '';
-            studyData.tonoEncuestador = interviewer.interviewerTone || '';
-            studyData.observacionesImportantes = interviewer.importantObservation || '';
-            studyData.saludoEncuestador = interviewer.interviewerGreeting || '';
-            studyData.fotoEncuestador = interviewer.interviewerProfilePicture || null;
-            
-            console.log('Datos del encuestador extraídos:', {
-                nombre: studyData.nombreEncuestador,
-                tono: studyData.tonoEncuestador,
-                observaciones: studyData.observacionesImportantes,
-                saludo: studyData.saludoEncuestador,
-                tieneFoto: !!studyData.fotoEncuestador
-            });
-        } catch (error) {
-            console.log('No se encontró información del encuestador:', error.message);
-            if (error.response) {
-                console.log('Detalles del error:', error.response.data);
-            }
-        }
-        
-        // 3. Encuesta completa
-        try {
-            const surveyResponse = await axios.get(`https://api.cheetah-research.ai/configuration/get_survey/${studyId}`);
-            studyData.encuesta = surveyResponse.data || {};
-        } catch (error) {
-            console.log('No se encontró información de la encuesta:', error.message);
-        }
-        
-        // 4. Filtros del estudio
-        try {
-            const filtersResponse = await axios.get(`https://api.cheetah-research.ai/configuration/get_filters/${studyId}`);
-            studyData.filtros = filtersResponse.data || [];
-        } catch (error) {
-            console.log('No se encontraron filtros:', error.message);
-        }
-        
-        // 5. Dominios autorizados - Usar POST en lugar de GET
-        try {
-            const domainsResponse = await axios.post('https://api.cheetah-research.ai/configuration/api/get-list-domains/', {
-                study_id: studyId
-            });
-            studyData.dominios = domainsResponse.data || [];
-        } catch (error) {
-            console.log('No se encontraron dominios:', error.message);
-            studyData.dominios = [];
-        }
-        
-        // 6. Módulos activos
-        try {
-            const modulesResponse = await axios.get(`https://api.cheetah-research.ai/configuration/get_modules/${studyId}`);
-            studyData.modulos = modulesResponse.data || [];
-        } catch (error) {
-            console.log('No se encontraron módulos:', error.message);
-            studyData.modulos = [];
-        }
-        
-        // 7. Preguntas sugeridas
-        try {
-            const questionsResponse = await axios.get(`https://api.cheetah-research.ai/configuration/get_questions/${studyId}`);
-            studyData.preguntas = questionsResponse.data || [];
-        } catch (error) {
-            console.log('No se encontraron preguntas:', error.message);
-            studyData.preguntas = [];
-        }
-        
-        // 8. Preguntas por defecto - Omitir si no está disponible
-        try {
-            const defaultQuestionsResponse = await axios.get(`https://api.cheetah-research.ai/configuration/getDefaultQuestions/${studyId}`);
-            studyData.preguntasPorDefecto = defaultQuestionsResponse.data || [];
-        } catch (error) {
-            console.log('No se encontraron preguntas por defecto:', error.message);
-            studyData.preguntasPorDefecto = [];
-        }
-        
-            } catch (error) {
-            throw new Error('Error al obtener los datos del estudio: ' + error.message);
-        }
-        
-        console.log('Datos del estudio obtenidos exitosamente:', studyData);
-        return studyData;
-}
-
-// Función para crear el nuevo estudio
-async function crearNuevoEstudio(studyData, token) {
-    try {
-        const nuevoTitulo = studyData.titulo + ' - COPIA';
-        
-        // Validar que los campos requeridos no estén vacíos
-        if (!studyData.titulo || !studyData.mercadoObjetivo || !studyData.objetivos || !studyData.prompt) {
-            throw new Error('Todos los campos del estudio son requeridos');
-        }
-        
-        const data = {
-            title: nuevoTitulo,
-            target: studyData.mercadoObjetivo,
-            objective: studyData.objetivos,
+        // Preparar los datos para la API
+        const duplicateData = {
+            title: newTitle,
+            target: studyData.marketTarget,
+            objective: studyData.studyObjectives,
             prompt: studyData.prompt
         };
         
-        console.log('Datos para crear estudio:', data);
+        console.log('Datos preparados para duplicación:', duplicateData);
         
-        const response = await axios.post('https://api.cheetah-research.ai/configuration/createStudy/', data, {
+        // Obtener el token de autorización
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            console.error('No se encontró token de autorización');
+            alert('Error: No se encontró token de autorización');
+            return;
+        }
+        
+        // URL para crear el nuevo estudio
+        const url = 'https://api.cheetah-research.ai/configuration/createStudy/';
+        
+        console.log('Enviando solicitud de duplicación a:', url);
+        
+        // Hacer la solicitud POST para crear el estudio duplicado
+        axios.post(url, duplicateData, {
             headers: {
                 'Authorization': `Token ${token}`,
                 'Content-Type': 'application/json'
             }
+        })
+        .then(response => {
+            console.log('Estudio duplicado creado exitosamente:', response.data);
+            
+            // Obtener el ID del nuevo estudio
+            const newStudyId = response.data.study_id;
+            console.log('ID del nuevo estudio:', newStudyId);
+            
+            // Ahora configurar los colores del estudio duplicado
+            if (studyData.primary_color && studyData.secondary_color) {
+                console.log('Configurando colores del estudio duplicado...');
+                
+                const colorsUrl = `https://api.cheetah-research.ai/configuration/set_colors/${newStudyId}`;
+                const colorsData = new FormData();
+                colorsData.append('primary_color', studyData.primary_color);
+                colorsData.append('secondary_color', studyData.secondary_color);
+                
+                axios.post(colorsUrl, colorsData)
+                    .then(colorsResponse => {
+                        console.log('Colores configurados exitosamente:', colorsResponse.data);
+                        
+                        // Mostrar mensaje de éxito
+                        alert('¡Estudio duplicado exitosamente! Se han copiado todos los datos incluyendo los colores.');
+                        
+                        // Opcional: Redirigir al nuevo estudio o recargar la página
+                        // window.location.reload();
+                    })
+                    .catch(colorsError => {
+                        console.error('Error al configurar los colores:', colorsError);
+                        alert('Estudio duplicado pero hubo un problema al configurar los colores. Puedes configurarlos manualmente.');
+                    });
+            } else {
+                console.log('No se encontraron colores para copiar');
+                alert('¡Estudio duplicado exitosamente! Se han copiado todos los datos del estudio.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al crear el estudio duplicado:', error);
+            alert('Error al duplicar el estudio. Por favor, inténtalo de nuevo.');
         });
         
-        console.log('Respuesta de creación:', response.data);
-        
-        const nuevoStudyId = response.data.study_id;
-        
-        if (!nuevoStudyId) {
-            throw new Error('No se recibió ID del estudio creado');
-        }
-        
-        // Configurar colores del nuevo estudio
-        if (studyData.colorPrincipal || studyData.colorSecundario) {
-            try {
-                const colorData = new FormData();
-                if (studyData.colorPrincipal) colorData.append('primary_color', studyData.colorPrincipal);
-                if (studyData.colorSecundario) colorData.append('secondary_color', studyData.colorSecundario);
-                
-                await axios.post(`https://api.cheetah-research.ai/configuration/set_colors/${nuevoStudyId}`, colorData);
-                console.log('Colores configurados correctamente');
-            } catch (colorError) {
-                console.log('Error al configurar colores:', colorError.message);
-                // No fallar si los colores no se pueden configurar
-            }
-        }
-        
-        return nuevoStudyId;
-        
     } catch (error) {
-        console.error('Error detallado al crear estudio:', error.response?.data || error.message);
-        throw new Error('Error al crear el nuevo estudio: ' + (error.response?.data?.message || error.message));
+        console.error('Error en el proceso de duplicación:', error);
+        alert('Error inesperado al duplicar el estudio. Por favor, inténtalo de nuevo.');
     }
 }
 
-// Función para duplicar todos los componentes del estudio
-async function duplicarComponentesEstudio(studyIdOriginal, nuevoStudyId, token, studyData) {
-    try {
-        // 1. Duplicar encuestador
-        if (studyData.nombreEncuestador) {
-            try {
-                console.log('Duplicando encuestador:', studyData.nombreEncuestador);
-                console.log('Datos del encuestador a duplicar:', {
-                    nombre: studyData.nombreEncuestador,
-                    tono: studyData.tonoEncuestador,
-                    saludo: studyData.saludoEncuestador,
-                    observaciones: studyData.observacionesImportantes,
-                    nuevoStudyId: nuevoStudyId
-                });
-                
-                const interviewerData = new FormData();
-                interviewerData.append('interviewerName', studyData.nombreEncuestador);
-                interviewerData.append('interviewerTone', studyData.tonoEncuestador);
-                interviewerData.append('interviewerGreeting', studyData.saludoEncuestador);
-                interviewerData.append('importantObservation', studyData.observacionesImportantes);
-                interviewerData.append('study_id', nuevoStudyId);
-                
-                if (studyData.fotoEncuestador) {
-                    console.log('Procesando foto del encuestador...');
-                    // Convertir base64 a blob si es necesario
-                    if (typeof studyData.fotoEncuestador === 'string' && studyData.fotoEncuestador.startsWith('data:')) {
-                        const response = await fetch(studyData.fotoEncuestador);
-                        const blob = await response.blob();
-                        interviewerData.append('interviewerProfilePicture', blob, 'profile.jpg');
-                        console.log('Foto convertida de base64 a blob');
-                    } else {
-                        interviewerData.append('interviewerProfilePicture', studyData.fotoEncuestador);
-                        console.log('Foto agregada directamente');
-                    }
-                } else {
-                    console.log('No hay foto del encuestador para duplicar');
-                }
-                
-                console.log('Enviando datos del encuestador...');
-                const response = await axios.post('https://api.cheetah-research.ai/configuration/addInterviewer/', interviewerData, {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                });
-                console.log('Respuesta de creación del encuestador:', response.data);
-                console.log('Encuestador duplicado correctamente');
-            } catch (error) {
-                console.log('Error al duplicar encuestador:', error.message);
-                if (error.response) {
-                    console.log('Detalles del error del servidor:', {
-                        status: error.response.status,
-                        data: error.response.data,
-                        headers: error.response.headers
-                    });
-                }
-                // No fallar si no se puede duplicar el encuestador
-            }
-        }
-        
-        // 2. Duplicar encuesta
-        if (studyData.encuesta && Object.keys(studyData.encuesta).length > 0) {
-            try {
-                console.log('Duplicando encuesta...');
-                const surveyData = new FormData();
-                surveyData.append('questions', JSON.stringify(studyData.encuesta));
-                
-                await axios.post(`https://api.cheetah-research.ai/configuration/createQuestion/${nuevoStudyId}/`, surveyData, {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                });
-                console.log('Encuesta duplicada correctamente');
-            } catch (error) {
-                console.log('Error al duplicar encuesta:', error.message);
-                // No fallar si no se puede duplicar la encuesta
-            }
-        }
-        
-        // 3. Duplicar filtros
-        if (studyData.filtros && studyData.filtros.length > 0) {
-            try {
-                console.log('Duplicando filtros:', studyData.filtros);
-                const filtersData = new FormData();
-                filtersData.append('filters', JSON.stringify(studyData.filtros));
-                
-                await axios.post(`https://api.cheetah-research.ai/configuration/filters/${nuevoStudyId}`, filtersData);
-                console.log('Filtros duplicados correctamente');
-            } catch (error) {
-                console.log('Error al duplicar filtros:', error.message);
-                // No fallar si no se pueden duplicar los filtros
-            }
-        }
-        
-        // 4. Duplicar dominios autorizados
-        if (studyData.dominios && studyData.dominios.length > 0) {
-            console.log('Duplicando dominios:', studyData.dominios);
-            for (const dominio of studyData.dominios) {
-                try {
-                    const domainData = new FormData();
-                    domainData.append('domain', dominio);
-                    domainData.append('study_id', nuevoStudyId);
-                    
-                    await axios.post('https://api.cheetah-research.ai/configuration/api/add-domain/', domainData);
-                    console.log('Dominio duplicado:', dominio);
-                } catch (error) {
-                    console.log('Error al duplicar dominio:', dominio, error.message);
-                    // Continuar con el siguiente dominio
-                }
-            }
-        }
-        
-        // 5. Duplicar módulos activos
-        if (studyData.modulos && studyData.modulos.length > 0) {
-            try {
-                console.log('Duplicando módulos:', studyData.modulos);
-                const modulesData = new FormData();
-                modulesData.append('modules', JSON.stringify(studyData.modulos));
-                
-                await axios.post(`https://api.cheetah-research.ai/configuration/modules/${nuevoStudyId}`, modulesData);
-                console.log('Módulos duplicados correctamente');
-            } catch (error) {
-                console.log('Error al duplicar módulos:', error.message);
-                // No fallar si no se pueden duplicar los módulos
-            }
-        }
-        
-        // 6. Duplicar preguntas sugeridas
-        if (studyData.preguntas && studyData.preguntas.length > 0) {
-            try {
-                console.log('Duplicando preguntas sugeridas:', studyData.preguntas);
-                const suggestedQuestionsData = {
-                    suggested_questions: studyData.preguntas.map(q => ({
-                        question: q.question,
-                        status: q.status || 1
-                    }))
-                };
-                
-                await axios.post(`https://api.cheetah-research.ai/configuration/suggested_questions/${nuevoStudyId}`, suggestedQuestionsData, {
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                console.log('Preguntas sugeridas duplicadas correctamente');
-            } catch (error) {
-                console.log('Error al duplicar preguntas sugeridas:', error.message);
-                // No fallar si no se pueden duplicar las preguntas sugeridas
-            }
-        }
-        
-        // 7. Duplicar preguntas por defecto
-        if (studyData.preguntasPorDefecto && studyData.preguntasPorDefecto.length > 0) {
-            try {
-                console.log('Duplicando preguntas por defecto:', studyData.preguntasPorDefecto);
-                const defaultQuestionsData = {
-                    default_questions: studyData.preguntasPorDefecto.map(q => ({
-                        question: q.question,
-                        status: q.status || 1
-                    }))
-                };
-                
-                await axios.post(`https://api.cheetah-research.ai/configuration/updateDefaultQuestions/${nuevoStudyId}/`, defaultQuestionsData, {
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                console.log('Preguntas por defecto duplicadas correctamente');
-            } catch (error) {
-                console.log('Error al duplicar preguntas por defecto:', error.message);
-                // No fallar si no se pueden duplicar las preguntas por defecto
-            }
-        }
-        
-            } catch (error) {
-            throw new Error('Error al duplicar los componentes del estudio: ' + error.message);
-        }
-        
-        console.log('Todos los componentes del estudio han sido duplicados exitosamente');
-        
-        // Resumen de la duplicación
-        console.log('=== RESUMEN DE DUPLICACIÓN ===');
-        console.log('Estudio original ID:', studyIdOriginal);
-        console.log('Nuevo estudio ID:', nuevoStudyId);
-        console.log('Componentes duplicados:');
-        console.log('- Encuestador:', studyData.nombreEncuestador ? 'SÍ' : 'NO');
-        console.log('- Encuesta:', studyData.encuesta && Object.keys(studyData.encuesta).length > 0 ? 'SÍ' : 'NO');
-        console.log('- Filtros:', studyData.filtros && studyData.filtros.length > 0 ? 'SÍ' : 'NO');
-        console.log('- Dominios:', studyData.dominios && studyData.dominios.length > 0 ? 'SÍ' : 'NO');
-        console.log('- Módulos:', studyData.modulos && studyData.modulos.length > 0 ? 'SÍ' : 'NO');
-        console.log('- Preguntas sugeridas:', studyData.preguntas && studyData.preguntas.length > 0 ? 'SÍ' : 'NO');
-        console.log('- Preguntas por defecto:', studyData.preguntasPorDefecto && studyData.preguntasPorDefecto.length > 0 ? 'SÍ' : 'NO');
-        console.log('==============================');
+// Función para agregar el botón de duplicación al formulario
+function addDuplicateButton() {
+    console.log('Agregando botón de duplicación...');
+    
+    // Buscar el contenedor del formulario
+    const formContainer = document.getElementById('form-containerStudy');
+    
+    if (!formContainer) {
+        console.error('No se encontró el contenedor del formulario');
+        return;
     }
-
-// Agregar el event listener cuando se carga la página
-document.addEventListener('DOMContentLoaded', function() {
-    const btnDuplicar = document.getElementById('DuplicarEstudioBtn');
-    if (btnDuplicar) {
-        btnDuplicar.addEventListener('click', duplicarEstudio);
+    
+    // Verificar si el botón ya existe para evitar duplicados
+    if (document.getElementById('duplicateStudyBtn')) {
+        console.log('El botón de duplicación ya existe');
+        return;
     }
-});
+    
+    // Crear el botón de duplicación
+    const duplicateButton = document.createElement('div');
+    duplicateButton.className = 'mb-3';
+    duplicateButton.style.fontFamily = "'hedliner', sans-serif";
+    duplicateButton.style.textAlign = 'center';
+    
+    duplicateButton.innerHTML = `
+        <button class="btn btn-warning" id="duplicateStudyBtn" type="button" 
+                style="font-family: 'hedliner', sans-serif; font-weight: bold; border-radius: 13px; padding: 10px 20px; font-size: 18px;" 
+                data-i18n="CreacionDeEstudio.btDuplicate">
+            🔄 Duplicar Estudio
+        </button>
+    `;
+    
+    // Insertar el botón después del botón de actualizar
+    const updateButton = formContainer.querySelector('#UpdateEstudio');
+    if (updateButton) {
+        // Buscar el contenedor del botón de actualizar
+        const updateButtonContainer = updateButton.closest('.mb-3') || updateButton.parentNode;
+        updateButtonContainer.parentNode.insertBefore(duplicateButton, updateButtonContainer.nextSibling);
+        console.log('Botón de duplicación agregado después del botón de actualizar');
+    } else {
+        // Si no hay botón de actualizar, agregarlo al final del formulario
+        formContainer.appendChild(duplicateButton);
+        console.log('Botón de duplicación agregado al final del formulario');
+    }
+    
+    // Agregar el event listener al botón
+    document.getElementById('duplicateStudyBtn').addEventListener('click', duplicateStudy);
+    console.log('Event listener agregado al botón de duplicación');
+}
 
-// También agregar el event listener si el DOM ya está cargado
+// Función para inicializar la funcionalidad de duplicación
+function initDuplicateStudy() {
+    console.log('Inicializando funcionalidad de duplicación de estudios...');
+    
+    // Verificar si estamos en la página de información del estudio
+    if (window.location.href.includes('https://www.cheetah-research.ai/configuration/study/')) {
+        // Verificar si hay un estudio seleccionado (modo edición)
+        if (sessionStorage.getItem('selectedStudyId') != null) {
+            console.log('Estudio seleccionado encontrado, agregando botón de duplicación...');
+            
+            // Esperar a que el DOM esté completamente cargado y el formulario renderizado
+            const checkFormInterval = setInterval(() => {
+                const formContainer = document.getElementById('form-containerStudy');
+                const updateButton = document.getElementById('UpdateEstudio');
+                
+                if (formContainer && updateButton) {
+                    clearInterval(checkFormInterval);
+                    console.log('Formulario encontrado, agregando botón de duplicación...');
+                    addDuplicateButton();
+                }
+            }, 100);
+            
+            // Timeout de seguridad para evitar bucles infinitos
+            setTimeout(() => {
+                clearInterval(checkFormInterval);
+                console.log('Timeout alcanzado al buscar el formulario');
+            }, 10000);
+        } else {
+            console.log('No hay estudio seleccionado, no se agrega botón de duplicación');
+        }
+    } else {
+        console.log('No estamos en la página de estudio, no se agrega botón de duplicación');
+    }
+}
+
+// Inicializar cuando la página se carga
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-        const btnDuplicar = document.getElementById('DuplicarEstudioBtn');
-        if (btnDuplicar) {
-            btnDuplicar.addEventListener('click', duplicarEstudio);
-        }
-    });
+    document.addEventListener('DOMContentLoaded', initDuplicateStudy);
 } else {
-    const btnDuplicar = document.getElementById('DuplicarEstudioBtn');
-    if (btnDuplicar) {
-        btnDuplicar.addEventListener('click', duplicarEstudio);
-    }
+    // Si el DOM ya está cargado, esperar un poco más para asegurar que el formulario esté renderizado
+    setTimeout(initDuplicateStudy, 1000);
 }
