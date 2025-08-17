@@ -168,7 +168,7 @@ const translations = {
             optNarrative:"Narrativo", optFactual:"Factual", optPercentage:"Porcentual",
             optVisualGraphics:"Visualización grafica", optVisualText:"Visualización textual",
             btEdit:"Editar",                           btSave:"Guardar Cambios",              btExport:"Exportar",
-            btForceAnalysis:"Ejecutar Análisis",         btImport:"Importar Resultados",
+            btForceAnalysis:"Ejecutar Análisis",         btImport:"Importar Datos",
         },
         HerramientasDelAdministrador: {
             title: "Herramientas del Administrador",
