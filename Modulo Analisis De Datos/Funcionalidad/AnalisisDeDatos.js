@@ -6,7 +6,7 @@ let formData = new FormData();
 let markmapBlobUrl = null;
 
 
-import { splitMarkdown, generateCharts, splitMarkdownAndWrap } from './splitter copy.js';
+import { splitMarkdown, generateCharts, splitMarkdownAndWrap } from './splitter.js';
 
 function initializePage() {
     const study_id = new URLSearchParams(window.location.search).get('id');
