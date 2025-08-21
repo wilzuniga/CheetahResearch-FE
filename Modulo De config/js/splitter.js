@@ -91,42 +91,51 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
         if (compareSection) {
             // Modo 50/50: mitad izquierda = filtro 1, separador, mitad derecha = filtro 2
             const dividerLabel = ' ';
-            allLabels = [...primaryLabels, dividerLabel, ...compareLabels];
+            
+            // Ordenar Filtro 1 de mayor a menor
+            const sortedPrimary = [...section.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
+            const sortedPrimaryLabels = sortedPrimary.map(r => r.respuesta);
+            
+            // Ordenar Filtro 2 de mayor a menor
+            const sortedCompare = [...compareSection.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
+            const sortedCompareLabels = sortedCompare.map(r => r.respuesta);
+            
+            allLabels = [...sortedPrimaryLabels, dividerLabel, ...sortedCompareLabels];
 
-            const primaryValuesByLabel = new Map(section.respuestas.map(r => [r.respuesta, r.porcentaje]));
-            const compareValuesByLabel = new Map(compareSection.respuestas.map(r => [r.respuesta, r.porcentaje]));
+            const primaryValuesByLabel = new Map(sortedPrimary.map(r => [r.respuesta, r.porcentaje]));
+            const compareValuesByLabel = new Map(sortedCompare.map(r => [r.respuesta, r.porcentaje]));
 
             const primaryData = [
-                ...primaryLabels.map(label => primaryValuesByLabel.get(label) ?? 0),
+                ...sortedPrimaryLabels.map(label => primaryValuesByLabel.get(label) ?? 0),
                 0, // separador
-                ...compareLabels.map(() => 0)
+                ...sortedCompareLabels.map(() => 0)
             ];
             const compareDataVals = [
-                ...primaryLabels.map(() => 0),
+                ...sortedPrimaryLabels.map(() => 0),
                 0, // separador
-                ...compareLabels.map(label => compareValuesByLabel.get(label) ?? 0)
+                ...sortedCompareLabels.map(label => compareValuesByLabel.get(label) ?? 0)
             ];
 
             const primaryBg = [
-                ...primaryLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
+                ...sortedPrimaryLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
                 transparent,
-                ...compareLabels.map(() => transparent)
+                ...sortedCompareLabels.map(() => transparent)
             ];
             const primaryBorder = [
-                ...primaryLabels.map((_, i) => primaryColors[i % primaryColors.length]),
+                ...sortedPrimaryLabels.map((_, i) => primaryColors[i % primaryColors.length]),
                 transparent,
-                ...compareLabels.map(() => transparent)
+                ...sortedCompareLabels.map(() => transparent)
             ];
 
             const compareBg = [
-                ...primaryLabels.map(() => transparent),
+                ...sortedPrimaryLabels.map(() => transparent),
                 transparent,
-                ...compareLabels.map((_, i) => compareTranslucent[i % compareTranslucent.length])
+                ...sortedCompareLabels.map((_, i) => compareTranslucent[i % compareTranslucent.length])
             ];
             const compareBorder = [
-                ...primaryLabels.map(() => transparent),
+                ...sortedPrimaryLabels.map(() => transparent),
                 transparent,
-                ...compareLabels.map((_, i) => compareColors[i % compareColors.length])
+                ...sortedCompareLabels.map((_, i) => compareColors[i % compareColors.length])
             ];
 
             datasets = [
