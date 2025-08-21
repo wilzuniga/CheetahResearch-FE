@@ -74,7 +74,7 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
     primaryData.forEach((section, index) => {
         const ctx = document.getElementById(`chart${index}`).getContext('2d');
 
-        // Unificar etiquetas de respuestas entre ambos datasets
+        // Preparar etiquetas por sección
         const primaryLabels = section.respuestas.map(r => r.respuesta);
         // Prioridad 1: match por título de pregunta exacto
         let compareSection = compareMap.get(section.pregunta);
@@ -84,30 +84,79 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
         }
         const compareLabels = compareSection ? compareSection.respuestas.map(r => r.respuesta) : [];
 
-        const allLabelsSet = new Set([...primaryLabels, ...compareLabels]);
-        const allLabels = Array.from(allLabelsSet);
-
-        const primaryValuesByLabel = new Map(section.respuestas.map(r => [r.respuesta, r.porcentaje]));
-        const primaryValues = allLabels.map(label => primaryValuesByLabel.get(label) ?? 0);
-
-        let datasets = [{
-            label: primaryLabel,
-            data: primaryValues,
-            backgroundColor: allLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
-            borderColor: allLabels.map((_, i) => primaryColors[i % primaryColors.length]),
-            borderWidth: 1
-        }];
+        let allLabels = [];
+        let datasets = [];
+        const transparent = 'rgba(0,0,0,0)';
 
         if (compareSection) {
+            // Modo 50/50: mitad izquierda = filtro 1, separador, mitad derecha = filtro 2
+            const dividerLabel = ' ';
+            allLabels = [...primaryLabels, dividerLabel, ...compareLabels];
+
+            const primaryValuesByLabel = new Map(section.respuestas.map(r => [r.respuesta, r.porcentaje]));
             const compareValuesByLabel = new Map(compareSection.respuestas.map(r => [r.respuesta, r.porcentaje]));
-            const compareValues = allLabels.map(label => compareValuesByLabel.get(label) ?? 0);
-            datasets.push({
-                label: compareLabel,
-                data: compareValues,
-                backgroundColor: allLabels.map((_, i) => compareTranslucent[i % compareTranslucent.length]),
-                borderColor: allLabels.map((_, i) => compareColors[i % compareColors.length]),
+
+            const primaryData = [
+                ...primaryLabels.map(label => primaryValuesByLabel.get(label) ?? 0),
+                0, // separador
+                ...compareLabels.map(() => 0)
+            ];
+            const compareDataVals = [
+                ...primaryLabels.map(() => 0),
+                0, // separador
+                ...compareLabels.map(label => compareValuesByLabel.get(label) ?? 0)
+            ];
+
+            const primaryBg = [
+                ...primaryLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
+                transparent,
+                ...compareLabels.map(() => transparent)
+            ];
+            const primaryBorder = [
+                ...primaryLabels.map((_, i) => primaryColors[i % primaryColors.length]),
+                transparent,
+                ...compareLabels.map(() => transparent)
+            ];
+
+            const compareBg = [
+                ...primaryLabels.map(() => transparent),
+                transparent,
+                ...compareLabels.map((_, i) => compareTranslucent[i % compareTranslucent.length])
+            ];
+            const compareBorder = [
+                ...primaryLabels.map(() => transparent),
+                transparent,
+                ...compareLabels.map((_, i) => compareColors[i % compareColors.length])
+            ];
+
+            datasets = [
+                {
+                    label: primaryLabel,
+                    data: primaryData,
+                    backgroundColor: primaryBg,
+                    borderColor: primaryBorder,
+                    borderWidth: 1
+                },
+                {
+                    label: compareLabel || 'Comparación',
+                    data: compareDataVals,
+                    backgroundColor: compareBg,
+                    borderColor: compareBorder,
+                    borderWidth: 1
+                }
+            ];
+        } else {
+            // Modo normal sin comparación
+            allLabels = [...primaryLabels];
+            const primaryValuesByLabel = new Map(section.respuestas.map(r => [r.respuesta, r.porcentaje]));
+            const primaryValues = allLabels.map(label => primaryValuesByLabel.get(label) ?? 0);
+            datasets = [{
+                label: primaryLabel,
+                data: primaryValues,
+                backgroundColor: allLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
+                borderColor: allLabels.map((_, i) => primaryColors[i % primaryColors.length]),
                 borderWidth: 1
-            });
+            }];
         }
 
         new Chart(ctx, {
