@@ -28,7 +28,12 @@ export function splitMarkdown(markdownText) {
 
 // utils.js
 
-export function generateCharts(data, containerId = 'charts-containerResumenIndividualContent', chartPrefix = 'chart') {
+export function generateCharts(
+    data,
+    containerId = 'charts-containerResumenIndividualContent',
+    chartPrefix = 'chart',
+    comparison = null // { data: data2, filter1Name, filter2Name }
+) {
     const colors = [
         '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
         '#FFB74D', '#FFA726', '#D35400', '#FF6F00', '#F57C00', '#E64A19', '#FF8F00', '#FF5722'
@@ -50,30 +55,96 @@ export function generateCharts(data, containerId = 'charts-containerResumenIndiv
     // Insertar el HTML generado en el contenedor especificado
     const container = document.getElementById(containerId);
     if (container) {
+        // Destruir charts anteriores en este contenedor para evitar fugas y lentitud
+        if (!window.__crChartsByContainer) window.__crChartsByContainer = {};
+        if (window.__crChartsByContainer[containerId]) {
+            window.__crChartsByContainer[containerId].forEach(ch => {
+                try { ch.destroy(); } catch (e) {}
+            });
+        }
+        window.__crChartsByContainer[containerId] = [];
+
         container.innerHTML = chartsHTML; // Insertar todos los gráficos en el contenedor de una vez
 
         // Crear los gráficos después de insertar el HTML
         data.forEach((section, index) => {
             const ctx = document.getElementById(`${chartPrefix}${index}`).getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: section.respuestas.map(r => r.respuesta),
-                    datasets: [{
-                        data: section.respuestas.map(r => r.porcentaje),
-                        backgroundColor: section.respuestas.map((_, i) => translucentColors[i % translucentColors.length]),
-                        borderColor: section.respuestas.map((_, i) => colors[i % colors.length]), // Bordes sin transparencia
+
+            // Preparar labels y datasets (normal o con comparación)
+            let labels = section.respuestas.map(r => r.respuesta);
+            let datasetPrimaryValues = section.respuestas.map(r => r.porcentaje);
+            let datasets;
+
+            if (comparison && Array.isArray(comparison.data)) {
+                const compSection = comparison.data.find(s => s.pregunta === section.pregunta);
+                if (compSection) {
+                    // Construir labels como la unión de ambas listas
+                    const labelSet = new Set(labels);
+                    compSection.respuestas.forEach(r => labelSet.add(r.respuesta));
+                    labels = Array.from(labelSet);
+
+                    const primaryMap = new Map(section.respuestas.map(r => [r.respuesta, r.porcentaje]));
+                    const compMap = new Map(compSection.respuestas.map(r => [r.respuesta, r.porcentaje]));
+
+                    datasetPrimaryValues = labels.map(l => primaryMap.get(l) ?? 0);
+                    const datasetComparisonValues = labels.map(l => compMap.get(l) ?? 0);
+
+                    datasets = [
+                        {
+                            label: comparison.filter1Name || 'Filtro 1',
+                            data: datasetPrimaryValues,
+                            backgroundColor: labels.map((_, i) => translucentColors[i % translucentColors.length]),
+                            borderColor: labels.map((_, i) => colors[i % colors.length]),
+                            borderWidth: 2,
+                            borderRadius: 8,
+                            borderSkipped: false
+                        },
+                        {
+                            label: comparison.filter2Name || 'Filtro 2',
+                            data: datasetComparisonValues,
+                            backgroundColor: 'rgba(54, 162, 235, 0.35)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 2,
+                            borderRadius: 8,
+                            borderSkipped: false
+                        }
+                    ];
+                } else {
+                    // No hay sección equivalente en comparación; mostrar solo primaria
+                    datasets = [{
+                        data: datasetPrimaryValues,
+                        backgroundColor: labels.map((_, i) => translucentColors[i % translucentColors.length]),
+                        borderColor: labels.map((_, i) => colors[i % colors.length]),
                         borderWidth: 2,
                         borderRadius: 8,
                         borderSkipped: false
-                    }]
+                    }];
+                }
+            } else {
+                // Sin comparación
+                datasets = [{
+                    data: datasetPrimaryValues,
+                    backgroundColor: labels.map((_, i) => translucentColors[i % translucentColors.length]),
+                    borderColor: labels.map((_, i) => colors[i % colors.length]),
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderSkipped: false
+                }];
+            }
+
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            display: false
+                            display: !!(comparison && Array.isArray(comparison.data)),
+                            position: 'top'
                         }
                     },
                     scales: {
@@ -90,6 +161,8 @@ export function generateCharts(data, containerId = 'charts-containerResumenIndiv
                     }
                 }
             });
+
+            window.__crChartsByContainer[containerId].push(chart);
         });
         // console.log("Gráficos generados correctamente.");
     } else {
@@ -97,7 +170,7 @@ export function generateCharts(data, containerId = 'charts-containerResumenIndiv
     }
 }
 
-// Nueva función para generar gráficos de comparación
+// Nueva función para generar gráficos de comparación (ya no se usa contenedor separado)
 export function generateComparisonCharts(data1, data2, filter1Name, filter2Name) {
     const colors = [
         '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
