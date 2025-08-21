@@ -42,10 +42,11 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
     ];
     const compareTranslucent = compareColors.map(color => color + '90');
 
-    // Mapa para acceso rápido a secciones de comparación por pregunta
+    // Mapa para acceso rápido a secciones de comparación por pregunta y acceso por índice
     const compareMap = new Map();
-    if (Array.isArray(compareData)) {
-        compareData.forEach(section => {
+    let compareArray = Array.isArray(compareData) ? compareData : [];
+    if (compareArray.length > 0) {
+        compareArray.forEach(section => {
             compareMap.set(section.pregunta, section);
         });
     }
@@ -75,7 +76,12 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
 
         // Unificar etiquetas de respuestas entre ambos datasets
         const primaryLabels = section.respuestas.map(r => r.respuesta);
-        const compareSection = compareMap.get(section.pregunta);
+        // Prioridad 1: match por título de pregunta exacto
+        let compareSection = compareMap.get(section.pregunta);
+        // Prioridad 2: fallback por índice si no hay match por título
+        if (!compareSection && compareArray.length > index) {
+            compareSection = compareArray[index];
+        }
         const compareLabels = compareSection ? compareSection.respuestas.map(r => r.respuesta) : [];
 
         const allLabelsSet = new Set([...primaryLabels, ...compareLabels]);
