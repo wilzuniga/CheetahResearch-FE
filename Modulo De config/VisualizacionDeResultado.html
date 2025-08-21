@@ -617,22 +617,34 @@
                                                             <!-- Opciones se agregarán dinámicamente aquí -->
                                                         </select>
                                                     </div>
-                                            
+        
                                                     <!-- Botón para mostrar/ocultar el textarea -->
                                                     <button id="toggle-textarea_AP_Ekman" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
                                                     <button id="save-textarea_AP_Ekman" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
                                                     <button id="export_AP_Ekman" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
 
+                                                    <div>
+                                                        <label id="ComboBox_EKMAN_DSLBL" for="ComboBox_EKMAN_DS" style="font-family: hedliner;">Selecciona visualizacion:</label>
+                                                        <select id="ComboBox_EKMAN_DS" style="font-family: hedliner;">
+                                                            <option value="---">---</option>
+                                                            <option value="individual_Cat" data-i18n="VisualizacionDeResultado.optVisualGraphics">Visualización grafica</option>
+                                                            <option value="percentage_nonCat" data-i18n="VisualizacionDeResultado.optVisualText">Visualización textual</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label id="ComboBox_EKMAN_CompareLBL" for="ComboBox_EKMAN_Compare" style="font-family: hedliner; display: none;">Comparar con:</label>
+                                                        <select id="ComboBox_EKMAN_Compare" style="font-family: hedliner; display: none;"></select>
+                                                    </div>
                                                 </div>
                                                 
                                                 <!-- Contenedor para el textarea y el contenido del Análisis Psicográfico -->
                                                 <div style="display: flex; gap: 20px;">
                                                     <!-- Textarea -->
                                                     <textarea id="EKMANTextArea" style="flex: 1;"></textarea>
-                                            
+        
                                                     <!-- Contenido del Análisis Psicográfico -->
-                                                    <div class="Content-Divs" id="EKMANContent" style="flex: 1;">
-                                                    </div>
+                                                    <div class="Content-Divs" id="EKMANContent" style="flex: 1;"></div>
+                                                    <div id="charts-containerEKMAN" style="flex: 1; display: none;"></div>
                                                 </div>
                                             </div>
                                             
@@ -649,23 +661,34 @@
                                                             <!-- Las opciones se agregarán dinámicamente aquí -->
                                                         </select>
                                                     </div>
-                                            
+        
                                                     <!-- Botón para mostrar/ocultar el textarea -->
                                                     <button id="toggle-textarea_AP_RasgosDePersonalidad" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
                                                     <button id="save-textarea_AP_RasgosDePersonalidad" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
                                                     <button id="export_AP_RasgosDePersonalidad" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
 
-
+                                                    <div>
+                                                        <label id="ComboBox_RP_DSLBL" for="ComboBox_RP_DS" style="font-family: hedliner;">Selecciona visualizacion:</label>
+                                                        <select id="ComboBox_RP_DS" style="font-family: hedliner;">
+                                                            <option value="---">---</option>
+                                                            <option value="individual_Cat" data-i18n="VisualizacionDeResultado.optVisualGraphics">Visualización grafica</option>
+                                                            <option value="percentage_nonCat" data-i18n="VisualizacionDeResultado.optVisualText">Visualización textual</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label id="ComboBox_RP_CompareLBL" for="ComboBox_RP_Compare" style="font-family: hedliner; display: none;">Comparar con:</label>
+                                                        <select id="ComboBox_RP_Compare" style="font-family: hedliner; display: none;"></select>
+                                                    </div>
                                                 </div>
                                                 
                                                 <!-- Contenedor para el textarea y el contenido del análisis -->
                                                 <div style="display: flex; gap: 20px;">
                                                     <!-- Textarea -->
                                                     <textarea id="RasgosDePersonalidadTextArea" style="flex: 1;"></textarea>
-                                            
+        
                                                     <!-- Contenido del análisis de rasgos de personalidad -->
-                                                    <div class="Content-Divs" id="RasgosDePersonalidadContent" style="flex: 1;">
-                                                    </div>
+                                                    <div class="Content-Divs" id="RasgosDePersonalidadContent" style="flex: 1;"></div>
+                                                    <div id="charts-containerRP" style="flex: 1; display: none;"></div>
                                                 </div>
                                             </div>
                                             
@@ -683,23 +706,34 @@
                                                             <!-- Las opciones se agregarán dinámicamente aquí -->
                                                         </select>
                                                     </div>
-                                            
+        
                                                     <!-- Botón para mostrar/ocultar el textarea -->
                                                     <button id="toggle-textarea_AP_SegmentosPsicograficos" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
                                                     <button id="save-textarea_AP_SegmentosPsicograficos" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
                                                     <button id="export_AP_SegmentosPsicograficos" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
 
-
+                                                    <div>
+                                                        <label id="ComboBox_SP_DSLBL" for="ComboBox_SP_DS" style="font-family: hedliner;">Selecciona visualizacion:</label>
+                                                        <select id="ComboBox_SP_DS" style="font-family: hedliner;">
+                                                            <option value="---">---</option>
+                                                            <option value="individual_Cat" data-i18n="VisualizacionDeResultado.optVisualGraphics">Visualización grafica</option>
+                                                            <option value="percentage_nonCat" data-i18n="VisualizacionDeResultado.optVisualText">Visualización textual</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label id="ComboBox_SP_CompareLBL" for="ComboBox_SP_Compare" style="font-family: hedliner; display: none;">Comparar con:</label>
+                                                        <select id="ComboBox_SP_Compare" style="font-family: hedliner; display: none;"></select>
+                                                    </div>
                                                 </div>
                                                 
                                                 <!-- Contenedor para el textarea y el contenido del análisis -->
                                                 <div style="display: flex; gap: 20px;">
                                                     <!-- Textarea -->
                                                     <textarea id="SegmentosPsicograficosTextArea" style="flex: 1;"></textarea>
-                                            
+        
                                                     <!-- Contenido del análisis de segmentos psicográficos -->
-                                                    <div class="Content-Divs" id="SegmentosPsicograficosContent" style="flex: 1;">
-                                                    </div>
+                                                    <div class="Content-Divs" id="SegmentosPsicograficosContent" style="flex: 1;"></div>
+                                                    <div id="charts-containerSP" style="flex: 1; display: none;"></div>
                                                 </div>
                                             </div>
                                             
@@ -717,22 +751,34 @@
                                                             <!-- Opciones se agregarán dinámicamente aquí -->
                                                         </select>
                                                     </div>
-                                            
+        
                                                     <!-- Botón para mostrar/ocultar el textarea -->
                                                     <button id="toggle-textarea_AP_EstiloDeComunicacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
                                                     <button id="save-textarea_AP_EstiloDeComunicacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
                                                     <button id="export_AP_EstiloDeComunicacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
 
+                                                    <div>
+                                                        <label id="ComboBox_EC_DSLBL" for="ComboBox_EC_DS" style="font-family: hedliner;">Selecciona visualizacion:</label>
+                                                        <select id="ComboBox_EC_DS" style="font-family: hedliner;">
+                                                            <option value="---">---</option>
+                                                            <option value="individual_Cat" data-i18n="VisualizacionDeResultado.optVisualGraphics">Visualización grafica</option>
+                                                            <option value="percentage_nonCat" data-i18n="VisualizacionDeResultado.optVisualText">Visualización textual</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label id="ComboBox_EC_CompareLBL" for="ComboBox_EC_Compare" style="font-family: hedliner; display: none;">Comparar con:</label>
+                                                        <select id="ComboBox_EC_Compare" style="font-family: hedliner; display: none;"></select>
+                                                    </div>
                                                 </div>
-                                            
+        
                                                 <!-- Contenedor para el textarea y el contenido del análisis -->
                                                 <div style="display: flex; gap: 20px;">
                                                     <!-- Textarea -->
                                                     <textarea id="EstiloDeComunicacionTextArea" style="flex: 1;"></textarea>
-                                            
+        
                                                     <!-- Contenido del análisis de estilo de comunicación -->
-                                                    <div class="Content-Divs" id="EstiloDeComunicacionContent" style="flex: 1;">
-                                                    </div>
+                                                    <div class="Content-Divs" id="EstiloDeComunicacionContent" style="flex: 1;"></div>
+                                                    <div id="charts-containerEC" style="flex: 1; display: none;"></div>
                                                 </div>
                                             </div>
                                             
