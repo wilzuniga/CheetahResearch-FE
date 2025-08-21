@@ -255,28 +255,28 @@ function AgregarModulos(study) {
             ClimaLaboralBtn.style.display = 'none';
 
             ActiveModules.forEach(modulo => {
-                if (modulo === 'Módulo de Análisis General') {
+                if (modulo === 'Módulo de Análisis General' || modulo === 'Modulo de Analisis General') {
                     ResumenGeneralBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo de Análisis Individual') {
+                if (modulo === 'Módulo de Análisis Individual' || modulo === 'Modulo de Analisis Individual') {
                     ResumenIndividualBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo de User Personas') {
+                if (modulo === 'Módulo de User Personas' || modulo === 'Modulo de User Personas') {
                     UserPersonaBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo de Análisis Psicográficos') {
+                if (modulo === 'Módulo de Análisis Psicográficos' || modulo === 'Modulo de Analisis Psicograficos') {
                     AnalisisPsicograficosBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo Customer Experience') {
+                if (modulo === 'Módulo Customer Experience' || modulo === 'Modulo Customer Experience') {
                     CustomerEcperienceBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo NPS y Satisfacción') {
+                if (modulo === 'Módulo NPS y Satisfacción' || modulo === 'Modulo NPS y Satisfaccion') {
                     NPSySatisfaccionBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo Brand Status') {
+                if (modulo === 'Módulo Brand Status' || modulo === 'Modulo Brand Status') {
                     BrandStatusBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo Clima Laboral') {
+                if (modulo === 'Módulo Clima Laboral' || modulo === 'Modulo Clima Laboral') {
                     ClimaLaboralBtn.style.display = 'block';
                 }
             });
@@ -467,7 +467,7 @@ function LLenarResumenes(study) {
                 formData.append('filter', selectedValue);
                 formData.append('module', 'individual_questions');
                 formData.append('sub_module', StyleSelectedOption.value);
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
                 try {
                     const primaryResp = await axios.post(url, formData);
                     let data = primaryResp.data;
