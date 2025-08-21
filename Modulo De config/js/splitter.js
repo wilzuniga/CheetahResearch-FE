@@ -28,7 +28,7 @@ export function splitMarkdown(markdownText) {
 
 // utils.js
 
-export function generateCharts(primaryData, compareData = null, primaryLabel = 'Filtro 1', compareLabel = 'Filtro 2', containerId = 'charts-containerResumenIndividualContent') {
+export function generateCharts(primaryData, compareData = null, primaryLabel = 'Filtro 1', compareLabel = 'Filtro 2') {
     const primaryColors = [
         '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
         '#FFB74D', '#FFA726', '#D35400', '#FF6F00', '#F57C00', '#E64A19', '#FF8F00', '#FF5722'
@@ -63,7 +63,7 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
         `;
     });
 
-    const container = document.getElementById(containerId);
+    const container = document.getElementById('charts-containerResumenIndividualContent');
     if (!container) {
         console.error("El contenedor de gráficos no se encontró.");
         return;
@@ -179,9 +179,7 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                         max: 100
                     },
                     x: {
-                        display: false,
-                        ticks: { display: false },
-                        grid: { display: false }
+                        display: true
                     }
                 }
             }
