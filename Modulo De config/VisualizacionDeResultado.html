@@ -37,71 +37,6 @@
             }
         }  
         
-        /* Estilos para el layout responsive de gráficos */
-        .chart-box {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            padding: 15px;
-            transition: all 0.3s ease;
-        }
-        
-        .chart-box:hover {
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-            transform: translateY(-2px);
-        }
-        
-        .chart-box h3 {
-            color: var(--bs-CR-orange);
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        
-        /* Layout responsive para contenedores de gráficos */
-        @media (max-width: 1200px) {
-            .chart-container {
-                flex-direction: column;
-            }
-            
-            .chart-container > div {
-                min-width: 100% !important;
-                margin-bottom: 20px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .chart-box {
-                padding: 10px;
-                margin-bottom: 15px;
-            }
-            
-            .chart-box h3 {
-                font-size: 1rem;
-            }
-        }
-        
-        /* Estilos para el botón de limpiar comparación */
-        #clear-comparison {
-            transition: all 0.3s ease;
-        }
-        
-        #clear-comparison:hover {
-            background-color: #c82333 !important;
-            transform: scale(1.1);
-        }
-        
-        /* Mejoras para el contenedor de comparación */
-        #comparison-filter-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        #comparison-filter-container label {
-            white-space: nowrap;
-        }
 
     </style>
 
@@ -301,37 +236,29 @@
                                             <option value="percentage_nonCat" data-i18n="VisualizacionDeResultado.optVisualText">Visualización textual</option>
                                         </select>
                                     </div>
-                                    
+
                                     <!-- Combobox para comparar con otro filtro -->
-                                    <div id="comparison-filter-container" style="display: none;">
-                                        <label for="ComboBox_ResumenIndividualComparison" style="font-family: hedliner;">Comparar con filtro:</label>
-                                        <select id="ComboBox_ResumenIndividualComparison" style="font-family: hedliner;">
-                                            <option value="---">---</option>
+                                    <div>
+                                        <label id="ComboBox_ResumenIndividualCompareLBL" for="ComboBox_ResumenIndividual_Compare" style="font-family: hedliner; display: none;">Comparar con:</label>
+                                        <select id="ComboBox_ResumenIndividual_Compare" style="font-family: hedliner; display: none;">
                                             <!-- Opciones se agregarán dinámicamente aquí -->
                                         </select>
-                                        <button id="clear-comparison" style="margin-left: 10px; padding: 5px 10px; border-radius: 5px; background-color: #dc3545; color: white; border: none; cursor: pointer;" title="Limpiar comparación">✕</button>
                                     </div>
                                 </div>
 
                                 
                                 <!-- Contenedor para el textarea y el resumen individual -->
-                                <div class="chart-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                                <div style="display: flex; gap: 20px;">
 
                                     <!-- Textarea -->
-                                    <textarea id="ResumenIndividualTextArea" style="flex: 1; min-width: 300px;">
+                                    <textarea id="ResumenIndividualTextArea" style="flex: 1;">
                                     </textarea>
                                 
                                     <!-- Contenido del resumen individual -->
-                                    <div class="Content-Divs" id="ResumenIndividualContent" style="flex: 1; min-width: 300px;">
+                                    <div class="Content-Divs" id="ResumenIndividualContent" style="flex: 1;">
                                     </div>
 
-                                    <!-- Contenedor de gráficos principal -->
-                                    <div id="charts-containerResumenIndividualContent" style="flex: 1; min-width: 300px;">
-                                    </div>
-                                    
-                                    <!-- Contenedor de gráficos para comparación -->
-                                    <div id="charts-containerComparisonContent" style="flex: 1; min-width: 300px; display: none;">
-                                        <h4 style="text-align: center; margin-bottom: 20px; color: var(--bs-CR-orange);">Comparación</h4>
+                                    <div id="charts-containerResumenIndividualContent" style="flex: 1;">
                                     </div>
                                 </div>
                             </div>
