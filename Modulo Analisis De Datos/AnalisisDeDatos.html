@@ -182,15 +182,7 @@
                                                 <!-- Opciones se agregarán dinámicamente aquí -->
                                             </select>
 
-                                            <select id="ComboBox_ResumenIndividual_SubFiltro" style="font-family: hedliner; display: none;">
-                                                <option value="---">---</option>
-                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
-                                                <option value="2024-Oct">2024-Oct</option>
-                                                <option value="2024-Nov">2024-Nov</option>
-                                                <option value="2024-Dic">2024-Dic</option>
-                                                <option value="2025-Ene">2025-Ene</option>
-                                                <option value="2025-Feb">2025-Feb</option>
-                                            </select>
+                                           
                                         </div>
                                     
                           
@@ -198,16 +190,24 @@
                                     </div>
 
                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                                        <!-- Combobox para seleccionar display style -->
-                                        <div>
-                                            <label id="ComboBox_ResumenIndividualDSLBL" for="ComboBox_ResumenIndividualDS" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectVisual">Selecciona visualizacion:</label>
-                                            <select id="ComboBox_ResumenIndividualDS" style="font-family: hedliner;">
-                                                <option value="---">---</option>
-                                                <option value="individual_Cat" data-i18n="AnalisisDeDatos.optVisualGraphics">Visualización grafica</option>
-                                                <option value="percentage_nonCat" data-i18n="AnalisisDeDatos.optVisualText">Visualización textual</option>
-                                            </select>
-                                        </div>
+                                    <!-- Combobox para seleccionar display style -->
+                                    <div>
+                                        <label id="ComboBox_ResumenIndividualDSLBL" for="ComboBox_ResumenIndividualDS" style="font-family: hedliner;" data-i18n="VisualizacionDeResultado.sSelectVisual">Selecciona visualizacion:</label>
+                                        <select id="ComboBox_ResumenIndividualDS" style="font-family: hedliner;">
+                                            <option value="---">---</option>
+                                            <option value="individual_Cat" data-i18n="VisualizacionDeResultado.optVisualGraphics">Visualización grafica</option>
+                                            <option value="percentage_nonCat" data-i18n="VisualizacionDeResultado.optVisualText">Visualización textual</option>
+                                        </select>
                                     </div>
+
+                                    <!-- Combobox para comparar con otro filtro -->
+                                    <div>
+                                        <label id="ComboBox_ResumenIndividualCompareLBL" for="ComboBox_ResumenIndividual_Compare" style="font-family: hedliner; display: none;">Comparar con:</label>
+                                        <select id="ComboBox_ResumenIndividual_Compare" style="font-family: hedliner; display: none;">
+                                            <!-- Opciones se agregarán dinámicamente aquí -->
+                                        </select>
+                                    </div>
+                                </div>
                                     
                                     
                                         <!-- Contenido del resumen individual -->

@@ -447,46 +447,99 @@ function LLenarResumenes(study) {
     
 
 
-    //Resumen Individual
-    const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
-    
-    comboBoxRI.addEventListener('change', (event) => {
-        const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
-        var div = document.getElementById('ResumenIndividualContent');
-        const selectedValue = event.target.value;
-        const subFilterValue = document.getElementById('ComboBox_ResumenIndividual_SubFiltro').value;
+//Resumen Individual
+            //lenar el div con el resumen general y agregar el event listener al combobox con id ComboBox_ResumenIndividual
+            const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+            const comboBoxRICompare = document.getElementById('ComboBox_ResumenIndividual_Compare');
+            
+            comboBoxRI.addEventListener('change', async (event) => {
+                // console.log(event.target.value);
 
-        formData = new FormData();
-        if (study === '67e2ac1b5bd042898764458a') {
-            formData.append('filter', `${selectedValue} ${subFilterValue}`);
-        } else {
-            formData.append('filter', selectedValue);
-        }
-        formData.append('module', 'individual_questions');
-        formData.append('sub_module', StyleSelectedOption.value);
-        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
-        axios.post(url, formData)
-            .then(function (response) {
-                var data = response.data;
-                if (!data.startsWith("#")) {
-                    data = data.substring(data.indexOf("#"));
-                    data = data.substring(0, data.length - 3);
+                const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
+                const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+
+                var div = document.getElementById('ResumenIndividualContent');
+                var textArea = document.getElementById('ResumenIndividualTextArea');
+                var graphs = document.getElementById('charts-containerResumenIndividualContent');
+                // Supongamos que `event.target.value` es el valor del combobox
+                const selectedValue = event.target.value; //el filtro seleccionado
+                formData = new FormData();
+                formData.append('filter', selectedValue);
+                formData.append('module', 'individual_questions');
+                formData.append('sub_module', StyleSelectedOption.value);
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
+                try {
+                    const primaryResp = await axios.post(url, formData);
+                    let data = primaryResp.data;
+                    if (!data.startsWith("#")) {
+                        data = data.substring(data.indexOf("#"));
+                        data = data.substring(0, data.length - 3);
+                    }
+                    const coso = marked(data);
+                    div.innerHTML = coso;
+                    textArea.value = data;
+                    // Generar gráficos siempre que la visualización seleccionada sea gráfica.
+                    const displaySelect = document.getElementById('ComboBox_ResumenIndividualDS');
+                    if (displaySelect && displaySelect.value === 'individual_Cat') {
+                        // Solicitar SIEMPRE el sub_module 'percentage' para gráficos, independiente del estilo narrativo/textual mostrado
+                        const formDataGraph = new FormData();
+                        formDataGraph.append('filter', selectedValue);
+                        formDataGraph.append('module', 'individual_questions');
+                        formDataGraph.append('sub_module', 'percentage');
+
+                        let graphDta = [];
+                        try {
+                            const graphResp = await axios.post(url, formDataGraph);
+                            let dataG = graphResp.data;
+                            if (!dataG.startsWith("#")) {
+                                dataG = dataG.substring(dataG.indexOf("#"));
+                                dataG = dataG.substring(0, dataG.length - 3);
+                            }
+                            graphDta = splitMarkdown(dataG);
+                        } catch (e) {
+                            console.error('Error al obtener datos para gráficos:', e);
+                        }
+
+                        // Intentar cargar comparación si hay un filtro elegido distinto al principal
+                        let compareGraphData = null;
+                        const compareValue = compareSelect ? compareSelect.value : null;
+                        if (compareValue && compareValue !== 'Seleccionar filtro' && compareValue !== selectedValue) {
+                            const formDataCompare = new FormData();
+                            formDataCompare.append('filter', compareValue);
+                            formDataCompare.append('module', 'individual_questions');
+                            formDataCompare.append('sub_module', 'percentage');
+                            try {
+                                const compareResp = await axios.post(url, formDataCompare);
+                                let dataC = compareResp.data;
+                                if (!dataC.startsWith("#")) {
+                                    dataC = dataC.substring(dataC.indexOf("#"));
+                                    dataC = dataC.substring(0, dataC.length - 3);
+                                }
+                                compareGraphData = splitMarkdown(dataC);
+                            } catch (e) {
+                                console.error('Error al obtener datos de comparación:', e);
+                            }
+                        }
+
+                        generateCharts(graphDta, compareGraphData, selectedValue, compareValue || '');
+                    }
+                } catch (error) {
+                    div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                    console.log(error);
+                } finally {
+                    // always executed
                 }
-                const coso = splitMarkdownAndWrap(data);                          
-                div.innerHTML = coso.join('<hr>');       
-                let graphDta = splitMarkdown(data);    
-                generateCharts(graphDta);               
-                // console.log(data);
-            })
-            .catch(function (error) {
-                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
             });
-    });
 
+            // Si cambia el filtro de comparación, volver a disparar el render con el valor actual del principal
+            if (comboBoxRICompare) {
+                comboBoxRICompare.addEventListener('change', function () {
+                    const currentMain = comboBoxRI.value;
+                    if (currentMain && currentMain !== 'Seleccionar filtro') {
+                        comboBoxRI.dispatchEvent(new Event('change'));
+                    }
+                });
+            }
 
     //Analisis Psicograficos, no tienen narrativo ni factual. Solo filtros
     const comboBoxUP = document.getElementById('Combobox_UserPersona');
