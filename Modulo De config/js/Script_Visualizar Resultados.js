@@ -61,6 +61,110 @@ function generateMarkmapHTML(content , filter) {
     }
 }
 
+// Helper: ensure DS/Compare controls and chart container for a module
+function ensureGraphControls(moduleKey, exportButtonId, contentDivId, containerId, dsSelectId, compareSelectId, compareLabelId) {
+	const exportBtn = document.getElementById(exportButtonId);
+	if (!exportBtn) return;
+	const row = exportBtn.parentElement; // controls row
+	if (!document.getElementById(dsSelectId)) {
+		const dsWrap = document.createElement('div');
+		const dsLbl = document.createElement('label');
+		dsLbl.id = `${dsSelectId}LBL`;
+		dsLbl.htmlFor = dsSelectId;
+		dsLbl.style.fontFamily = 'hedliner';
+		dsLbl.textContent = 'Selecciona visualizacion:';
+		const dsSel = document.createElement('select');
+		dsSel.id = dsSelectId;
+		dsSel.style.fontFamily = 'hedliner';
+		dsSel.innerHTML = '<option value="---">---</option><option value="individual_Cat">Visualización grafica</option><option value="percentage_nonCat">Visualización textual</option>';
+		dsWrap.appendChild(dsLbl);
+		dsWrap.appendChild(dsSel);
+		row.appendChild(dsWrap);
+	}
+	if (!document.getElementById(compareSelectId)) {
+		const cmpWrap = document.createElement('div');
+		const cmpLbl = document.createElement('label');
+		cmpLbl.id = compareLabelId;
+		cmpLbl.htmlFor = compareSelectId;
+		cmpLbl.style.fontFamily = 'hedliner';
+		cmpLbl.style.display = 'none';
+		cmpLbl.textContent = 'Comparar con:';
+		const cmpSel = document.createElement('select');
+		cmpSel.id = compareSelectId;
+		cmpSel.style.fontFamily = 'hedliner';
+		cmpSel.style.display = 'none';
+		cmpWrap.appendChild(cmpLbl);
+		cmpWrap.appendChild(cmpSel);
+		row.appendChild(cmpWrap);
+	}
+	const contentDiv = document.getElementById(contentDivId);
+	const containerExists = document.getElementById(containerId);
+	if (contentDiv && !containerExists) {
+		const container = document.createElement('div');
+		container.id = containerId;
+		container.style.flex = '1';
+		contentDiv.parentElement.appendChild(container);
+	}
+}
+
+// Helper: toggle visibility between content and chart for a module
+function wireDSBehavior(dsSelectId, compareSelectId, compareLabelId, contentDivId, containerId, onRender) {
+	const dsSel = document.getElementById(dsSelectId);
+	const cmpSel = document.getElementById(compareSelectId);
+	const cmpLbl = document.getElementById(compareLabelId);
+	const contentDiv = document.getElementById(contentDivId);
+	const container = document.getElementById(containerId);
+	if (!dsSel || !contentDiv || !container) return;
+	dsSel.addEventListener('change', function() {
+		if (this.value === 'individual_Cat') {
+			container.style.display = 'block';
+			contentDiv.style.display = 'none';
+			if (cmpSel && cmpLbl) { cmpSel.style.display = 'inline-block'; cmpLbl.style.display = 'inline-block'; }
+			onRender();
+		} else if (this.value === 'percentage_nonCat') {
+			container.style.display = 'none';
+			contentDiv.style.display = 'block';
+			if (cmpSel && cmpLbl) { cmpSel.style.display = 'none'; cmpLbl.style.display = 'none'; }
+		} else {
+			container.style.display = 'none';
+			contentDiv.style.display = 'none';
+			if (cmpSel && cmpLbl) { cmpSel.style.display = 'none'; cmpLbl.style.display = 'none'; }
+		}
+	});
+	if (cmpSel) {
+		cmpSel.addEventListener('change', function() { onRender(); });
+	}
+}
+
+// Helper: render charts for a module using its module/sub_module
+async function renderModuleCharts(moduleName, subModule, mainFilter, compareFilter, containerId, primaryLabel, compareLabel) {
+	const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
+	const formPrimary = new FormData();
+	formPrimary.append('filter', mainFilter);
+	formPrimary.append('module', moduleName);
+	if (subModule) formPrimary.append('sub_module', subModule);
+	let primaryData = [];
+	try {
+		const resp = await axios.post(url, formPrimary);
+		let md = resp.data;
+		if (!md.startsWith('#')) { md = md.substring(md.indexOf('#')); md = md.substring(0, md.length - 3); }
+		primaryData = splitMarkdown(md);
+	} catch (e) { console.error('Error primary charts', e); }
+	let compareData = null;
+	if (compareFilter && compareFilter !== 'Seleccionar filtro' && compareFilter !== mainFilter) {
+		const formCmp = new FormData();
+		formCmp.append('filter', compareFilter);
+		formCmp.append('module', moduleName);
+		if (subModule) formCmp.append('sub_module', subModule);
+		try {
+			const respC = await axios.post(url, formCmp);
+			let mdC = respC.data;
+			if (!mdC.startsWith('#')) { mdC = mdC.substring(mdC.indexOf('#')); mdC = mdC.substring(0, mdC.length - 3); }
+			compareData = splitMarkdown(mdC);
+		} catch (e) { console.error('Error compare charts', e); }
+	}
+	generateCharts(primaryData, compareData, primaryLabel, compareLabel || '', containerId);
+}
 
 function AgregarFiltros() {
     const url = "https://api.cheetah-research.ai/configuration/get_filters/" + sessionStorage.getItem('selectedStudyId');
@@ -95,10 +199,15 @@ function AgregarFiltros() {
             const comboBox11 = document.getElementById('Combobox_ClimaLaboral');
             const comboBox12 = document.getElementById('Combobox_BrandStrenght');
             const comboBox13 = document.getElementById('Combobox_BrandEquity');
+            const comboBoxEKCompare = document.getElementById('ComboBox_EKMAN_Compare');
+            const comboBoxRPCompare = document.getElementById('ComboBox_RP_Compare');
+            const comboBoxSPCompare = document.getElementById('ComboBox_SP_Compare');
+            const comboBoxECCompare = document.getElementById('ComboBox_EC_Compare');
+            const comboBoxSATCompare = document.getElementById('ComboBox_SAT_Compare');
+            const comboBoxNPSCompare = document.getElementById('ComboBox_NPS_Compare');
 
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
-            if (comboBoxRICompare) comboBoxRICompare.innerHTML = '';
             comboBox3.innerHTML = '';
             comboBoxUA.innerHTML = '';
             comboBox4.innerHTML = '';
@@ -111,6 +220,13 @@ function AgregarFiltros() {
             comboBox11.innerHTML = '';
             comboBox12.innerHTML = '';
             comboBox13.innerHTML = '';
+            if (comboBoxRICompare) comboBoxRICompare.innerHTML = '';
+            if (comboBoxEKCompare) comboBoxEKCompare.innerHTML = '';
+            if (comboBoxRPCompare) comboBoxRPCompare.innerHTML = '';
+            if (comboBoxSPCompare) comboBoxSPCompare.innerHTML = '';
+            if (comboBoxECCompare) comboBoxECCompare.innerHTML = '';
+            if (comboBoxSATCompare) comboBoxSATCompare.innerHTML = '';
+            if (comboBoxNPSCompare) comboBoxNPSCompare.innerHTML = '';
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -119,7 +235,6 @@ function AgregarFiltros() {
             option.text = optionText;
             comboBox.appendChild(option);
             comboBox2.appendChild(option.cloneNode(true));
-            if (comboBoxRICompare) comboBoxRICompare.appendChild(option.cloneNode(true));
             comboBox3.appendChild(option.cloneNode(true));
             comboBoxUA.appendChild(option.cloneNode(true));
             comboBox4.appendChild(option.cloneNode(true));
@@ -132,6 +247,13 @@ function AgregarFiltros() {
             comboBox11.appendChild(option.cloneNode(true));
             comboBox12.appendChild(option.cloneNode(true));
             comboBox13.appendChild(option.cloneNode(true));
+            if (comboBoxRICompare) comboBoxRICompare.appendChild(option.cloneNode(true));
+            if (comboBoxEKCompare) comboBoxEKCompare.appendChild(option.cloneNode(true));
+            if (comboBoxRPCompare) comboBoxRPCompare.appendChild(option.cloneNode(true));
+            if (comboBoxSPCompare) comboBoxSPCompare.appendChild(option.cloneNode(true));
+            if (comboBoxECCompare) comboBoxECCompare.appendChild(option.cloneNode(true));
+            if (comboBoxSATCompare) comboBoxSATCompare.appendChild(option.cloneNode(true));
+            if (comboBoxNPSCompare) comboBoxNPSCompare.appendChild(option.cloneNode(true));
 
         });
         }
@@ -742,6 +864,14 @@ function LLenarResumenes(){
             const comboBoxBS = document.getElementById('Combobox_BrandStrenght');
             const comboBoxBE = document.getElementById('Combobox_BrandEquity');
 
+            // Create DS/Compare and containers for modules
+            ensureGraphControls('ekman', 'export_AP_Ekman', 'EKMANContent', 'charts-containerEKMAN', 'ComboBox_EKMAN_DS', 'ComboBox_EKMAN_Compare', 'ComboBox_EKMAN_CompareLBL');
+            ensureGraphControls('personality', 'export_AP_RasgosDePersonalidad', 'RasgosDePersonalidadContent', 'charts-containerRP', 'ComboBox_RP_DS', 'ComboBox_RP_Compare', 'ComboBox_RP_CompareLBL');
+            ensureGraphControls('segmentos', 'export_AP_SegmentosPsicograficos', 'SegmentosPsicograficosContent', 'charts-containerSP', 'ComboBox_SP_DS', 'ComboBox_SP_Compare', 'ComboBox_SP_CompareLBL');
+            ensureGraphControls('estilo', 'export_AP_EstiloDeComunicacion', 'EstiloDeComunicacionContent', 'charts-containerEC', 'ComboBox_EC_DS', 'ComboBox_EC_Compare', 'ComboBox_EC_CompareLBL');
+            ensureGraphControls('customer_satisfaction', 'export_AP_Satisfaccion', 'SatisfaccionContent', 'charts-containerSAT', 'ComboBox_SAT_DS', 'ComboBox_SAT_Compare', 'ComboBox_SAT_CompareLBL');
+            ensureGraphControls('nps', 'export_AP_NPS', 'NPSContent', 'charts-containerNPS', 'ComboBox_NPS_DS', 'ComboBox_NPS_Compare', 'ComboBox_NPS_CompareLBL');
+
             //User Persona, perfecto
             comboBoxUP.addEventListener('change', (event) => {
                 //Llenar el user persona de la misma fotma que se llenan los anteriores 
@@ -854,6 +984,20 @@ function LLenarResumenes(){
                         // always executed
                     });
 
+                // Render charts if graphical
+                const dsSel = document.getElementById('ComboBox_EKMAN_DS');
+                const cmpSel = document.getElementById('ComboBox_EKMAN_Compare');
+                if (dsSel && dsSel.value === 'individual_Cat') {
+                    renderModuleCharts('psicographic_questions', 'ekman', event.target.value, cmpSel ? cmpSel.value : null, 'charts-containerEKMAN', event.target.value, cmpSel ? cmpSel.value : '');
+                }
+            });
+
+            wireDSBehavior('ComboBox_EKMAN_DS', 'ComboBox_EKMAN_Compare', 'ComboBox_EKMAN_CompareLBL', 'EKMANContent', 'charts-containerEKMAN', () => {
+                const main = comboBoxEK.value;
+                const cmp = (document.getElementById('ComboBox_EKMAN_Compare') || {}).value;
+                if (main && main !== 'Seleccionar filtro') {
+                    renderModuleCharts('psicographic_questions', 'ekman', main, cmp, 'charts-containerEKMAN', main, cmp || '');
+                }
             });
 
             //Rasgos de personalidad, perfecto
@@ -893,6 +1037,19 @@ function LLenarResumenes(){
                     .then(function () {
                         // always executed
                     });
+
+                const dsSel = document.getElementById('ComboBox_RP_DS');
+                const cmpSel = document.getElementById('ComboBox_RP_Compare');
+                if (dsSel && dsSel.value === 'individual_Cat') {
+                    renderModuleCharts('psicographic_questions', 'personality', event.target.value, cmpSel ? cmpSel.value : null, 'charts-containerRP', event.target.value, cmpSel ? cmpSel.value : '');
+                }
+            });
+
+            wireDSBehavior('ComboBox_RP_DS', 'ComboBox_RP_Compare', 'ComboBox_RP_CompareLBL', 'RasgosDePersonalidadContent', 'charts-containerRP', () => {
+                const main = comboBoxRP.value; const cmp = (document.getElementById('ComboBox_RP_Compare')||{}).value;
+                if (main && main !== 'Seleccionar filtro') {
+                    renderModuleCharts('psicographic_questions', 'personality', main, cmp, 'charts-containerRP', main, cmp || '');
+                }
             });
 
             //Segmentos Psicograficos, perfecto
@@ -931,6 +1088,13 @@ function LLenarResumenes(){
                     });            }
             );
 
+            wireDSBehavior('ComboBox_SP_DS', 'ComboBox_SP_Compare', 'ComboBox_SP_CompareLBL', 'SegmentosPsicograficosContent', 'charts-containerSP', () => {
+                const main = comboBoxSP.value; const cmp = (document.getElementById('ComboBox_SP_Compare')||{}).value;
+                if (main && main !== 'Seleccionar filtro') {
+                    renderModuleCharts('psicographic_questions', 'segmentos', main, cmp, 'charts-containerSP', main, cmp || '');
+                }
+            });
+
             //NPS, perfecto
             comboBoxNPS.addEventListener('change', (event) => {
                 // console.log(event.target.value);
@@ -965,6 +1129,13 @@ function LLenarResumenes(){
                         // always executed
 
                     });
+
+                wireDSBehavior('ComboBox_NPS_DS', 'ComboBox_NPS_Compare', 'ComboBox_NPS_CompareLBL', 'NPSContent', 'charts-containerNPS', () => {
+                    const main = comboBoxNPS.value; const cmp = (document.getElementById('ComboBox_NPS_Compare')||{}).value;
+                    if (main && main !== 'Seleccionar filtro') {
+                        renderModuleCharts('psicographic_questions', 'nps', main, cmp, 'charts-containerNPS', main, cmp || '');
+                    }
+                });
             });
 
             //satisfaccion, Perfecto 
@@ -1001,6 +1172,13 @@ function LLenarResumenes(){
                     .then(function () {
                         // always executed
                     });
+
+                wireDSBehavior('ComboBox_SAT_DS', 'ComboBox_SAT_Compare', 'ComboBox_SAT_CompareLBL', 'SatisfaccionContent', 'charts-containerSAT', () => {
+                    const main = comboBoxSat.value; const cmp = (document.getElementById('ComboBox_SAT_Compare')||{}).value;
+                    if (main && main !== 'Seleccionar filtro') {
+                        renderModuleCharts('psicographic_questions', 'customer_satisfaction', main, cmp, 'charts-containerSAT', main, cmp || '');
+                    }
+                });
             });
             
 
@@ -1038,6 +1216,19 @@ function LLenarResumenes(){
                     .then(function () {
                         // always executed
                     });
+
+                const dsSel = document.getElementById('ComboBox_EC_DS');
+                const cmpSel = document.getElementById('ComboBox_EC_Compare');
+                if (dsSel && dsSel.value === 'individual_Cat') {
+                    renderModuleCharts('psicographic_questions', 'estilo', event.target.value, cmpSel ? cmpSel.value : null, 'charts-containerEC', event.target.value, cmpSel ? cmpSel.value : '');
+                }
+            });
+
+            wireDSBehavior('ComboBox_EC_DS', 'ComboBox_EC_Compare', 'ComboBox_EC_CompareLBL', 'EstiloDeComunicacionContent', 'charts-containerEC', () => {
+                const main = comboBoxEC.value; const cmp = (document.getElementById('ComboBox_EC_Compare')||{}).value;
+                if (main && main !== 'Seleccionar filtro') {
+                    renderModuleCharts('psicographic_questions', 'estilo', main, cmp, 'charts-containerEC', main, cmp || '');
+                }
             });
 
 
