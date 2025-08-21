@@ -28,9 +28,6 @@ export function splitMarkdown(markdownText) {
 
 // utils.js
 
-
-// utils.js
-
 export function generateCharts(primaryData, compareData = null, primaryLabel = 'Filtro 1', compareLabel = 'Filtro 2') {
     const primaryColors = [
         '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
@@ -190,3 +187,52 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
     });
 }
 
+export function splitMarkdownAndWrap(markdownText) {
+
+    //si el texto tiene un '---' al final, lo elimina
+    if (markdownText.endsWith('---')) {
+      markdownText = markdownText.slice(0, -3);
+    }
+
+    // Separa el texto markdown usando '---' como delimitador
+    const sections = markdownText.split('---').map(section => section.trim());
+    
+    const processedSections = sections.map((section, index) => {
+      // Convierte la sección a HTML usando marked
+      const html = marked(section);
+      
+      // Si es la primera sección (encabezado) o la última (conclusiones),
+      // se muestra completa sin toggle
+      if (index === 0 || index === sections.length - 1) {
+        return html;
+      }
+      
+      // Crea un contenedor temporal para manipular el HTML
+      const container = document.createElement('div');
+      container.innerHTML = html;
+      
+      // Verifica que el HTML tenga al menos un elemento
+      if (container.children.length > 0) {
+        // Extrae el primer elemento como resumen
+        const summaryElement = container.children[0].outerHTML;
+        
+        // El resto de los elementos se juntan como contenido adicional
+        const remainingContent = Array.from(container.children)
+          .slice(1)
+          .map(child => child.outerHTML)
+          .join('');
+        
+        // Envuelve todo en un elemento <details> para habilitar el toggle
+        return `<details>
+          <summary>${summaryElement}</summary>
+          ${remainingContent}
+        </details>`;
+      }
+      
+      // Si no se encontró ningún elemento, retorna el HTML tal cual
+      return html;
+    });
+    
+    return processedSections;
+  }
+  
