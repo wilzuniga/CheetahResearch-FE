@@ -313,6 +313,8 @@ function AgregarFiltros(study) {
 
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');
             const comboBox2 = document.getElementById('ComboBox_ResumenIndividual');
+            const comboBoxRICompare = document.getElementById('ComboBox_ResumenIndividual_Compare');
+            const comboBoxRICompareLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
             const comboBox3 = document.getElementById('Combobox_UserPersona');
             const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBox4 = document.getElementById('Combobox_EKMAN');
@@ -329,6 +331,7 @@ function AgregarFiltros(study) {
 
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
+            if (comboBoxRICompare) comboBoxRICompare.innerHTML = '';
             comboBox3.innerHTML = '';
             comboBox4.innerHTML = '';
             comboBox5.innerHTML = '';
@@ -349,6 +352,7 @@ function AgregarFiltros(study) {
             option.text = optionText;
             comboBox.appendChild(option);
             comboBox2.appendChild(option.cloneNode(true));
+            if (comboBoxRICompare) comboBoxRICompare.appendChild(option.cloneNode(true));
             comboBox3.appendChild(option.cloneNode(true));
             comboBox4.appendChild(option.cloneNode(true));
             comboBox5.appendChild(option.cloneNode(true));
@@ -449,8 +453,9 @@ function LLenarResumenes(study) {
 
     //Resumen Individual
     const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+    const comboBoxRICompare = document.getElementById('ComboBox_ResumenIndividual_Compare');
     
-    comboBoxRI.addEventListener('change', (event) => {
+    comboBoxRI.addEventListener('change', async (event) => {
         const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
         var div = document.getElementById('ResumenIndividualContent');
         const selectedValue = event.target.value;
@@ -465,27 +470,70 @@ function LLenarResumenes(study) {
         formData.append('module', 'individual_questions');
         formData.append('sub_module', StyleSelectedOption.value);
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
-        axios.post(url, formData)
-            .then(function (response) {
-                var data = response.data;
-                if (!data.startsWith("#")) {
-                    data = data.substring(data.indexOf("#"));
-                    data = data.substring(0, data.length - 3);
+
+        try {
+            const resp = await axios.post(url, formData);
+            let data = resp.data;
+            if (!data.startsWith("#")) {
+                data = data.substring(data.indexOf("#"));
+                data = data.substring(0, data.length - 3);
+            }
+            const coso = splitMarkdownAndWrap(data);
+            div.innerHTML = coso.join('<hr>');
+
+            // Gráfica: solicitar siempre percentage para la visualización
+            const displaySelect = document.getElementById('ComboBox_ResumenIndividualDS');
+            if (displaySelect && displaySelect.value === 'individual_Cat') {
+                const formDataGraph = new FormData();
+                formDataGraph.append('filter', study === '67e2ac1b5bd042898764458a' ? `${selectedValue} ${subFilterValue}` : selectedValue);
+                formDataGraph.append('module', 'individual_questions');
+                formDataGraph.append('sub_module', 'percentage');
+
+                let primaryGraph = [];
+                try {
+                    const graphResp = await axios.post(url, formDataGraph);
+                    let g = graphResp.data;
+                    if (!g.startsWith("#")) {
+                        g = g.substring(g.indexOf("#"));
+                        g = g.substring(0, g.length - 3);
+                    }
+                    primaryGraph = splitMarkdown(g);
+                } catch (e) { console.error(e); }
+
+                // Comparación
+                let compareGraph = null;
+                const compareValue = comboBoxRICompare ? comboBoxRICompare.value : null;
+                if (compareValue && compareValue !== 'Seleccionar filtro' && compareValue !== selectedValue) {
+                    const formDataCompare = new FormData();
+                    formDataCompare.append('filter', study === '67e2ac1b5bd042898764458a' ? `${compareValue} ${subFilterValue}` : compareValue);
+                    formDataCompare.append('module', 'individual_questions');
+                    formDataCompare.append('sub_module', 'percentage');
+                    try {
+                        const compResp = await axios.post(url, formDataCompare);
+                        let c = compResp.data;
+                        if (!c.startsWith("#")) {
+                            c = c.substring(c.indexOf("#"));
+                            c = c.substring(0, c.length - 3);
+                        }
+                        compareGraph = splitMarkdown(c);
+                    } catch (e) { console.error(e); }
                 }
-                const coso = splitMarkdownAndWrap(data);                          
-                div.innerHTML = coso.join('<hr>');       
-                let graphDta = splitMarkdown(data);    
-                generateCharts(graphDta);               
-                // console.log(data);
-            })
-            .catch(function (error) {
-                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
-            });
+                generateCharts(primaryGraph, compareGraph, selectedValue, compareValue || '');
+            }
+        } catch (error) {
+            div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+            console.log(error);
+        }
     });
+
+    // Re-render al cambiar el comparador
+    if (comboBoxRICompare) {
+        comboBoxRICompare.addEventListener('change', function () {
+            if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+                comboBoxRI.dispatchEvent(new Event('change'));
+            }
+        });
+    }
 
 
     //Analisis Psicograficos, no tienen narrativo ni factual. Solo filtros
@@ -969,6 +1017,9 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
     const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
     const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
     const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
+    const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+    const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+    const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
 
     // Condicional para manejar la visualización
     if (selectedValue === 'individual_Cat') {
@@ -976,16 +1027,31 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
         chartsContainerResumenIndividual.style.display = 'block';
         resumenIndividualContent.style.display = 'none';
         resumenIndividualTextArea.style.display = 'none';
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'inline-block';
+            compareSelectLBL.style.display = 'inline-block';
+        }
+        if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+            comboBoxRI.dispatchEvent(new Event('change'));
+        }
     } else if (selectedValue === 'percentage_nonCat') {
         // Mostrar el contenido y ocultar el contenedor de charts
         chartsContainerResumenIndividual.style.display = 'none';
         resumenIndividualContent.style.display = 'block';
         resumenIndividualTextArea.style.display = 'none';
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'none';
+            compareSelectLBL.style.display = 'none';
+        }
     } else {
         // Si no se selecciona ninguna opción válida, ocultar todo
         chartsContainerResumenIndividual.style.display = 'none';
         resumenIndividualContent.style.display = 'none';
         resumenIndividualTextArea.style.display = 'none';
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'none';
+            compareSelectLBL.style.display = 'none';
+        }
     }
 });
 
@@ -998,6 +1064,10 @@ document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change
     if (selectedValue === 'percentage') {
         comboBoxResumenIndividualDS.style.display = 'block';
         comboBoxResumenIndividualDSLBL.style.display = 'block';
+        if (comboBoxResumenIndividualDS.value !== 'individual_Cat') {
+            comboBoxResumenIndividualDS.value = 'individual_Cat';
+            comboBoxResumenIndividualDS.dispatchEvent(new Event('change'));
+        }
     } else {
         comboBoxResumenIndividualDS.style.display = 'none';
         comboBoxResumenIndividualDSLBL.style.display = 'none';
