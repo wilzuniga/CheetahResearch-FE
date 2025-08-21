@@ -6,7 +6,7 @@ let formData = new FormData();
 let markmapBlobUrl = null;
 
 
-import { splitMarkdown, generateCharts, splitMarkdownAndWrap } from './splitter.js';
+import { splitMarkdown, generateCharts, splitMarkdownAndWrap } from './splitter copy.js';
 
 function initializePage() {
     const study_id = new URLSearchParams(window.location.search).get('id');
@@ -255,28 +255,28 @@ function AgregarModulos(study) {
             ClimaLaboralBtn.style.display = 'none';
 
             ActiveModules.forEach(modulo => {
-                if (modulo === 'Módulo de Análisis General' || modulo === 'Modulo de Analisis General') {
+                if (modulo === 'Módulo de Análisis General') {
                     ResumenGeneralBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo de Análisis Individual' || modulo === 'Modulo de Analisis Individual') {
+                if (modulo === 'Módulo de Análisis Individual') {
                     ResumenIndividualBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo de User Personas' || modulo === 'Modulo de User Personas') {
+                if (modulo === 'Módulo de User Personas') {
                     UserPersonaBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo de Análisis Psicográficos' || modulo === 'Modulo de Analisis Psicograficos') {
+                if (modulo === 'Módulo de Análisis Psicográficos') {
                     AnalisisPsicograficosBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo Customer Experience' || modulo === 'Modulo Customer Experience') {
+                if (modulo === 'Módulo Customer Experience') {
                     CustomerEcperienceBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo NPS y Satisfacción' || modulo === 'Modulo NPS y Satisfaccion') {
+                if (modulo === 'Módulo NPS y Satisfacción') {
                     NPSySatisfaccionBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo Brand Status' || modulo === 'Modulo Brand Status') {
+                if (modulo === 'Módulo Brand Status') {
                     BrandStatusBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo Clima Laboral' || modulo === 'Modulo Clima Laboral') {
+                if (modulo === 'Módulo Clima Laboral') {
                     ClimaLaboralBtn.style.display = 'block';
                 }
             });
@@ -313,6 +313,8 @@ function AgregarFiltros(study) {
 
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');
             const comboBox2 = document.getElementById('ComboBox_ResumenIndividual');
+            const comboBoxRICompare = document.getElementById('ComboBox_ResumenIndividual_Compare');
+            const comboBoxRICompareLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
             const comboBox3 = document.getElementById('Combobox_UserPersona');
             const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBox4 = document.getElementById('Combobox_EKMAN');
@@ -329,6 +331,7 @@ function AgregarFiltros(study) {
 
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
+            if (comboBoxRICompare) comboBoxRICompare.innerHTML = '';
             comboBox3.innerHTML = '';
             comboBox4.innerHTML = '';
             comboBox5.innerHTML = '';
@@ -349,6 +352,7 @@ function AgregarFiltros(study) {
             option.text = optionText;
             comboBox.appendChild(option);
             comboBox2.appendChild(option.cloneNode(true));
+            if (comboBoxRICompare) comboBoxRICompare.appendChild(option.cloneNode(true));
             comboBox3.appendChild(option.cloneNode(true));
             comboBox4.appendChild(option.cloneNode(true));
             comboBox5.appendChild(option.cloneNode(true));
@@ -447,97 +451,90 @@ function LLenarResumenes(study) {
     
 
 
-//Resumen Individual
-            //lenar el div con el resumen general y agregar el event listener al combobox con id ComboBox_ResumenIndividual
-            const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
-            const comboBoxRICompare = document.getElementById('ComboBox_ResumenIndividual_Compare');
-            
-            comboBoxRI.addEventListener('change', async (event) => {
-                // console.log(event.target.value);
+    //Resumen Individual
+    const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+    const comboBoxRICompare = document.getElementById('ComboBox_ResumenIndividual_Compare');
+    
+    comboBoxRI.addEventListener('change', async (event) => {
+        const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
+        var div = document.getElementById('ResumenIndividualContent');
+        const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_ResumenIndividual_SubFiltro').value;
 
-                const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
-                const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+        formData = new FormData();
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
+        formData.append('module', 'individual_questions');
+        formData.append('sub_module', StyleSelectedOption.value);
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
 
-                var div = document.getElementById('ResumenIndividualContent');
-                var graphs = document.getElementById('charts-containerResumenIndividualContent');
-                // Supongamos que `event.target.value` es el valor del combobox
-                const selectedValue = event.target.value; //el filtro seleccionado
-                formData = new FormData();
-                formData.append('filter', selectedValue);
-                formData.append('module', 'individual_questions');
-                formData.append('sub_module', StyleSelectedOption.value);
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
-                try {
-                    const primaryResp = await axios.post(url, formData);
-                    let data = primaryResp.data;
-                    if (!data.startsWith("#")) {
-                        data = data.substring(data.indexOf("#"));
-                        data = data.substring(0, data.length - 3);
-                    }
-                    const coso = marked(data);
-                    div.innerHTML = coso;
-                    // Generar gráficos siempre que la visualización seleccionada sea gráfica.
-                    const displaySelect = document.getElementById('ComboBox_ResumenIndividualDS');
-                    if (displaySelect && displaySelect.value === 'individual_Cat') {
-                        // Solicitar SIEMPRE el sub_module 'percentage' para gráficos, independiente del estilo narrativo/textual mostrado
-                        const formDataGraph = new FormData();
-                        formDataGraph.append('filter', selectedValue);
-                        formDataGraph.append('module', 'individual_questions');
-                        formDataGraph.append('sub_module', 'percentage');
-
-                        let graphDta = [];
-                        try {
-                            const graphResp = await axios.post(url, formDataGraph);
-                            let dataG = graphResp.data;
-                            if (!dataG.startsWith("#")) {
-                                dataG = dataG.substring(dataG.indexOf("#"));
-                                dataG = dataG.substring(0, dataG.length - 3);
-                            }
-                            graphDta = splitMarkdown(dataG);
-                        } catch (e) {
-                            console.error('Error al obtener datos para gráficos:', e);
-                        }
-
-                        // Intentar cargar comparación si hay un filtro elegido distinto al principal
-                        let compareGraphData = null;
-                        const compareValue = compareSelect ? compareSelect.value : null;
-                        if (compareValue && compareValue !== 'Seleccionar filtro' && compareValue !== selectedValue) {
-                            const formDataCompare = new FormData();
-                            formDataCompare.append('filter', compareValue);
-                            formDataCompare.append('module', 'individual_questions');
-                            formDataCompare.append('sub_module', 'percentage');
-                            try {
-                                const compareResp = await axios.post(url, formDataCompare);
-                                let dataC = compareResp.data;
-                                if (!dataC.startsWith("#")) {
-                                    dataC = dataC.substring(dataC.indexOf("#"));
-                                    dataC = dataC.substring(0, dataC.length - 3);
-                                }
-                                compareGraphData = splitMarkdown(dataC);
-                            } catch (e) {
-                                console.error('Error al obtener datos de comparación:', e);
-                            }
-                        }
-
-                        generateCharts(graphDta, compareGraphData, selectedValue, compareValue || '');
-                    }
-                } catch (error) {
-                    div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                    console.log(error);
-                } finally {
-                    // always executed
-                }
-            });
-
-            // Si cambia el filtro de comparación, volver a disparar el render con el valor actual del principal
-            if (comboBoxRICompare) {
-                comboBoxRICompare.addEventListener('change', function () {
-                    const currentMain = comboBoxRI.value;
-                    if (currentMain && currentMain !== 'Seleccionar filtro') {
-                        comboBoxRI.dispatchEvent(new Event('change'));
-                    }
-                });
+        try {
+            const resp = await axios.post(url, formData);
+            let data = resp.data;
+            if (!data.startsWith("#")) {
+                data = data.substring(data.indexOf("#"));
+                data = data.substring(0, data.length - 3);
             }
+            const coso = splitMarkdownAndWrap(data);
+            div.innerHTML = coso.join('<hr>');
+
+            // Gráfica: solicitar siempre percentage para la visualización
+            const displaySelect = document.getElementById('ComboBox_ResumenIndividualDS');
+            if (displaySelect && displaySelect.value === 'individual_Cat') {
+                const formDataGraph = new FormData();
+                formDataGraph.append('filter', study === '67e2ac1b5bd042898764458a' ? `${selectedValue} ${subFilterValue}` : selectedValue);
+                formDataGraph.append('module', 'individual_questions');
+                formDataGraph.append('sub_module', 'percentage');
+
+                let primaryGraph = [];
+                try {
+                    const graphResp = await axios.post(url, formDataGraph);
+                    let g = graphResp.data;
+                    if (!g.startsWith("#")) {
+                        g = g.substring(g.indexOf("#"));
+                        g = g.substring(0, g.length - 3);
+                    }
+                    primaryGraph = splitMarkdown(g);
+                } catch (e) { console.error(e); }
+
+                // Comparación
+                let compareGraph = null;
+                const compareValue = comboBoxRICompare ? comboBoxRICompare.value : null;
+                if (compareValue && compareValue !== 'Seleccionar filtro' && compareValue !== selectedValue) {
+                    const formDataCompare = new FormData();
+                    formDataCompare.append('filter', study === '67e2ac1b5bd042898764458a' ? `${compareValue} ${subFilterValue}` : compareValue);
+                    formDataCompare.append('module', 'individual_questions');
+                    formDataCompare.append('sub_module', 'percentage');
+                    try {
+                        const compResp = await axios.post(url, formDataCompare);
+                        let c = compResp.data;
+                        if (!c.startsWith("#")) {
+                            c = c.substring(c.indexOf("#"));
+                            c = c.substring(0, c.length - 3);
+                        }
+                        compareGraph = splitMarkdown(c);
+                    } catch (e) { console.error(e); }
+                }
+                generateCharts(primaryGraph, compareGraph, selectedValue, compareValue || '');
+            }
+        } catch (error) {
+            div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+            console.log(error);
+        }
+    });
+
+    // Re-render al cambiar el comparador
+    if (comboBoxRICompare) {
+        comboBoxRICompare.addEventListener('change', function () {
+            if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+                comboBoxRI.dispatchEvent(new Event('change'));
+            }
+        });
+    }
+
 
     //Analisis Psicograficos, no tienen narrativo ni factual. Solo filtros
     const comboBoxUP = document.getElementById('Combobox_UserPersona');
@@ -568,9 +565,9 @@ function LLenarResumenes(study) {
 
         formData = new FormData();     
         if (study === '67e2ac1b5bd042898764458a') {
-            const subFiltroEl = document.getElementById('ComboBox_UserPersona_SubFiltro');
-            const subFilterValue = subFiltroEl ? subFiltroEl.value : '';
-            formData.append('filter', subFilterValue ? `${selectedValue} ${subFilterValue}` : selectedValue);
+                    const subFilterValue = document.getElementById('ComboBox_UserPersona_SubFiltro').value;
+
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
         } else {
             formData.append('filter', selectedValue);
         }
@@ -897,7 +894,7 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);                          
                 div.innerHTML = coso;   
-                if (textArea) { textArea.value = data; }                   
+                textArea.value = data;                   
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -935,7 +932,7 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);                          
                 div.innerHTML = coso;   
-                if (textArea) { textArea.value = data; }                   
+                textArea.value = data;                   
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -1013,48 +1010,71 @@ function LLenarResumenes(study) {
 }
 
 
-const resumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
-if (resumenIndividualDS) {
-    resumenIndividualDS.addEventListener('change', function(event) {
-        const selectedValue = event.target.value; // Obtiene el valor seleccionado
+document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change', function(event) {
+    const selectedValue = event.target.value; // Obtiene el valor seleccionado
 
-        // Elementos a mostrar/ocultar
-        const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
-        const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
-        const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
+    // Elementos a mostrar/ocultar
+    const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
+    const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
+    const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
+    const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+    const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+    const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
 
-        if (selectedValue === 'individual_Cat') {
-            if (chartsContainerResumenIndividual) chartsContainerResumenIndividual.style.display = 'block';
-            if (resumenIndividualContent) resumenIndividualContent.style.display = 'none';
-            if (resumenIndividualTextArea) resumenIndividualTextArea.style.display = 'none';
-        } else if (selectedValue === 'percentage_nonCat') {
-            if (chartsContainerResumenIndividual) chartsContainerResumenIndividual.style.display = 'none';
-            if (resumenIndividualContent) resumenIndividualContent.style.display = 'block';
-            if (resumenIndividualTextArea) resumenIndividualTextArea.style.display = 'none';
-        } else {
-            if (chartsContainerResumenIndividual) chartsContainerResumenIndividual.style.display = 'none';
-            if (resumenIndividualContent) resumenIndividualContent.style.display = 'none';
-            if (resumenIndividualTextArea) resumenIndividualTextArea.style.display = 'none';
+    // Condicional para manejar la visualización
+    if (selectedValue === 'individual_Cat') {
+        // Mostrar el contenedor de charts y ocultar el resto
+        chartsContainerResumenIndividual.style.display = 'block';
+        resumenIndividualContent.style.display = 'none';
+        resumenIndividualTextArea.style.display = 'none';
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'inline-block';
+            compareSelectLBL.style.display = 'inline-block';
         }
-    });
-}
-
-const resumenIndividualTy = document.getElementById('ComboBox_ResumenIndividualTy');
-if (resumenIndividualTy) {
-    resumenIndividualTy.addEventListener('change', function(event) {
-        const selectedValue = event.target.value; // Obtiene el valor seleccionado
-
-        const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
-        const comboBoxResumenIndividualDSLBL = document.getElementById('ComboBox_ResumenIndividualDSLBL');
-        if (selectedValue === 'percentage') {
-            if (comboBoxResumenIndividualDS) comboBoxResumenIndividualDS.style.display = 'block';
-            if (comboBoxResumenIndividualDSLBL) comboBoxResumenIndividualDSLBL.style.display = 'block';
-        } else {
-            if (comboBoxResumenIndividualDS) comboBoxResumenIndividualDS.style.display = 'none';
-            if (comboBoxResumenIndividualDSLBL) comboBoxResumenIndividualDSLBL.style.display = 'none';
+        if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+            comboBoxRI.dispatchEvent(new Event('change'));
         }
-    });
-}
+    } else if (selectedValue === 'percentage_nonCat') {
+        // Mostrar el contenido y ocultar el contenedor de charts
+        chartsContainerResumenIndividual.style.display = 'none';
+        resumenIndividualContent.style.display = 'block';
+        resumenIndividualTextArea.style.display = 'none';
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'none';
+            compareSelectLBL.style.display = 'none';
+        }
+    } else {
+        // Si no se selecciona ninguna opción válida, ocultar todo
+        chartsContainerResumenIndividual.style.display = 'none';
+        resumenIndividualContent.style.display = 'none';
+        resumenIndividualTextArea.style.display = 'none';
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'none';
+            compareSelectLBL.style.display = 'none';
+        }
+    }
+});
+
+document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change', function(event) {
+    const selectedValue = event.target.value; // Obtiene el valor seleccionado
+
+    // al seleccionar percentage que muestre ComboBox_ResumenIndividualDS, de lo contrario se mantiene oculto
+    const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
+    const comboBoxResumenIndividualDSLBL = document.getElementById('ComboBox_ResumenIndividualDSLBL');
+    if (selectedValue === 'percentage') {
+        comboBoxResumenIndividualDS.style.display = 'block';
+        comboBoxResumenIndividualDSLBL.style.display = 'block';
+        if (comboBoxResumenIndividualDS.value !== 'individual_Cat') {
+            comboBoxResumenIndividualDS.value = 'individual_Cat';
+            comboBoxResumenIndividualDS.dispatchEvent(new Event('change'));
+        }
+    } else {
+        comboBoxResumenIndividualDS.style.display = 'none';
+        comboBoxResumenIndividualDSLBL.style.display = 'none';
+    }
+
+
+});
 
 //Colores
 function setColorsFromAPI(studyId) {
