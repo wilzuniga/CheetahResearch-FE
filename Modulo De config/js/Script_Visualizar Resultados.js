@@ -4,7 +4,7 @@ let markmapBlobUrl = null;
 
 
 
-import { splitMarkdown, generateCharts, generateComparisonCharts } from './splitter.js';
+import { splitMarkdown, generateCharts } from './splitter.js';
 
 
 function generateMarkmapHTML(content , filter) {
@@ -81,6 +81,8 @@ function AgregarFiltros() {
 
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');
             const comboBox2 = document.getElementById('ComboBox_ResumenIndividual');
+            const comboBoxRICompare = document.getElementById('ComboBox_ResumenIndividual_Compare');
+            const comboBoxRICompareLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
             const comboBox3 = document.getElementById('Combobox_UserPersona');
             const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBox4 = document.getElementById('Combobox_EKMAN');
@@ -93,10 +95,10 @@ function AgregarFiltros() {
             const comboBox11 = document.getElementById('Combobox_ClimaLaboral');
             const comboBox12 = document.getElementById('Combobox_BrandStrenght');
             const comboBox13 = document.getElementById('Combobox_BrandEquity');
-            const comboBoxComparison = document.getElementById('ComboBox_ResumenIndividualComparison');
 
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
+            if (comboBoxRICompare) comboBoxRICompare.innerHTML = '';
             comboBox3.innerHTML = '';
             comboBoxUA.innerHTML = '';
             comboBox4.innerHTML = '';
@@ -109,7 +111,6 @@ function AgregarFiltros() {
             comboBox11.innerHTML = '';
             comboBox12.innerHTML = '';
             comboBox13.innerHTML = '';
-            comboBoxComparison.innerHTML = '';
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -118,6 +119,7 @@ function AgregarFiltros() {
             option.text = optionText;
             comboBox.appendChild(option);
             comboBox2.appendChild(option.cloneNode(true));
+            if (comboBoxRICompare) comboBoxRICompare.appendChild(option.cloneNode(true));
             comboBox3.appendChild(option.cloneNode(true));
             comboBoxUA.appendChild(option.cloneNode(true));
             comboBox4.appendChild(option.cloneNode(true));
@@ -130,7 +132,6 @@ function AgregarFiltros() {
             comboBox11.appendChild(option.cloneNode(true));
             comboBox12.appendChild(option.cloneNode(true));
             comboBox13.appendChild(option.cloneNode(true));
-            comboBoxComparison.appendChild(option.cloneNode(true));
 
         });
         }
@@ -635,76 +636,76 @@ function LLenarResumenes(){
             //Resumen Individual
             //lenar el div con el resumen general y agregar el event listener al combobox con id ComboBox_ResumenIndividual
             const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+            const comboBoxRICompare = document.getElementById('ComboBox_ResumenIndividual_Compare');
             
-            comboBoxRI.addEventListener('change', (event) => {
+            comboBoxRI.addEventListener('change', async (event) => {
                 // console.log(event.target.value);
 
                 const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
+                const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
 
                 var div = document.getElementById('ResumenIndividualContent');
                 var textArea = document.getElementById('ResumenIndividualTextArea');
                 var graphs = document.getElementById('charts-containerResumenIndividualContent');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value; //el filtro seleccionado
-                // Evitar elegir el mismo filtro en comparación
-                const comparisonSelect = document.getElementById('ComboBox_ResumenIndividualComparison');
-                Array.from(comparisonSelect.options).forEach(opt => {
-                    opt.disabled = (opt.value === selectedValue);
-                });
-                if (comparisonSelect.value === selectedValue) {
-                    comparisonSelect.value = '---';
-                }
                 formData = new FormData();
                 formData.append('filter', selectedValue);
                 formData.append('module', 'individual_questions');
                 formData.append('sub_module', StyleSelectedOption.value);
                 const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
-                axios.post(url, formData)
-                    .then(function (response) {
-                        var data = response.data;
-                        if (!data.startsWith("#")) {
-                            data = data.substring(data.indexOf("#"));
-                            data = data.substring(0, data.length - 3);
-                        }
-                        const coso = marked(data);                          
-                        div.innerHTML = coso;          
-                        textArea.value = data;     
-                        let graphDta = splitMarkdown(data);
-                        // Si hay filtro de comparación válido, sobreponer datasets en los mismos gráficos
-                        const compValue = comparisonSelect.value;
-                        if (compValue && compValue !== '---' && compValue !== selectedValue) {
-                            const formData2 = new FormData();
-                            formData2.append('filter', compValue);
-                            formData2.append('module', 'individual_questions');
-                            formData2.append('sub_module', StyleSelectedOption.value);
-                            axios.post(url, formData2)
-                                .then(function (response2) {
-                                    let data2 = response2.data;
-                                    if (!data2.startsWith('#')) {
-                                        data2 = data2.substring(data2.indexOf('#'));
-                                        data2 = data2.substring(0, data2.length - 3);
-                                    }
-                                    const graphDta2 = splitMarkdown(data2);
-                                    generateCharts(graphDta, 'charts-containerResumenIndividualContent', 'chart', { data: graphDta2, filter1Name: selectedValue, filter2Name: compValue });
-                                })
-                                .catch(function (error) {
-                                    console.error('Error al obtener datos del filtro de comparación:', error);
-                                    generateCharts(graphDta);
-                                });
-                        } else {
-                            generateCharts(graphDta);
-                        }
+                try {
+                    const primaryResp = await axios.post(url, formData);
+                    let data = primaryResp.data;
+                    if (!data.startsWith("#")) {
+                        data = data.substring(data.indexOf("#"));
+                        data = data.substring(0, data.length - 3);
+                    }
+                    const coso = marked(data);
+                    div.innerHTML = coso;
+                    textArea.value = data;
+                    let graphDta = splitMarkdown(data);
 
-                        // console.log(data);
-                    })
-                    .catch(function (error) {
-                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
-                    })
-                    .then(function () {
-                        // always executed
-                    });
+                    // Intentar cargar comparación si hay un filtro elegido distinto al principal
+                    let compareGraphData = null;
+                    const compareValue = compareSelect ? compareSelect.value : null;
+                    if (compareValue && compareValue !== 'Seleccionar filtro' && compareValue !== selectedValue) {
+                        const formDataCompare = new FormData();
+                        formDataCompare.append('filter', compareValue);
+                        formDataCompare.append('module', 'individual_questions');
+                        formDataCompare.append('sub_module', StyleSelectedOption.value);
+                        try {
+                            const compareResp = await axios.post(url, formDataCompare);
+                            let dataC = compareResp.data;
+                            if (!dataC.startsWith("#")) {
+                                dataC = dataC.substring(dataC.indexOf("#"));
+                                dataC = dataC.substring(0, dataC.length - 3);
+                            }
+                            compareGraphData = splitMarkdown(dataC);
+                        } catch (e) {
+                            console.error('Error al obtener datos de comparación:', e);
+                        }
+                    }
+
+                    // Graficar: si hay compareGraphData, overlay
+                    generateCharts(graphDta, compareGraphData, selectedValue, compareValue || '');
+                } catch (error) {
+                    div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                    console.log(error);
+                } finally {
+                    // always executed
+                }
             });
+
+            // Si cambia el filtro de comparación, volver a disparar el render con el valor actual del principal
+            if (comboBoxRICompare) {
+                comboBoxRICompare.addEventListener('change', function () {
+                    const currentMain = comboBoxRI.value;
+                    if (currentMain && currentMain !== 'Seleccionar filtro') {
+                        comboBoxRI.dispatchEvent(new Event('change'));
+                    }
+                });
+            }
 
 
             //Analisis Psicograficos, no tienen narrativo ni factual. Solo filtros
@@ -1220,81 +1221,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-    
-    // Event listener para el filtro de comparación
-    document.getElementById('ComboBox_ResumenIndividualComparison').addEventListener('change', function(event) {
-        const selectedValue = event.target.value;
-        // Bloquear comparar el mismo filtro
-        const mainFilter = document.getElementById('ComboBox_ResumenIndividual').value;
-        if (selectedValue === mainFilter) {
-            // Resetear selección inválida
-            event.target.value = '---';
-            return;
-        }
-        // Regenerar gráficos del filtro principal con comparación superpuesta
-        const trigger = new Event('change');
-        document.getElementById('ComboBox_ResumenIndividual').dispatchEvent(trigger);
-    });
-    
-    // Función para cargar datos de comparación
-    function loadComparisonData(filter1, filter2) {
-        const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
-        const subModule = StyleSelectedOption.value;
-        
-        // Cargar datos del primer filtro
-        const formData1 = new FormData();
-        formData1.append('filter', filter1);
-        formData1.append('module', 'individual_questions');
-        formData1.append('sub_module', subModule);
-        
-        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
-        
-        axios.post(url, formData1)
-            .then(function (response) {
-                const data1 = response.data;
-                let processedData1 = data1;
-                if (!data1.startsWith("#")) {
-                    processedData1 = data1.substring(data1.indexOf("#"));
-                    processedData1 = processedData1.substring(0, processedData1.length - 3);
-                }
-                const graphData1 = splitMarkdown(processedData1);
-                
-                // Cargar datos del segundo filtro
-                const formData2 = new FormData();
-                formData2.append('filter', filter2);
-                formData2.append('module', 'individual_questions');
-                formData2.append('sub_module', subModule);
-                
-                axios.post(url, formData2)
-                    .then(function (response2) {
-                        const data2 = response2.data;
-                        let processedData2 = data2;
-                        if (!data2.startsWith("#")) {
-                            processedData2 = data2.substring(data2.indexOf("#"));
-                            processedData2 = processedData2.substring(0, processedData2.length - 3);
-                        }
-                        const graphData2 = splitMarkdown(processedData2);
-                        
-                        // Generar gráficos combinados en el mismo contenedor
-                        generateCharts(graphData1, 'charts-containerResumenIndividualContent', 'chart', { data: graphData2, filter1Name: filter1, filter2Name: filter2 });
-                    })
-                    .catch(function (error) {
-                        console.error('Error al obtener datos del segundo filtro:', error);
-                    });
-            })
-            .catch(function (error) {
-                console.error('Error al obtener datos del primer filtro:', error);
-            });
-    }
-    
-    // Event listener para el botón de limpiar comparación
-    document.getElementById('clear-comparison').addEventListener('click', function() {
-        const comparisonContainer = document.getElementById('charts-containerComparisonContent');
-        const comparisonFilter = document.getElementById('ComboBox_ResumenIndividualComparison');
-        
-        comparisonContainer.style.display = 'none';
-        comparisonFilter.value = '---';
-    });
 });
 
 
@@ -1437,8 +1363,8 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
     const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
     const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
     const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
-    const comparisonContainer = document.getElementById('charts-containerComparisonContent');
-    const comparisonFilterContainer = document.getElementById('comparison-filter-container');
+    const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+    const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
 
     // Condicional para manejar la visualización
     if (selectedValue === 'individual_Cat') {
@@ -1446,22 +1372,28 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
         chartsContainerResumenIndividual.style.display = 'block';
         resumenIndividualContent.style.display = 'none';
         resumenIndividualTextArea.style.display = 'none';
-        comparisonFilterContainer.style.display = 'block';
-        
-        // El modo comparación ahora se superpone en los mismos gráficos; mantener contenedor extra oculto
-        comparisonContainer.style.display = 'none';
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'inline-block';
+            compareSelectLBL.style.display = 'inline-block';
+        }
     } else if (selectedValue === 'percentage_nonCat') {
         // Mostrar el contenido y ocultar el contenedor de charts
         chartsContainerResumenIndividual.style.display = 'none';
         resumenIndividualContent.style.display = 'block';
         resumenIndividualTextArea.style.display = 'none';
-        comparisonFilterContainer.style.display = 'none';
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'none';
+            compareSelectLBL.style.display = 'none';
+        }
     } else {
         // Si no se selecciona ninguna opción válida, ocultar todo
         chartsContainerResumenIndividual.style.display = 'none';
         resumenIndividualContent.style.display = 'none';
         resumenIndividualTextArea.style.display = 'none';
-        comparisonFilterContainer.style.display = 'none';
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'none';
+            compareSelectLBL.style.display = 'none';
+        }
     }
 });
 
