@@ -646,6 +646,14 @@ function LLenarResumenes(){
                 var graphs = document.getElementById('charts-containerResumenIndividualContent');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value; //el filtro seleccionado
+                // Evitar elegir el mismo filtro en comparación
+                const comparisonSelect = document.getElementById('ComboBox_ResumenIndividualComparison');
+                Array.from(comparisonSelect.options).forEach(opt => {
+                    opt.disabled = (opt.value === selectedValue);
+                });
+                if (comparisonSelect.value === selectedValue) {
+                    comparisonSelect.value = '---';
+                }
                 formData = new FormData();
                 formData.append('filter', selectedValue);
                 formData.append('module', 'individual_questions');
@@ -661,8 +669,31 @@ function LLenarResumenes(){
                         const coso = marked(data);                          
                         div.innerHTML = coso;          
                         textArea.value = data;     
-                        let graphDta = splitMarkdown(data);    
-                        generateCharts(graphDta);
+                        let graphDta = splitMarkdown(data);
+                        // Si hay filtro de comparación válido, sobreponer datasets en los mismos gráficos
+                        const compValue = comparisonSelect.value;
+                        if (compValue && compValue !== '---' && compValue !== selectedValue) {
+                            const formData2 = new FormData();
+                            formData2.append('filter', compValue);
+                            formData2.append('module', 'individual_questions');
+                            formData2.append('sub_module', StyleSelectedOption.value);
+                            axios.post(url, formData2)
+                                .then(function (response2) {
+                                    let data2 = response2.data;
+                                    if (!data2.startsWith('#')) {
+                                        data2 = data2.substring(data2.indexOf('#'));
+                                        data2 = data2.substring(0, data2.length - 3);
+                                    }
+                                    const graphDta2 = splitMarkdown(data2);
+                                    generateCharts(graphDta, 'charts-containerResumenIndividualContent', 'chart', { data: graphDta2, filter1Name: selectedValue, filter2Name: compValue });
+                                })
+                                .catch(function (error) {
+                                    console.error('Error al obtener datos del filtro de comparación:', error);
+                                    generateCharts(graphDta);
+                                });
+                        } else {
+                            generateCharts(graphDta);
+                        }
 
                         // console.log(data);
                     })
@@ -1193,22 +1224,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listener para el filtro de comparación
     document.getElementById('ComboBox_ResumenIndividualComparison').addEventListener('change', function(event) {
         const selectedValue = event.target.value;
-        const comparisonContainer = document.getElementById('charts-containerComparisonContent');
-        
-        if (selectedValue === '---') {
-            comparisonContainer.style.display = 'none';
-            return;
-        }
-        
-        // Obtener el filtro principal seleccionado
+        // Bloquear comparar el mismo filtro
         const mainFilter = document.getElementById('ComboBox_ResumenIndividual').value;
-        if (mainFilter === '---' || mainFilter === selectedValue) {
-            comparisonContainer.style.display = 'none';
+        if (selectedValue === mainFilter) {
+            // Resetear selección inválida
+            event.target.value = '---';
             return;
         }
-        
-        // Obtener datos para ambos filtros y generar comparación
-        loadComparisonData(mainFilter, selectedValue);
+        // Regenerar gráficos del filtro principal con comparación superpuesta
+        const trigger = new Event('change');
+        document.getElementById('ComboBox_ResumenIndividual').dispatchEvent(trigger);
     });
     
     // Función para cargar datos de comparación
@@ -1250,8 +1275,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                         const graphData2 = splitMarkdown(processedData2);
                         
-                        // Generar gráficos de comparación
-                        generateComparisonCharts(graphData1, graphData2, filter1, filter2);
+                        // Generar gráficos combinados en el mismo contenedor
+                        generateCharts(graphData1, 'charts-containerResumenIndividualContent', 'chart', { data: graphData2, filter1Name: filter1, filter2Name: filter2 });
                     })
                     .catch(function (error) {
                         console.error('Error al obtener datos del segundo filtro:', error);
@@ -1423,24 +1448,19 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
         resumenIndividualTextArea.style.display = 'none';
         comparisonFilterContainer.style.display = 'block';
         
-        // Verificar si hay un filtro de comparación seleccionado
-        const comparisonFilter = document.getElementById('ComboBox_ResumenIndividualComparison');
-        if (comparisonFilter.value !== '---') {
-            comparisonContainer.style.display = 'block';
-        }
+        // El modo comparación ahora se superpone en los mismos gráficos; mantener contenedor extra oculto
+        comparisonContainer.style.display = 'none';
     } else if (selectedValue === 'percentage_nonCat') {
         // Mostrar el contenido y ocultar el contenedor de charts
         chartsContainerResumenIndividual.style.display = 'none';
         resumenIndividualContent.style.display = 'block';
         resumenIndividualTextArea.style.display = 'none';
-        comparisonContainer.style.display = 'none';
         comparisonFilterContainer.style.display = 'none';
     } else {
         // Si no se selecciona ninguna opción válida, ocultar todo
         chartsContainerResumenIndividual.style.display = 'none';
         resumenIndividualContent.style.display = 'none';
         resumenIndividualTextArea.style.display = 'none';
-        comparisonContainer.style.display = 'none';
         comparisonFilterContainer.style.display = 'none';
     }
 });
