@@ -664,31 +664,51 @@ function LLenarResumenes(){
                     const coso = marked(data);
                     div.innerHTML = coso;
                     textArea.value = data;
-                    let graphDta = splitMarkdown(data);
+                    // Generar gráficos siempre que la visualización seleccionada sea gráfica.
+                    const displaySelect = document.getElementById('ComboBox_ResumenIndividualDS');
+                    if (displaySelect && displaySelect.value === 'individual_Cat') {
+                        // Solicitar SIEMPRE el sub_module 'percentage' para gráficos, independiente del estilo narrativo/textual mostrado
+                        const formDataGraph = new FormData();
+                        formDataGraph.append('filter', selectedValue);
+                        formDataGraph.append('module', 'individual_questions');
+                        formDataGraph.append('sub_module', 'percentage');
 
-                    // Intentar cargar comparación si hay un filtro elegido distinto al principal
-                    let compareGraphData = null;
-                    const compareValue = compareSelect ? compareSelect.value : null;
-                    if (compareValue && compareValue !== 'Seleccionar filtro' && compareValue !== selectedValue) {
-                        const formDataCompare = new FormData();
-                        formDataCompare.append('filter', compareValue);
-                        formDataCompare.append('module', 'individual_questions');
-                        formDataCompare.append('sub_module', StyleSelectedOption.value);
+                        let graphDta = [];
                         try {
-                            const compareResp = await axios.post(url, formDataCompare);
-                            let dataC = compareResp.data;
-                            if (!dataC.startsWith("#")) {
-                                dataC = dataC.substring(dataC.indexOf("#"));
-                                dataC = dataC.substring(0, dataC.length - 3);
+                            const graphResp = await axios.post(url, formDataGraph);
+                            let dataG = graphResp.data;
+                            if (!dataG.startsWith("#")) {
+                                dataG = dataG.substring(dataG.indexOf("#"));
+                                dataG = dataG.substring(0, dataG.length - 3);
                             }
-                            compareGraphData = splitMarkdown(dataC);
+                            graphDta = splitMarkdown(dataG);
                         } catch (e) {
-                            console.error('Error al obtener datos de comparación:', e);
+                            console.error('Error al obtener datos para gráficos:', e);
                         }
-                    }
 
-                    // Graficar: si hay compareGraphData, overlay
-                    generateCharts(graphDta, compareGraphData, selectedValue, compareValue || '');
+                        // Intentar cargar comparación si hay un filtro elegido distinto al principal
+                        let compareGraphData = null;
+                        const compareValue = compareSelect ? compareSelect.value : null;
+                        if (compareValue && compareValue !== 'Seleccionar filtro' && compareValue !== selectedValue) {
+                            const formDataCompare = new FormData();
+                            formDataCompare.append('filter', compareValue);
+                            formDataCompare.append('module', 'individual_questions');
+                            formDataCompare.append('sub_module', 'percentage');
+                            try {
+                                const compareResp = await axios.post(url, formDataCompare);
+                                let dataC = compareResp.data;
+                                if (!dataC.startsWith("#")) {
+                                    dataC = dataC.substring(dataC.indexOf("#"));
+                                    dataC = dataC.substring(0, dataC.length - 3);
+                                }
+                                compareGraphData = splitMarkdown(dataC);
+                            } catch (e) {
+                                console.error('Error al obtener datos de comparación:', e);
+                            }
+                        }
+
+                        generateCharts(graphDta, compareGraphData, selectedValue, compareValue || '');
+                    }
                 } catch (error) {
                     div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
                     console.log(error);
@@ -1365,6 +1385,8 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
     const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
     const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
     const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+    const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+    const comboBoxResumenIndividualTy = document.getElementById('ComboBox_ResumenIndividualTy');
 
     // Condicional para manejar la visualización
     if (selectedValue === 'individual_Cat') {
@@ -1375,6 +1397,10 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
         if (compareSelect && compareSelectLBL) {
             compareSelect.style.display = 'inline-block';
             compareSelectLBL.style.display = 'inline-block';
+        }
+        // Si ya hay un filtro principal seleccionado y el estilo es porcentual, volver a renderizar
+        if (comboBoxResumenIndividualTy && comboBoxResumenIndividualTy.value === 'percentage' && comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+            comboBoxRI.dispatchEvent(new Event('change'));
         }
     } else if (selectedValue === 'percentage_nonCat') {
         // Mostrar el contenido y ocultar el contenedor de charts
@@ -1406,6 +1432,11 @@ document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change
     if (selectedValue === 'percentage') {
         comboBoxResumenIndividualDS.style.display = 'block';
         comboBoxResumenIndividualDSLBL.style.display = 'block';
+        // Preseleccionar visualización gráfica y disparar el cambio para mostrar controles de comparación
+        if (comboBoxResumenIndividualDS.value !== 'individual_Cat') {
+            comboBoxResumenIndividualDS.value = 'individual_Cat';
+            comboBoxResumenIndividualDS.dispatchEvent(new Event('change'));
+        }
     } else {
         comboBoxResumenIndividualDS.style.display = 'none';
         comboBoxResumenIndividualDSLBL.style.display = 'none';
