@@ -459,7 +459,6 @@ function LLenarResumenes(study) {
                 const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
 
                 var div = document.getElementById('ResumenIndividualContent');
-                var textArea = document.getElementById('ResumenIndividualTextArea');
                 var graphs = document.getElementById('charts-containerResumenIndividualContent');
                 // Supongamos que `event.target.value` es el valor del combobox
                 const selectedValue = event.target.value; //el filtro seleccionado
@@ -477,7 +476,6 @@ function LLenarResumenes(study) {
                     }
                     const coso = marked(data);
                     div.innerHTML = coso;
-                    textArea.value = data;
                     // Generar gráficos siempre que la visualización seleccionada sea gráfica.
                     const displaySelect = document.getElementById('ComboBox_ResumenIndividualDS');
                     if (displaySelect && displaySelect.value === 'individual_Cat') {
@@ -570,9 +568,9 @@ function LLenarResumenes(study) {
 
         formData = new FormData();     
         if (study === '67e2ac1b5bd042898764458a') {
-                    const subFilterValue = document.getElementById('ComboBox_UserPersona_SubFiltro').value;
-
-            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+            const subFiltroEl = document.getElementById('ComboBox_UserPersona_SubFiltro');
+            const subFilterValue = subFiltroEl ? subFiltroEl.value : '';
+            formData.append('filter', subFilterValue ? `${selectedValue} ${subFilterValue}` : selectedValue);
         } else {
             formData.append('filter', selectedValue);
         }
@@ -899,7 +897,7 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);                          
                 div.innerHTML = coso;   
-                textArea.value = data;                   
+                if (textArea) { textArea.value = data; }                   
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -937,7 +935,7 @@ function LLenarResumenes(study) {
                 }
                 const coso = marked(data);                          
                 div.innerHTML = coso;   
-                textArea.value = data;                   
+                if (textArea) { textArea.value = data; }                   
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -1015,49 +1013,48 @@ function LLenarResumenes(study) {
 }
 
 
-document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change', function(event) {
-    const selectedValue = event.target.value; // Obtiene el valor seleccionado
+const resumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
+if (resumenIndividualDS) {
+    resumenIndividualDS.addEventListener('change', function(event) {
+        const selectedValue = event.target.value; // Obtiene el valor seleccionado
 
-    // Elementos a mostrar/ocultar
-    const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
-    const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
-    const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
+        // Elementos a mostrar/ocultar
+        const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
+        const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
+        const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
 
-    // Condicional para manejar la visualización
-    if (selectedValue === 'individual_Cat') {
-        // Mostrar el contenedor de charts y ocultar el resto
-        chartsContainerResumenIndividual.style.display = 'block';
-        resumenIndividualContent.style.display = 'none';
-        resumenIndividualTextArea.style.display = 'none';
-    } else if (selectedValue === 'percentage_nonCat') {
-        // Mostrar el contenido y ocultar el contenedor de charts
-        chartsContainerResumenIndividual.style.display = 'none';
-        resumenIndividualContent.style.display = 'block';
-        resumenIndividualTextArea.style.display = 'none';
-    } else {
-        // Si no se selecciona ninguna opción válida, ocultar todo
-        chartsContainerResumenIndividual.style.display = 'none';
-        resumenIndividualContent.style.display = 'none';
-        resumenIndividualTextArea.style.display = 'none';
-    }
-});
+        if (selectedValue === 'individual_Cat') {
+            if (chartsContainerResumenIndividual) chartsContainerResumenIndividual.style.display = 'block';
+            if (resumenIndividualContent) resumenIndividualContent.style.display = 'none';
+            if (resumenIndividualTextArea) resumenIndividualTextArea.style.display = 'none';
+        } else if (selectedValue === 'percentage_nonCat') {
+            if (chartsContainerResumenIndividual) chartsContainerResumenIndividual.style.display = 'none';
+            if (resumenIndividualContent) resumenIndividualContent.style.display = 'block';
+            if (resumenIndividualTextArea) resumenIndividualTextArea.style.display = 'none';
+        } else {
+            if (chartsContainerResumenIndividual) chartsContainerResumenIndividual.style.display = 'none';
+            if (resumenIndividualContent) resumenIndividualContent.style.display = 'none';
+            if (resumenIndividualTextArea) resumenIndividualTextArea.style.display = 'none';
+        }
+    });
+}
 
-document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change', function(event) {
-    const selectedValue = event.target.value; // Obtiene el valor seleccionado
+const resumenIndividualTy = document.getElementById('ComboBox_ResumenIndividualTy');
+if (resumenIndividualTy) {
+    resumenIndividualTy.addEventListener('change', function(event) {
+        const selectedValue = event.target.value; // Obtiene el valor seleccionado
 
-    // al seleccionar percentage que muestre ComboBox_ResumenIndividualDS, de lo contrario se mantiene oculto
-    const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
-    const comboBoxResumenIndividualDSLBL = document.getElementById('ComboBox_ResumenIndividualDSLBL');
-    if (selectedValue === 'percentage') {
-        comboBoxResumenIndividualDS.style.display = 'block';
-        comboBoxResumenIndividualDSLBL.style.display = 'block';
-    } else {
-        comboBoxResumenIndividualDS.style.display = 'none';
-        comboBoxResumenIndividualDSLBL.style.display = 'none';
-    }
-
-
-});
+        const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
+        const comboBoxResumenIndividualDSLBL = document.getElementById('ComboBox_ResumenIndividualDSLBL');
+        if (selectedValue === 'percentage') {
+            if (comboBoxResumenIndividualDS) comboBoxResumenIndividualDS.style.display = 'block';
+            if (comboBoxResumenIndividualDSLBL) comboBoxResumenIndividualDSLBL.style.display = 'block';
+        } else {
+            if (comboBoxResumenIndividualDS) comboBoxResumenIndividualDS.style.display = 'none';
+            if (comboBoxResumenIndividualDSLBL) comboBoxResumenIndividualDSLBL.style.display = 'none';
+        }
+    });
+}
 
 //Colores
 function setColorsFromAPI(studyId) {
