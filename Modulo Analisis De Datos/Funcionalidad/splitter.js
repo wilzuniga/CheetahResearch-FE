@@ -182,6 +182,17 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                         y: {
                             beginAtZero: true,
                             max: 100
+                        },
+                        x: {
+                            ticks: {
+                                rotation: 90,  // Rotar las etiquetas 90 grados (vertical)
+                                minRotation: 90,  // Mínima rotación para asegurar que estén verticales
+                                maxRotation: 90,   // Máxima rotación para mantener consistencia
+                                padding: 10,        // Espacio entre las etiquetas y el eje
+                                font: {
+                                    size: 10        // Tamaño de fuente más pequeño para que quepan mejor
+                                }
+                            }
                         }
                     }
                 }

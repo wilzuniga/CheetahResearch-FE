@@ -541,6 +541,78 @@ function LLenarResumenes(study) {
         });
     }
 
+    // Agregar event listeners para el display style y tipo de resumen individual
+    const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
+    const comboBoxResumenIndividualTy = document.getElementById('ComboBox_ResumenIndividualTy');
+    
+    if (comboBoxResumenIndividualDS) {
+        comboBoxResumenIndividualDS.addEventListener('change', function(event) {
+            const selectedValue = event.target.value; // Obtiene el valor seleccionado
+
+            // Elementos a mostrar/ocultar
+            const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
+            const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
+            const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
+            const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+            const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+            const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+
+            // Condicional para manejar la visualización
+            if (selectedValue === 'individual_Cat') {
+                // Mostrar el contenedor de charts y ocultar el resto
+                chartsContainerResumenIndividual.style.display = 'block';
+                resumenIndividualContent.style.display = 'none';
+                resumenIndividualTextArea.style.display = 'none';
+                if (compareSelect && compareSelectLBL) {
+                    compareSelect.style.display = 'inline-block';
+                    compareSelectLBL.style.display = 'inline-block';
+                }
+                if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+                    comboBoxRI.dispatchEvent(new Event('change'));
+                }
+            } else if (selectedValue === 'percentage_nonCat') {
+                // Mostrar el contenido y ocultar el contenedor de charts
+                chartsContainerResumenIndividual.style.display = 'none';
+                resumenIndividualContent.style.display = 'block';
+                resumenIndividualTextArea.style.display = 'none';
+                if (compareSelect && compareSelectLBL) {
+                    compareSelect.style.display = 'none';
+                    compareSelectLBL.style.display = 'none';
+                }
+            } else {
+                // Si no se selecciona ninguna opción válida, ocultar todo
+                chartsContainerResumenIndividual.style.display = 'none';
+                resumenIndividualContent.style.display = 'none';
+                resumenIndividualTextArea.style.display = 'none';
+                if (compareSelect && compareSelectLBL) {
+                    compareSelect.style.display = 'none';
+                    compareSelectLBL.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    if (comboBoxResumenIndividualTy) {
+        comboBoxResumenIndividualTy.addEventListener('change', function(event) {
+            const selectedValue = event.target.value; // Obtiene el valor seleccionado
+
+            // al seleccionar percentage que muestre ComboBox_ResumenIndividualDS, de lo contrario se mantiene oculto
+            const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
+            const comboBoxResumenIndividualDSLBL = document.getElementById('ComboBox_ResumenIndividualDSLBL');
+            if (selectedValue === 'percentage') {
+                comboBoxResumenIndividualDS.style.display = 'block';
+                comboBoxResumenIndividualDSLBL.style.display = 'block';
+                if (comboBoxResumenIndividualDS.value !== 'individual_Cat') {
+                    comboBoxResumenIndividualDS.value = 'individual_Cat';
+                    comboBoxResumenIndividualDS.dispatchEvent(new Event('change'));
+                }
+            } else {
+                comboBoxResumenIndividualDS.style.display = 'none';
+                comboBoxResumenIndividualDSLBL.style.display = 'none';
+            }
+        });
+    }
+
 
     //Analisis Psicograficos, no tienen narrativo ni factual. Solo filtros
     const comboBoxUP = document.getElementById('Combobox_UserPersona');
@@ -1015,72 +1087,6 @@ function LLenarResumenes(study) {
     });
 }
 
-
-document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change', function(event) {
-    const selectedValue = event.target.value; // Obtiene el valor seleccionado
-
-    // Elementos a mostrar/ocultar
-    const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
-    const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
-    const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
-    const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
-    const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
-    const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
-
-    // Condicional para manejar la visualización
-    if (selectedValue === 'individual_Cat') {
-        // Mostrar el contenedor de charts y ocultar el resto
-        chartsContainerResumenIndividual.style.display = 'block';
-        resumenIndividualContent.style.display = 'none';
-        resumenIndividualTextArea.style.display = 'none';
-        if (compareSelect && compareSelectLBL) {
-            compareSelect.style.display = 'inline-block';
-            compareSelectLBL.style.display = 'inline-block';
-        }
-        if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
-            comboBoxRI.dispatchEvent(new Event('change'));
-        }
-    } else if (selectedValue === 'percentage_nonCat') {
-        // Mostrar el contenido y ocultar el contenedor de charts
-        chartsContainerResumenIndividual.style.display = 'none';
-        resumenIndividualContent.style.display = 'block';
-        resumenIndividualTextArea.style.display = 'none';
-        if (compareSelect && compareSelectLBL) {
-            compareSelect.style.display = 'none';
-            compareSelectLBL.style.display = 'none';
-        }
-    } else {
-        // Si no se selecciona ninguna opción válida, ocultar todo
-        chartsContainerResumenIndividual.style.display = 'none';
-        resumenIndividualContent.style.display = 'none';
-        resumenIndividualTextArea.style.display = 'none';
-        if (compareSelect && compareSelectLBL) {
-            compareSelect.style.display = 'none';
-            compareSelectLBL.style.display = 'none';
-        }
-    }
-});
-
-document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change', function(event) {
-    const selectedValue = event.target.value; // Obtiene el valor seleccionado
-
-    // al seleccionar percentage que muestre ComboBox_ResumenIndividualDS, de lo contrario se mantiene oculto
-    const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
-    const comboBoxResumenIndividualDSLBL = document.getElementById('ComboBox_ResumenIndividualDSLBL');
-    if (selectedValue === 'percentage') {
-        comboBoxResumenIndividualDS.style.display = 'block';
-        comboBoxResumenIndividualDSLBL.style.display = 'block';
-        if (comboBoxResumenIndividualDS.value !== 'individual_Cat') {
-            comboBoxResumenIndividualDS.value = 'individual_Cat';
-            comboBoxResumenIndividualDS.dispatchEvent(new Event('change'));
-        }
-    } else {
-        comboBoxResumenIndividualDS.style.display = 'none';
-        comboBoxResumenIndividualDSLBL.style.display = 'none';
-    }
-
-
-});
 
 //Colores
 function setColorsFromAPI(studyId) {
