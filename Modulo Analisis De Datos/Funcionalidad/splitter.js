@@ -213,7 +213,7 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                         delay: (context) => {
                             let delay = 0;
                             if (context.type === 'data' && context.mode === 'default' && !delayed) {
-                                delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                                delay = context.dataIndex * 100 + context.datasetIndex * 33;
                             }
                             return delay;
                         }
@@ -229,10 +229,10 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                             offset: true,
                             stacked: true,
                             ticks: {
-                                rotation: 270,
-                                minRotation: 270,
-                                maxRotation: 270,
-                                padding: 14,
+                                rotation: 90,
+                                minRotation: 90,
+                                maxRotation: 90,
+                                padding: 12,
                                 crossAlign: 'near',
                                 font: {
                                     size: 9
