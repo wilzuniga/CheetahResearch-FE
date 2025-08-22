@@ -562,7 +562,6 @@ function LLenarResumenes(study) {
                 // Mostrar el contenedor de charts y ocultar el resto
                 chartsContainerResumenIndividual.style.display = 'block';
                 resumenIndividualContent.style.display = 'none';
-                resumenIndividualTextArea.style.display = 'none';
                 if (compareSelect && compareSelectLBL) {
                     compareSelect.style.display = 'inline-block';
                     compareSelectLBL.style.display = 'inline-block';
@@ -574,7 +573,6 @@ function LLenarResumenes(study) {
                 // Mostrar el contenido y ocultar el contenedor de charts
                 chartsContainerResumenIndividual.style.display = 'none';
                 resumenIndividualContent.style.display = 'block';
-                resumenIndividualTextArea.style.display = 'none';
                 if (compareSelect && compareSelectLBL) {
                     compareSelect.style.display = 'none';
                     compareSelectLBL.style.display = 'none';
@@ -583,7 +581,6 @@ function LLenarResumenes(study) {
                 // Si no se selecciona ninguna opción válida, ocultar todo
                 chartsContainerResumenIndividual.style.display = 'none';
                 resumenIndividualContent.style.display = 'none';
-                resumenIndividualTextArea.style.display = 'none';
                 if (compareSelect && compareSelectLBL) {
                     compareSelect.style.display = 'none';
                     compareSelectLBL.style.display = 'none';
