@@ -33,9 +33,11 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
         '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
         '#FFB74D', '#FFA726', '#D35400', '#FF6F00', '#F57C00', '#E64A19', '#FF8F00', '#FF5722'
     ];
+    // Paleta azulada para el filtro de comparación
     const compareColors = [
-        '#4CAF50', '#2196F3', '#9C27B0', '#00BCD4', '#FF9800', '#795548', '#607D8B',
-        '#E91E63', '#3F51B5', '#009688', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF5722'
+        '#0D47A1', '#1565C0', '#1976D2', '#1E88E5', '#2196F3',
+        '#42A5F5', '#64B5F6', '#90CAF9', '#64B5F6', '#42A5F5',
+        '#1E88E5', '#1976D2', '#1565C0', '#0D47A1', '#0B3C91'
     ];
 
     const primaryTranslucent = primaryColors.map(color => color + '90');
@@ -121,6 +123,14 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                     ...sortedCompareLabels.map(() => transparent)
                 ];
 
+                // Forzar color visible en la leyenda del dataset principal
+                if (primaryBg.length > 0) {
+                    primaryBg[0] = primaryTranslucent[0];
+                }
+                if (primaryBorder.length > 0) {
+                    primaryBorder[0] = primaryColors[0];
+                }
+
                 const compareBg = [
                     ...sortedPrimaryLabels.map(() => transparent),
                     transparent,
@@ -131,6 +141,14 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                     transparent,
                     ...sortedCompareLabels.map((_, i) => compareColors[i % compareColors.length])
                 ];
+
+                // Forzar color visible en la leyenda del dataset de comparación
+                if (compareBg.length > 0) {
+                    compareBg[0] = compareTranslucent[0];
+                }
+                if (compareBorder.length > 0) {
+                    compareBorder[0] = compareColors[0];
+                }
 
                 datasets = [
                     {
@@ -185,9 +203,9 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                         },
                         x: {
                             ticks: {
-                                rotation: 180,
-                                minRotation: 180,
-                                maxRotation: 180,
+                                rotation: 270,
+                                minRotation: 270,
+                                maxRotation: 270,
                                 padding: 10,
                                 font: {
                                     size: 10
