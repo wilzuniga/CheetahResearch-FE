@@ -235,7 +235,7 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                                 padding: 12,
                                 crossAlign: 'near',
                                 font: {
-                                    size: 9
+                                    size: 11
                                 }
                             }
                         }
