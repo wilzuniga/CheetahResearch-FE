@@ -28,6 +28,8 @@ export function splitMarkdown(markdownText) {
 
 // utils.js
 
+let delayed;
+
 export function generateCharts(primaryData, compareData = null, primaryLabel = 'Filtro 1', compareLabel = 'Filtro 2') {
     const primaryColors = [
         '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
@@ -182,6 +184,9 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                 }];
             }
 
+            // reset de animación por render
+            delayed = false;
+
             new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -190,25 +195,47 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                 },
                 options: {
                     responsive: true,
+                    layout: {
+                        padding: {
+                            bottom: 28
+                        }
+                    },
                     plugins: {
                         legend: {
                             display: true,
                             position: 'top'
                         }
                     },
+                    animation: {
+                        onComplete: () => {
+                            delayed = true;
+                        },
+                        delay: (context) => {
+                            let delay = 0;
+                            if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                                delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                            }
+                            return delay;
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: 100
+                            max: 100,
+                            stacked: true
                         },
                         x: {
+                            position: 'bottom',
+                            offset: true,
+                            stacked: true,
                             ticks: {
                                 rotation: 270,
                                 minRotation: 270,
                                 maxRotation: 270,
-                                padding: 10,
+                                padding: 14,
+                                crossAlign: 'near',
                                 font: {
-                                    size: 10
+                                    size: 9
                                 }
                             }
                         }
