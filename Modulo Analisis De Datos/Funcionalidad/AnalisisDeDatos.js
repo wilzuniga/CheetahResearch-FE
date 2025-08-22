@@ -15,6 +15,12 @@ function initializePage() {
         document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
+        
+        // Ocultar inicialmente los elementos de comparación
+        const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+        const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+        if (compareSelect) compareSelect.style.display = 'none';
+        if (compareSelectLBL) compareSelectLBL.style.display = 'none';
 
         if (study_id === '67e2ac1b5bd042898764458a') {
             const subFiltros = [
