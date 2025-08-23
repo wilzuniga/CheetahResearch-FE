@@ -348,7 +348,7 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
         container.innerHTML = chartsHTML;
 
         // Crear los gráficos después de insertar el HTML
-        primaryData.forEach((section, index) => {
+        safePrimaryData.forEach((section, index) => {
             // Gráfico principal
             const ctx = document.getElementById(`chart${index}`).getContext('2d');
             createDoughnutChart(ctx, section, primaryColors, primaryLabel, false);
