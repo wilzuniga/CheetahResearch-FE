@@ -60,3 +60,143 @@ eb7e20
     color: #eb7e20; /* Color del icono del sidebarToggle al estar activo */
 }
 
+/* Estilos para gráficas de dona */
+.doughnut-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.doughnut-chart {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    height: 350px;
+    position: relative;
+}
+
+.doughnut-chart canvas {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .doughnut-container {
+        flex-direction: column;
+    }
+    
+    .doughnut-chart {
+        min-width: 250px;
+        max-width: 100%;
+        height: 300px;
+    }
+}
+
+/* Estilos para la clave de colores */
+.color-key-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-radius: 13px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.color-key-section {
+    flex: 1;
+    min-width: 250px;
+}
+
+.color-key-section h5 {
+    margin-bottom: 15px;
+    color: #072934;
+    font-family: 'hedliner', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 2px solid #eb7e20;
+    padding-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.color-key-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.color-key-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+}
+
+.color-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.color-dot:hover {
+    transform: scale(1.1);
+}
+
+.color-label {
+    font-family: 'hedliner', sans-serif;
+    font-size: 14px;
+    color: #495057;
+    line-height: 1.2;
+    flex: 1;
+}
+
+.color-percentage {
+    font-family: 'hedliner', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    color: #eb7e20;
+    background: linear-gradient(135deg, rgba(235, 126, 32, 0.1) 0%, rgba(235, 126, 32, 0.05) 100%);
+    padding: 4px 10px;
+    border-radius: 15px;
+    min-width: 55px;
+    text-align: center;
+    border: 1px solid rgba(235, 126, 32, 0.2);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Responsive para la clave de colores */
+@media (max-width: 768px) {
+    .color-key-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .color-key-section {
+        min-width: 200px;
+        width: 100%;
+    }
+    
+    .color-key-items {
+        align-items: center;
+    }
+    
+    .color-key-item {
+        justify-content: center;
+        text-align: center;
+    }
+}
+
