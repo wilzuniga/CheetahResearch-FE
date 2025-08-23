@@ -30,7 +30,12 @@ export function splitMarkdown(markdownText) {
 
 let delayed;
 
-export function generateCharts(primaryData, compareData = null, primaryLabel = 'Filtro 1', compareLabel = 'Filtro 2') {
+export function generateCharts(primaryData, compareData = null, primaryLabel = 'Filtro 1', compareLabel = 'Filtro 2', chartType = 'bar') {
+    // Si el tipo de gráfico es dona, usar la función específica
+    if (chartType === 'doughnut') {
+        return generateDoughnutCharts(primaryData, compareData, primaryLabel, compareLabel);
+    }
+
     const primaryColors = [
         '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
         '#FFB74D', '#FFA726', '#D35400', '#FF6F00', '#F57C00', '#E64A19', '#FF8F00', '#FF5722'
@@ -246,4 +251,141 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
     } else {
         console.error("El contenedor de gráficos no se encontró.");
     }
+}
+
+export function generateDoughnutCharts(primaryData, compareData = null, primaryLabel = 'Filtro 1', compareLabel = 'Filtro 2') {
+    const primaryColors = [
+        '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
+        '#FFB74D', '#FFA726', '#D35400', '#FF6F00', '#F57C00', '#E64A19', '#FF8F00', '#FF5722'
+    ];
+    // Paleta azulada para el filtro de comparación
+    const compareColors = [
+        '#0D47A1', '#1565C0', '#1976D2', '#1E88E5', '#2196F3',
+        '#42A5F5', '#64B5F6', '#90CAF9', '#64B5F6', '#42A5F5',
+        '#1E88E5', '#1976D2', '#1565C0', '#0D47A1', '#0B3C91'
+    ];
+
+    let chartsHTML = '';
+
+    primaryData.forEach((section, index) => {
+        chartsHTML += `
+            <div class="chart-box">
+                <h3>${section.pregunta}</h3>
+                <div class="doughnut-container">
+                    <div class="doughnut-chart">
+                        <canvas id="chart${index}"></canvas>
+                    </div>
+                    ${compareData ? `<div class="doughnut-chart">
+                        <canvas id="chart${index}Compare"></canvas>
+                    </div>` : ''}
+                </div>
+            </div>
+            <hr>
+        `;
+    });
+
+    // Insertar el HTML generado en el contenedor
+    const container = document.getElementById('charts-containerResumenIndividualContent');
+    if (container) {
+        container.innerHTML = chartsHTML;
+
+        // Crear los gráficos después de insertar el HTML
+        primaryData.forEach((section, index) => {
+            // Gráfico principal
+            const ctx = document.getElementById(`chart${index}`).getContext('2d');
+            createDoughnutChart(ctx, section, primaryColors, primaryLabel, false);
+
+            // Gráfico de comparación si existe
+            if (compareData) {
+                const compareSection = findCompareSection(section, compareData, index);
+                if (compareSection) {
+                    const ctxCompare = document.getElementById(`chart${index}Compare`).getContext('2d');
+                    createDoughnutChart(ctxCompare, compareSection, compareColors, compareLabel, true);
+                }
+            }
+        });
+    } else {
+        console.error("El contenedor de gráficos no se encontró.");
+    }
+}
+
+function findCompareSection(primarySection, compareData, index) {
+    // Mapa para acceso rápido a secciones de comparación por pregunta
+    const compareMap = new Map();
+    let compareArray = Array.isArray(compareData) ? compareData : [];
+    if (compareArray.length > 0) {
+        compareArray.forEach(section => {
+            compareMap.set(section.pregunta, section);
+        });
+    }
+
+    // Prioridad 1: match por título de pregunta exacto
+    let compareSection = compareMap.get(primarySection.pregunta);
+    // Prioridad 2: fallback por índice si no hay match por título
+    if (!compareSection && compareArray.length > index) {
+        compareSection = compareArray[index];
+    }
+
+    return compareSection;
+}
+
+function createDoughnutChart(ctx, section, colors, label, isCompare = false) {
+    // Ordenar respuestas de mayor a menor
+    const sortedResponses = [...section.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
+    
+    const chartColors = sortedResponses.map((_, i) => colors[i % colors.length]);
+    const chartColorsTranslucent = chartColors.map(color => color + '80');
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: sortedResponses.map(r => r.respuesta),
+            datasets: [{
+                label: label,
+                data: sortedResponses.map(r => r.porcentaje),
+                backgroundColor: chartColorsTranslucent,
+                borderColor: chartColors,
+                borderWidth: 2,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 20,
+                    bottom: 20
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        padding: 15,
+                        usePointStyle: true,
+                        font: {
+                            size: 11
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.label}: ${context.parsed}%`;
+                        }
+                    }
+                }
+            },
+            animation: {
+                animateRotate: true,
+                animateScale: true,
+                duration: 1000,
+                easing: 'easeOutQuart'
+            },
+            cutout: '60%',
+            radius: '90%'
+        }
+    });
 }
