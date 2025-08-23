@@ -285,41 +285,6 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
                         <canvas id="chart${index}Compare"></canvas>
                     </div>` : ''}
                 </div>
-                <!-- Clave de colores por filtro -->
-                <div class="color-key-container">
-                    <div class="color-key-section">
-                        <h5>${primaryLabel}</h5>
-                        <div class="color-key-items">
-                            ${[...section.respuestas].sort((a, b) => b.porcentaje - a.porcentaje).map((respuesta, colorIndex) => `
-                                <div class="color-key-item">
-                                    <span class="color-dot" style="background-color: ${primaryColors[colorIndex % primaryColors.length]}"></span>
-                                    <span class="color-label">${respuesta.respuesta}</span>
-                                    <span class="color-percentage">${respuesta.porcentaje}%</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    ${safeCompareData ? `
-                        <div class="color-key-section">
-                            <h5>${compareLabel}</h5>
-                            <div class="color-key-items">
-                                ${(() => {
-                                    const compareSection = findCompareSection(section, safeCompareData, index);
-                                    if (compareSection) {
-                                        return [...compareSection.respuestas].sort((a, b) => b.porcentaje - a.porcentaje).map((respuesta, colorIndex) => `
-                                            <div class="color-key-item">
-                                                <span class="color-dot" style="background-color: ${compareColors[colorIndex % compareColors.length]}"></span>
-                                                <span class="color-label">${respuesta.respuesta}</span>
-                                                <span class="color-percentage">${respuesta.porcentaje}%</span>
-                                            </div>
-                                        `).join('');
-                                    }
-                                    return '';
-                                })()}
-                            </div>
-                        </div>
-                    ` : ''}
-                </div>
             </div>
             <hr>
         `;
