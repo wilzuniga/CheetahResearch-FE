@@ -485,7 +485,7 @@ function createDoughnutChart(ctx, section, colors, label, isCompare = false) {
 
 /**
  * Analiza y filtra los datos para asegurar una comparación segura entre filtros
- * Solo incluye preguntas que existan en ambos filtros para comparación
+ * Usa comparación inteligente basada en similitud de texto para encontrar preguntas comunes
  * @param {Array} primaryData - Datos del filtro principal
  * @param {Array} compareData - Datos del filtro de comparación
  * @returns {Object} Objeto con datos seguros para comparación
@@ -499,77 +499,106 @@ function analyzeAndFilterData(primaryData, compareData) {
         };
     }
 
-    // Crear mapas para acceso rápido por pregunta
-    const primaryMap = new Map();
-    const compareMap = new Map();
-    
-    // Mapear datos principales
-    if (primaryData && Array.isArray(primaryData)) {
-        primaryData.forEach(section => {
-            if (section && section.pregunta) {
-                primaryMap.set(section.pregunta, section);
-            }
-        });
-    }
-    
-    // Mapear datos de comparación
-    compareData.forEach(section => {
-        if (section && section.pregunta) {
-            compareMap.set(section.pregunta, section);
-        }
-    });
-
-    // Encontrar preguntas que existen en ambos filtros
-    const commonQuestions = new Set();
-    
-    // Verificar qué preguntas del filtro principal existen en comparación
-    for (const [pregunta] of primaryMap) {
-        if (compareMap.has(pregunta)) {
-            commonQuestions.add(pregunta);
-        }
-    }
-    
-    // Verificar qué preguntas del filtro de comparación existen en principal
-    for (const [pregunta] of compareMap) {
-        if (primaryMap.has(pregunta)) {
-            commonQuestions.add(pregunta);
-        }
+    // Función para normalizar texto para comparación
+    function normalizeText(text) {
+        if (!text) return '';
+        return text
+            .toLowerCase()
+            .replace(/\s+/g, ' ') // Normalizar espacios múltiples
+            .replace(/[.,;:!?]/g, '') // Remover puntuación
+            .replace(/[\[\]()]/g, '') // Remover corchetes y paréntesis
+            .trim();
     }
 
-    // Filtrar datos para incluir solo preguntas comunes
-    const safePrimaryData = [];
-    const safeCompareData = [];
-    
-    commonQuestions.forEach(pregunta => {
-        const primarySection = primaryMap.get(pregunta);
-        const compareSection = compareMap.get(pregunta);
+    // Función para calcular similitud entre dos textos
+    function calculateSimilarity(text1, text2) {
+        const normalized1 = normalizeText(text1);
+        const normalized2 = normalizeText(text2);
         
-        if (primarySection && compareSection) {
-            safePrimaryData.push(primarySection);
-            safeCompareData.push(compareSection);
+        // Si son exactamente iguales después de normalizar
+        if (normalized1 === normalized2) return 1.0;
+        
+        // Si uno contiene al otro (comparación inteligente)
+        if (normalized1.includes(normalized2) || normalized2.includes(normalized1)) {
+            return 0.9; // Alta similitud
         }
-    });
+        
+        // Calcular similitud por palabras comunes
+        const words1 = new Set(normalized1.split(' ').filter(word => word.length > 2));
+        const words2 = new Set(normalized2.split(' ').filter(word => word.length > 2));
+        
+        if (words1.size === 0 || words2.size === 0) return 0;
+        
+        const intersection = new Set([...words1].filter(word => words2.has(word)));
+        const union = new Set([...words1, ...words2]);
+        
+        return intersection.size / union.size;
+    }
 
-    // Ordenar por el orden original del filtro principal
-    const orderedSafePrimaryData = [];
-    const orderedSafeCompareData = [];
-    
-    if (primaryData && Array.isArray(primaryData)) {
-        primaryData.forEach(section => {
-            if (section && section.pregunta && commonQuestions.has(section.pregunta)) {
-                const compareSection = compareMap.get(section.pregunta);
-                if (compareSection) {
-                    orderedSafePrimaryData.push(section);
-                    orderedSafeCompareData.push(compareSection);
+    // Función para encontrar la mejor coincidencia
+    function findBestMatch(primaryPregunta, compareData) {
+        let bestMatch = null;
+        let bestSimilarity = 0;
+        const threshold = 0.6; // Umbral mínimo de similitud
+        
+        compareData.forEach(section => {
+            if (section && section.pregunta) {
+                const similarity = calculateSimilarity(primaryPregunta, section.pregunta);
+                if (similarity > bestSimilarity && similarity >= threshold) {
+                    bestSimilarity = similarity;
+                    bestMatch = section;
                 }
             }
         });
+        
+        return { match: bestMatch, similarity: bestSimilarity };
     }
 
-    console.log(`Análisis de datos: ${primaryData?.length || 0} preguntas en filtro principal, ${compareData.length} en comparación, ${orderedSafePrimaryData.length} preguntas comunes encontradas`);
+    // Crear arrays de datos para procesamiento
+    const primaryArray = primaryData && Array.isArray(primaryData) ? primaryData : [];
+    const compareArray = compareData;
+    
+    // Encontrar coincidencias inteligentes
+    const matches = [];
+    
+    primaryArray.forEach(primarySection => {
+        if (primarySection && primarySection.pregunta) {
+            const { match, similarity } = findBestMatch(primarySection.pregunta, compareArray);
+            if (match) {
+                matches.push({
+                    primary: primarySection,
+                    compare: match,
+                    similarity: similarity
+                });
+                console.log(`Coincidencia encontrada (${(similarity * 100).toFixed(1)}%):`);
+                console.log(`  Principal: ${primarySection.pregunta.substring(0, 80)}...`);
+                console.log(`  Comparación: ${match.pregunta.substring(0, 80)}...`);
+            }
+        }
+    });
+
+    // Ordenar por similitud (mayor a menor) y eliminar duplicados
+    const uniqueMatches = [];
+    const usedCompareIndices = new Set();
+    
+    matches
+        .sort((a, b) => b.similarity - a.similarity)
+        .forEach(match => {
+            const compareIndex = compareArray.indexOf(match.compare);
+            if (!usedCompareIndices.has(compareIndex)) {
+                uniqueMatches.push(match);
+                usedCompareIndices.add(compareIndex);
+            }
+        });
+
+    // Preparar datos seguros
+    const safePrimaryData = uniqueMatches.map(match => match.primary);
+    const safeCompareData = uniqueMatches.map(match => match.compare);
+
+    console.log(`Análisis de datos: ${primaryArray.length} preguntas en filtro principal, ${compareArray.length} en comparación, ${safePrimaryData.length} preguntas comunes encontradas con comparación inteligente`);
 
     return {
-        safePrimaryData: orderedSafePrimaryData,
-        safeCompareData: orderedSafeCompareData
+        safePrimaryData: safePrimaryData,
+        safeCompareData: safeCompareData
     };
 }
