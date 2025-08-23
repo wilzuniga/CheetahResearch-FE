@@ -36,6 +36,9 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
         return generateDoughnutCharts(primaryData, compareData, primaryLabel, compareLabel);
     }
 
+    // Analizar y filtrar datos para comparación segura
+    const { safePrimaryData, safeCompareData } = analyzeAndFilterData(primaryData, compareData);
+
     const primaryColors = [
         '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
         '#FFB74D', '#FFA726', '#D35400', '#FF6F00', '#F57C00', '#E64A19', '#FF8F00', '#FF5722'
@@ -52,7 +55,7 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
 
     let chartsHTML = '';
 
-    primaryData.forEach((section, index) => {
+    safePrimaryData.forEach((section, index) => {
         chartsHTML += `
             <div class="chart-box">
                 <h3>${section.pregunta}</h3>
@@ -68,12 +71,12 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
         container.innerHTML = chartsHTML;
 
         // Crear los gráficos después de insertar el HTML
-        primaryData.forEach((section, index) => {
+        safePrimaryData.forEach((section, index) => {
             const ctx = document.getElementById(`chart${index}`).getContext('2d');
             
             // Mapa para acceso rápido a secciones de comparación por pregunta y acceso por índice
             const compareMap = new Map();
-            let compareArray = Array.isArray(compareData) ? compareData : [];
+            let compareArray = Array.isArray(safeCompareData) ? safeCompareData : [];
             if (compareArray.length > 0) {
                 compareArray.forEach(section => {
                     compareMap.set(section.pregunta, section);
@@ -254,6 +257,9 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
 }
 
 export function generateDoughnutCharts(primaryData, compareData = null, primaryLabel = 'Filtro 1', compareLabel = 'Filtro 2') {
+    // Analizar y filtrar datos para comparación segura
+    const { safePrimaryData, safeCompareData } = analyzeAndFilterData(primaryData, compareData);
+    
     const primaryColors = [
         '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
         '#FFB74D', '#FFA726', '#D35400', '#FF6F00', '#F57C00', '#E64A19', '#FF8F00', '#FF5722'
@@ -267,7 +273,7 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
 
     let chartsHTML = '';
 
-    primaryData.forEach((section, index) => {
+    safePrimaryData.forEach((section, index) => {
         chartsHTML += `
             <div class="chart-box">
                 <h3>${section.pregunta}</h3>
@@ -275,7 +281,7 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
                     <div class="doughnut-chart">
                         <canvas id="chart${index}"></canvas>
                     </div>
-                    ${compareData ? `<div class="doughnut-chart">
+                    ${safeCompareData ? `<div class="doughnut-chart">
                         <canvas id="chart${index}Compare"></canvas>
                     </div>` : ''}
                 </div>
@@ -293,12 +299,12 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
                             `).join('')}
                         </div>
                     </div>
-                    ${compareData ? `
+                    ${safeCompareData ? `
                         <div class="color-key-section">
                             <h5>${compareLabel}</h5>
                             <div class="color-key-items">
                                 ${(() => {
-                                    const compareSection = findCompareSection(section, compareData, index);
+                                    const compareSection = findCompareSection(section, safeCompareData, index);
                                     if (compareSection) {
                                         return [...compareSection.respuestas].sort((a, b) => b.porcentaje - a.porcentaje).map((respuesta, colorIndex) => `
                                             <div class="color-key-item">
@@ -331,8 +337,8 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
             createDoughnutChart(ctx, section, primaryColors, primaryLabel, false);
 
             // Gráfico de comparación si existe
-            if (compareData) {
-                const compareSection = findCompareSection(section, compareData, index);
+            if (safeCompareData) {
+                const compareSection = findCompareSection(section, safeCompareData, index);
                 if (compareSection) {
                     const ctxCompare = document.getElementById(`chart${index}Compare`).getContext('2d');
                     createDoughnutChart(ctxCompare, compareSection, compareColors, compareLabel, true);
@@ -423,4 +429,95 @@ function createDoughnutChart(ctx, section, colors, label, isCompare = false) {
             radius: '90%'
         }
     });
+}
+
+/**
+ * Analiza y filtra los datos para asegurar una comparación segura entre filtros
+ * Solo incluye preguntas que existan en ambos filtros para comparación
+ * @param {Array} primaryData - Datos del filtro principal
+ * @param {Array} compareData - Datos del filtro de comparación
+ * @returns {Object} Objeto con datos seguros para comparación
+ */
+function analyzeAndFilterData(primaryData, compareData) {
+    // Si no hay datos de comparación, retornar solo los datos principales
+    if (!compareData || !Array.isArray(compareData) || compareData.length === 0) {
+        return {
+            safePrimaryData: primaryData || [],
+            safeCompareData: null
+        };
+    }
+
+    // Crear mapas para acceso rápido por pregunta
+    const primaryMap = new Map();
+    const compareMap = new Map();
+    
+    // Mapear datos principales
+    if (primaryData && Array.isArray(primaryData)) {
+        primaryData.forEach(section => {
+            if (section && section.pregunta) {
+                primaryMap.set(section.pregunta, section);
+            }
+        });
+    }
+    
+    // Mapear datos de comparación
+    compareData.forEach(section => {
+        if (section && section.pregunta) {
+            compareMap.set(section.pregunta, section);
+        }
+    });
+
+    // Encontrar preguntas que existen en ambos filtros
+    const commonQuestions = new Set();
+    
+    // Verificar qué preguntas del filtro principal existen en comparación
+    for (const [pregunta] of primaryMap) {
+        if (compareMap.has(pregunta)) {
+            commonQuestions.add(pregunta);
+        }
+    }
+    
+    // Verificar qué preguntas del filtro de comparación existen en principal
+    for (const [pregunta] of compareMap) {
+        if (primaryMap.has(pregunta)) {
+            commonQuestions.add(pregunta);
+        }
+    }
+
+    // Filtrar datos para incluir solo preguntas comunes
+    const safePrimaryData = [];
+    const safeCompareData = [];
+    
+    commonQuestions.forEach(pregunta => {
+        const primarySection = primaryMap.get(pregunta);
+        const compareSection = compareMap.get(pregunta);
+        
+        if (primarySection && compareSection) {
+            safePrimaryData.push(primarySection);
+            safeCompareData.push(compareSection);
+        }
+    });
+
+    // Ordenar por el orden original del filtro principal
+    const orderedSafePrimaryData = [];
+    const orderedSafeCompareData = [];
+    
+    if (primaryData && Array.isArray(primaryData)) {
+        primaryData.forEach(section => {
+            if (section && section.pregunta && commonQuestions.has(section.pregunta)) {
+                const compareSection = compareMap.get(section.pregunta);
+                if (compareSection) {
+                    orderedSafePrimaryData.push(section);
+                    orderedSafeCompareData.push(compareSection);
+                }
+            }
+        });
+    }
+
+    console.log(`Análisis de datos: ${primaryData?.length || 0} preguntas en filtro principal, ${compareData.length} en comparación, ${orderedSafePrimaryData.length} preguntas comunes encontradas`);
+
+    return {
+        safePrimaryData: orderedSafePrimaryData,
+        safeCompareData: orderedSafeCompareData
+    };
 }
