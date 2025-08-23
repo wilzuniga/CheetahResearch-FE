@@ -707,7 +707,11 @@ function LLenarResumenes(){
                             }
                         }
 
-                        generateCharts(graphDta, compareGraphData, selectedValue, compareValue || '');
+                        // Obtener el tipo de gráfico seleccionado
+                        const chartTypeSelect = document.getElementById('ComboBox_ResumenIndividualChartType');
+                        const selectedChartType = chartTypeSelect ? chartTypeSelect.value : 'bar';
+                        
+                        generateCharts(graphDta, compareGraphData, selectedValue, compareValue || '', selectedChartType);
                     }
                 } catch (error) {
                     div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
@@ -1183,6 +1187,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
     document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
     document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
+    document.getElementById('ComboBox_ResumenIndividualChartType').style.display = 'none';
+    document.getElementById('ComboBox_ResumenIndividualChartTypeLBL').style.display = 'none';
 
     AgregarFiltros();
     LLenarResumenes();
@@ -1385,6 +1391,8 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
     const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
     const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
     const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+    const chartTypeSelect = document.getElementById('ComboBox_ResumenIndividualChartType');
+    const chartTypeSelectLBL = document.getElementById('ComboBox_ResumenIndividualChartTypeLBL');
     const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
     const comboBoxResumenIndividualTy = document.getElementById('ComboBox_ResumenIndividualTy');
 
@@ -1394,6 +1402,13 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
         chartsContainerResumenIndividual.style.display = 'block';
         resumenIndividualContent.style.display = 'none';
         resumenIndividualTextArea.style.display = 'none';
+        
+        // Mostrar selector de tipo de gráfico
+        if (chartTypeSelect && chartTypeSelectLBL) {
+            chartTypeSelect.style.display = 'inline-block';
+            chartTypeSelectLBL.style.display = 'inline-block';
+        }
+        
         if (compareSelect && compareSelectLBL) {
             compareSelect.style.display = 'inline-block';
             compareSelectLBL.style.display = 'inline-block';
@@ -1407,6 +1422,13 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
         chartsContainerResumenIndividual.style.display = 'none';
         resumenIndividualContent.style.display = 'block';
         resumenIndividualTextArea.style.display = 'none';
+        
+        // Ocultar selector de tipo de gráfico
+        if (chartTypeSelect && chartTypeSelectLBL) {
+            chartTypeSelect.style.display = 'none';
+            chartTypeSelectLBL.style.display = 'none';
+        }
+        
         if (compareSelect && compareSelectLBL) {
             compareSelect.style.display = 'none';
             compareSelectLBL.style.display = 'none';
@@ -1416,6 +1438,13 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
         chartsContainerResumenIndividual.style.display = 'none';
         resumenIndividualContent.style.display = 'none';
         resumenIndividualTextArea.style.display = 'none';
+        
+        // Ocultar selector de tipo de gráfico
+        if (chartTypeSelect && chartTypeSelectLBL) {
+            chartTypeSelect.style.display = 'none';
+            chartTypeSelectLBL.style.display = 'none';
+        }
+        
         if (compareSelect && compareSelectLBL) {
             compareSelect.style.display = 'none';
             compareSelectLBL.style.display = 'none';
@@ -1441,8 +1470,17 @@ document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change
         comboBoxResumenIndividualDS.style.display = 'none';
         comboBoxResumenIndividualDSLBL.style.display = 'none';
     }
+});
 
-
+// Event listener para el cambio del tipo de gráfico
+document.getElementById('ComboBox_ResumenIndividualChartType').addEventListener('change', function(event) {
+    const selectedChartType = event.target.value;
+    
+    // Si ya hay un filtro principal seleccionado, volver a renderizar con el nuevo tipo de gráfico
+    const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+    if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+        comboBoxRI.dispatchEvent(new Event('change'));
+    }
 });
 
 //Colores
