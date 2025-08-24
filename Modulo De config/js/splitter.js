@@ -286,26 +286,12 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
                     </div>` : ''}
                 </div>
                 <div class="color-key-container">
-                    <div class="color-key-section">
-                        <h4>${primaryLabel}</h4>
-                        <div class="color-key-items">
-                            <div class="color-key-item">
-                                <span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
-                                <span class="color-label">Color del filtro</span>
-                            </div>
-                        </div>
+                    <div class="color-key-item">
+                        <span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
+                        <span class="color-label">${primaryLabel}</span>
+                        <span class="color-dot" style="background-color: ${compareColors[0]}"></span>
+                        <span class="color-label">${compareLabel}</span>
                     </div>
-                    ${safeCompareData ? `
-                    <div class="color-key-section">
-                        <h4>${compareLabel}</h4>
-                        <div class="color-key-items">
-                            <div class="color-key-item">
-                                <span class="color-dot" style="background-color: ${compareColors[0]}"></span>
-                                <span class="color-label">Color del filtro</span>
-                            </div>
-                        </div>
-                    </div>
-                    ` : ''}
                 </div>
             </div>
             <hr>
