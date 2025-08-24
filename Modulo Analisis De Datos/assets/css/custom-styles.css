@@ -99,12 +99,10 @@ eb7e20
 /* Estilos para la clave de colores */
 .color-key-container {
     display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 20px;
+    justify-content: center;
+    align-items: center;
     margin: 20px 0;
-    padding: 20px;
+    padding: 15px 30px;
     background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
     border-radius: 13px;
     border: 1px solid #e9ecef;
@@ -138,7 +136,7 @@ eb7e20
 .color-key-item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
     padding: 5px 0;
 }
 
