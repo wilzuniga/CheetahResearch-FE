@@ -59,7 +59,24 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
         chartsHTML += `
             <div class="chart-box">
                 <h3>${section.pregunta}</h3>
-                <canvas id="chart${index}"></canvas>
+                <div class="color-key-container">
+                    <div class="color-key-item">
+                        <span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
+                        <span class="color-label">${primaryLabel}</span>
+                        ${safeCompareData ? `
+                        <span class="color-dot" style="background-color: ${compareColors[0]}"></span>
+                        <span class="color-label">${compareLabel}</span>
+                        ` : ''}
+                    </div>
+                </div>
+                <div class="doughnut-container">
+                    <div class="doughnut-chart">
+                        <canvas id="chart${index}"></canvas>
+                    </div>
+                    ${safeCompareData ? `<div class="doughnut-chart">
+                        <canvas id="chart${index}Compare"></canvas>
+                    </div>` : ''}
+                </div>
             </div>
             <hr>
         `;
@@ -277,6 +294,16 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
         chartsHTML += `
             <div class="chart-box">
                 <h3>${section.pregunta}</h3>
+                <div class="color-key-container">
+                    <div class="color-key-item">
+                        <span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
+                        <span class="color-label">${primaryLabel}</span>
+                        ${safeCompareData ? `
+                        <span class="color-dot" style="background-color: ${compareColors[0]}"></span>
+                        <span class="color-label">${compareLabel}</span>
+                        ` : ''}
+                    </div>
+                </div>
                 <div class="doughnut-container">
                     <div class="doughnut-chart">
                         <canvas id="chart${index}"></canvas>
@@ -284,14 +311,6 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
                     ${safeCompareData ? `<div class="doughnut-chart">
                         <canvas id="chart${index}Compare"></canvas>
                     </div>` : ''}
-                </div>
-                <div class="color-key-container">
-                    <div class="color-key-item">
-                        <span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
-                        <span class="color-label">${primaryLabel}</span>
-                        <span class="color-dot" style="background-color: ${compareColors[0]}"></span>
-                        <span class="color-label">${compareLabel}</span>
-                    </div>
                 </div>
             </div>
             <hr>
