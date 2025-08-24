@@ -31,13 +31,8 @@ export function splitMarkdown(markdownText) {
 let delayed;
 
 // Función para envolver texto a varias líneas por longitud máxima
-function wrapTextToLines(text, maxCharsPerLine = 18) {
-    // Validar que el texto sea válido
-    if (!text || typeof text !== 'string' || text.trim() === '') {
-        return []; // Retornar array vacío para etiquetas inválidas
-    }
-    
-    const words = String(text).trim().split(/\s+/);
+function wrapTextToLines(text, maxCharsPerLine = 16) {
+    const words = String(text).split(/\s+/);
     const lines = [];
     let line = "";
 
@@ -51,34 +46,7 @@ function wrapTextToLines(text, maxCharsPerLine = 18) {
     }
     if (line) lines.push(line);
     
-    // Si no se generaron líneas, retornar el texto original como una línea
-    if (lines.length === 0) {
-        return [text];
-    }
-    
     return lines;
-}
-
-// Función para validar y limpiar etiquetas antes de crear el gráfico
-function validateAndCleanLabels(labels) {
-    if (!Array.isArray(labels)) {
-        console.warn('Labels no es un array:', labels);
-        return [];
-    }
-    
-    return labels.map((label, index) => {
-        if (label === ' ' || label === '' || !label) {
-            console.log(`Label ${index} es separador o vacío: "${label}"`);
-            return ' '; // Mantener separador como espacio
-        }
-        
-        if (typeof label !== 'string') {
-            console.warn(`Label ${index} no es string:`, label, typeof label);
-            return String(label || ''); // Convertir a string
-        }
-        
-        return label.trim();
-    });
 }
 
 export function generateCharts(primaryData, compareData = null, primaryLabel = 'Filtro 1', compareLabel = 'Filtro 2', chartType = 'bar') {
@@ -242,27 +210,20 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                 }];
             }
 
-            // Validar y limpiar las etiquetas antes de crear el gráfico
-            const cleanedLabels = validateAndCleanLabels(allLabels);
-            console.log('Etiquetas originales:', allLabels);
-            console.log('Etiquetas limpias:', cleanedLabels);
-            
             // reset de animación por render
             delayed = false;
 
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: cleanedLabels,
+                    labels: allLabels,
                     datasets
                 },
                 options: {
                     responsive: true,
                     layout: {
                         padding: {
-                            bottom: 60,
-                            left: 20,
-                            right: 20
+                            bottom: 45
                         }
                     },
                     plugins: {
@@ -296,36 +257,17 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                             ticks: {
                                 callback: function(value, index) {
                                     const label = this.getLabelForValue(value);
-                                    
-                                    // Debug: Log para ver qué etiquetas se están procesando
-                                    console.log(`Tick ${index}: label="${label}", type=${typeof label}`);
-                                    
-                                    // Si es un separador o etiqueta vacía, retornar string vacío
-                                    if (label === ' ' || label === '' || !label) {
-                                        console.log(`Tick ${index}: Omitiendo etiqueta vacía/separador`);
-                                        return '';
-                                    }
+                                    // Si es un separador, retornar string vacío
+                                    if (label === ' ' || label === '') return '';
                                     
                                     // Aplicar wrap de texto y retornar array de líneas
-                                    const wrappedLines = wrapTextToLines(label, 18);
-                                    console.log(`Tick ${index}: Etiqueta envuelta:`, wrappedLines);
-                                    
-                                    return wrappedLines;
+                                    return wrapTextToLines(label, 18);
                                 },
                                 padding: 8,
                                 crossAlign: 'near',
                                 font: {
                                     size: 10
-                                },
-                                autoSkip: false, // Forzar mostrar todas las etiquetas
-                                maxTicksLimit: undefined, // Sin límite de etiquetas
-                                // Rotación automática basada en la cantidad de etiquetas
-                                maxRotation: 45, // Rotación máxima permitida
-                                minRotation: 0,  // Sin rotación mínima
-                                sampleSize: 0, // Mostrar todas las etiquetas sin muestreo
-                                stepSize: 1, // Mostrar etiqueta en cada paso
-                                min: 0, // Forzar mostrar desde el primer elemento
-                                max: undefined // Sin límite superior
+                                }
                             }
                         }
                     }
