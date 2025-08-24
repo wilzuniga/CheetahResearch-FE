@@ -86,7 +86,7 @@ document.getElementById('Link-InfoReturn').addEventListener('click', function (e
 // Event listener para el botón de herramientas de administración
 document.getElementById('AdminToolsBTN').addEventListener('click', async function (event) {
     event.preventDefault();
-    // Redirigir a la página de herramientas del administrador NUEVA
+    // Redirigir a la página de Herramientas NUEVA
     let authAwaitContainer = document.getElementById('AuthAwait-Cont');
     let loginError = document.getElementById('Error-Login');
     const email = document.getElementById('InputEmail').value;
