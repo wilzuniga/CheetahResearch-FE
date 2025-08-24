@@ -1,3 +1,33 @@
+// Función para mostrar/ocultar el botón de herramientas de administración
+function toggleAdminToolsButton(email) {
+    const adminToolsBtn = document.getElementById('AdminToolsBTN');
+    if (email === 'it@cheetah-research.com') {
+        adminToolsBtn.style.display = 'block';
+        // Agregar clase para animación después de un pequeño delay
+        setTimeout(() => {
+            adminToolsBtn.classList.add('show');
+        }, 100);
+    } else {
+        adminToolsBtn.classList.remove('show');
+        // Ocultar después de la animación
+        setTimeout(() => {
+            adminToolsBtn.style.display = 'none';
+        }, 300);
+    }
+}
+
+// Event listener para el campo de email
+document.getElementById('InputEmail').addEventListener('input', function(event) {
+    const email = event.target.value.trim();
+    toggleAdminToolsButton(email);
+});
+
+// Event listener para cuando el campo de email pierde el foco
+document.getElementById('InputEmail').addEventListener('blur', function(event) {
+    const email = event.target.value.trim();
+    toggleAdminToolsButton(email);
+});
+
 document.getElementById('loginForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -51,4 +81,11 @@ document.getElementById('MoreInfo').addEventListener('click', function (event) {
 document.getElementById('Link-InfoReturn').addEventListener('click', function (event) {
     let authAwaitInfo = document.getElementById('AuthAwait-Info');
     authAwaitInfo.style.display = 'none';
+});
+
+// Event listener para el botón de herramientas de administración
+document.getElementById('AdminToolsBTN').addEventListener('click', function (event) {
+    event.preventDefault();
+    // Redirigir a la página de herramientas del administrador
+    window.location.href = 'HerramientasDelAdministrador.html';
 });
