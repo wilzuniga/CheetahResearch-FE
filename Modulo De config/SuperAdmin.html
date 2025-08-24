@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="assets/img/NegroLogo.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Super Admin - Cheetah Research</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=League+Spartan&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
+    <link rel="stylesheet" href="assets/css/Features-Small-Icons-icons.css">
+    <link rel="stylesheet" href="assets/css/untitled.css">
+    <link rel="stylesheet" href="assets/assets_accounts/css/Hover.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        /* Estilos para la página de Super Admin */
+        .admin-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, var(--bs-CR-black-dark) 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            padding: 20px;
+        }
+        
+        .admin-content {
+            padding: 30px;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--bs-CR-orange);
+            box-shadow: 0 0 0 0.2rem rgba(240, 99, 29, 0.25);
+        }
+        
+        .btn-admin {
+            background: var(--bs-CR-orange);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-admin:hover {
+            background: var(--bs-CR-black-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stats-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* Media query para que desaparezca el img si el display no es hd+ */
+        @media (max-width: 1080px) {
+            img {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body id="page-top" style="overflow-y: hidden;">
+    <div id="wrapper">
+        
+        <!-- Sidebar de Navegación -->
+        <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-end sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;background: var(--bs-CR-orange-2);">
+        
+            <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius: 0;border-bottom-right-radius: 0;background: #000000;">
+                <div class="container-fluid d-flex flex-column p-0">
+                    <a class="navbar-brand d-xxl-flex align-items-center justify-content-xxl-center align-items-xxl-center sidebar-brand m-0" href="https://www.cheetah-research.ai/home/">
+                        <img style="height: auto;width: 189px;margin: -11px;margin-bottom: 0px; margin-top: 10px;" src="assets/img/NegroLogo.png" />
+                    </a>
+                    <p class="text-light" id="nombreProyectoLbl" style="font-family: 'hedliner', sans-serif;font-size: 12px;margin-left: 10px;">Super Administrador</p>
+                    <div style="height: 30px;"></div>
+                    
+                    <ul id="accordionSidebar" class="navbar-nav text-light" style="font-family: hedliner;">
+                        <li class="nav-item active" style="font-family: hedliner;">
+                            <a class="nav-link active" href="#" style="font-family: hedliner;">
+                                <i class="fas fa-user-shield" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
+                                <span style="font-family: hedliner;">Usuarios</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="font-family: hedliner;">
+                            <a class="nav-link" href="HerramientasDelAdministrador.html" style="font-family: hedliner;">
+                                <i class="fas fa-tools" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
+                                <span style="font-family: hedliner;">Productos y Tarifas</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="font-family: hedliner;">
+                            <a class="nav-link" href="HerramientasDelAdministrador.html" style="font-family: hedliner;">
+                                <i class="fas fa-tools" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
+                                <span style="font-family: hedliner;">Asignacion</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="font-family: hedliner;">
+                            <a class="nav-link" href="https://www.cheetah-research.ai/home/" style="font-family: hedliner;">
+                                <i class="fas fa-home" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
+                                <span style="font-family: hedliner;">Inicio</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </nav>
+
+        <!-- Contenido Principal -->
+        <div class="d-flex flex-column" id="content-wrapper" style="position: relative;">
+            <div class="card" id="contentCard_SuperAdmin" style="margin: 0px;height: 97%;padding: 20px;overflow-x: hidden;max-height: calc(100vh - 1px);overflow-y: auto; position: relative;">
+                
+                <!-- Header de la Página -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="admin-header text-center">
+                            <h1 style="font-family: hedliner; margin: 0; font-size: 2.5rem;">Administrador</h1>
+                            <p style="font-family: IBM Plex Sans; margin: 10px 0 0 0; opacity: 0.9;">Panel de Control y Gestión de Usuarios</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Herramientas del Administrador (sin herramientas de estudios) -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="admin-card">
+                            <div class="admin-header">
+                                <h3 style="font-family: hedliner; margin: 0;">🛠️ Herramientas del Administrador</h3>
+                                <p style="font-family: IBM Plex Sans; margin: 10px 0 0 0; opacity: 0.9;">Gestión de usuarios y estudios del sistema</p>
+                            </div>
+                            <div class="admin-content">
+                                <!-- Solicitudes de Acceso -->
+                                <h4 style="margin-left: 10px;color: var(--bs-emphasis-color);font-weight: bold;font-family: hedliner; margin-bottom: 20px;">
+                                    📋 Solicitudes de Acceso
+                                </h4>
+                                <div class="row mb-4">
+                                    <div class="col-md-8">
+                                        <select id="inactiveUsersSelect" class="form-control" style="height: 45px;font-size: 16px;color: rgb(133,135,150);border-radius: 13px;border-color: var(--bs-tertiary-color);font-family: IBM Plex Sans;">
+                                            <option value="">Seleccionar usuario pendiente...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-success btn-lg w-100" type="button" onclick="concederAcceso()" style="font-weight: bold;font-family: hedliner;">
+                                            <i class="fas fa-check-circle"></i> Conceder Acceso
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div style="height: 5px;background: var(--bs-primary);border-radius: 13px;margin: 20px 0;"></div>
+
+                                <!-- Eliminar Estudio -->
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div style="position: absolute; bottom: 0; left: 0; text-align: center; width: 100%; padding: 20px;">
+            <strong data-i18n="brand">Cheetah Research</strong>
+            <span data-i18n="registered"> - Plataforma de Investigación</span>
+            <strong data-i18n="company">.</strong>
+            <span data-i18n="rights"> Todos los derechos reservados.</span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="js/Script_ListNonActiveUser.js"></script>
+    <script src="js/Script_ConcederAcceso.js"></script>
+    <script src="js/Script_CheckSession.js"></script>
+    <script src="js/Script_EliminarEstudio.js"></script>
+    <script src="js/Script_ObtenerEstudios.js"></script>
+    <script src="js/i18n.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script>
+        // Script específico para SuperAdmin
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cargar estadísticas iniciales
+            loadStats();
+        });
+
+        function loadStats() {
+            // Aquí se cargarían las estadísticas desde la API
+            document.getElementById('totalUsers').textContent = '156';
+            document.getElementById('pendingUsers').textContent = '23';
+            document.getElementById('activeUsers').textContent = '133';
+            document.getElementById('todayRegistrations').textContent = '5';
+        }
+    </script>
+</body>
+</html>
