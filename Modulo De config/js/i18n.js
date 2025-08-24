@@ -34,7 +34,7 @@ const translations = {
             launch_study: "LANZAR ESTUDIO",
             study_info: "INFORMACION DE ESTUDIO",
             results: "VISUALIZACION DE RESULTADOS",
-            admin_tools: "HERRAMIENTAS DEL ADMINISTRADOR"
+            admin_tools: "Herramientas"
         },
         PaginaPrincipal: {
             title: "Seleccionar Estudio",
@@ -171,7 +171,7 @@ const translations = {
             btForceAnalysis:"Ejecutar Análisis",         btImport:"Importar Datos",
         },
         HerramientasDelAdministrador: {
-            title: "Herramientas del Administrador",
+            title: "Herramientas",
             hAccess: "Solicitudes de Acceso",
             btAccess: "Conceder Acceso",
             hDelStudy: "Eliminar Estudio",
