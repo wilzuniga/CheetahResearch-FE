@@ -86,6 +86,6 @@ document.getElementById('Link-InfoReturn').addEventListener('click', function (e
 // Event listener para el botón de herramientas de administración
 document.getElementById('AdminToolsBTN').addEventListener('click', function (event) {
     event.preventDefault();
-    // Redirigir a la página de herramientas del administrador
-    window.location.href = 'HerramientasDelAdministrador.html';
+    // Redirigir a la página de herramientas del administrador NUEVA
+
 });
