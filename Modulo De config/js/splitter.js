@@ -261,7 +261,9 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                     responsive: true,
                     layout: {
                         padding: {
-                            bottom: 45
+                            bottom: 60,
+                            left: 20,
+                            right: 20
                         }
                     },
                     plugins: {
@@ -315,7 +317,11 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                                 crossAlign: 'near',
                                 font: {
                                     size: 10
-                                }
+                                },
+                                autoSkip: false, // Forzar mostrar todas las etiquetas
+                                maxTicksLimit: undefined, // Sin límite de etiquetas
+                                maxRotation: 0, // Sin rotación
+                                minRotation: 0
                             }
                         }
                     }
