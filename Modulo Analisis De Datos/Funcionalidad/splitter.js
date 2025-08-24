@@ -341,8 +341,10 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
                     <div class="color-key-item">
                         <span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
                         <span class="color-label">${primaryLabel}</span>
+                        ${safeCompareData ? `
                         <span class="color-dot" style="background-color: ${compareColors[0]}"></span>
                         <span class="color-label">${compareLabel}</span>
+                        ` : ''}
                     </div>
                 </div>
             </div>
