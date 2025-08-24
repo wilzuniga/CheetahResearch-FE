@@ -321,7 +321,11 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                                 autoSkip: false, // Forzar mostrar todas las etiquetas
                                 maxTicksLimit: undefined, // Sin límite de etiquetas
                                 maxRotation: 0, // Sin rotación
-                                minRotation: 0
+                                minRotation: 0,
+                                sampleSize: 0, // Mostrar todas las etiquetas sin muestreo
+                                stepSize: 1, // Mostrar etiqueta en cada paso
+                                min: 0, // Forzar mostrar desde el primer elemento
+                                max: undefined // Sin límite superior
                             }
                         }
                     }
