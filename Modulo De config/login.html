@@ -20,6 +20,27 @@
 
     <link rel="stylesheet" href="assets/assets_accounts/css/Hover.css">
     <link rel="stylesheet" href="assets/assets_accounts/css/Responsiveness.css">
+    
+    <style>
+        /* Estilos para el botón de herramientas de administración */
+        #AdminToolsBTN {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        #AdminToolsBTN.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #AdminToolsBTN:hover {
+            background-color: var(--bs-CR-orange) !important;
+            border-color: var(--bs-CR-black-dark) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+    </style>
 </head>
 
 <body class="d-flex flex-column justify-content-center align-items-center bg-gradient-primary" style="height:100%;width:100%;background:var(--bs-CR-orange);">
@@ -46,6 +67,7 @@
                                         </div>
                                         <hr style="font-family:hedliner;"><button class="btn btn-primary d-block btn-user w-100" id="IniciarSesionBTN" type="submit" style="font-family:hedliner; background-color: var(--bs-CR-orange);">Iniciar Sesión</button>
                                         <hr style="font-family:hedliner;">
+                                        <button class="btn btn-secondary d-block btn-user w-100" id="AdminToolsBTN" type="button" style="font-family:hedliner; background-color: var(--bs-CR-black-dark); display: none; margin-top: 10px; border: 2px solid var(--bs-CR-orange); color: white; transition: all 0.3s ease;">🛠️ Herramientas de Administración</button>
                                     </form>
                                     <div class="text-center" style="font-family:hedliner;"><a class="small" href="https://www.cheetah-research.ai/reset_password/" style="font-family:hedliner;">¿Olvidaste tu contraseña?</a></div>
                                     <div class="text-center" style="font-family:hedliner;"><a class="small" href="https://www.cheetah-research.ai/signup/" style="font-family:hedliner;">Solicita Acceso</a></div>
