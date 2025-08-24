@@ -30,6 +30,25 @@ export function splitMarkdown(markdownText) {
 
 let delayed;
 
+// Función para envolver texto a varias líneas por longitud máxima
+function wrapTextToLines(text, maxCharsPerLine = 16) {
+    const words = String(text).split(/\s+/);
+    const lines = [];
+    let line = "";
+
+    for (const word of words) {
+        if (line.length + word.length <= maxCharsPerLine) {
+            line += (line ? " " : "") + word;
+        } else {
+            if (line) lines.push(line);
+            line = word;
+        }
+    }
+    if (line) lines.push(line);
+    
+    return lines;
+}
+
 export function generateCharts(primaryData, compareData = null, primaryLabel = 'Filtro 1', compareLabel = 'Filtro 2', chartType = 'bar') {
     // Si el tipo de gráfico es dona, usar la función específica
     if (chartType === 'doughnut') {
@@ -205,7 +224,7 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                     responsive: true,
                     layout: {
                         padding: {
-                            bottom: 28
+                            bottom: 45
                         }
                     },
                     plugins: {
@@ -237,13 +256,18 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
                             offset: true,
                             stacked: true,
                             ticks: {
-                                rotation: 90,
-                                minRotation: 90,
-                                maxRotation: 90,
-                                padding: 12,
+                                callback: function(value, index) {
+                                    const label = this.getLabelForValue(value);
+                                    // Si es un separador, retornar string vacío
+                                    if (label === ' ' || label === '') return '';
+                                    
+                                    // Aplicar wrap de texto y retornar array de líneas
+                                    return wrapTextToLines(label, 18);
+                                },
+                                padding: 8,
                                 crossAlign: 'near',
                                 font: {
-                                    size: 11
+                                    size: 10
                                 }
                             }
                         }
