@@ -731,10 +731,10 @@ function createDoughnutChart(ctx, subGrafico, colors, label, isCompare = false) 
  * @returns {Object} Objeto con datos seguros para comparación
  */
 function analyzeAndFilterData(primaryData, compareData) {
-    // Si no hay datos de comparación, retornar solo los datos principales
+    // Si no hay datos de comparación, retornar solo los datos principales en orden original
     if (!compareData || !Array.isArray(compareData) || compareData.length === 0) {
         return {
-            safePrimaryData: primaryData || [],
+            safePrimaryData: primaryData && Array.isArray(primaryData) ? primaryData : [],
             safeCompareData: null
         };
     }
@@ -817,19 +817,23 @@ function analyzeAndFilterData(primaryData, compareData) {
         }
     });
 
-    // Ordenar por similitud (mayor a menor) y eliminar duplicados
+    // Eliminar duplicados manteniendo el orden original
     const uniqueMatches = [];
     const usedCompareIndices = new Set();
+    const usedPrimaryIndices = new Set();
     
-    matches
-        .sort((a, b) => b.similarity - a.similarity)
-        .forEach(match => {
-            const compareIndex = compareArray.indexOf(match.compare);
-            if (!usedCompareIndices.has(compareIndex)) {
-                uniqueMatches.push(match);
-                usedCompareIndices.add(compareIndex);
-            }
-        });
+    // Mantener el orden original de las preguntas principales
+    matches.forEach(match => {
+        const compareIndex = compareArray.indexOf(match.compare);
+        const primaryIndex = primaryArray.indexOf(match.primary);
+        
+        // Solo agregar si no hemos usado esta comparación ni esta pregunta principal
+        if (!usedCompareIndices.has(compareIndex) && !usedPrimaryIndices.has(primaryIndex)) {
+            uniqueMatches.push(match);
+            usedCompareIndices.add(compareIndex);
+            usedPrimaryIndices.add(primaryIndex);
+        }
+    });
 
     // Preparar datos seguros
     const safePrimaryData = uniqueMatches.map(match => match.primary);
