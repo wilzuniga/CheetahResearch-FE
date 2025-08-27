@@ -441,7 +441,7 @@ function findCompareSubGrafico(primarySubGrafico, primarySection, compareData) {
     // Buscar en todas las secciones de comparación
     let bestMatch = null;
     let bestSimilarity = 0;
-    const threshold = 0.5; // Umbral mínimo de similitud para subtítulos
+    const threshold = 0.2; // Umbral más bajo para detectar subpreguntas similares
     
     compareData.forEach(compareSection => {
         if (compareSection && compareSection.subGraficos) {
