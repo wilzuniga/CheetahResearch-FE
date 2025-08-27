@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Comparación de Subpreguntas</title>
+    <link rel="stylesheet" href="assets/css/subgraficos.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        button { margin: 5px; padding: 10px 15px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #2980b9; }
+        .output { background: #f8f9fa; padding: 15px; border-radius: 4px; margin: 10px 0; font-family: monospace; font-size: 12px; }
+        .chart-type-selector { margin: 20px 0; text-align: center; }
+        .chart-type-selector button.active { background: #27ae60; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test - Comparación de Subpreguntas Difícil</h1>
+        
+        <div class="chart-type-selector">
+            <button onclick="cambiarTipoGrafico('bar')" id="btn-bar" class="active">Gráficos de Barras</button>
+            <button onclick="cambiarTipoGrafico('doughnut')" id="btn-doughnut">Gráficos de Dona</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>Datos de Prueba - Subpreguntas con Diferentes Títulos</h3>
+            <p>Este test verifica que las subpreguntas con títulos diferentes pero semánticamente similares se comparen correctamente</p>
+            <button onclick="cargarDatos()">Cargar Datos</button>
+            <div id="output" class="output"></div>
+        </div>
+
+        <div id="charts-containerResumenIndividualContent"></div>
+    </div>
+
+    <script type="module">
+        import { splitMarkdown, generateCharts, generateDoughnutCharts } from './js/splitter.js';
+
+        let currentChartType = 'bar';
+
+        // Datos del primer filtro
+        const datosFiltro1 = `#### *4. Pensando en el proceso de apertura de su cuenta de ahorros, ¿cómo describiría su experiencia?, Si tuviera que darle una calificación en una escala del 1 al 5, ¿qué calificación le daría? ¿Por qué? [Instrucción: esta pregunta debe realizarse solo si el entrevistado selecciono Apertura de una cuenta de ahorro, de lo contrario no la muestres]*
+
+**Calificación de la Experiencia (1 al 5)**
+- 5: 40%
+- 4: 40%
+- 3: 20%
+
+**Razones de la Calificación**
+- Proceso lento / Mucho tiempo de espera: 55%
+- Proceso positivo / Rápido / Fácil: 27%
+- Exceso de papeleo / Mucha información solicitada: 18%`;
+
+        // Datos del segundo filtro
+        const datosFiltro2 = `#### *4. Pensando en el proceso de apertura de su cuenta de ahorros, ¿cómo describiría su experiencia?, Si tuviera que darle una calificación en una escala del 1 al 5, ¿qué calificación le daría? ¿Por qué? [Instrucción: esta pregunta debe realizarse solo si el entrevistado selecciono Apertura de una cuenta de ahorro, de lo contrario no la muestres]*
+
+**Descripción de la experiencia**
+- Experiencia positiva (buena, fácil y rápida) : 57.1%
+- Experiencia regular (lenta, con mucho protocolo o compleja) : 42.9%
+
+**Calificación de la experiencia (escala 1 a 5)**
+- 5 (Excelente) : 42.9%
+- 4 (Buena) : 28.6%
+- 3 (Regular) : 28.6%
+
+**Motivo de la calificación**
+- Razones positivas (facilidad, buena atención, rapidez del proceso) : 57.1%
+- Razones negativas (monto de apertura elevado, complejidad de requisitos, tiempo de espera) : 42.9%`;
+
+        window.cambiarTipoGrafico = function(tipo) {
+            currentChartType = tipo;
+            
+            // Actualizar botones
+            document.getElementById('btn-bar').classList.remove('active');
+            document.getElementById('btn-doughnut').classList.remove('active');
+            document.getElementById('btn-' + tipo).classList.add('active');
+            
+            // Regenerar gráficos
+            cargarDatos();
+        };
+
+        window.cargarDatos = function() {
+            try {
+                const datos1 = splitMarkdown(datosFiltro1);
+                const datos2 = splitMarkdown(datosFiltro2);
+                
+                document.getElementById('output').innerHTML = 
+                    '<strong>Datos Filtro 1:</strong><br>' + 
+                    JSON.stringify(datos1, null, 2) +
+                    '<br><br><strong>Datos Filtro 2:</strong><br>' + 
+                    JSON.stringify(datos2, null, 2);
+                
+                // Limpiar contenedor y generar gráficos
+                document.getElementById('charts-containerResumenIndividualContent').innerHTML = '';
+                
+                if (currentChartType === 'bar') {
+                    generateCharts(datos1, datos2, 'Filtro 1', 'Filtro 2', 'bar');
+                } else {
+                    generateDoughnutCharts(datos1, datos2, 'Filtro 1', 'Filtro 2');
+                }
+                
+                console.log('✅ Gráficos generados exitosamente');
+            } catch (error) {
+                console.error('❌ Error al generar gráficos:', error);
+                document.getElementById('output').innerHTML = 
+                    '<strong>Error:</strong><br>' + error.message;
+            }
+        };
+
+        // Cargar datos al inicio
+        window.addEventListener('load', () => {
+            cargarDatos();
+        });
+    </script>
+</body>
+</html>
