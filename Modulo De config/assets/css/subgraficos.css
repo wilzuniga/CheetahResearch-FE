@@ -1,0 +1,156 @@
+/* Estilos para preguntas compuestas con subgráficos */
+
+.chart-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.main-question {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid #3498db;
+    text-align: center;
+}
+
+.subtitle {
+    color: #34495e;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(90deg, #ecf0f1 0%, #bdc3c7 100%);
+    border-radius: 6px;
+    border-left: 4px solid #3498db;
+}
+
+.chart-box {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 1px solid #ecf0f1;
+}
+
+.section-divider {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #3498db 50%, transparent 100%);
+    margin: 2rem 0;
+}
+
+/* Mejoras para gráficos de dona */
+.doughnut-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+.doughnut-chart {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    height: 300px;
+    position: relative;
+}
+
+.color-key-container {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.color-key-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.color-dot {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.color-label {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .chart-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .main-question {
+        font-size: 1.3rem;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .doughnut-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .doughnut-chart {
+        min-width: 250px;
+        max-width: 100%;
+        height: 250px;
+    }
+}
+
+/* Animaciones */
+.chart-section {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.chart-box {
+    animation: slideInRight 0.4s ease-out;
+    animation-fill-mode: both;
+}
+
+.chart-box:nth-child(1) { animation-delay: 0.1s; }
+.chart-box:nth-child(2) { animation-delay: 0.2s; }
+.chart-box:nth-child(3) { animation-delay: 0.3s; }
+.chart-box:nth-child(4) { animation-delay: 0.4s; }
+.chart-box:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

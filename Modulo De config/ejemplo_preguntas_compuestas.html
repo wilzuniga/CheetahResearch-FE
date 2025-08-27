@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo - Preguntas Compuestas con Subgráficos</title>
+    <link rel="stylesheet" href="assets/css/subgraficos.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Ejemplo de Preguntas Compuestas con Subgráficos</h1>
+        
+        <div id="charts-containerResumenIndividualContent"></div>
+        
+        <button onclick="cargarEjemplo()">Cargar Ejemplo</button>
+        <button onclick="cargarComparacion()">Cargar con Comparación</button>
+    </div>
+
+    <script type="module">
+        import { splitMarkdown, generateCharts, generateDoughnutCharts } from './js/splitter.js';
+
+        // Ejemplo de pregunta compuesta
+        const ejemploPregunta = `#### *1. Háblenos un poco de usted: Perfil Demográfico*
+
+**Distribución por Género**
+- Masculino : 56%
+- Femenino : 44%
+
+**Distribución por Edad**
+- 21-30 años : 13%
+- 31-40 años : 24%
+- 41-50 años : 22%
+- 51-60 años : 9%
+- 61+ años : 32%
+
+**Distribución por Nivel Educativo**
+- Primaria/Secundaria : 34%
+- Universitario (completo o incompleto) : 61%
+- Posgrado/Maestría : 5%
+
+**Distribución por Ocupación**
+- Comerciante / Negocio Propio : 29%
+- Profesional / Empleado Empresa Privada : 38%
+- Jubilado / Retirado : 9%
+- Ama de casa : 7%
+- Desempleado : 5%
+- Estudiante : 5%
+- Otro : 7%
+
+**Distribución por Estado Civil**
+- Soltero/a : 44%
+- Casado/a : 42%
+- Unión Libre : 7%
+- Viudo/a : 7%
+
+---
+
+#### *2. Háblenos un poco de usted: Perfil Demográfico del Televidente Regular*
+##### *Género*
+- Masculino: 56%
+- Femenino: 44%
+
+##### *Rango de Edad*
+- 21-30 años: 13%
+- 31-40 años: 31%
+- 41-50 años: 27%
+- 51-60 años: 13%
+- 61+ años: 16%
+
+##### *Ciudad de Residencia*
+- Tegucigalpa: 56%
+- San Pedro Sula: 44%
+
+##### *Nivel Educativo*
+- Universitario (completo o pasante): 65%
+- Secundaria (completa o incompleta): 32%
+- Primaria: 3%
+
+##### *Estado Civil*
+- Casado/Unión Libre: 56%
+- Soltero: 41%
+- Viudo/Divorciado: 3%`;
+
+        // Datos de comparación
+        const datosComparacion = `#### *1. Háblenos un poco de usted: Perfil Demográfico*
+
+**Distribución por Género**
+- Masculino : 52%
+- Femenino : 48%
+
+**Distribución por Edad**
+- 21-30 años : 18%
+- 31-40 años : 28%
+- 41-50 años : 25%
+- 51-60 años : 12%
+- 61+ años : 17%
+
+**Distribución por Nivel Educativo**
+- Primaria/Secundaria : 28%
+- Universitario (completo o incompleto) : 68%
+- Posgrado/Maestría : 4%
+
+**Distribución por Ocupación**
+- Comerciante / Negocio Propio : 32%
+- Profesional / Empleado Empresa Privada : 42%
+- Jubilado / Retirado : 6%
+- Ama de casa : 8%
+- Desempleado : 4%
+- Estudiante : 6%
+- Otro : 2%
+
+**Distribución por Estado Civil**
+- Soltero/a : 48%
+- Casado/a : 38%
+- Unión Libre : 8%
+- Viudo/a : 6%
+
+---
+
+#### *2. Háblenos un poco de usted: Perfil Demográfico del Televidente Regular*
+##### *Género*
+- Masculino: 54%
+- Femenino: 46%
+
+##### *Rango de Edad*
+- 21-30 años: 16%
+- 31-40 años: 29%
+- 41-50 años: 26%
+- 51-60 años: 15%
+- 61+ años: 14%
+
+##### *Ciudad de Residencia*
+- Tegucigalpa: 58%
+- San Pedro Sula: 42%
+
+##### *Nivel Educativo*
+- Universitario (completo o pasante): 62%
+- Secundaria (completa o incompleta): 35%
+- Primaria: 3%
+
+##### *Estado Civil*
+- Casado/Unión Libre: 52%
+- Soltero: 44%
+- Viudo/Divorciado: 4%`;
+
+        window.cargarEjemplo = function() {
+            const datos = splitMarkdown(ejemploPregunta);
+            console.log('Datos parseados:', datos);
+            generateCharts(datos, null, 'Filtro 1', 'Filtro 2', 'bar');
+        };
+
+        window.cargarComparacion = function() {
+            const datos1 = splitMarkdown(ejemploPregunta);
+            const datos2 = splitMarkdown(datosComparacion);
+            console.log('Datos 1:', datos1);
+            console.log('Datos 2:', datos2);
+            generateCharts(datos1, datos2, 'Filtro 1', 'Filtro 2', 'bar');
+        };
+
+        // Cargar ejemplo al inicio
+        window.addEventListener('load', () => {
+            cargarEjemplo();
+        });
+    </script>
+</body>
+</html>
