@@ -12,14 +12,33 @@ export function splitMarkdown(markdownText) {
         // Detectar si es una pregunta compuesta con subgráficos
         const subGraficos = [];
         let currentSubGrafico = null;
+        let hasSubtitles = false;
         
         for (let i = 1; i < lines.length; i++) {
             const line = lines[i].trim();
             
             // Detectar subtítulos (formato **subtitulo** o ##### subtitulo)
-            const subtitleMatch = line.match(/^\*\*(.*?)\*\*$|^#{1,6}\s*(.*?)$/);
+            // También detectar subtítulos que pueden tener espacios o estar en líneas separadas
+            // Mejorar la detección para casos como:
+            // - **Distribución por Género**
+            // - **Distribución por Género** (con espacios)
+            // - Subtítulos en líneas separadas
+            let subtitleMatch = line.match(/^\*\*(.*?)\*\*$|^#{1,6}\s*(.*?)$/);
+            
+            // Si no hay match directo, verificar si es una línea que solo contiene asteriscos
+            if (!subtitleMatch && line.trim() === '**') {
+                // Buscar la siguiente línea que contenga el subtítulo
+                if (i + 1 < lines.length) {
+                    const nextLine = lines[i + 1].trim();
+                    if (nextLine && !nextLine.match(/^[-*]/) && !nextLine.match(/^\d+\.?\d*%/)) {
+                        subtitleMatch = [null, nextLine, nextLine];
+                        i++; // Saltar la siguiente línea ya que la procesamos aquí
+                    }
+                }
+            }
             
             if (subtitleMatch) {
+                hasSubtitles = true;
                 // Si ya teníamos un subgráfico, guardarlo
                 if (currentSubGrafico && currentSubGrafico.respuestas.length > 0) {
                     subGraficos.push(currentSubGrafico);
@@ -47,7 +66,7 @@ export function splitMarkdown(markdownText) {
                     if (!currentSubGrafico) {
                         // Es una pregunta simple, crear un subgráfico por defecto
                         currentSubGrafico = {
-                            subtitulo: pregunta,
+                            subtitulo: null, // null indica que es una pregunta simple
                             respuestas: []
                         };
                     }
@@ -64,19 +83,12 @@ export function splitMarkdown(markdownText) {
             subGraficos.push(currentSubGrafico);
         }
         
-        // Si no hay subgráficos, crear uno por defecto con la pregunta principal
-        if (subGraficos.length === 0) {
-            subGraficos.push({
-                subtitulo: pregunta,
-                respuestas: []
-            });
-        }
-        
         // Solo agregar secciones que tengan respuestas
         if (subGraficos.some(sg => sg.respuestas.length > 0)) {
             parsedSections.push({
                 pregunta: pregunta,
-                subGraficos: subGraficos
+                subGraficos: subGraficos,
+                isCompuesta: hasSubtitles
             });
         }
     });
@@ -135,27 +147,41 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
     let chartIndex = 0;
 
     safePrimaryData.forEach((section, sectionIndex) => {
-        // Agregar título de la pregunta principal
-        chartsHTML += `
-            <div class="chart-section">
-                <h2 class="main-question">${section.pregunta}</h2>
-        `;
-        
-        // Generar HTML para cada subgráfico
-        section.subGraficos.forEach((subGrafico, subIndex) => {
+        if (section.isCompuesta) {
+            // Pregunta compuesta con subgráficos
             chartsHTML += `
-                <div class="chart-box">
-                    <h3 class="subtitle">${subGrafico.subtitulo}</h3>
-                    <canvas id="chart${chartIndex}"></canvas>
-                </div>
+                <div class="chart-section">
+                    <h2 class="main-question">${section.pregunta}</h2>
             `;
-            chartIndex++;
-        });
-        
-        chartsHTML += `
-            </div>
-            <hr class="section-divider">
-        `;
+            
+            // Generar HTML para cada subgráfico
+            section.subGraficos.forEach((subGrafico, subIndex) => {
+                chartsHTML += `
+                    <div class="chart-box">
+                        <h3 class="subtitle">${subGrafico.subtitulo}</h3>
+                        <canvas id="chart${chartIndex}"></canvas>
+                    </div>
+                `;
+                chartIndex++;
+            });
+            
+            chartsHTML += `
+                </div>
+                <hr class="section-divider">
+            `;
+        } else {
+            // Pregunta simple (comportamiento anterior)
+            section.subGraficos.forEach((subGrafico, subIndex) => {
+                chartsHTML += `
+                    <div class="chart-box">
+                        <h3>${section.pregunta}</h3>
+                        <canvas id="chart${chartIndex}"></canvas>
+                    </div>
+                    <hr>
+                `;
+                chartIndex++;
+            });
+        }
     });
 
     // Insertar el HTML generado en el contenedor
@@ -167,181 +193,34 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
         let chartIndex = 0;
         
         safePrimaryData.forEach((section, sectionIndex) => {
-            // Crear gráficos para cada subgráfico
-            section.subGraficos.forEach((subGrafico, subIndex) => {
-                const ctx = document.getElementById(`chart${chartIndex}`).getContext('2d');
-                
-                // Buscar subgráfico de comparación por similitud de subtítulo
-                let compareSubGrafico = findCompareSubGrafico(subGrafico, section, safeCompareData);
-                
-                let allLabels = [];
-                let datasets = [];
-                const transparent = 'rgba(0,0,0,0)';
-
-                if (compareSubGrafico) {
-                    // Modo 50/50: mitad izquierda = filtro 1, separador, mitad derecha = filtro 2
-                    const dividerLabel = ' ';
+            if (section.isCompuesta) {
+                // Crear gráficos para cada subgráfico de pregunta compuesta
+                section.subGraficos.forEach((subGrafico, subIndex) => {
+                    const ctx = document.getElementById(`chart${chartIndex}`).getContext('2d');
                     
-                    // Ordenar Filtro 1 de mayor a menor
-                    const sortedPrimary = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
-                    const sortedPrimaryLabels = sortedPrimary.map(r => r.respuesta);
+                    // Buscar subgráfico de comparación por similitud de subtítulo
+                    let compareSubGrafico = findCompareSubGrafico(subGrafico, section, safeCompareData);
                     
-                    // Ordenar Filtro 2 de mayor a menor
-                    const sortedCompare = [...compareSubGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
-                    const sortedCompareLabels = sortedCompare.map(r => r.respuesta);
+                    createBarChart(ctx, subGrafico, compareSubGrafico, primaryColors, compareColors, 
+                                 primaryTranslucent, compareTranslucent, primaryLabel, compareLabel);
                     
-                    allLabels = [...sortedPrimaryLabels, dividerLabel, ...sortedCompareLabels];
-
-                    const primaryValuesByLabel = new Map(sortedPrimary.map(r => [r.respuesta, r.porcentaje]));
-                    const compareValuesByLabel = new Map(sortedCompare.map(r => [r.respuesta, r.porcentaje]));
-
-                    const primaryData = [
-                        ...sortedPrimaryLabels.map(label => primaryValuesByLabel.get(label) ?? 0),
-                        0, // separador
-                        ...sortedCompareLabels.map(() => 0)
-                    ];
-                    const compareDataVals = [
-                        ...sortedPrimaryLabels.map(() => 0),
-                        0, // separador
-                        ...sortedCompareLabels.map(label => compareValuesByLabel.get(label) ?? 0)
-                    ];
-
-                    const primaryBg = [
-                        ...sortedPrimaryLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
-                        transparent,
-                        ...sortedCompareLabels.map(() => transparent)
-                    ];
-                    const primaryBorder = [
-                        ...sortedPrimaryLabels.map((_, i) => primaryColors[i % primaryColors.length]),
-                        transparent,
-                        ...sortedCompareLabels.map(() => transparent)
-                    ];
-
-                    // Forzar color visible en la leyenda del dataset principal
-                    if (primaryBg.length > 0) {
-                        primaryBg[0] = primaryTranslucent[0];
-                    }
-                    if (primaryBorder.length > 0) {
-                        primaryBorder[0] = primaryColors[0];
-                    }
-
-                    const compareBg = [
-                        ...sortedPrimaryLabels.map(() => transparent),
-                        transparent,
-                        ...sortedCompareLabels.map((_, i) => compareTranslucent[i % compareTranslucent.length])
-                    ];
-                    const compareBorder = [
-                        ...sortedPrimaryLabels.map(() => transparent),
-                        transparent,
-                        ...sortedCompareLabels.map((_, i) => compareColors[i % compareColors.length])
-                    ];
-
-                    // Forzar color visible en la leyenda del dataset de comparación
-                    if (compareBg.length > 0) {
-                        compareBg[0] = compareTranslucent[0];
-                    }
-                    if (compareBorder.length > 0) {
-                        compareBorder[0] = compareColors[0];
-                    }
-
-                    datasets = [
-                        {
-                            label: primaryLabel,
-                            data: primaryData,
-                            backgroundColor: primaryBg,
-                            borderColor: primaryBorder,
-                            borderWidth: 1
-                        },
-                        {
-                            label: compareLabel || 'Comparación',
-                            data: compareDataVals,
-                            backgroundColor: compareBg,
-                            borderColor: compareBorder,
-                            borderWidth: 1
-                        }
-                    ];
-                } else {
-                    // Modo normal sin comparación - ordenar de mayor a menor
-                    const sortedPrimary = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
-                    const sortedPrimaryLabels = sortedPrimary.map(r => r.respuesta);
-                    const sortedPrimaryValues = sortedPrimary.map(r => r.porcentaje);
-                    
-                    allLabels = [...sortedPrimaryLabels];
-                    datasets = [{
-                        label: primaryLabel,
-                        data: sortedPrimaryValues,
-                        backgroundColor: sortedPrimaryLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
-                        borderColor: sortedPrimaryLabels.map((_, i) => primaryColors[i % primaryColors.length]),
-                        borderWidth: 1
-                    }];
-                }
-
-                // reset de animación por render
-                delayed = false;
-
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: allLabels,
-                        datasets
-                    },
-                    options: {
-                        responsive: true,
-                        layout: {
-                            padding: {
-                                bottom: 45
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'top'
-                            }
-                        },
-                        animation: {
-                            onComplete: () => {
-                                delayed = true;
-                            },
-                            delay: (context) => {
-                                let delay = 0;
-                                if (context.type === 'data' && context.mode === 'default' && !delayed) {
-                                    delay = context.dataIndex * 100 + context.datasetIndex * 33;
-                                }
-                                return delay;
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
-                                stacked: true
-                            },
-                            x: {
-                                position: 'bottom',
-                                offset: true,
-                                stacked: true,
-                                ticks: {
-                                    callback: function(value, index) {
-                                        const label = this.getLabelForValue(value);
-                                        // Si es un separador, retornar string vacío
-                                        if (label === ' ' || label === '') return '';
-                                        
-                                        // Aplicar wrap de texto y retornar array de líneas
-                                        return wrapTextToLines(label, 18);
-                                    },
-                                    padding: 8,
-                                    crossAlign: 'near',
-                                    font: {
-                                        size: 10
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    chartIndex++;
                 });
-                
-                chartIndex++;
-            });
+            } else {
+                // Crear gráficos para pregunta simple (comportamiento anterior)
+                section.subGraficos.forEach((subGrafico, subIndex) => {
+                    const ctx = document.getElementById(`chart${chartIndex}`).getContext('2d');
+                    
+                    // Para preguntas simples, buscar comparación por título de pregunta
+                    let compareSection = findCompareSection(section, safeCompareData, sectionIndex);
+                    let compareSubGrafico = compareSection ? compareSection.subGraficos[0] : null;
+                    
+                    createBarChart(ctx, subGrafico, compareSubGrafico, primaryColors, compareColors, 
+                                 primaryTranslucent, compareTranslucent, primaryLabel, compareLabel);
+                    
+                    chartIndex++;
+                });
+            }
         });
     } else {
         console.error("El contenedor de gráficos no se encontró.");
@@ -538,6 +417,187 @@ function findCompareSubGrafico(primarySubGrafico, primarySection, compareData) {
     }
 
     return bestMatch;
+}
+
+/**
+ * Crea un gráfico de barras con comparación o sin ella
+ * @param {CanvasRenderingContext2D} ctx - Contexto del canvas
+ * @param {Object} subGrafico - Subgráfico principal
+ * @param {Object} compareSubGrafico - Subgráfico de comparación (opcional)
+ * @param {Array} primaryColors - Colores principales
+ * @param {Array} compareColors - Colores de comparación
+ * @param {Array} primaryTranslucent - Colores principales translúcidos
+ * @param {Array} compareTranslucent - Colores de comparación translúcidos
+ * @param {string} primaryLabel - Etiqueta del filtro principal
+ * @param {string} compareLabel - Etiqueta del filtro de comparación
+ */
+function createBarChart(ctx, subGrafico, compareSubGrafico, primaryColors, compareColors, 
+                       primaryTranslucent, compareTranslucent, primaryLabel, compareLabel) {
+    let allLabels = [];
+    let datasets = [];
+    const transparent = 'rgba(0,0,0,0)';
+
+    if (compareSubGrafico) {
+        // Modo 50/50: mitad izquierda = filtro 1, separador, mitad derecha = filtro 2
+        const dividerLabel = ' ';
+        
+        // Ordenar Filtro 1 de mayor a menor
+        const sortedPrimary = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
+        const sortedPrimaryLabels = sortedPrimary.map(r => r.respuesta);
+        
+        // Ordenar Filtro 2 de mayor a menor
+        const sortedCompare = [...compareSubGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
+        const sortedCompareLabels = sortedCompare.map(r => r.respuesta);
+        
+        allLabels = [...sortedPrimaryLabels, dividerLabel, ...sortedCompareLabels];
+
+        const primaryValuesByLabel = new Map(sortedPrimary.map(r => [r.respuesta, r.porcentaje]));
+        const compareValuesByLabel = new Map(sortedCompare.map(r => [r.respuesta, r.porcentaje]));
+
+        const primaryData = [
+            ...sortedPrimaryLabels.map(label => primaryValuesByLabel.get(label) ?? 0),
+            0, // separador
+            ...sortedCompareLabels.map(() => 0)
+        ];
+        const compareDataVals = [
+            ...sortedPrimaryLabels.map(() => 0),
+            0, // separador
+            ...sortedCompareLabels.map(label => compareValuesByLabel.get(label) ?? 0)
+        ];
+
+        const primaryBg = [
+            ...sortedPrimaryLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
+            transparent,
+            ...sortedCompareLabels.map(() => transparent)
+        ];
+        const primaryBorder = [
+            ...sortedPrimaryLabels.map((_, i) => primaryColors[i % primaryColors.length]),
+            transparent,
+            ...sortedCompareLabels.map(() => transparent)
+        ];
+
+        // Forzar color visible en la leyenda del dataset principal
+        if (primaryBg.length > 0) {
+            primaryBg[0] = primaryTranslucent[0];
+        }
+        if (primaryBorder.length > 0) {
+            primaryBorder[0] = primaryColors[0];
+        }
+
+        const compareBg = [
+            ...sortedPrimaryLabels.map(() => transparent),
+            transparent,
+            ...sortedCompareLabels.map((_, i) => compareTranslucent[i % compareTranslucent.length])
+        ];
+        const compareBorder = [
+            ...sortedPrimaryLabels.map(() => transparent),
+            transparent,
+            ...sortedCompareLabels.map((_, i) => compareColors[i % compareColors.length])
+        ];
+
+        // Forzar color visible en la leyenda del dataset de comparación
+        if (compareBg.length > 0) {
+            compareBg[0] = compareTranslucent[0];
+        }
+        if (compareBorder.length > 0) {
+            compareBorder[0] = compareColors[0];
+        }
+
+        datasets = [
+            {
+                label: primaryLabel,
+                data: primaryData,
+                backgroundColor: primaryBg,
+                borderColor: primaryBorder,
+                borderWidth: 1
+            },
+            {
+                label: compareLabel || 'Comparación',
+                data: compareDataVals,
+                backgroundColor: compareBg,
+                borderColor: compareBorder,
+                borderWidth: 1
+            }
+        ];
+    } else {
+        // Modo normal sin comparación - ordenar de mayor a menor
+        const sortedPrimary = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
+        const sortedPrimaryLabels = sortedPrimary.map(r => r.respuesta);
+        const sortedPrimaryValues = sortedPrimary.map(r => r.porcentaje);
+        
+        allLabels = [...sortedPrimaryLabels];
+        datasets = [{
+            label: primaryLabel,
+            data: sortedPrimaryValues,
+            backgroundColor: sortedPrimaryLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
+            borderColor: sortedPrimaryLabels.map((_, i) => primaryColors[i % primaryColors.length]),
+            borderWidth: 1
+        }];
+    }
+
+    // reset de animación por render
+    delayed = false;
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: allLabels,
+            datasets
+        },
+        options: {
+            responsive: true,
+            layout: {
+                padding: {
+                    bottom: 45
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            },
+            animation: {
+                onComplete: () => {
+                    delayed = true;
+                },
+                delay: (context) => {
+                    let delay = 0;
+                    if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                        delay = context.dataIndex * 100 + context.datasetIndex * 33;
+                    }
+                    return delay;
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    stacked: true
+                },
+                x: {
+                    position: 'bottom',
+                    offset: true,
+                    stacked: true,
+                    ticks: {
+                        callback: function(value, index) {
+                            const label = this.getLabelForValue(value);
+                            // Si es un separador, retornar string vacío
+                            if (label === ' ' || label === '') return '';
+                            
+                            // Aplicar wrap de texto y retornar array de líneas
+                            return wrapTextToLines(label, 18);
+                        },
+                        padding: 8,
+                        crossAlign: 'near',
+                        font: {
+                            size: 10
+                        }
+                    }
+                }
+            }
+        }
+    });
 }
 
 function createDoughnutChart(ctx, subGrafico, colors, label, isCompare = false) {
