@@ -247,44 +247,75 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
     let chartIndex = 0;
 
     safePrimaryData.forEach((section, sectionIndex) => {
-        // Agregar título de la pregunta principal
-        chartsHTML += `
-            <div class="chart-section">
-                <h2 class="main-question">${section.pregunta}</h2>
-        `;
-        
-        // Generar HTML para cada subgráfico
-        section.subGraficos.forEach((subGrafico, subIndex) => {
+        if (section.isCompuesta) {
+            // Pregunta compuesta con subgráficos
             chartsHTML += `
-                <div class="chart-box">
-                    <h3 class="subtitle">${subGrafico.subtitulo}</h3>
-                    <div class="doughnut-container">
-                        <div class="doughnut-chart">
-                            <canvas id="chart${chartIndex}"></canvas>
-                        </div>
-                        ${safeCompareData ? `<div class="doughnut-chart">
-                            <canvas id="chart${chartIndex}Compare"></canvas>
-                        </div>` : ''}
-                    </div>
-                    <div class="color-key-container">
-                        <div class="color-key-item">
-                            <span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
-                            <span class="color-label">${primaryLabel}</span>
-                            ${safeCompareData ? `
-                            <span class="color-dot" style="background-color: ${compareColors[0]}"></span>
-                            <span class="color-label">${compareLabel}</span>
-                            ` : ''}
-                        </div>
-                    </div>
-                </div>
+                <div class="chart-section">
+                    <h2 class="main-question">${section.pregunta}</h2>
             `;
-            chartIndex++;
-        });
-        
-        chartsHTML += `
-            </div>
-            <hr class="section-divider">
-        `;
+            
+            // Generar HTML para cada subgráfico
+            section.subGraficos.forEach((subGrafico, subIndex) => {
+                chartsHTML += `
+                    <div class="chart-box">
+                        <h3 class="subtitle">${subGrafico.subtitulo}</h3>
+                        <div class="doughnut-container">
+                            <div class="doughnut-chart">
+                                <canvas id="chart${chartIndex}"></canvas>
+                            </div>
+                            ${safeCompareData ? `<div class="doughnut-chart">
+                                <canvas id="chart${chartIndex}Compare"></canvas>
+                            </div>` : ''}
+                        </div>
+                        <div class="color-key-container">
+                            <div class="color-key-item">
+                                <span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
+                                <span class="color-label">${primaryLabel}</span>
+                                ${safeCompareData ? `
+                                <span class="color-dot" style="background-color: ${compareColors[0]}"></span>
+                                <span class="color-label">${compareLabel}</span>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                chartIndex++;
+            });
+            
+            chartsHTML += `
+                </div>
+                <hr class="section-divider">
+            `;
+        } else {
+            // Pregunta simple (comportamiento anterior)
+            section.subGraficos.forEach((subGrafico, subIndex) => {
+                chartsHTML += `
+                    <div class="chart-box">
+                        <h3>${section.pregunta}</h3>
+                        <div class="doughnut-container">
+                            <div class="doughnut-chart">
+                                <canvas id="chart${chartIndex}"></canvas>
+                            </div>
+                            ${safeCompareData ? `<div class="doughnut-chart">
+                                <canvas id="chart${chartIndex}Compare"></canvas>
+                            </div>` : ''}
+                        </div>
+                        <div class="color-key-container">
+                            <div class="color-key-item">
+                                <span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
+                                <span class="color-label">${primaryLabel}</span>
+                                ${safeCompareData ? `
+                                <span class="color-dot" style="background-color: ${compareColors[0]}"></span>
+                                <span class="color-label">${compareLabel}</span>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                `;
+                chartIndex++;
+            });
+        }
     });
 
     // Insertar el HTML generado en el contenedor
@@ -324,9 +355,9 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
                     // Gráfico de comparación si existe
                     if (safeCompareData) {
                         const compareSection = findCompareSection(section, safeCompareData, sectionIndex);
-                        if (compareSection) {
+                        if (compareSection && compareSection.subGraficos && compareSection.subGraficos[0]) {
                             const ctxCompare = document.getElementById(`chart${chartIndex}Compare`).getContext('2d');
-                            createDoughnutChart(ctxCompare, compareSection, compareColors, compareLabel, false);
+                            createDoughnutChart(ctxCompare, compareSection.subGraficos[0], compareColors, compareLabel, false);
                         }
                     }
                     
@@ -626,6 +657,12 @@ function createBarChart(ctx, subGrafico, compareSubGrafico, primaryColors, compa
 }
 
 function createDoughnutChart(ctx, subGrafico, colors, label, isCompare = false) {
+    // Validar que subGrafico y respuestas existan
+    if (!subGrafico || !subGrafico.respuestas || !Array.isArray(subGrafico.respuestas)) {
+        console.error('Error: subGrafico.respuestas no es válido:', subGrafico);
+        return;
+    }
+    
     // Ordenar respuestas de mayor a menor (mismo orden que gráficos de barras)
     const sortedResponses = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
     
