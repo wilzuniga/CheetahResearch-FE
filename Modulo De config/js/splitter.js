@@ -296,23 +296,43 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
         let chartIndex = 0;
         
         safePrimaryData.forEach((section, sectionIndex) => {
-            // Crear gráficos para cada subgráfico
-            section.subGraficos.forEach((subGrafico, subIndex) => {
-                // Gráfico principal
-                const ctx = document.getElementById(`chart${chartIndex}`).getContext('2d');
-                createDoughnutChart(ctx, subGrafico, primaryColors, primaryLabel, false);
+            if (section.isCompuesta) {
+                // Crear gráficos para cada subgráfico de pregunta compuesta
+                section.subGraficos.forEach((subGrafico, subIndex) => {
+                    // Gráfico principal
+                    const ctx = document.getElementById(`chart${chartIndex}`).getContext('2d');
+                    createDoughnutChart(ctx, subGrafico, primaryColors, primaryLabel, false);
 
-                // Gráfico de comparación si existe
-                if (safeCompareData) {
-                    const compareSubGrafico = findCompareSubGrafico(subGrafico, section, safeCompareData);
-                    if (compareSubGrafico) {
-                        const ctxCompare = document.getElementById(`chart${chartIndex}Compare`).getContext('2d');
-                        createDoughnutChart(ctxCompare, compareSubGrafico, compareColors, compareLabel, true);
+                    // Gráfico de comparación si existe
+                    if (safeCompareData) {
+                        const compareSubGrafico = findCompareSubGrafico(subGrafico, section, safeCompareData);
+                        if (compareSubGrafico) {
+                            const ctxCompare = document.getElementById(`chart${chartIndex}Compare`).getContext('2d');
+                            createDoughnutChart(ctxCompare, compareSubGrafico, compareColors, compareLabel, false);
+                        }
                     }
-                }
-                
-                chartIndex++;
-            });
+                    
+                    chartIndex++;
+                });
+            } else {
+                // Crear gráficos para pregunta simple (comportamiento anterior)
+                section.subGraficos.forEach((subGrafico, subIndex) => {
+                    // Gráfico principal
+                    const ctx = document.getElementById(`chart${chartIndex}`).getContext('2d');
+                    createDoughnutChart(ctx, subGrafico, primaryColors, primaryLabel, false);
+
+                    // Gráfico de comparación si existe
+                    if (safeCompareData) {
+                        const compareSection = findCompareSection(section, safeCompareData, sectionIndex);
+                        if (compareSection) {
+                            const ctxCompare = document.getElementById(`chart${chartIndex}Compare`).getContext('2d');
+                            createDoughnutChart(ctxCompare, compareSection, compareColors, compareLabel, false);
+                        }
+                    }
+                    
+                    chartIndex++;
+                });
+            }
         });
     } else {
         console.error("El contenedor de gráficos no se encontró.");
@@ -569,12 +589,17 @@ function createBarChart(ctx, subGrafico, compareSubGrafico, primaryColors, compa
                     return delay;
                 }
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100,
-                    stacked: true
-                },
+                                    scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                stacked: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            },
                 x: {
                     position: 'bottom',
                     offset: true,
@@ -601,7 +626,7 @@ function createBarChart(ctx, subGrafico, compareSubGrafico, primaryColors, compa
 }
 
 function createDoughnutChart(ctx, subGrafico, colors, label, isCompare = false) {
-    // Ordenar respuestas de mayor a menor
+    // Ordenar respuestas de mayor a menor (mismo orden que gráficos de barras)
     const sortedResponses = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
     
     const chartColors = sortedResponses.map((_, i) => colors[i % colors.length]);
