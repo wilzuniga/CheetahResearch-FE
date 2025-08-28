@@ -158,3 +158,29 @@
         transform: translateX(0);
     }
 }
+
+/* External legend for doughnut charts */
+.chart-legend {
+	margin-top: 10px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 8px 16px;
+	align-items: center;
+}
+.legend-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 12px;
+	line-height: 1.2;
+	color: #2c3e50;
+}
+.legend-dot {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	flex: 0 0 12px;
+}
+.legend-text {
+	word-break: break-word;
+}
