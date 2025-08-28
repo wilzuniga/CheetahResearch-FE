@@ -51,7 +51,7 @@
 .doughnut-container {
     display: flex;
     justify-content: space-around;
-    align-items: stretch;
+    align-items: center;
     flex-wrap: wrap;
     gap: 2rem;
     margin: 1rem 0;
@@ -60,10 +60,8 @@
 .doughnut-chart {
     flex: 1;
     min-width: 300px;
-    max-width: 420px;
-    /* Allow dynamic height controlled by JS */
-    height: auto;
-    min-height: 300px;
+    max-width: 400px;
+    height: 300px;
     position: relative;
 }
 
@@ -115,9 +113,9 @@
     }
     
     .doughnut-chart {
-        min-width: 260px;
+        min-width: 250px;
         max-width: 100%;
-        min-height: 260px;
+        height: 250px;
     }
 }
 
@@ -157,30 +155,4 @@
         opacity: 1;
         transform: translateX(0);
     }
-}
-
-/* External legend for doughnut charts */
-.chart-legend {
-	margin-top: 10px;
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-	gap: 8px 16px;
-	align-items: center;
-}
-.legend-item {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	font-size: 12px;
-	line-height: 1.2;
-	color: #2c3e50;
-}
-.legend-dot {
-	width: 12px;
-	height: 12px;
-	border-radius: 50%;
-	flex: 0 0 12px;
-}
-.legend-text {
-	word-break: break-word;
 }
