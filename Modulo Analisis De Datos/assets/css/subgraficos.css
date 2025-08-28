@@ -1,0 +1,123 @@
+/* Estilos para preguntas compuestas y subgráficos */
+
+.chart-section {
+    margin-bottom: 2rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background-color: #fafafa;
+}
+
+.main-question {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #3498db;
+}
+
+.subtitle {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #34495e;
+    margin: 1rem 0;
+    padding: 0.5rem 1rem 0.5rem 2rem;
+    background-color: #ecf0f1;
+    border-left: 4px solid #3498db;
+    border-radius: 0 4px 4px 0;
+    text-align: left;
+}
+
+.chart-box {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.section-divider {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #3498db, transparent);
+    margin: 2rem 0;
+}
+
+/* Contenedor para gráficos de dona */
+.doughnut-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.doughnut-chart {
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+    height: 250px;
+}
+
+/* Contenedor de clave de colores */
+.color-key-container {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.color-key-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.color-dot {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.color-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .chart-section {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .main-question {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .subtitle {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem 0.4rem 1.5rem;
+    }
+    
+    .doughnut-container {
+        flex-direction: column;
+    }
+    
+    .doughnut-chart {
+        min-width: 200px;
+        max-width: 250px;
+        height: 200px;
+    }
+    
+    .color-key-item {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

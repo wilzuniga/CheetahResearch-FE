@@ -228,150 +228,146 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
 }
 
 export function generateDoughnutCharts(primaryData, compareData = null, primaryLabel = 'Filtro 1', compareLabel = 'Filtro 2') {
-	// Analizar y filtrar datos para comparación segura
-	const { safePrimaryData, safeCompareData } = analyzeAndFilterData(primaryData, compareData);
-	
-	const primaryColors = [
-		'#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
-		'#FFB74D', '#FFA726', '#D35400', '#FF6F00', '#F57C00', '#E64A19', '#FF8F00', '#FF5722'
-	];
-	// Paleta azulada para el filtro de comparación
-	const compareColors = [
-		'#0D47A1', '#1565C0', '#1976D2', '#1E88E5', '#2196F3',
-		'#42A5F5', '#64B5F6', '#90CAF9', '#64B5F6', '#42A5F5',
-		'#1E88E5', '#1976D2', '#1565C0', '#0D47A1', '#0B3C91'
-	];
+    // Analizar y filtrar datos para comparación segura
+    const { safePrimaryData, safeCompareData } = analyzeAndFilterData(primaryData, compareData);
+    
+    const primaryColors = [
+        '#EB5A3C', '#DF9755', '#F0A04B', '#FF9100', '#D85C37', '#E67E22', '#F39C12',
+        '#FFB74D', '#FFA726', '#D35400', '#FF6F00', '#F57C00', '#E64A19', '#FF8F00', '#FF5722'
+    ];
+    // Paleta azulada para el filtro de comparación
+    const compareColors = [
+        '#0D47A1', '#1565C0', '#1976D2', '#1E88E5', '#2196F3',
+        '#42A5F5', '#64B5F6', '#90CAF9', '#64B5F6', '#42A5F5',
+        '#1E88E5', '#1976D2', '#1565C0', '#0D47A1', '#0B3C91'
+    ];
 
-	let chartsHTML = '';
+    let chartsHTML = '';
 
-	let chartIndex = 0;
+    let chartIndex = 0;
 
-	safePrimaryData.forEach((section, sectionIndex) => {
-		if (section.isCompuesta) {
-			// Pregunta compuesta con subgráficos
-			chartsHTML += `
-				<div class="chart-section">
-					<h2 class="main-question">${section.pregunta}</h2>
-			`;
-			
-			// Generar HTML para cada subgráfico
-			section.subGraficos.forEach((subGrafico, subIndex) => {
-				chartsHTML += `
-					<div class="chart-box">
-						<h3 class="subtitle">${subGrafico.subtitulo}</h3>
-						<div class="doughnut-container">
-							<div class="doughnut-chart">
-								<canvas id="chart${chartIndex}"></canvas>
-								<div class="chart-legend" id="legendchart${chartIndex}"></div>
-							</div>
-							${safeCompareData ? `<div class="doughnut-chart">
-								<canvas id="chart${chartIndex}Compare"></canvas>
-								<div class="chart-legend" id="legendchart${chartIndex}Compare"></div>
-							</div>` : ''}
-						</div>
-						<div class="color-key-container">
-							<div class="color-key-item">
-								<span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
-								<span class="color-label">${primaryLabel}</span>
-								${safeCompareData ? `
-								<span class="color-dot" style="background-color: ${compareColors[0]}"></span>
-								<span class="color-label">${compareLabel}</span>
-								` : ''}
-							</div>
-						</div>
-					</div>
-				`;
-				chartIndex++;
-			});
-			
-			chartsHTML += `
-				</div>
-				<hr class="section-divider">
-			`;
-		} else {
-			// Pregunta simple (comportamiento anterior)
-			section.subGraficos.forEach((subGrafico, subIndex) => {
-				chartsHTML += `
-					<div class="chart-box">
-						<h3>${section.pregunta}</h3>
-						<div class="doughnut-container">
-							<div class="doughnut-chart">
-								<canvas id="chart${chartIndex}"></canvas>
-								<div class="chart-legend" id="legendchart${chartIndex}"></div>
-							</div>
-							${safeCompareData ? `<div class="doughnut-chart">
-								<canvas id="chart${chartIndex}Compare"></canvas>
-								<div class="chart-legend" id="legendchart${chartIndex}Compare"></div>
-							</div>` : ''}
-						</div>
-						<div class="color-key-container">
-							<div class="color-key-item">
-								<span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
-								<span class="color-label">${primaryLabel}</span>
-								${safeCompareData ? `
-								<span class="color-dot" style="background-color: ${compareColors[0]}"></span>
-								<span class="color-label">${compareLabel}</span>
-								` : ''}
-							</div>
-						</div>
-					</div>
-					<hr>
-				`;
-				chartIndex++;
-			});
-		}
-	});
+    safePrimaryData.forEach((section, sectionIndex) => {
+        if (section.isCompuesta) {
+            // Pregunta compuesta con subgráficos
+            chartsHTML += `
+                <div class="chart-section">
+                    <h2 class="main-question">${section.pregunta}</h2>
+            `;
+            
+            // Generar HTML para cada subgráfico
+            section.subGraficos.forEach((subGrafico, subIndex) => {
+                chartsHTML += `
+                    <div class="chart-box">
+                        <h3 class="subtitle">${subGrafico.subtitulo}</h3>
+                        <div class="doughnut-container">
+                            <div class="doughnut-chart">
+                                <canvas id="chart${chartIndex}"></canvas>
+                            </div>
+                            ${safeCompareData ? `<div class="doughnut-chart">
+                                <canvas id="chart${chartIndex}Compare"></canvas>
+                            </div>` : ''}
+                        </div>
+                        <div class="color-key-container">
+                            <div class="color-key-item">
+                                <span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
+                                <span class="color-label">${primaryLabel}</span>
+                                ${safeCompareData ? `
+                                <span class="color-dot" style="background-color: ${compareColors[0]}"></span>
+                                <span class="color-label">${compareLabel}</span>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                chartIndex++;
+            });
+            
+            chartsHTML += `
+                </div>
+                <hr class="section-divider">
+            `;
+        } else {
+            // Pregunta simple (comportamiento anterior)
+            section.subGraficos.forEach((subGrafico, subIndex) => {
+                chartsHTML += `
+                    <div class="chart-box">
+                        <h3>${section.pregunta}</h3>
+                        <div class="doughnut-container">
+                            <div class="doughnut-chart">
+                                <canvas id="chart${chartIndex}"></canvas>
+                            </div>
+                            ${safeCompareData ? `<div class="doughnut-chart">
+                                <canvas id="chart${chartIndex}Compare"></canvas>
+                            </div>` : ''}
+                        </div>
+                        <div class="color-key-container">
+                            <div class="color-key-item">
+                                <span class="color-dot" style="background-color: ${primaryColors[0]}"></span>
+                                <span class="color-label">${primaryLabel}</span>
+                                ${safeCompareData ? `
+                                <span class="color-dot" style="background-color: ${compareColors[0]}"></span>
+                                <span class="color-label">${compareLabel}</span>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                `;
+                chartIndex++;
+            });
+        }
+    });
 
-	// Insertar el HTML generado en el contenedor
-	const container = document.getElementById('charts-containerResumenIndividualContent');
-	if (container) {
-		container.innerHTML = chartsHTML;
+    // Insertar el HTML generado en el contenedor
+    const container = document.getElementById('charts-containerResumenIndividualContent');
+    if (container) {
+        container.innerHTML = chartsHTML;
 
-		// Crear los gráficos después de insertar el HTML
-		let chartIndex = 0;
-		
-		safePrimaryData.forEach((section, sectionIndex) => {
-			if (section.isCompuesta) {
-				// Crear gráficos para cada subgráfico de pregunta compuesta
-				section.subGraficos.forEach((subGrafico, subIndex) => {
-					// Gráfico principal
-					const ctx = document.getElementById(`chart${chartIndex}`).getContext('2d');
-					createDoughnutChart(ctx, subGrafico, primaryColors, primaryLabel, false);
+        // Crear los gráficos después de insertar el HTML
+        let chartIndex = 0;
+        
+        safePrimaryData.forEach((section, sectionIndex) => {
+            if (section.isCompuesta) {
+                // Crear gráficos para cada subgráfico de pregunta compuesta
+                section.subGraficos.forEach((subGrafico, subIndex) => {
+                    // Gráfico principal
+                    const ctx = document.getElementById(`chart${chartIndex}`).getContext('2d');
+                    createDoughnutChart(ctx, subGrafico, primaryColors, primaryLabel, false);
 
-					// Gráfico de comparación si existe
-					if (safeCompareData) {
-						const compareSubGrafico = findCompareSubGrafico(subGrafico, section, safeCompareData);
-						if (compareSubGrafico) {
-							const ctxCompare = document.getElementById(`chart${chartIndex}Compare`).getContext('2d');
-							createDoughnutChart(ctxCompare, compareSubGrafico, compareColors, compareLabel, false);
-						}
-					}
-					
-					chartIndex++;
-				});
-			} else {
-				// Crear gráficos para pregunta simple (comportamiento anterior)
-				section.subGraficos.forEach((subGrafico, subIndex) => {
-					// Gráfico principal
-					const ctx = document.getElementById(`chart${chartIndex}`).getContext('2d');
-					createDoughnutChart(ctx, subGrafico, primaryColors, primaryLabel, false);
+                    // Gráfico de comparación si existe
+                    if (safeCompareData) {
+                        const compareSubGrafico = findCompareSubGrafico(subGrafico, section, safeCompareData);
+                        if (compareSubGrafico) {
+                            const ctxCompare = document.getElementById(`chart${chartIndex}Compare`).getContext('2d');
+                            createDoughnutChart(ctxCompare, compareSubGrafico, compareColors, compareLabel, false);
+                        }
+                    }
+                    
+                    chartIndex++;
+                });
+            } else {
+                // Crear gráficos para pregunta simple (comportamiento anterior)
+                section.subGraficos.forEach((subGrafico, subIndex) => {
+                    // Gráfico principal
+                    const ctx = document.getElementById(`chart${chartIndex}`).getContext('2d');
+                    createDoughnutChart(ctx, subGrafico, primaryColors, primaryLabel, false);
 
-					// Gráfico de comparación si existe
-					if (safeCompareData) {
-						const compareSection = findCompareSection(section, safeCompareData, sectionIndex);
-						if (compareSection && compareSection.subGraficos && compareSection.subGraficos[0]) {
-							const ctxCompare = document.getElementById(`chart${chartIndex}Compare`).getContext('2d');
-							createDoughnutChart(ctxCompare, compareSection.subGraficos[0], compareColors, compareLabel, false);
-						}
-					}
-					
-					chartIndex++;
-				});
-			}
-		});
-	} else {
-		console.error("El contenedor de gráficos no se encontró.");
-	}
+                    // Gráfico de comparación si existe
+                    if (safeCompareData) {
+                        const compareSection = findCompareSection(section, safeCompareData, sectionIndex);
+                        if (compareSection && compareSection.subGraficos && compareSection.subGraficos[0]) {
+                            const ctxCompare = document.getElementById(`chart${chartIndex}Compare`).getContext('2d');
+                            createDoughnutChart(ctxCompare, compareSection.subGraficos[0], compareColors, compareLabel, false);
+                        }
+                    }
+                    
+                    chartIndex++;
+                });
+            }
+        });
+    } else {
+        console.error("El contenedor de gráficos no se encontró.");
+    }
 }
 
 function findCompareSection(primarySection, compareData, index) {
@@ -610,6 +606,14 @@ function createBarChart(ctx, subGrafico, compareSubGrafico, primaryColors, compa
                         legend: {
                             display: true,
                             position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.parsed.y ?? context.parsed;
+                                    return `${context.dataset.label}: ${value}%`;
+                                }
+                            }
                         }
                     },
                     animation: {
@@ -661,69 +665,70 @@ function createBarChart(ctx, subGrafico, compareSubGrafico, primaryColors, compa
 }
 
 function createDoughnutChart(ctx, subGrafico, colors, label, isCompare = false) {
-	// Validar que subGrafico y respuestas existan
-	if (!subGrafico || !subGrafico.respuestas || !Array.isArray(subGrafico.respuestas)) {
-		console.error('Error: subGrafico.respuestas no es válido:', subGrafico);
-		return;
-	}
-	
-	// Ordenar respuestas de mayor a menor (mismo orden que gráficos de barras)
-	const sortedResponses = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
-	
-	const chartColors = sortedResponses.map((_, i) => colors[i % colors.length]);
-	const chartColorsTranslucent = chartColors.map(color => color + '80');
+    // Validar que subGrafico y respuestas existan
+    if (!subGrafico || !subGrafico.respuestas || !Array.isArray(subGrafico.respuestas)) {
+        console.error('Error: subGrafico.respuestas no es válido:', subGrafico);
+        return;
+    }
+    
+    // Ordenar respuestas de mayor a menor (mismo orden que gráficos de barras)
+    const sortedResponses = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
+    
+    const chartColors = sortedResponses.map((_, i) => colors[i % colors.length]);
+    const chartColorsTranslucent = chartColors.map(color => color + '80');
 
-	// Calcular tamaño dinámico según cantidad de etiquetas para evitar corte del legend
-	const numLabels = sortedResponses.length;
-	const legendRows = Math.ceil(numLabels / 3); // aprox 3 ítems por fila
-	const baseMinHeight = 300;
-	const extraPerRow = 24; // px extra por fila de leyenda
-	const desiredMinHeight = baseMinHeight + Math.max(0, legendRows - 1) * extraPerRow;
-	const wrapper = ctx && ctx.canvas && ctx.canvas.parentElement ? ctx.canvas.parentElement : null;
-	if (wrapper) {
-		wrapper.style.minHeight = desiredMinHeight + 'px';
-	}
-
-	const chart = new Chart(ctx, {
-		type: 'doughnut',
-		data: {
-			labels: sortedResponses.map(r => r.respuesta),
-			datasets: [{
-				label: label,
-				data: sortedResponses.map(r => r.porcentaje),
-				backgroundColor: chartColorsTranslucent,
-				borderColor: chartColors,
-				borderWidth: 2,
-				hoverOffset: 4
-			}]
-		},
-		options: {
-			responsive: true,
-			maintainAspectRatio: false,
-			plugins: {
-				legend: { display: false }
-			},
-			animation: {
-				animateRotate: true,
-				animateScale: true,
-				duration: 800,
-				easing: 'easeOutQuart'
-			},
-			cutout: '60%',
-			radius: '90%'
-		}
-	});
-
-	// Render legend fuera del canvas
-	const legendContainerId = 'legend' + ctx.canvas.id; // legendchart{index}[Compare]
-	const legendContainer = document.getElementById(legendContainerId);
-	if (legendContainer) {
-		const items = sortedResponses.map((r, i) => {
-			const color = chartColors[i % chartColors.length];
-			return `<div class="legend-item"><span class="legend-dot" style="background-color:${color}"></span><span class="legend-text">${r.respuesta} (${r.porcentaje}%)</span></div>`;
-		}).join('');
-		legendContainer.innerHTML = items;
-	}
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: sortedResponses.map(r => r.respuesta),
+            datasets: [{
+                label: label,
+                data: sortedResponses.map(r => r.porcentaje),
+                backgroundColor: chartColorsTranslucent,
+                borderColor: chartColors,
+                borderWidth: 2,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 20,
+                    bottom: 20
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        padding: 15,
+                        usePointStyle: true,
+                        font: {
+                            size: 11
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.label}: ${context.parsed}%`;
+                        }
+                    }
+                }
+            },
+            animation: {
+                animateRotate: true,
+                animateScale: true,
+                duration: 1000,
+                easing: 'easeOutQuart'
+            },
+            cutout: '60%',
+            radius: '90%'
+        }
+    });
 }
 
 /**
