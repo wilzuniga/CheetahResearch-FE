@@ -62,7 +62,7 @@ export function splitMarkdown(markdownText) {
             } else {
                 // Buscar respuestas con porcentajes fuera de subgráficos (pregunta simple)
                 const match = line.match(/[-*]\s*(.*?):\s*(\d+\.?\d*)%/);
-                if (match) {
+            if (match) {
                     if (!currentSubGrafico) {
                         // Es una pregunta simple, crear un subgráfico por defecto
                         currentSubGrafico = {
@@ -71,10 +71,10 @@ export function splitMarkdown(markdownText) {
                         };
                     }
                     currentSubGrafico.respuestas.push({
-                        respuesta: match[1].trim(),
-                        porcentaje: parseFloat(match[2])
-                    });
-                }
+                    respuesta: match[1].trim(),
+                    porcentaje: parseFloat(match[2])
+                });
+            }
             }
         }
         
@@ -172,13 +172,13 @@ export function generateCharts(primaryData, compareData = null, primaryLabel = '
         } else {
             // Pregunta simple (comportamiento anterior)
             section.subGraficos.forEach((subGrafico, subIndex) => {
-                chartsHTML += `
-                    <div class="chart-box">
-                        <h3>${section.pregunta}</h3>
+        chartsHTML += `
+            <div class="chart-box">
+                <h3>${section.pregunta}</h3>
                         <canvas id="chart${chartIndex}"></canvas>
-                    </div>
-                    <hr>
-                `;
+            </div>
+            <hr>
+        `;
                 chartIndex++;
             });
         }
@@ -372,20 +372,20 @@ export function generateDoughnutCharts(primaryData, compareData = null, primaryL
 
 function findCompareSection(primarySection, compareData, index) {
     // Mapa para acceso rápido a secciones de comparación por pregunta
-    const compareMap = new Map();
+            const compareMap = new Map();
     let compareArray = Array.isArray(compareData) ? compareData : [];
-    if (compareArray.length > 0) {
-        compareArray.forEach(section => {
-            compareMap.set(section.pregunta, section);
-        });
-    }
+            if (compareArray.length > 0) {
+                compareArray.forEach(section => {
+                    compareMap.set(section.pregunta, section);
+                });
+            }
 
-    // Prioridad 1: match por título de pregunta exacto
+            // Prioridad 1: match por título de pregunta exacto
     let compareSection = compareMap.get(primarySection.pregunta);
-    // Prioridad 2: fallback por índice si no hay match por título
-    if (!compareSection && compareArray.length > index) {
-        compareSection = compareArray[index];
-    }
+            // Prioridad 2: fallback por índice si no hay match por título
+            if (!compareSection && compareArray.length > index) {
+                compareSection = compareArray[index];
+            }
 
     return compareSection;
 }
@@ -484,243 +484,259 @@ function findCompareSubGrafico(primarySubGrafico, primarySection, compareData) {
  */
 function createBarChart(ctx, subGrafico, compareSubGrafico, primaryColors, compareColors, 
                        primaryTranslucent, compareTranslucent, primaryLabel, compareLabel) {
-    let allLabels = [];
-    let datasets = [];
-    const transparent = 'rgba(0,0,0,0)';
+            let allLabels = [];
+            let datasets = [];
+            const transparent = 'rgba(0,0,0,0)';
 
     if (compareSubGrafico) {
-        // Modo 50/50: mitad izquierda = filtro 1, separador, mitad derecha = filtro 2
-        const dividerLabel = ' ';
-        
-        // Ordenar Filtro 1 de mayor a menor
+                // Modo 50/50: mitad izquierda = filtro 1, separador, mitad derecha = filtro 2
+                const dividerLabel = ' ';
+                
+                // Ordenar Filtro 1 de mayor a menor
         const sortedPrimary = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
-        const sortedPrimaryLabels = sortedPrimary.map(r => r.respuesta);
-        
-        // Ordenar Filtro 2 de mayor a menor
+                const sortedPrimaryLabels = sortedPrimary.map(r => r.respuesta);
+                
+                // Ordenar Filtro 2 de mayor a menor
         const sortedCompare = [...compareSubGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
-        const sortedCompareLabels = sortedCompare.map(r => r.respuesta);
-        
-        allLabels = [...sortedPrimaryLabels, dividerLabel, ...sortedCompareLabels];
+                const sortedCompareLabels = sortedCompare.map(r => r.respuesta);
+                
+                allLabels = [...sortedPrimaryLabels, dividerLabel, ...sortedCompareLabels];
 
-        const primaryValuesByLabel = new Map(sortedPrimary.map(r => [r.respuesta, r.porcentaje]));
-        const compareValuesByLabel = new Map(sortedCompare.map(r => [r.respuesta, r.porcentaje]));
+                const primaryValuesByLabel = new Map(sortedPrimary.map(r => [r.respuesta, r.porcentaje]));
+                const compareValuesByLabel = new Map(sortedCompare.map(r => [r.respuesta, r.porcentaje]));
 
-        const primaryData = [
-            ...sortedPrimaryLabels.map(label => primaryValuesByLabel.get(label) ?? 0),
-            0, // separador
-            ...sortedCompareLabels.map(() => 0)
-        ];
-        const compareDataVals = [
-            ...sortedPrimaryLabels.map(() => 0),
-            0, // separador
-            ...sortedCompareLabels.map(label => compareValuesByLabel.get(label) ?? 0)
-        ];
+                const primaryData = [
+                    ...sortedPrimaryLabels.map(label => primaryValuesByLabel.get(label) ?? 0),
+                    0, // separador
+                    ...sortedCompareLabels.map(() => 0)
+                ];
+                const compareDataVals = [
+                    ...sortedPrimaryLabels.map(() => 0),
+                    0, // separador
+                    ...sortedCompareLabels.map(label => compareValuesByLabel.get(label) ?? 0)
+                ];
 
-        const primaryBg = [
-            ...sortedPrimaryLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
-            transparent,
-            ...sortedCompareLabels.map(() => transparent)
-        ];
-        const primaryBorder = [
-            ...sortedPrimaryLabels.map((_, i) => primaryColors[i % primaryColors.length]),
-            transparent,
-            ...sortedCompareLabels.map(() => transparent)
-        ];
+                const primaryBg = [
+                    ...sortedPrimaryLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
+                    transparent,
+                    ...sortedCompareLabels.map(() => transparent)
+                ];
+                const primaryBorder = [
+                    ...sortedPrimaryLabels.map((_, i) => primaryColors[i % primaryColors.length]),
+                    transparent,
+                    ...sortedCompareLabels.map(() => transparent)
+                ];
 
-        // Forzar color visible en la leyenda del dataset principal
-        if (primaryBg.length > 0) {
-            primaryBg[0] = primaryTranslucent[0];
-        }
-        if (primaryBorder.length > 0) {
-            primaryBorder[0] = primaryColors[0];
-        }
-
-        const compareBg = [
-            ...sortedPrimaryLabels.map(() => transparent),
-            transparent,
-            ...sortedCompareLabels.map((_, i) => compareTranslucent[i % compareTranslucent.length])
-        ];
-        const compareBorder = [
-            ...sortedPrimaryLabels.map(() => transparent),
-            transparent,
-            ...sortedCompareLabels.map((_, i) => compareColors[i % compareColors.length])
-        ];
-
-        // Forzar color visible en la leyenda del dataset de comparación
-        if (compareBg.length > 0) {
-            compareBg[0] = compareTranslucent[0];
-        }
-        if (compareBorder.length > 0) {
-            compareBorder[0] = compareColors[0];
-        }
-
-        datasets = [
-            {
-                label: primaryLabel,
-                data: primaryData,
-                backgroundColor: primaryBg,
-                borderColor: primaryBorder,
-                borderWidth: 1
-            },
-            {
-                label: compareLabel || 'Comparación',
-                data: compareDataVals,
-                backgroundColor: compareBg,
-                borderColor: compareBorder,
-                borderWidth: 1
-            }
-        ];
-    } else {
-        // Modo normal sin comparación - ordenar de mayor a menor
-        const sortedPrimary = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
-        const sortedPrimaryLabels = sortedPrimary.map(r => r.respuesta);
-        const sortedPrimaryValues = sortedPrimary.map(r => r.porcentaje);
-        
-        allLabels = [...sortedPrimaryLabels];
-        datasets = [{
-            label: primaryLabel,
-            data: sortedPrimaryValues,
-            backgroundColor: sortedPrimaryLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
-            borderColor: sortedPrimaryLabels.map((_, i) => primaryColors[i % primaryColors.length]),
-            borderWidth: 1
-        }];
-    }
-
-    // reset de animación por render
-    delayed = false;
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: allLabels,
-            datasets
-        },
-        options: {
-            responsive: true,
-            layout: {
-                padding: {
-                    bottom: 45
+                // Forzar color visible en la leyenda del dataset principal
+                if (primaryBg.length > 0) {
+                    primaryBg[0] = primaryTranslucent[0];
                 }
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
+                if (primaryBorder.length > 0) {
+                    primaryBorder[0] = primaryColors[0];
                 }
-            },
-            animation: {
-                onComplete: () => {
-                    delayed = true;
-                },
-                delay: (context) => {
-                    let delay = 0;
-                    if (context.type === 'data' && context.mode === 'default' && !delayed) {
-                        delay = context.dataIndex * 100 + context.datasetIndex * 33;
+
+                const compareBg = [
+                    ...sortedPrimaryLabels.map(() => transparent),
+                    transparent,
+                    ...sortedCompareLabels.map((_, i) => compareTranslucent[i % compareTranslucent.length])
+                ];
+                const compareBorder = [
+                    ...sortedPrimaryLabels.map(() => transparent),
+                    transparent,
+                    ...sortedCompareLabels.map((_, i) => compareColors[i % compareColors.length])
+                ];
+
+                // Forzar color visible en la leyenda del dataset de comparación
+                if (compareBg.length > 0) {
+                    compareBg[0] = compareTranslucent[0];
+                }
+                if (compareBorder.length > 0) {
+                    compareBorder[0] = compareColors[0];
+                }
+
+                datasets = [
+                    {
+                        label: primaryLabel,
+                        data: primaryData,
+                        backgroundColor: primaryBg,
+                        borderColor: primaryBorder,
+                        borderWidth: 1
+                    },
+                    {
+                        label: compareLabel || 'Comparación',
+                        data: compareDataVals,
+                        backgroundColor: compareBg,
+                        borderColor: compareBorder,
+                        borderWidth: 1
                     }
-                    return delay;
-                }
-            },
-                                    scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
+                ];
+            } else {
+                // Modo normal sin comparación - ordenar de mayor a menor
+        const sortedPrimary = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
+                const sortedPrimaryLabels = sortedPrimary.map(r => r.respuesta);
+                const sortedPrimaryValues = sortedPrimary.map(r => r.porcentaje);
+                
+                allLabels = [...sortedPrimaryLabels];
+                datasets = [{
+                    label: primaryLabel,
+                    data: sortedPrimaryValues,
+                    backgroundColor: sortedPrimaryLabels.map((_, i) => primaryTranslucent[i % primaryTranslucent.length]),
+                    borderColor: sortedPrimaryLabels.map((_, i) => primaryColors[i % primaryColors.length]),
+                    borderWidth: 1
+                }];
+            }
+
+            // reset de animación por render
+            delayed = false;
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: allLabels,
+                    datasets
+                },
+                options: {
+                    responsive: true,
+                    layout: {
+                        padding: {
+                            bottom: 45
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    animation: {
+                        onComplete: () => {
+                            delayed = true;
+                        },
+                        delay: (context) => {
+                            let delay = 0;
+                            if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                                delay = context.dataIndex * 100 + context.datasetIndex * 33;
+                            }
+                            return delay;
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
                                 stacked: true,
                                 ticks: {
                                     callback: function(value) {
                                         return value + '%';
                                     }
                                 }
-                            },
-                x: {
-                    position: 'bottom',
-                    offset: true,
-                    stacked: true,
-                    ticks: {
-                        callback: function(value, index) {
-                            const label = this.getLabelForValue(value);
-                            // Si es un separador, retornar string vacío
-                            if (label === ' ' || label === '') return '';
-                            
-                            // Aplicar wrap de texto y retornar array de líneas
-                            return wrapTextToLines(label, 18);
                         },
-                        padding: 8,
-                        crossAlign: 'near',
-                        font: {
-                            size: 10
+                        x: {
+                            position: 'bottom',
+                            offset: true,
+                            stacked: true,
+                            ticks: {
+                                callback: function(value, index) {
+                                    const label = this.getLabelForValue(value);
+                                    // Si es un separador, retornar string vacío
+                                    if (label === ' ' || label === '') return '';
+                                    
+                                    // Aplicar wrap de texto y retornar array de líneas
+                                    return wrapTextToLines(label, 18);
+                                },
+                                padding: 8,
+                                crossAlign: 'near',
+                                font: {
+                                    size: 10
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }
-    });
+            });
 }
 
 function createDoughnutChart(ctx, subGrafico, colors, label, isCompare = false) {
-    // Validar que subGrafico y respuestas existan
-    if (!subGrafico || !subGrafico.respuestas || !Array.isArray(subGrafico.respuestas)) {
-        console.error('Error: subGrafico.respuestas no es válido:', subGrafico);
-        return;
-    }
-    
-    // Ordenar respuestas de mayor a menor (mismo orden que gráficos de barras)
-    const sortedResponses = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
-    
-    const chartColors = sortedResponses.map((_, i) => colors[i % colors.length]);
-    const chartColorsTranslucent = chartColors.map(color => color + '80');
+	// Validar que subGrafico y respuestas existan
+	if (!subGrafico || !subGrafico.respuestas || !Array.isArray(subGrafico.respuestas)) {
+		console.error('Error: subGrafico.respuestas no es válido:', subGrafico);
+		return;
+	}
+	
+	// Ordenar respuestas de mayor a menor (mismo orden que gráficos de barras)
+	const sortedResponses = [...subGrafico.respuestas].sort((a, b) => b.porcentaje - a.porcentaje);
+	
+	const chartColors = sortedResponses.map((_, i) => colors[i % colors.length]);
+	const chartColorsTranslucent = chartColors.map(color => color + '80');
 
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: sortedResponses.map(r => r.respuesta),
-            datasets: [{
-                label: label,
-                data: sortedResponses.map(r => r.porcentaje),
-                backgroundColor: chartColorsTranslucent,
-                borderColor: chartColors,
-                borderWidth: 2,
-                hoverOffset: 4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            layout: {
-                padding: {
-                    top: 20,
-                    bottom: 20
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        padding: 15,
-                        usePointStyle: true,
-                        font: {
-                            size: 11
-                        }
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return `${context.label}: ${context.parsed}%`;
-                        }
-                    }
-                }
-            },
-            animation: {
-                animateRotate: true,
-                animateScale: true,
-                duration: 1000,
-                easing: 'easeOutQuart'
-            },
-            cutout: '60%',
-            radius: '90%'
-        }
-    });
+	// Calcular tamaño dinámico según cantidad de etiquetas para evitar corte del legend
+	const numLabels = sortedResponses.length;
+	const legendRows = Math.ceil(numLabels / 3); // aprox 3 ítems por fila
+	const baseMinHeight = 300;
+	const extraPerRow = 24; // px extra por fila de leyenda
+	const desiredMinHeight = baseMinHeight + Math.max(0, legendRows - 1) * extraPerRow;
+	const wrapper = ctx && ctx.canvas && ctx.canvas.parentElement ? ctx.canvas.parentElement : null;
+	if (wrapper) {
+		wrapper.style.minHeight = desiredMinHeight + 'px';
+	}
+	// Ajustar tipografía/padding de la leyenda cuando hay muchas etiquetas
+	const legendFontSize = numLabels > 10 ? 9 : (numLabels > 7 ? 10 : 11);
+	const legendItemPadding = numLabels > 10 ? 8 : 12;
+	const legendBoxWidth = numLabels > 10 ? 10 : 12;
+
+	new Chart(ctx, {
+		type: 'doughnut',
+		data: {
+			labels: sortedResponses.map(r => r.respuesta),
+			datasets: [{
+				label: label,
+				data: sortedResponses.map(r => r.porcentaje),
+				backgroundColor: chartColorsTranslucent,
+				borderColor: chartColors,
+				borderWidth: 2,
+				hoverOffset: 4
+			}]
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			layout: {
+				padding: {
+					top: 16,
+					bottom: 16
+				}
+			},
+			plugins: {
+				legend: {
+					display: true,
+					position: 'bottom',
+					labels: {
+						padding: legendItemPadding,
+						usePointStyle: true,
+						boxWidth: legendBoxWidth,
+						font: {
+							size: legendFontSize
+						}
+					}
+				},
+				ooltip: {
+					callbacks: {
+						label: function(context) {
+							return `${context.label}: ${context.parsed}%`;
+						}
+					}
+				}
+			},
+			animation: {
+				animateRotate: true,
+				animateScale: true,
+				duration: 1000,
+				easing: 'easeOutQuart'
+			},
+			cutout: '60%',
+			radius: '90%'
+		}
+	});
 }
 
 /**
@@ -824,16 +840,16 @@ function analyzeAndFilterData(primaryData, compareData) {
     
     // Mantener el orden original de las preguntas principales
     matches.forEach(match => {
-        const compareIndex = compareArray.indexOf(match.compare);
+            const compareIndex = compareArray.indexOf(match.compare);
         const primaryIndex = primaryArray.indexOf(match.primary);
         
         // Solo agregar si no hemos usado esta comparación ni esta pregunta principal
         if (!usedCompareIndices.has(compareIndex) && !usedPrimaryIndices.has(primaryIndex)) {
-            uniqueMatches.push(match);
-            usedCompareIndices.add(compareIndex);
+                uniqueMatches.push(match);
+                usedCompareIndices.add(compareIndex);
             usedPrimaryIndices.add(primaryIndex);
-        }
-    });
+            }
+        });
 
     // Preparar datos seguros
     const safePrimaryData = uniqueMatches.map(match => match.primary);
