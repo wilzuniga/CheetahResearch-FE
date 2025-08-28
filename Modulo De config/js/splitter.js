@@ -606,6 +606,14 @@ function createBarChart(ctx, subGrafico, compareSubGrafico, primaryColors, compa
                         legend: {
                             display: true,
                             position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.parsed.y ?? context.parsed;
+                                    return `${context.dataset.label}: ${value}%`;
+                                }
+                            }
                         }
                     },
                     animation: {
