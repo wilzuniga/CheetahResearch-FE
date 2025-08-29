@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="assets/img/NegroLogo.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Productos y Tarifas - Cheetah Research</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=League+Spartan&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
+    <link rel="stylesheet" href="assets/css/Features-Small-Icons-icons.css">
+    <link rel="stylesheet" href="assets/css/untitled.css">
+    <link rel="stylesheet" href="assets/assets_accounts/css/Hover.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        /* Estilos para la página de Productos y Tarifas */
+        .admin-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, var(--bs-CR-black-dark) 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            padding: 20px;
+        }
+        
+        .admin-content {
+            padding: 30px;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--bs-CR-orange);
+            box-shadow: 0 0 0 0.2rem rgba(240, 99, 29, 0.25);
+        }
+        
+        .btn-admin {
+            background: var(--bs-CR-orange);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-admin:hover {
+            background: var(--bs-CR-black-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-success {
+            background: #28a745;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color: #212529;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            background: var(--bs-CR-orange);
+            color: white;
+            font-weight: bold;
+            border: none;
+            font-family: hedliner;
+        }
+
+        .table td {
+            vertical-align: middle;
+            font-family: IBM Plex Sans;
+        }
+
+        .form-label {
+            font-weight: bold;
+            font-family: hedliner;
+            color: var(--bs-CR-black-dark);
+        }
+
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+
+        .modal-header {
+            background: var(--bs-CR-orange);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            font-family: hedliner;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-footer {
+            border-top: none;
+            padding: 20px 30px;
+        }
+        
+        /* Media query para que desaparezca el img si el display no es hd+ */
+        @media (max-width: 1080px) {
+            img {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body id="page-top" style="overflow-y: hidden;">
+    <div id="wrapper">
+        
+        <!-- Sidebar de Navegación -->
+        <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-end sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;background: var(--bs-CR-orange-2);">
+        
+            <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius: 0;border-bottom-right-radius: 0;background: #000000;">
+                <div class="container-fluid d-flex flex-column p-0">
+                    <a class="navbar-brand d-xxl-flex align-items-center justify-content-xxl-center align-items-xxl-center sidebar-brand m-0" href="https://www.cheetah-research.ai/home/">
+                        <img style="height: auto;width: 189px;margin: -11px;margin-bottom: 0px; margin-top: 10px;" src="assets/img/NegroLogo.png" />
+                    </a>
+                    <p class="text-light" id="nombreProyectoLbl" style="font-family: 'hedliner', sans-serif;font-size: 12px;margin-left: 10px;">Super Administrador</p>
+                    <div style="height: 30px;"></div>
+                    
+                    <ul id="accordionSidebar" class="navbar-nav text-light" style="font-family: hedliner;">
+                        <li class="nav-item" style="font-family: hedliner;">
+                            <a class="nav-link" href="https://www.cheetah-research.ai/superadmin/" style="font-family: hedliner;">
+                                <i class="fas fa-user-shield" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
+                                <span style="font-family: hedliner;">Usuarios</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active" style="font-family: hedliner;">
+                            <a class="nav-link active" href="#" style="font-family: hedliner;">
+                                <i class="fas fa-tools" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
+                                <span style="font-family: hedliner;">Productos y Tarifas</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="font-family: hedliner;">
+                            <a class="nav-link" href="HerramientasDelAdministrador.html" style="font-family: hedliner;">
+                                <i class="fas fa-tools" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
+                                <span style="font-family: hedliner;">Asignacion</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="font-family: hedliner;">
+                            <a class="nav-link" href="https://www.cheetah-research.ai/home/" style="font-family: hedliner;">
+                                <i class="fas fa-home" style="font-size: 20px;color: var(--bs-CR-orange);"></i>
+                                <span style="font-family: hedliner;">Inicio</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </nav>
+
+        <!-- Contenido Principal -->
+        <div class="d-flex flex-column" id="content-wrapper" style="position: relative;">
+            <div class="card" id="contentCard_ProductosTarifas" style="margin: 0px;height: 97%;padding: 20px;overflow-x: hidden;max-height: calc(100vh - 1px);overflow-y: auto; position: relative;">
+                
+                <!-- Header de la Página -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="admin-header text-center">
+                            <h1 style="font-family: hedliner; margin: 0; font-size: 2.5rem;">Productos y Tarifas</h1>
+                            <p style="font-family: IBM Plex Sans; margin: 10px 0 0 0; opacity: 0.9;">Gestión de Productos y Configuración de Tarifas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alertas -->
+                <div id="alertContainer"></div>
+
+                <!-- Formulario de Creación/Edición -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="admin-card">
+                            <div class="admin-header">
+                                <h3 style="font-family: hedliner; margin: 0;">📦 Crear Producto</h3>
+                                <p style="font-family: IBM Plex Sans; margin: 10px 0 0 0; opacity: 0.9;">Ingresa la información del producto y su tarifa</p>
+                            </div>
+                            <div class="admin-content">
+                                <form id="productoForm">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="descripcion" class="form-label">Descripción</label>
+                                            <input type="text" class="form-control" id="descripcion" name="descripcion" required>
+                                        </div>
+                                        <div class="col-md-2 mb-3">
+                                            <label for="valorDesde" class="form-label">Valor Desde</label>
+                                            <input type="number" class="form-control" id="valorDesde" name="valorDesde" min="0" required>
+                                        </div>
+                                        <div class="col-md-2 mb-3">
+                                            <label for="valorHasta" class="form-label">Valor Hasta</label>
+                                            <input type="number" class="form-control" id="valorHasta" name="valorHasta" min="0" required>
+                                        </div>
+                                        <div class="col-md-2 mb-3">
+                                            <label for="tarifa" class="form-label">Tarifa ($)</label>
+                                            <input type="number" class="form-control" id="tarifa" name="tarifa" min="0" step="0.01" required>
+                                        </div>
+                                        <div class="col-md-2 mb-3">
+                                            <label class="form-label">&nbsp;</label>
+                                            <button type="submit" class="btn btn-success w-100">
+                                                <i class="fas fa-plus-circle"></i> Crear
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla de Productos -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-container">
+                            <div class="admin-header">
+                                <h3 style="font-family: hedliner; margin: 0;">📊 Lista de Productos</h3>
+                                <p style="font-family: IBM Plex Sans; margin: 10px 0 0 0; opacity: 0.9;">Productos y tarifas configurados en el sistema</p>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Descripción</th>
+                                            <th>Valor Desde</th>
+                                            <th>Valor Hasta</th>
+                                            <th>Tarifa</th>
+                                            <th>Fecha de Ingreso</th>
+                                            <th>Usuario de Ingreso</th>
+                                            <th>Fecha Modificación</th>
+                                            <th>Usuario Modificación</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="productosTableBody">
+                                        <!-- Los productos se cargarán dinámicamente aquí -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div style="position: absolute; bottom: 0; left: 0; text-align: center; width: 100%; padding: 20px;">
+            <strong data-i18n="brand">Cheetah Research</strong>
+            <span data-i18n="registered"> - Plataforma de Investigación</span>
+            <strong data-i18n="company">.</strong>
+            <span data-i18n="rights"> Todos los derechos reservados.</span>
+        </div>
+    </div>
+
+    <!-- Modal de Edición -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Producto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <input type="hidden" id="editId" name="editId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editDescripcion" class="form-label">Descripción</label>
+                                <input type="text" class="form-control" id="editDescripcion" name="editDescripcion" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editTarifa" class="form-label">Tarifa ($)</label>
+                                <input type="number" class="form-control" id="editTarifa" name="editTarifa" min="0" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editValorDesde" class="form-label">Valor Desde</label>
+                                <input type="number" class="form-control" id="editValorDesde" name="editValorDesde" min="0" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editValorHasta" class="form-label">Valor Hasta</label>
+                                <input type="number" class="form-control" id="editValorHasta" name="editValorHasta" min="0" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" onclick="updateProducto()">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="js/Script_CheckSession.js"></script>
+    <script src="js/Script_ProductosTarifas.js"></script>
+    <script src="js/i18n.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</body>
+</html>
