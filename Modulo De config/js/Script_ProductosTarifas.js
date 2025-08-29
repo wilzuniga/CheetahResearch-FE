@@ -2,8 +2,16 @@
 class ProductosTarifasService {
     constructor() {
         this.storageKey = 'productos_tarifas';
-        this.currentUser = 'admin@cheetah-research.ai'; // Simulación de usuario actual
+        this.currentUser = this.getCurrentUser(); // Obtener usuario actual
         this.initializeSampleData();
+    }
+
+    getCurrentUser() {
+        // Intentar obtener el usuario del sessionStorage o localStorage
+        const user = sessionStorage.getItem('user') || 
+                    localStorage.getItem('user') || 
+                    'admin@cheetah-research.ai'; // Fallback por defecto
+        return user;
     }
 
     initializeSampleData() {
@@ -52,13 +60,16 @@ class ProductosTarifasService {
             const productos = this.getAll();
             const newId = productos.length > 0 ? Math.max(...productos.map(p => p.id)) + 1 : 1;
             
+            // Obtener usuario actual en el momento de la creación
+            const currentUser = this.getCurrentUser();
+            
             const newProducto = {
                 ...producto,
                 id: newId,
                 fechaIngreso: new Date().toISOString().split('T')[0],
-                usuarioIngreso: this.currentUser,
+                usuarioIngreso: currentUser,
                 fechaModificacion: new Date().toISOString().split('T')[0],
-                usuarioModificacion: this.currentUser
+                usuarioModificacion: currentUser
             };
 
             productos.push(newProducto);
@@ -79,13 +90,16 @@ class ProductosTarifasService {
                 throw new Error('Producto no encontrado');
             }
 
-            productos[index] = {
-                ...productos[index],
-                ...producto,
-                id: id,
-                fechaModificacion: new Date().toISOString().split('T')[0],
-                usuarioModificacion: this.currentUser
-            };
+                    // Obtener usuario actual en el momento de la modificación
+        const currentUser = this.getCurrentUser();
+        
+        productos[index] = {
+            ...productos[index],
+            ...producto,
+            id: id,
+            fechaModificacion: new Date().toISOString().split('T')[0],
+            usuarioModificacion: currentUser
+        };
 
             localStorage.setItem(this.storageKey, JSON.stringify(productos));
             return productos[index];
@@ -208,16 +222,7 @@ function createProducto(event) {
             return;
         }
 
-        // Verificar solapamiento de rangos
-        const productos = productosService.getAll();
-        const hasOverlap = productos.some(p => 
-            (producto.valorDesde <= p.valorHasta && producto.valorHasta >= p.valorDesde)
-        );
-
-        if (hasOverlap) {
-            showAlert('El rango de valores se solapa con un producto existente', 'warning');
-            return;
-        }
+        // Los productos pueden solaparse, no se requiere validación
 
         productosService.create(producto);
         showAlert('Producto creado exitosamente', 'success');
@@ -274,16 +279,7 @@ function updateProducto() {
             return;
         }
 
-        // Verificar solapamiento de rangos (excluyendo el producto actual)
-        const productos = productosService.getAll();
-        const hasOverlap = productos.some(p => 
-            p.id !== id && (producto.valorDesde <= p.valorHasta && producto.valorHasta >= p.valorDesde)
-        );
-
-        if (hasOverlap) {
-            showAlert('El rango de valores se solapa con un producto existente', 'warning');
-            return;
-        }
+        // Los productos pueden solaparse, no se requiere validación
 
         productosService.update(id, producto);
         showAlert('Producto actualizado exitosamente', 'success');
@@ -313,6 +309,9 @@ function deleteProducto(id) {
 
 // Inicialización cuando se carga la página
 document.addEventListener('DOMContentLoaded', function() {
+    // Actualizar usuario actual
+    productosService.currentUser = productosService.getCurrentUser();
+    
     // Cargar productos iniciales
     loadProductos();
 
