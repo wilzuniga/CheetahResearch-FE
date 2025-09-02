@@ -444,7 +444,6 @@ boton BorrarBtn
             }
         }).then(response => {
             const surveys = response.data;
-            console.log(surveys);
             if (surveys && Array.isArray(surveys)) {
                 surveyData = surveys.map((survey, index) => ({
                     id: survey.id || (index + 1),
@@ -464,7 +463,6 @@ boton BorrarBtn
             } else {
                 surveyData = [];
             }
-            console.log('SurveyData:', surveyData);
             updateSurveyTable();
         }).catch(error => {
             console.error('Error al obtener las transcripciones de las encuestas:', error);
