@@ -447,10 +447,10 @@ boton BorrarBtn
             console.log(surveys);
             if (surveys && Array.isArray(surveys)) {
                 surveyData = surveys.map((survey, index) => ({
-                    id: index + 1,
-                    survey: survey.survey || '',
-                    rating: survey.rating || '',
-                    comment: survey.comment || ''
+                    id: survey.id || (index + 1),
+                    survey: survey.survey?.survey || survey.survey || '',
+                    rating: survey.survey?.rating || survey.rating || '',
+                    comment: survey.survey?.comment || survey.comment || ''
                 }));
                 console.log('SurveyData llenado:', surveyData);
             } else if (surveys && typeof surveys === 'object' && !Array.isArray(surveys)) {
