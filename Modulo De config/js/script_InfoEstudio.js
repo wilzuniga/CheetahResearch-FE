@@ -360,6 +360,7 @@ boton BorrarBtn
             }
         }).then(response => {
             const surveys = response.data;
+            console.log(surveys);
             if (surveys && typeof surveys === 'object' && !Array.isArray(surveys)) {
                 surveyData = Object.keys(surveys).map(key => ({
                     id: key,
