@@ -463,14 +463,13 @@ boton BorrarBtn
                 // Mantener compatibilidad con el formato anterior
                 surveyData = Object.keys(surveys).map(key => ({
                     id: key,
-                    survey: surveys[key],
-                    rating: '',
-                    comment: ''
+                    survey: surveys[key].survey || '',
+                    rating: surveys[key].rating || '',
+                    comment: surveys[key].comment || '',
                 }));
             } else {
                 surveyData = [];
             }
-            console.log('SurveyData:', surveyData);
             updateSurveyTable();
         }).catch(error => {
             console.error('Error al obtener las transcripciones de las encuestas:', error);
