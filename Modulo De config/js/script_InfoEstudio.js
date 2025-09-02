@@ -446,20 +446,26 @@ boton BorrarBtn
             const surveys = response.data;
             console.log(surveys);
             if (surveys && Array.isArray(surveys)) {
-                surveyData = surveys.map((survey, index) => ({
-                    id: survey.id || (index + 1),
-                    survey: survey.survey?.survey || survey.survey || '',
-                    rating: survey.survey?.rating || survey.rating || '',
-                    comment: survey.survey?.comment || survey.comment || ''
-                }));
+                surveyData = surveys.map((surveyObj, index) => {
+                    // Obtener la clave (ID) del objeto
+                    const surveyId = Object.keys(surveyObj)[0];
+                    const surveyData = surveyObj[surveyId];
+                    
+                    return {
+                        id: surveyId,
+                        survey: surveyData.survey || '',
+                        rating: surveyData.rating || '',
+                        comment: surveyData.comment || ''
+                    };
+                });
                 console.log('SurveyData llenado:', surveyData);
             } else if (surveys && typeof surveys === 'object' && !Array.isArray(surveys)) {
                 // Mantener compatibilidad con el formato anterior
                 surveyData = Object.keys(surveys).map(key => ({
                     id: key,
-                    survey: survey.survey?.survey || survey.survey || '',
-                    rating: survey.survey?.rating || survey.rating || '',
-                    comment: survey.survey?.comment || survey.comment || ''
+                    survey: surveys[key],
+                    rating: '',
+                    comment: ''
                 }));
             } else {
                 surveyData = [];
