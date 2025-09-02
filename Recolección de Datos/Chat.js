@@ -343,8 +343,19 @@ function sendMessage(message, imageSrc) {
     });
 }
 
+//Función para decodificar caracteres Unicode
+function decodeUnicode(str) {
+    if (typeof str !== 'string') return str;
+    return str.replace(/\\u([0-9a-fA-F]{4})/g, (match, hex) => {
+        return String.fromCharCode(parseInt(hex, 16));
+    });
+}
+
 //Función para recibir un mensaje de encuestador
 function getMessage(message, imageSrc, link) {
+    // Decodificar caracteres Unicode en el mensaje
+    message = decodeUnicode(message);
+    
     const Feed = document.getElementById('Feed'); // Validar Feed Vacío
     const emptyFeed = document.getElementById('Empty-Feed');
     if (Feed.style.display === 'none') {
