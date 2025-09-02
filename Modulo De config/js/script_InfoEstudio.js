@@ -213,6 +213,14 @@ boton BorrarBtn
 
     let surveyData = [];
 
+    // Función para decodificar caracteres Unicode escapados
+    function decodeUnicode(str) {
+        if (typeof str !== 'string') return str;
+        return str.replace(/\\u([0-9a-fA-F]{4})/g, (match, hex) => {
+            return String.fromCharCode(parseInt(hex, 16));
+        });
+    }
+
     function updateSurveyTable() {
         if (surveyData.length > 0 && surveyNavContainer) {
             surveyNavContainer.style.display = 'block';
@@ -453,9 +461,9 @@ boton BorrarBtn
                     
                     return {
                         id: surveyId,
-                        survey: surveyData.survey || '',
-                        rating: surveyData.rating || '',
-                        comment: surveyData.comment || ''
+                        survey: decodeUnicode(surveyData.survey || ''),
+                        rating: decodeUnicode(surveyData.rating || ''),
+                        comment: decodeUnicode(surveyData.comment || '')
                     };
                 });
                 console.log('SurveyData llenado:', surveyData);
@@ -463,9 +471,9 @@ boton BorrarBtn
                 // Mantener compatibilidad con el formato anterior
                 surveyData = Object.keys(surveys).map(key => ({
                     id: key,
-                    survey: surveys[key].survey || '',
-                    rating: surveys[key].rating || '',
-                    comment: surveys[key].comment || '',
+                    survey: decodeUnicode(surveys[key].survey || ''),
+                    rating: decodeUnicode(surveys[key].rating || ''),
+                    comment: decodeUnicode(surveys[key].comment || ''),
                 }));
             } else {
                 surveyData = [];
