@@ -508,6 +508,61 @@ boton BorrarBtn
             }
         });
     }
+
+    // Analizar encuestas con endpoint /chatbot/analyze_surveys/
+    const analyzeBtn = document.getElementById('analyzeSurveysBtn');
+    if (analyzeBtn) {
+        analyzeBtn.addEventListener('click', async () => {
+            const studyId = sessionStorage.getItem('selectedStudyId');
+            if (!studyId) {
+                alert('Error: No se encontró el ID del estudio.');
+                return;
+            }
+
+            const ok = window.confirm('¿Analizar encuestas? Puede tardar varios minutos si hay muchas.');
+            if (!ok) return;
+
+            const originalText = analyzeBtn.textContent;
+            analyzeBtn.textContent = 'Analizando...';
+            analyzeBtn.disabled = true;
+
+            // Mostrar spinner durante el análisis
+            if (loadingSpinner) {
+                loadingSpinner.style.display = 'block';
+                const p = loadingSpinner.querySelector('p');
+                if (p) p.innerText = 'Analizando encuestas...';
+            }
+            if (tableContainer) tableContainer.style.display = 'none';
+
+            try {
+                const url = 'https://api.cheetah-research.ai/chatbot/analyze_surveys/';
+                const formData = new FormData();
+                formData.append('study_id', studyId);
+
+                await axios.post(url, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                });
+
+                alert('Análisis completado. Se actualizaron ratings y comentarios.');
+                // Refrescar vista para recargar las encuestas con rating/comment
+                window.location.reload();
+            } catch (err) {
+                console.error('Error al analizar encuestas:', err);
+                alert('Error al analizar encuestas. Inténtalo de nuevo.');
+            } finally {
+                analyzeBtn.textContent = originalText;
+                analyzeBtn.disabled = false;
+                if (loadingSpinner) {
+                    loadingSpinner.style.display = 'none';
+                    const p = loadingSpinner.querySelector('p');
+                    if (p) p.innerText = 'Cargando encuestas...';
+                }
+                if (tableContainer) tableContainer.style.display = 'block';
+            }
+        });
+    }
 }
 
 //Colores
