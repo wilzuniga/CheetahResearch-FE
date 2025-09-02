@@ -519,7 +519,7 @@ boton BorrarBtn
                 return;
             }
 
-            const ok = window.confirm('¿Analizar encuestas? Puede tardar varios minutos si hay muchas.');
+            const ok = window.confirm('Este proceso ejecutará los análisis INDIVIDUALES de TODAS las encuestas del estudio y actualizará su rating y comentario en la base de datos.\n\nPuede tardar varios minutos según la cantidad de encuestas.\n\n¿Deseas continuar?');
             if (!ok) return;
 
             const originalText = analyzeBtn.textContent;
