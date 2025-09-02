@@ -210,6 +210,8 @@ boton BorrarBtn
     const studyIdForSurveys = sessionStorage.getItem('selectedStudyId');
     const surveyTableBody = document.getElementById('tablaEncuestas');
     const surveyNavContainer = document.getElementById('divEncuestas');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const tableContainer = document.getElementById('tableContainer');
 
     let surveyData = [];
 
@@ -222,6 +224,10 @@ boton BorrarBtn
     }
 
     function updateSurveyTable() {
+        // Ocultar spinner y mostrar tabla
+        if (loadingSpinner) loadingSpinner.style.display = 'none';
+        if (tableContainer) tableContainer.style.display = 'block';
+        
         if (surveyData.length > 0 && surveyNavContainer) {
             surveyNavContainer.style.display = 'block';
             
@@ -435,6 +441,9 @@ boton BorrarBtn
                 surveyTableBody.appendChild(row);
             });
         } else if (surveyNavContainer) {
+            // Ocultar spinner y tabla si no hay datos
+            if (loadingSpinner) loadingSpinner.style.display = 'none';
+            if (tableContainer) tableContainer.style.display = 'none';
             surveyNavContainer.style.display = 'none';
         }
     }
@@ -444,6 +453,11 @@ boton BorrarBtn
     }
 
     if (studyIdForSurveys && token) {
+        // Mostrar spinner y ocultar tabla
+        if (loadingSpinner) loadingSpinner.style.display = 'block';
+        if (tableContainer) tableContainer.style.display = 'none';
+        if (surveyNavContainer) surveyNavContainer.style.display = 'block';
+        
         const getSurveysUrl = `https://api.cheetah-research.ai/configuration/get_surveys/${studyIdForSurveys}`;
         
         axios.post(getSurveysUrl, {}, {
@@ -481,8 +495,13 @@ boton BorrarBtn
             updateSurveyTable();
         }).catch(error => {
             console.error('Error al obtener las transcripciones de las encuestas:', error);
+            
+            // Ocultar spinner y mostrar tabla con error
+            if (loadingSpinner) loadingSpinner.style.display = 'none';
+            if (tableContainer) tableContainer.style.display = 'block';
+            
             if (surveyTableBody) {
-                surveyTableBody.innerHTML = '<tr><td colspan="6" class="text-center">Error al cargar las encuestas.</td></tr>';
+                surveyTableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error al cargar las encuestas.</td></tr>';
             }
             if (surveyNavContainer) {
                 surveyNavContainer.style.display = 'block';
