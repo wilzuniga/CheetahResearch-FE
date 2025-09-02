@@ -457,9 +457,9 @@ boton BorrarBtn
                 // Mantener compatibilidad con el formato anterior
                 surveyData = Object.keys(surveys).map(key => ({
                     id: key,
-                    survey: surveys[key],
-                    rating: '',
-                    comment: ''
+                    survey: survey.survey?.survey || survey.survey || '',
+                    rating: survey.survey?.rating || survey.rating || '',
+                    comment: survey.survey?.comment || survey.comment || ''
                 }));
             } else {
                 surveyData = [];
