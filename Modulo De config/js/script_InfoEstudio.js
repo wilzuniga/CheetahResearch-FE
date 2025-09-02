@@ -458,6 +458,8 @@ boton BorrarBtn
                     rating: '',
                     comment: ''
                 }));
+            } else {
+                surveyData = [];
             }
             
             updateSurveyTable();
