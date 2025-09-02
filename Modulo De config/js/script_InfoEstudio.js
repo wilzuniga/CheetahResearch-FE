@@ -226,14 +226,15 @@ boton BorrarBtn
                 
                 // Número de encuesta
                 const tdNumero = document.createElement('td');
-                tdNumero.textContent = index + 1;
+                tdNumero.textContent = survey.id;
                 tdNumero.style.fontWeight = 'bold';
                 row.appendChild(tdNumero);
                 
-                // ID
-                const tdId = document.createElement('td');
-                tdId.textContent = survey.id;
-                row.appendChild(tdId);
+                // Rating (estrellas)
+                const tdRating = document.createElement('td');
+                tdRating.innerHTML = survey.rating || 'Sin calificación';
+                tdRating.style.textAlign = 'center';
+                row.appendChild(tdRating);
                 
                 // Respuesta con botón "Leer Más"
                 const tdRespuesta = document.createElement('td');
@@ -246,22 +247,22 @@ boton BorrarBtn
                 // Texto truncado inicial
                 const textoTruncado = document.createElement('span');
                 textoTruncado.id = `texto-truncado-${index}`;
-                textoTruncado.textContent = survey.transcription.length > 100 
-                    ? survey.transcription.substring(0, 100) + '...' 
-                    : survey.transcription;
+                textoTruncado.textContent = survey.survey.length > 100 
+                    ? survey.survey.substring(0, 100) + '...' 
+                    : survey.survey;
                 textoContainer.appendChild(textoTruncado);
                 
                 // Texto completo (oculto inicialmente)
                 const textoCompleto = document.createElement('span');
                 textoCompleto.id = `texto-completo-${index}`;
-                textoCompleto.textContent = survey.transcription;
+                textoCompleto.textContent = survey.survey;
                 textoCompleto.style.display = 'none';
                 textoContainer.appendChild(textoCompleto);
                 
                 tdRespuesta.appendChild(textoContainer);
                 
                 // Botón "Leer Más" (solo si el texto es largo)
-                if (survey.transcription.length > 100) {
+                if (survey.survey.length > 100) {
                     const btnLeerMas = document.createElement('button');
                     btnLeerMas.className = 'btn btn-link btn-sm';
                     btnLeerMas.id = `btn-leer-mas-${index}`;
@@ -310,6 +311,87 @@ boton BorrarBtn
                 
                 row.appendChild(tdRespuesta);
                 
+                // Comentarios con botón "Leer Más"
+                const tdComentarios = document.createElement('td');
+                tdComentarios.style.position = 'relative';
+                
+                if (survey.comment) {
+                    // Contenedor para el comentario
+                    const comentarioContainer = document.createElement('div');
+                    comentarioContainer.id = `comentario-${index}`;
+                    
+                    // Comentario truncado inicial
+                    const comentarioTruncado = document.createElement('span');
+                    comentarioTruncado.id = `comentario-truncado-${index}`;
+                    comentarioTruncado.textContent = survey.comment.length > 80 
+                        ? survey.comment.substring(0, 80) + '...' 
+                        : survey.comment;
+                    comentarioContainer.appendChild(comentarioTruncado);
+                    
+                    // Comentario completo (oculto inicialmente)
+                    const comentarioCompleto = document.createElement('span');
+                    comentarioCompleto.id = `comentario-completo-${index}`;
+                    comentarioCompleto.textContent = survey.comment;
+                    comentarioCompleto.style.display = 'none';
+                    comentarioContainer.appendChild(comentarioCompleto);
+                    
+                    tdComentarios.appendChild(comentarioContainer);
+                    
+                    // Botón "Leer Más" para comentarios (solo si el texto es largo)
+                    if (survey.comment.length > 80) {
+                        const btnLeerMasComentario = document.createElement('button');
+                        btnLeerMasComentario.className = 'btn btn-link btn-sm';
+                        btnLeerMasComentario.id = `btn-leer-mas-comentario-${index}`;
+                        btnLeerMasComentario.textContent = 'Leer Más';
+                        btnLeerMasComentario.style.fontSize = '12px';
+                        btnLeerMasComentario.style.padding = '2px 8px';
+                        btnLeerMasComentario.style.marginTop = '5px';
+                        btnLeerMasComentario.style.color = 'var(--bs-CR-orange)';
+                        
+                        btnLeerMasComentario.addEventListener('click', () => {
+                            // Colapsar todos los otros comentarios expandidos
+                            surveyData.forEach((_, otherIndex) => {
+                                if (otherIndex !== index) {
+                                    const otherTruncado = document.getElementById(`comentario-truncado-${otherIndex}`);
+                                    const otherCompleto = document.getElementById(`comentario-completo-${otherIndex}`);
+                                    const otherBtn = document.getElementById(`btn-leer-mas-comentario-${otherIndex}`);
+                                    
+                                    if (otherTruncado && otherCompleto && otherBtn) {
+                                        otherTruncado.style.display = 'inline';
+                                        otherCompleto.style.display = 'none';
+                                        otherBtn.textContent = 'Leer Más';
+                                    }
+                                }
+                            });
+                            
+                            // Toggle del comentario actual
+                            const comentarioTruncado = document.getElementById(`comentario-truncado-${index}`);
+                            const comentarioCompleto = document.getElementById(`comentario-completo-${index}`);
+                            const btn = document.getElementById(`btn-leer-mas-comentario-${index}`);
+                            
+                            if (comentarioTruncado.style.display !== 'none') {
+                                // Expandir
+                                comentarioTruncado.style.display = 'none';
+                                comentarioCompleto.style.display = 'inline';
+                                btn.textContent = 'Leer Menos';
+                            } else {
+                                // Colapsar
+                                comentarioTruncado.style.display = 'inline';
+                                comentarioCompleto.style.display = 'none';
+                                btn.textContent = 'Leer Más';
+                            }
+                        });
+                        
+                        tdComentarios.appendChild(btnLeerMasComentario);
+                    }
+                } else {
+                    tdComentarios.textContent = 'Sin comentarios';
+                    tdComentarios.style.color = '#999';
+                    tdComentarios.style.fontStyle = 'italic';
+                }
+                
+                row.appendChild(tdComentarios);
+                
                 // Botón eliminar
                 const tdAcciones = document.createElement('td');
                 const btnEliminar = document.createElement('button');
@@ -319,7 +401,7 @@ boton BorrarBtn
                 btnEliminar.style.fontSize = '14px';
                 
                 btnEliminar.addEventListener('click', () => {
-                    const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar la encuesta ${index + 1}?`);
+                    const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar la encuesta ${survey.id}?`);
                     if (confirmDelete) {
                         const deleteUrl = `https://api.cheetah-research.ai/configuration/delete_survey_answer/${studyIdForSurveys}/${survey.id}`;
                         axios.post(deleteUrl, {}, {
@@ -361,10 +443,20 @@ boton BorrarBtn
         }).then(response => {
             const surveys = response.data;
             console.log(surveys);
-            if (surveys && typeof surveys === 'object' && !Array.isArray(surveys)) {
+            if (surveys && Array.isArray(surveys)) {
+                surveyData = surveys.map((survey, index) => ({
+                    id: index + 1,
+                    survey: survey.survey || '',
+                    rating: survey.rating || '',
+                    comment: survey.comment || ''
+                }));
+            } else if (surveys && typeof surveys === 'object' && !Array.isArray(surveys)) {
+                // Mantener compatibilidad con el formato anterior
                 surveyData = Object.keys(surveys).map(key => ({
                     id: key,
-                    transcription: surveys[key]
+                    survey: surveys[key],
+                    rating: '',
+                    comment: ''
                 }));
             }
             
@@ -372,7 +464,7 @@ boton BorrarBtn
         }).catch(error => {
             console.error('Error al obtener las transcripciones de las encuestas:', error);
             if (surveyTableBody) {
-                surveyTableBody.innerHTML = '<tr><td colspan="4" class="text-center">Error al cargar las encuestas.</td></tr>';
+                surveyTableBody.innerHTML = '<tr><td colspan="6" class="text-center">Error al cargar las encuestas.</td></tr>';
             }
             if (surveyNavContainer) {
                 surveyNavContainer.style.display = 'block';
