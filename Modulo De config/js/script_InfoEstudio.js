@@ -452,6 +452,7 @@ boton BorrarBtn
                     rating: survey.rating || '',
                     comment: survey.comment || ''
                 }));
+                console.log('SurveyData llenado:', surveyData);
             } else if (surveys && typeof surveys === 'object' && !Array.isArray(surveys)) {
                 // Mantener compatibilidad con el formato anterior
                 surveyData = Object.keys(surveys).map(key => ({
@@ -463,7 +464,7 @@ boton BorrarBtn
             } else {
                 surveyData = [];
             }
-            
+            console.log('SurveyData:', surveyData);
             updateSurveyTable();
         }).catch(error => {
             console.error('Error al obtener las transcripciones de las encuestas:', error);
