@@ -247,22 +247,23 @@ boton BorrarBtn
                 // Texto truncado inicial
                 const textoTruncado = document.createElement('span');
                 textoTruncado.id = `texto-truncado-${index}`;
-                textoTruncado.textContent = survey.survey.length > 100 
-                    ? survey.survey.substring(0, 100) + '...' 
-                    : survey.survey;
+                const surveyText = survey.survey || '';
+                textoTruncado.textContent = surveyText.length > 100 
+                    ? surveyText.substring(0, 100) + '...' 
+                    : surveyText;
                 textoContainer.appendChild(textoTruncado);
                 
                 // Texto completo (oculto inicialmente)
                 const textoCompleto = document.createElement('span');
                 textoCompleto.id = `texto-completo-${index}`;
-                textoCompleto.textContent = survey.survey;
+                textoCompleto.textContent = surveyText;
                 textoCompleto.style.display = 'none';
                 textoContainer.appendChild(textoCompleto);
                 
                 tdRespuesta.appendChild(textoContainer);
                 
                 // Botón "Leer Más" (solo si el texto es largo)
-                if (survey.survey.length > 100) {
+                if (surveyText.length > 100) {
                     const btnLeerMas = document.createElement('button');
                     btnLeerMas.className = 'btn btn-link btn-sm';
                     btnLeerMas.id = `btn-leer-mas-${index}`;
@@ -323,22 +324,23 @@ boton BorrarBtn
                     // Comentario truncado inicial
                     const comentarioTruncado = document.createElement('span');
                     comentarioTruncado.id = `comentario-truncado-${index}`;
-                    comentarioTruncado.textContent = survey.comment.length > 80 
-                        ? survey.comment.substring(0, 80) + '...' 
-                        : survey.comment;
+                    const commentText = survey.comment || '';
+                    comentarioTruncado.textContent = commentText.length > 80 
+                        ? commentText.substring(0, 80) + '...' 
+                        : commentText;
                     comentarioContainer.appendChild(comentarioTruncado);
                     
                     // Comentario completo (oculto inicialmente)
                     const comentarioCompleto = document.createElement('span');
                     comentarioCompleto.id = `comentario-completo-${index}`;
-                    comentarioCompleto.textContent = survey.comment;
+                    comentarioCompleto.textContent = commentText;
                     comentarioCompleto.style.display = 'none';
                     comentarioContainer.appendChild(comentarioCompleto);
                     
                     tdComentarios.appendChild(comentarioContainer);
                     
                     // Botón "Leer Más" para comentarios (solo si el texto es largo)
-                    if (survey.comment.length > 80) {
+                    if (commentText.length > 80) {
                         const btnLeerMasComentario = document.createElement('button');
                         btnLeerMasComentario.className = 'btn btn-link btn-sm';
                         btnLeerMasComentario.id = `btn-leer-mas-comentario-${index}`;
