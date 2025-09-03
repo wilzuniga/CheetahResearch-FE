@@ -287,11 +287,17 @@ function sendMessage(message, imageSrc) {
     }).then((response) => {
         const data = response.data;
         if (data.response.includes('LISTO')) {
-            const farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
+            const study_id = new URLSearchParams(window.location.search).get('id');
+            let farewellMessage;
+            
+            if (study_id === '68b75b285cbd2fb848ff7c81') {
+                farewellMessage = `Great! Thanks again for your time.\n💡 We'll keep you updated on how Cheetah Research AI is reshaping the future of market research.\nOne of our team members will reach out to you shortly to continue the conversation.\n🚀 Talk soon!`;
+            } else {
+                farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
+            }
 
             getMessage(farewellMessage, null);
             loadingMsg.style.display = 'none';
-            const study_id = new URLSearchParams(window.location.search).get('id');
             endChat()
 
             const url = 'https://api.cheetah-research.ai/chatbot/logs/';
@@ -307,7 +313,7 @@ function sendMessage(message, imageSrc) {
                 console.log('Error:', error);
             });
 
-        }if (data.response.includes('NO SIRVE')) {
+        } else if (data.response.includes('NO SIRVE')) {
             const farewellMessage = `¡Lo sentimos no cumples con los requisitos para este estudio!\n\n¡Muchas Gracias !\n\n¡Que tengas un excelente día!`;
             
             getMessage(farewellMessage, null);
