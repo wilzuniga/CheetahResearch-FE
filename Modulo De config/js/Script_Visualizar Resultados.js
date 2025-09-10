@@ -1365,14 +1365,17 @@ botonImportar.addEventListener('click', () => {
     fileChooser.click();
 });
 
-// LLAMAR A /configuration/forzar/<study_id> para forzar el analisis al presionarl el boton botonForzarA
+// LLAMAR A /configuration/forzar/<study_id> para forzssar el analisis al presionarl el boton botonForzarA
+
 const botonForzarA = document.getElementById('botonForzarA');
 botonForzarA.addEventListener('click', () => {
+    if (!confirm('¿Está seguro que desea forzar el análisis del estudio? Esta acción puede sobrescribir resultados previos y consume tokens.')) {
+        return;
+    }
     const url = "https://api.cheetah-research.ai/configuration/forzar/" + sessionStorage.getItem('selectedStudyId');
 
     axios.get(url)
         .then(response => {
-            // console.log(response.data);
             alert('Análisis forzado exitosamente');
         })
         .catch(error => {
