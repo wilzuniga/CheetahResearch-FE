@@ -1,6 +1,7 @@
 let Demographic_Filters = [];
 let formData = new FormData();  // Asegúrate de que esta línea está presente donde se necesita
 let markmapBlobUrl = null;
+let sankeyBlobUrl = null;
 
 
 
@@ -54,6 +55,122 @@ function generateMarkmapHTML(content , filter) {
             let a = document.createElement("a");
             a.href = markmapBlobUrl;
             a.download = `markmap - ${filter}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+    }
+}
+
+function generateSankeyHTML(matrixData, filter) {
+    // Parsear la matriz del endpoint
+    let matriz;
+    try {
+        if (typeof matrixData === 'string') {
+            let cleanData = matrixData.trim();
+            
+            // Remover comillas triples si existen
+            if (cleanData.startsWith("'''") && cleanData.endsWith("'''")) {
+                cleanData = cleanData.slice(3, -3).trim();
+            }
+            
+            // Si contiene "var matriz = ", extraer solo la parte de la matriz
+            if (cleanData.includes('var matriz = ')) {
+                const startIndex = cleanData.indexOf('var matriz = ') + 'var matriz = '.length;
+                let endIndex = cleanData.length;
+                
+                // Buscar el punto y coma final si existe
+                const semicolonIndex = cleanData.indexOf(';', startIndex);
+                if (semicolonIndex !== -1) {
+                    endIndex = semicolonIndex;
+                }
+                
+                cleanData = cleanData.substring(startIndex, endIndex).trim();
+            }
+            
+            // Evaluar la matriz
+            matriz = eval(cleanData);
+        } else {
+            matriz = matrixData;
+        }
+    } catch (error) {
+        console.error('Error parsing Sankey matrix:', error);
+        console.error('Raw data:', matrixData);
+        matriz = [];
+    }
+
+    // Estructura HTML con el contenido dinámico
+    var htmlContent = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Diagrama Sankey - ${filter}</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%; background: #fff; font-family: sans-serif;
+    }
+    #sankey_wrapper {
+      width: 100%; height: 100vh; overflow: auto; padding: 16px; box-sizing: border-box;
+    }
+    #sankey_chart {
+      width: 1200px; /* ancho fijo para permitir scroll horizontal */
+      height: 800px; /* alto suficiente para scroll vertical si hace falta */
+    }
+  </style>
+  <script>
+    google.charts.load('current', {packages:['sankey']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      const data = new google.visualization.DataTable();
+      data.addColumn('string', 'From');
+      data.addColumn('string', 'To');
+      data.addColumn('number', 'Weight');
+
+      var matriz = ${JSON.stringify(matriz)};
+      data.addRows(matriz);
+
+      const options = {
+        sankey: {
+          node: { nodePadding: 20, label: { fontSize: 12 } },
+          link: { colorMode: 'gradient' }
+        }
+      };
+
+      const chart = new google.visualization.Sankey(document.getElementById('sankey_chart'));
+      chart.draw(data, options);
+    }
+
+    window.addEventListener('resize', drawChart);
+  </script>
+</head>
+<body>
+  <div id="sankey_wrapper">
+    <div id="sankey_chart"></div>
+  </div>
+</body>
+</html>`;
+
+    // Crear un Blob con el contenido HTML
+    var blob = new Blob([htmlContent], { type: "text/html" });
+
+    // Revocar URL anterior si existe (para liberar memoria)
+    if (sankeyBlobUrl) {
+        URL.revokeObjectURL(sankeyBlobUrl);
+    }
+
+    // Crear un nuevo objeto URL
+    sankeyBlobUrl = URL.createObjectURL(blob);
+
+    // Habilitar el botón de descarga
+    let downloadBtn = document.getElementById("download_sankey");
+    if (downloadBtn) {
+        downloadBtn.style.display = "block"; // Mostrar el botón
+        downloadBtn.onclick = function () {
+            let a = document.createElement("a");
+            a.href = sankeyBlobUrl;
+            a.download = `sankey - ${filter}.html`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -626,6 +743,22 @@ function LLenarResumenes(){
                             })
                             .catch(function (error) {
                                 console.error('Error al obtener el contenido de Markmap:', error);
+                            })
+                            .then(function () {
+                                // Tercera petición para Sankey
+                                formData = new FormData();
+                                formData.append('filter', selectedValue);
+                                formData.append('module', 'general');
+                                formData.append('sub_module', 'sankey');
+                
+                                axios.post(url, formData)
+                                    .then(function (response) {
+                                        var data = response.data;
+                                        generateSankeyHTML(data, selectedValue);
+                                    })
+                                    .catch(function (error) {
+                                        console.error('Error al obtener el contenido de Sankey:', error);
+                                    });
                             });                    
                         
                     });
