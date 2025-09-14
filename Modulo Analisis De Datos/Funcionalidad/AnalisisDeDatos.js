@@ -40,9 +40,13 @@ function initializePage() {
                 'ComboBox_RasgosDePersonalidad_SubFiltro',
                 'ComboBox_SegmentosPsicograficos_SubFiltro',
                 'ComboBox_EstiloDeComunicacion_SubFiltro',
+                'ComboBox_Big5_SubFiltro',
                 'ComboBox_customerExperience_SubFiltro',
                 'ComboBox_Satisfaccion_SubFiltro',
                 'ComboBox_ClimaLaboral_SubFiltro',
+                'ComboBox_CustomerJourney_SubFiltro',
+                'ComboBox_Reputacion_SubFiltro',
+                'ComboBox_PruebaProducto_SubFiltro',
                 'ComboBox_BrandStrenght_SubFiltro',
                 'ComboBox_BrandEquity_SubFiltro',
                 'ComboBox_NPS_SubFiltro'
@@ -373,6 +377,9 @@ function AgregarModulos(study) {
             const NPSySatisfaccionBtn = document.getElementById('NPSySatisfaccionBtn');
             const BrandStatusBtn = document.getElementById('BrandStatusBtn');
             const ClimaLaboralBtn = document.getElementById('ClimaLaboralBtn');
+            const CustomerJourneyBtn = document.getElementById('CustomerJourneyBtn');
+            const ReputacionBtn = document.getElementById('ReputacionBtn');
+            const PruebaProductoBtn = document.getElementById('PruebaProductoBtn');
             
 
 
@@ -384,6 +391,9 @@ function AgregarModulos(study) {
             NPSySatisfaccionBtn.style.display = 'none';
             BrandStatusBtn.style.display = 'none';
             ClimaLaboralBtn.style.display = 'none';
+            CustomerJourneyBtn.style.display = 'none';
+            ReputacionBtn.style.display = 'none';
+            PruebaProductoBtn.style.display = 'none';
 
             ActiveModules.forEach(modulo => {
                 if (modulo === 'Módulo de Análisis General') {
@@ -409,6 +419,15 @@ function AgregarModulos(study) {
                 }
                 if (modulo === 'Módulo Clima Laboral') {
                     ClimaLaboralBtn.style.display = 'block';
+                }
+                if (modulo === 'Módulo Customer Journey') {
+                    CustomerJourneyBtn.style.display = 'block';
+                }
+                if (modulo === 'Módulo Reputación') {
+                    ReputacionBtn.style.display = 'block';
+                }
+                if (modulo === 'Módulo Prueba de Producto') {
+                    PruebaProductoBtn.style.display = 'block';
                 }
             });
 
@@ -453,9 +472,13 @@ function AgregarFiltros(study) {
             const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBox7 = document.getElementById('Combobox_NPS');
             const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBox17 = document.getElementById('Combobox_Big5');
             const comboBox9 = document.getElementById('Combobox_customerExperience');
             const comboBox10 = document.getElementById('Combobox_Satisfaccion');
             const comboBox11 = document.getElementById('Combobox_ClimaLaboral');
+            const comboBox14 = document.getElementById('Combobox_CustomerJourney');
+            const comboBox15 = document.getElementById('Combobox_Reputacion');
+            const comboBox16 = document.getElementById('Combobox_PruebaProducto');
             const comboBox12 = document.getElementById('Combobox_BrandStrenght');
             const comboBox13 = document.getElementById('Combobox_BrandEquity');
 
@@ -469,9 +492,13 @@ function AgregarFiltros(study) {
             comboBox6.innerHTML = '';
             comboBox7.innerHTML = '';
             comboBox8.innerHTML = '';
+            comboBox17.innerHTML = '';
             comboBox9.innerHTML = '';
             comboBox10.innerHTML = '';
             comboBox11.innerHTML = '';
+            comboBox14.innerHTML = '';
+            comboBox15.innerHTML = '';
+            comboBox16.innerHTML = '';
             comboBox12.innerHTML = '';
             comboBox13.innerHTML = '';
             
@@ -490,9 +517,13 @@ function AgregarFiltros(study) {
             comboBox6.appendChild(option.cloneNode(true));
             comboBox7.appendChild(option.cloneNode(true));
             comboBox8.appendChild(option.cloneNode(true));
+            comboBox17.appendChild(option.cloneNode(true));
             comboBox9.appendChild(option.cloneNode(true));
             comboBox10.appendChild(option.cloneNode(true));
             comboBox11.appendChild(option.cloneNode(true));
+            comboBox14.appendChild(option.cloneNode(true));
+            comboBox15.appendChild(option.cloneNode(true));
+            comboBox16.appendChild(option.cloneNode(true));
             comboBox12.appendChild(option.cloneNode(true));
             comboBox13.appendChild(option.cloneNode(true));
             comboBoxUA.appendChild(option.cloneNode(true));
@@ -1130,6 +1161,111 @@ function LLenarResumenes(study) {
             });
     });
 
+    //Customer Journey
+    const comboBoxCJ = document.getElementById('Combobox_CustomerJourney');
+    comboBoxCJ.addEventListener('change', (event) => {
+        var div = document.getElementById('CustomerJourneyContent');
+        const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_CustomerJourney_SubFiltro').value;
+
+        formData = new FormData();     
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
+        formData.append('module', 'customer_journey');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                const coso = marked(data);                          
+                div.innerHTML = coso;   
+
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+
+            });
+    });
+
+    //Reputacion
+    const comboBoxREP = document.getElementById('Combobox_Reputacion');
+    comboBoxREP.addEventListener('change', (event) => {
+        var div = document.getElementById('ReputacionContent');
+        const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_Reputacion_SubFiltro').value;
+
+        formData = new FormData();     
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
+        formData.append('module', 'reputation');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                const coso = marked(data);                          
+                div.innerHTML = coso;   
+
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+
+            });
+    });
+
+    //Prueba de Producto
+    const comboBoxPP = document.getElementById('Combobox_PruebaProducto');
+    comboBoxPP.addEventListener('change', (event) => {
+        var div = document.getElementById('PruebaProductoContent');
+        const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_PruebaProducto_SubFiltro').value;
+
+        formData = new FormData();     
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
+        formData.append('module', 'product_testing');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                const coso = marked(data);                          
+                div.innerHTML = coso;   
+
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+
+            });
+    });
+
     comboBoxBS.addEventListener('change', (event) => {
         // console.log(event.target.value);
         var div = document.getElementById('BrandStrenghtContent');
@@ -1238,6 +1374,42 @@ function LLenarResumenes(study) {
             })
             .then(function () {
                 // always executed
+            });
+    });
+
+    //Big 5
+    const comboBoxBig5 = document.getElementById('Combobox_Big5');
+    comboBoxBig5.addEventListener('change', (event) => {
+        var div = document.getElementById('Big5Content');
+        const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_Big5_SubFiltro').value;
+
+        formData = new FormData();     
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
+        formData.append('module', 'psicographic_questions');
+        formData.append('sub_module', 'big5');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                const coso = marked(data);                          
+                div.innerHTML = coso;   
+
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+
             });
     });
 
