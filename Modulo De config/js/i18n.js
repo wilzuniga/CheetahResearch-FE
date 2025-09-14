@@ -146,6 +146,9 @@ const translations = {
             btPersonality:"Rasgos de Personalidad", 
             btPsicSegments:"Segmentos Psicográficos",
             btCommStyles:"Estilo de Comunicación",
+            
+            titleBig5:"Análisis Big 5", descBig5:"En esta sección se realiza un análisis de personalidad basado en el modelo Big 5 (Cinco Grandes Factores de Personalidad), evaluando las cinco dimensiones principales: Apertura a la experiencia, Responsabilidad, Extroversión, Amabilidad y Neuroticismo. Este análisis permite identificar patrones de personalidad dominantes en las respuestas y proporciona insights profundos sobre el perfil psicológico de los encuestados.",
+            btBig5:"Big 5",
 
 
             //NPS y Satisfacción
@@ -312,6 +315,9 @@ const translations = {
             btPersonality: "Personality Traits",
             btPsicSegments: "Psychographic Segments",
             btCommStyles: "Communication Style",
+            
+            titleBig5: "Big 5 Analysis", descBig5: "This section performs a personality analysis based on the Big 5 model (Five-Factor Model of Personality), evaluating the five main dimensions: Openness to experience, Conscientiousness, Extraversion, Agreeableness, and Neuroticism. This analysis allows identification of dominant personality patterns in responses and provides deep insights into the psychological profile of respondents.",
+            btBig5: "Big 5",
 
             // NPS & Satisfaction
             btNPS_Satisfaction: "NPS and Satisfaction",
@@ -483,6 +489,9 @@ const translations = {
             btPersonality: "Traços de Personalidade",
             btPsicSegments: "Segmentos Psicográficos",
             btCommStyles: "Estilo de Comunicação",
+            
+            titleBig5: "Análise Big 5", descBig5: "Esta seção realiza uma análise de personalidade baseada no modelo Big 5 (Cinco Grandes Fatores de Personalidade), avaliando as cinco dimensões principais: Abertura à experiência, Conscienciosidade, Extroversão, Amabilidade e Neuroticismo. Esta análise permite identificar padrões de personalidade dominantes nas respostas e fornece insights profundos sobre o perfil psicológico dos respondentes.",
+            btBig5: "Big 5",
         
             //NPS e Satisfação
             btNPS_Satisfaction: "NPS e Satisfação",

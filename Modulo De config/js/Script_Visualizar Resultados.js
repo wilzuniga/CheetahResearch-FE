@@ -207,6 +207,7 @@ function AgregarFiltros() {
             const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBox7 = document.getElementById('Combobox_NPS');
             const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBoxBig5_1 = document.getElementById('Combobox_Big5');
             const comboBox9 = document.getElementById('Combobox_customerExperience');
             const comboBox10 = document.getElementById('Combobox_Satisfaccion');
             const comboBox11 = document.getElementById('Combobox_ClimaLaboral');
@@ -226,6 +227,7 @@ function AgregarFiltros() {
             comboBox6.innerHTML = '';
             comboBox7.innerHTML = '';
             comboBox8.innerHTML = '';
+            comboBoxBig5_1.innerHTML = '';
             comboBox9.innerHTML = '';
             comboBox10.innerHTML = '';
             comboBox11.innerHTML = '';
@@ -250,6 +252,7 @@ function AgregarFiltros() {
             comboBox6.appendChild(option.cloneNode(true));
             comboBox7.appendChild(option.cloneNode(true));
             comboBox8.appendChild(option.cloneNode(true));
+            comboBoxBig5_1.appendChild(option.cloneNode(true));
             comboBox9.appendChild(option.cloneNode(true));
             comboBox10.appendChild(option.cloneNode(true));
             comboBox11.appendChild(option.cloneNode(true));
@@ -297,6 +300,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'save-textarea_AP_SegmentosPsicograficos': 'SegmentosPsicograficosTextArea',
                 'save-textarea_AP_NPS': 'NPSTextArea',
                 'save-textarea_AP_EstiloDeComunicacion': 'EstiloDeComunicacionTextArea',
+                'save-textarea_AP_Big5': 'Big5TextArea',
                 'save-textarea_customerExperience': 'customerExperienceTextArea',
                 'save-textarea_AP_Satisfaccion' : 'SatisfaccionTextArea',
                 'save-textarea_AP_BrandStrenght': 'BrandStrenghtTextArea',
@@ -320,6 +324,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBoxBig5 = document.getElementById('Combobox_Big5');
             const comboBoxCE = document.getElementById('Combobox_customerExperience');
             const comboBoxSat = document.getElementById('Combobox_Satisfaccion');
             const comboBoxCL = document.getElementById('Combobox_ClimaLaboral');
@@ -339,6 +344,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionSP = comboBoxSP.options[comboBoxSP.selectedIndex];
             const StyleSelectedOptionNPS = comboBoxNPS.options[comboBoxNPS.selectedIndex];
             const StyleSelectedOptionEC = comboBoxEC.options[comboBoxEC.selectedIndex];
+            const StyleSelectedOptionBig5 = comboBoxBig5.options[comboBoxBig5.selectedIndex];
             const StyleSelectedOptionCE = comboBoxCE.options[comboBoxCE.selectedIndex];
             const StyleSelectedOptionSat = comboBoxSat.options[comboBoxSat.selectedIndex];
             const StyleSelectedOptionCL = comboBoxCL.options[comboBoxCL.selectedIndex];
@@ -358,6 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionSPValue = StyleSelectedOptionSP.value;
             const StyleSelectedOptionNPSValue = StyleSelectedOptionNPS.value;
             const StyleSelectedOptionECValue = StyleSelectedOptionEC.value;
+            const StyleSelectedOptionBig5Value = StyleSelectedOptionBig5.value;
             const StyleSelectedOptionCEValue = StyleSelectedOptionCE.value;
             const StyleSelectedOptionSatValue = StyleSelectedOptionSat.value;
             const StyleSelectedOptionCLValue = StyleSelectedOptionCL.value;
@@ -574,6 +581,29 @@ document.addEventListener('DOMContentLoaded', function () {
                     axios.post(url, formDataEC)
                         .then(function (response) {
                             // console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+
+                case 'save-textarea_AP_Big5':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataBig5 = new FormData();
+                    formDataBig5.append('filter', StyleSelectedOptionBig5Value);
+                    formDataBig5.append('module', 'psicographic_questions');
+                    formDataBig5.append('sub_module', 'big5');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionBig5Value + '.md';
+
+                    formDataBig5.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataBig5)
+                        .then(function (response) {
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -960,6 +990,7 @@ function LLenarResumenes(){
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBoxBig5 = document.getElementById('Combobox_Big5');
             const comboBoxCE = document.getElementById('Combobox_customerExperience');
             const comboBoxSat = document.getElementById('Combobox_Satisfaccion');
             const comboBoxCL = document.getElementById('Combobox_ClimaLaboral');
@@ -1261,6 +1292,36 @@ function LLenarResumenes(){
                     })
                     .then(function () {
                         // always executed
+                    });
+            });
+
+            //Big 5
+            comboBoxBig5.addEventListener('change', (event) => {
+                var div = document.getElementById('Big5Content');
+                var textArea = document.getElementById('Big5TextArea');
+                const selectedValue = event.target.value;
+
+                formData = new FormData();     
+                formData.append('filter', selectedValue);
+                formData.append('module', 'psicographic_questions');
+                formData.append('sub_module', 'big5');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        const coso = marked(data);                          
+                        div.innerHTML = coso;   
+                        textArea.value = data;                   
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.log(error);
+                    })
+                    .then(function () {
                     });
             });
 

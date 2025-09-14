@@ -103,6 +103,9 @@
                                 <a id="NPSySatisfaccionBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#NPSySatisfaccion" data-bs-toggle="list" style="width: 90%;margin-right: 5px;margin-left: 5px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.btNPS_Satisfaction">NPS y satisfacción</a>
                                 <a id="BrandStatusBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#BrandStatus" data-bs-toggle="list" style="width: 90%;margin-right: 5px;margin-left: 5px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.btBrandStatus">Brand Status</a>
                                 <a id="ClimaLaboralBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#ClimaLaboral" data-bs-toggle="list" style="width: 90%;margin-right: 5px;margin-left: 5px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.btClimaLaboral">Clima Laboral</a>
+                                <a id="CustomerJourneyBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#CustomerJourney" data-bs-toggle="list" style="width: 90%;margin-right: 5px;margin-left: 5px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.btCustomerJourney">Customer Journey</a>
+                                <a id="ReputacionBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#Reputacion" data-bs-toggle="list" style="width: 90%;margin-right: 5px;margin-left: 5px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.btReputacion">Reputación</a>
+                                <a id="PruebaProductoBtn" class="align-items-xxl-center list-group-item list-group-item-action" href="#PruebaProducto" data-bs-toggle="list" style="width: 90%;margin-right: 5px;margin-left: 5px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="AnalisisDeDatos.btPruebaProducto">Prueba de Producto</a>
                                 
                                 <div style="height: 95%;"></div>
                             </div>
@@ -368,6 +371,132 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <div id="CustomerJourney" class="tab-pane fade" role="tabpanel">
+                                    <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                        <a class="list-group-item list-group-item-action" href="#A_CustomerJourney" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btCustomerJourney">Analisis de Customer Journey</a>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="tab-content">
+                                                <div id="A_CustomerJourney" class="tab-pane fade" role="tabpanel">
+                                                    <h3 data-i18n="AnalisisDeDatos.titleCustomerJourney">Análisis de Customer Journey</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descCustomerJourney">Este análisis integral mapea y evalúa la experiencia completa del cliente a lo largo de su interacción con la marca. Se identifican los puntos de contacto críticos, momentos de verdad, emociones experimentadas en cada etapa, y se detectan oportunidades de mejora para optimizar el recorrido del cliente desde la conciencia inicial hasta la fidelización y recomendación.</p>
+                                
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: end; gap: 10px; margin-bottom: 10px;">
+                                                        <div>
+                                                            <label for="Combobox_CustomerJourney" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_CustomerJourney" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+
+                                                            <select id="ComboBox_CustomerJourney_SubFiltro" style="font-family: hedliner; display: none;">
+                                                                <option value="---">---</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
+                                                                <option value="2024-Oct">2024-Oct</option>
+                                                                <option value="2024-Nov">2024-Nov</option>
+                                                                <option value="2024-Dic">2024-Dic</option>
+                                                                <option value="2025-Ene">2025-Ene</option>
+                                                                <option value="2025-Feb">2025-Feb</option>
+                                                            </select>
+                                                            
+                                                        </div>
+                                                        <button id="export_AP_CustomerJourney" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
+                                                    </div>
+                                
+                                                    <div class="Content-Divs" id="CustomerJourneyContent" style="flex: 1;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div id="Reputacion" class="tab-pane fade" role="tabpanel">
+                                    <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                        <a class="list-group-item list-group-item-action" href="#A_Reputacion" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btReputacion">Analisis de Reputación</a>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="tab-content">
+                                                <div id="A_Reputacion" class="tab-pane fade" role="tabpanel">
+                                                    <h3 data-i18n="AnalisisDeDatos.titleReputacion">Análisis de Reputación</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descReputacion">Este análisis integral evalúa la reputación de la marca a través de un estudio detallado que examina la percepción pública, credibilidad, confianza y prestigio asociados con la organización. Se analizan menciones, sentimientos, crisis reputacionales potenciales y se identifican oportunidades para fortalecer la imagen corporativa y gestionar eficazmente la reputación digital y tradicional.</p>
+                                
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: end; gap: 10px; margin-bottom: 10px;">
+                                                        <div>
+                                                            <label for="Combobox_Reputacion" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_Reputacion" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+
+                                                            <select id="ComboBox_Reputacion_SubFiltro" style="font-family: hedliner; display: none;">
+                                                                <option value="---">---</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
+                                                                <option value="2024-Oct">2024-Oct</option>
+                                                                <option value="2024-Nov">2024-Nov</option>
+                                                                <option value="2024-Dic">2024-Dic</option>
+                                                                <option value="2025-Ene">2025-Ene</option>
+                                                                <option value="2025-Feb">2025-Feb</option>
+                                                            </select>
+                                                            
+                                                        </div>
+                                                        <button id="export_AP_Reputacion" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
+                                                    </div>
+                                
+                                                    <div class="Content-Divs" id="ReputacionContent" style="flex: 1;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div id="PruebaProducto" class="tab-pane fade" role="tabpanel">
+                                    <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                        <a class="list-group-item list-group-item-action" href="#A_PruebaProducto" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btPruebaProducto">Analisis de Prueba de Producto</a>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="tab-content">
+                                                <div id="A_PruebaProducto" class="tab-pane fade" role="tabpanel">
+                                                    <h3 data-i18n="AnalisisDeDatos.titlePruebaProducto">Análisis de Prueba de Producto</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descPruebaProducto">Este análisis integral evalúa la efectividad y aceptación de productos a través de pruebas controladas con usuarios reales. Se examinan aspectos como usabilidad, funcionalidad, satisfacción del usuario, identificación de problemas y áreas de mejora. El análisis incluye métricas de rendimiento, feedback cualitativo y cuantitativo, y recomendaciones para optimizar el producto antes de su lanzamiento al mercado.</p>
+                                
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: end; gap: 10px; margin-bottom: 10px;">
+                                                        <div>
+                                                            <label for="Combobox_PruebaProducto" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_PruebaProducto" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+
+                                                            <select id="ComboBox_PruebaProducto_SubFiltro" style="font-family: hedliner; display: none;">
+                                                                <option value="---">---</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
+                                                                <option value="2024-Oct">2024-Oct</option>
+                                                                <option value="2024-Nov">2024-Nov</option>
+                                                                <option value="2024-Dic">2024-Dic</option>
+                                                                <option value="2025-Ene">2025-Ene</option>
+                                                                <option value="2025-Feb">2025-Feb</option>
+                                                            </select>
+                                                            
+                                                        </div>
+                                                        <button id="export_AP_PruebaProducto" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
+                                                    </div>
+                                
+                                                    <div class="Content-Divs" id="PruebaProductoContent" style="flex: 1;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 
                                 
@@ -564,6 +693,7 @@
                                         <a class="list-group-item list-group-item-action" href="#AP_RasgosDePersonalidad" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btPersonality">Rasgos de Personalidad</a>
                                         <a class="list-group-item list-group-item-action" href="#AP_SegmentosPsicograficos" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btPsicSegments">Segmentos Psicograficos</a>
                                         <a class="list-group-item list-group-item-action" href="#AP_EstiloDeComunicacion" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btCommStyles">Estilo de Comunicacion</a>
+                                        <a class="list-group-item list-group-item-action" href="#AP_Big5" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="AnalisisDeDatos.btBig5">Big 5</a>
                                     </div>
                                     <div class="row">
                                         <div class="col">
@@ -720,6 +850,41 @@
                                                     
                                                         <!-- Contenido del análisis de estilo de comunicación -->
                                                         <div class="Content-Divs" id="EstiloDeComunicacionContent" style="flex: 1;">
+                                                        </div>
+                                                    </div>
+
+                                                <div id="AP_Big5" class="tab-pane fade" role="tabpanel">
+                                                    <h3 data-i18n="AnalisisDeDatos.titleBig5">Análisis Big 5</h3>
+                                                    <p data-i18n="AnalisisDeDatos.descBig5">En esta sección se realiza un análisis de personalidad basado en el modelo Big 5 (Cinco Grandes Factores de Personalidad), evaluando las cinco dimensiones principales: Apertura a la experiencia, Responsabilidad, Extroversión, Amabilidad y Neuroticismo. Este análisis permite identificar patrones de personalidad dominantes en las respuestas y proporciona insights profundos sobre el perfil psicológico de los encuestados.</p>
+                                                
+                                                    <!-- Comboboxes y botón en una fila -->
+                                                    <div style="display: flex; align-items: end; gap: 10px; margin-bottom: 10px;">
+                                                        <!-- Combobox para seleccionar filtro -->
+                                                        <div>
+                                                            <label for="Combobox_Big5" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_Big5" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
+
+                                                            <select id="ComboBox_Big5_SubFiltro" style="font-family: hedliner; display: none;">
+                                                                <option value="---">---</option>
+                                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
+                                                                <option value="2024-Oct">2024-Oct</option>
+                                                                <option value="2024-Nov">2024-Nov</option>
+                                                                <option value="2024-Dic">2024-Dic</option>
+                                                                <option value="2025-Ene">2025-Ene</option>
+                                                                <option value="2025-Feb">2025-Feb</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- Botón para mostrar/ocultar el textarea -->
+                                                        <button id="export_AP_Big5" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
+    
+                                                    </div>
+                                                
+                                                    
+                                                        <!-- Contenido del análisis Big 5 -->
+                                                        <div class="Content-Divs" id="Big5Content" style="flex: 1;">
                                                         </div>
                                                     </div>
                                             </div>
