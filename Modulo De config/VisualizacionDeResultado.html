@@ -133,6 +133,9 @@
                             <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#NPSySatisfaccion" data-bs-toggle="list" style="width: 90%;margin-right: 5px;margin-left: 5px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="VisualizacionDeResultado.btNPS_Satisfaction">NPS y satisfacción</a>
                             <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#BrandStatus" data-bs-toggle="list" style="width: 90%;margin-right: 10px;margin-left: 10px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="VisualizacionDeResultado.btBrandStatus">Brand Status</a>
                             <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#ClimaLaboral" data-bs-toggle="list" style="width: 90%;margin-right: 5px;margin-left: 5px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="VisualizacionDeResultado.btClimaLaboral">Clima Laboral</a>
+                            <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#CustomerJourney" data-bs-toggle="list" style="width: 90%;margin-right: 5px;margin-left: 5px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="VisualizacionDeResultado.btCustomerJourney">Customer Journey</a>
+                            <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#Reputacion" data-bs-toggle="list" style="width: 90%;margin-right: 5px;margin-left: 5px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="VisualizacionDeResultado.btReputacion">Reputación</a>
+                            <a class="d-xxl-flex align-items-xxl-center list-group-item list-group-item-action" href="#PruebaProducto" data-bs-toggle="list" style="width: 90%;margin-right: 5px;margin-left: 5px;margin-top: 10px;border-radius : 13px;height: 46px;font-family: hedliner;font-weight: bold;" data-i18n="VisualizacionDeResultado.btPruebaProducto">Prueba de Producto</a>
                             
                             <div style="height: 95%;"></div>
 
@@ -745,6 +748,150 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div id="CustomerJourney" class="tab-pane fade" role="tabpanel">
+                                <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                    <a class="list-group-item list-group-item-action" href="#A_CustomerJourney" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="VisualizacionDeResultado.btCustomerJourney">Analisis de Customer Journey</a>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="tab-content">
+                                            <div id="A_CustomerJourney" class="tab-pane fade" role="tabpanel">
+                                                <h3 data-i18n="VisualizacionDeResultado.titleCustomerJourney">Análisis de Customer Journey</h3>
+                                                <p data-i18n="VisualizacionDeResultado.descCustomerJourney">Este análisis integral mapea y evalúa la experiencia completa del cliente a lo largo de su interacción con la marca. Se identifican los puntos de contacto críticos, momentos de verdad, emociones experimentadas en cada etapa, y se detectan oportunidades de mejora para optimizar el recorrido del cliente desde la conciencia inicial hasta la fidelización y recomendación.</p>
+                                             
+                                            
+                                                <!-- Comboboxes y botón en una fila -->
+                                                <div style="display: flex;  gap: 10px; margin-bottom: 10px;">
+                                                    <!-- Combobox para seleccionar filtro -->
+                                                    <div>
+                                                        <label for="Combobox_CustomerJourney" style="font-family: hedliner;" data-i18n="VisualizacionDeResultado.sSelectFilter">Selecciona un Filtro:</label>
+                                                        <select id="Combobox_CustomerJourney" style="font-family: hedliner;">
+                                                            <!-- Opciones se agregarán dinámicamente aquí -->
+                                                        </select>
+                                                    </div>
+                                            
+                                                    <!-- Botón para mostrar/ocultar el textarea -->
+                                                    <button id="toggle-textarea_AP_CustomerJourney" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
+                                                    <button id="save-textarea_AP_CustomerJourney" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
+                                                    <button id="export_AP_CustomerJourney" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+
+                                                </div>
+                                                
+                                                <!-- Contenedor para el textarea y el contenido del Análisis Customer Journey -->
+                                                <div style="display: flex; gap: 20px;">
+                                                    <!-- Textarea -->
+                                                    <textarea id="CustomerJourneyTextArea" style="flex: 1;"></textarea>
+                                            
+                                                    <!-- Contenido del Análisis Customer Journey -->
+                                                    <div class="Content-Divs" id="CustomerJourneyContent" style="flex: 1;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div id="Reputacion" class="tab-pane fade" role="tabpanel">
+                                <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                    <a class="list-group-item list-group-item-action" href="#A_Reputacion" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="VisualizacionDeResultado.btReputacion">Analisis de Reputación</a>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="tab-content">
+                                            <div id="A_Reputacion" class="tab-pane fade" role="tabpanel">
+                                                <h3 data-i18n="VisualizacionDeResultado.titleReputacion">Análisis de Reputación</h3>
+                                                <p data-i18n="VisualizacionDeResultado.descReputacion">Este análisis integral evalúa la reputación de la marca a través de un estudio detallado que examina la percepción pública, credibilidad, confianza y prestigio asociados con la organización. Se analizan menciones, sentimientos, crisis reputacionales potenciales y se identifican oportunidades para fortalecer la imagen corporativa y gestionar eficazmente la reputación digital y tradicional.</p>
+                                             
+                                            
+                                                <!-- Comboboxes y botón en una fila -->
+                                                <div style="display: flex;  gap: 10px; margin-bottom: 10px;">
+                                                    <!-- Combobox para seleccionar filtro -->
+                                                    <div>
+                                                        <label for="Combobox_Reputacion" style="font-family: hedliner;" data-i18n="VisualizacionDeResultado.sSelectFilter">Selecciona un Filtro:</label>
+                                                        <select id="Combobox_Reputacion" style="font-family: hedliner;">
+                                                            <!-- Opciones se agregarán dinámicamente aquí -->
+                                                        </select>
+                                                    </div>
+                                            
+                                                    <!-- Botón para mostrar/ocultar el textarea -->
+                                                    <button id="toggle-textarea_AP_Reputacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
+                                                    <button id="save-textarea_AP_Reputacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
+                                                    <button id="export_AP_Reputacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+
+                                                </div>
+                                                
+                                                <!-- Contenedor para el textarea y el contenido del Análisis de Reputación -->
+                                                <div style="display: flex; gap: 20px;">
+                                                    <!-- Textarea -->
+                                                    <textarea id="ReputacionTextArea" style="flex: 1;"></textarea>
+                                            
+                                                    <!-- Contenido del Análisis de Reputación -->
+                                                    <div class="Content-Divs" id="ReputacionContent" style="flex: 1;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div id="PruebaProducto" class="tab-pane fade" role="tabpanel">
+                                <div class="d-xl-flex flex-row justify-content-xl-start align-items-xl-end list-group">
+                                    <a class="list-group-item list-group-item-action" href="#A_PruebaProducto" data-bs-toggle="list" style="width: 20%;margin: 5px;font-family: hedliner;border-radius : 13px;border-top-color: var(--bs-card-border-color);border-right-color: var(--bs-card-border-color);border-bottom-color: var(--bs-list-group-active-bg);border-left-color: var(--bs-card-border-color);height: 65px;" data-i18n="VisualizacionDeResultado.btPruebaProducto">Analisis de Prueba de Producto</a>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="tab-content">
+                                            <div id="A_PruebaProducto" class="tab-pane fade" role="tabpanel">
+                                                <h3 data-i18n="VisualizacionDeResultado.titlePruebaProducto">Análisis de Prueba de Producto</h3>
+                                                <p data-i18n="VisualizacionDeResultado.descPruebaProducto">Este análisis integral evalúa la efectividad y aceptación de productos a través de pruebas controladas con usuarios reales. Se examinan aspectos como usabilidad, funcionalidad, satisfacción del usuario, identificación de problemas y áreas de mejora. El análisis incluye métricas de rendimiento, feedback cualitativo y cuantitativo, y recomendaciones para optimizar el producto antes de su lanzamiento al mercado.</p>
+                                             
+                                            
+                                                <!-- Comboboxes y botón en una fila -->
+                                                <div style="display: flex;  gap: 10px; margin-bottom: 10px;">
+                                                    <!-- Combobox para seleccionar filtro -->
+                                                    <div>
+                                                        <label for="Combobox_PruebaProducto" style="font-family: hedliner;" data-i18n="VisualizacionDeResultado.sSelectFilter">Selecciona un Filtro:</label>
+                                                        <select id="Combobox_PruebaProducto" style="font-family: hedliner;">
+                                                            <!-- Opciones se agregarán dinámicamente aquí -->
+                                                        </select>
+                                                    </div>
+                                            
+                                                    <!-- Botón para mostrar/ocultar el textarea -->
+                                                    <button id="toggle-textarea_AP_PruebaProducto" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
+                                                    <button id="save-textarea_AP_PruebaProducto" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
+                                                    <button id="export_AP_PruebaProducto" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+
+                                                </div>
+                                                
+                                                <!-- Contenedor para el textarea y el contenido del Análisis de Prueba de Producto -->
+                                                <div style="display: flex; gap: 20px;">
+                                                    <!-- Textarea -->
+                                                    <textarea id="PruebaProductoTextArea" style="flex: 1;"></textarea>
+                                            
+                                                    <!-- Contenido del Análisis de Prueba de Producto -->
+                                                    <div class="Content-Divs" id="PruebaProductoContent" style="flex: 1;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
                                             
                                         </div>
                                     </div>
