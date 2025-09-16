@@ -1740,17 +1740,17 @@ botonImportar.addEventListener('click', () => {
 
 const botonForzarA = document.getElementById('botonForzarA');
 botonForzarA.addEventListener('click', () => {
-    if (!confirm('¿Está seguro que desea forzar el análisis del estudio? Esta acción puede sobrescribir resultados previos y consume tokens.')) {
+    if (!confirm('¿Está seguro que desea ejecutar el análisis del estudio? Esta acción puede sobrescribir resultados previos y consume tokens.')) {
         return;
     }
     const url = "https://api.cheetah-research.ai/configuration/forzar/" + sessionStorage.getItem('selectedStudyId');
 
     axios.get(url)
         .then(response => {
-            alert('Análisis forzado exitosamente');
+            alert('Análisis ejecutado exitosamente');
         })
         .catch(error => {
-            console.error('Error al forzar el análisis:', error);
+            console.error('Error al ejecutar el análisis:', error);
         });
 });
 
