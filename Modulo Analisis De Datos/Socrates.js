@@ -487,7 +487,8 @@ window.addEventListener('beforeunload', function (event) {
 // Contenedor preguntas "questionContainer"
 
 function AgregarPreguntas() {
-    const url = "https://api.cheetah-research.ai/configuration/get_questions/" + sessionStorage.getItem('selectedStudyId');
+    const study_id = new URLSearchParams(window.location.search).get('id');
+    const url = "https://api.cheetah-research.ai/configuration/get_questions/" + study_id;
     axios.get(url)
         .then(response => {
             // console.log(response.data);
