@@ -1973,8 +1973,8 @@ comboboxUserPersona.addEventListener('change', async function() {
     const filter = this.value;
     // User Persona no usa subfiltros en el módulo de visualización
     
-    // Usar la misma lógica que en AnalisisDeDatos.js
-    const study_id = new URLSearchParams(window.location.search).get('id');
+    // Usar la misma lógica que el resto del archivo de visualización
+    const study_id = sessionStorage.getItem('selectedStudyId');
     const formData = new FormData();
     formData.append('filter', filter);
     formData.append('module', 'user_personas');
@@ -2008,8 +2008,8 @@ comboboxUserArchetype.addEventListener('change', async function() {
     const filter = this.value;
     // User Archetype no usa subfiltros según el código de análisis de datos
     
-    // Usar la misma lógica que en AnalisisDeDatos.js
-    const study_id = new URLSearchParams(window.location.search).get('id');
+    // Usar la misma lógica que el resto del archivo de visualización
+    const study_id = sessionStorage.getItem('selectedStudyId');
     const formData = new FormData();
     formData.append('filter', filter);
     formData.append('module', 'user_archetype');
