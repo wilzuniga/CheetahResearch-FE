@@ -1914,8 +1914,10 @@ const userPersonaContent = document.getElementById('UserPersonaContent');
 const userArchetypeContent = document.getElementById('UserArchetypeContent');
 const comboboxUserPersona = document.getElementById('Combobox_UserPersona');
 const comboboxUserArchetype = document.getElementById('Combobox_UserArchetype');
-const comboboxUserPersonaSubFiltro = document.getElementById('ComboBox_UserPersona_SubFiltro');
-const comboboxUserArchetypeSubFiltro = document.getElementById('ComboBox_UserArchetype_SubFiltro');
+// User Persona no usa subfiltros en el módulo de visualización (elemento no existe en HTML)
+// const comboboxUserPersonaSubFiltro = document.getElementById('ComboBox_UserPersona_SubFiltro');
+// User Archetype no usa subfiltros según el código de análisis de datos
+// const comboboxUserArchetypeSubFiltro = document.getElementById('ComboBox_UserArchetype_SubFiltro');
 const exportUserPersonaBtn = document.getElementById('export_UserPersona');
 const exportUserArchetypeBtn = document.getElementById('export_UserArchetype');
 const toggleTextareaUserPersonaBtn = document.getElementById('toggle-textarea_UserPersona');
@@ -1964,42 +1966,70 @@ async function loadUserData(type, contentDiv, combobox, subFiltro, textarea) {
 /*
 // Event listeners for User Persona
 userPersonaBtn.addEventListener('click', () => {
-    loadUserData('persona', userPersonaContent, comboboxUserPersona, comboboxUserPersonaSubFiltro, userPersonaTextArea);
+    loadUserData('persona', userPersonaContent, comboboxUserPersona, null, userPersonaTextArea);
 });*/
 
 comboboxUserPersona.addEventListener('change', async function() {
     const filter = this.value;
-    const subFilter = comboboxUserPersonaSubFiltro.value;
+    // User Persona no usa subfiltros en el módulo de visualización
+    
+    // Usar la misma lógica que en AnalisisDeDatos.js
+    const study_id = new URLSearchParams(window.location.search).get('id');
+    const formData = new FormData();
+    formData.append('filter', filter);
+    formData.append('module', 'user_personas');
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study_id;
+    
     try {
-        const response = await fetch(`/api/user_persona?filter=${filter}&subFilter=${subFilter}`);
-        const data = await response.json();
-        if (data.content) {
-            userPersonaContent.innerHTML = data.content;
-            userPersonaTextArea.value = data.content;
+        const response = await axios.post(url, formData);
+        let data = response.data;
+        if (!data.startsWith("#")) {
+            data = data.substring(data.indexOf("#"));
+            data = data.substring(0, data.length - 3);
+        }
+        const htmlContent = marked(data);
+        userPersonaContent.innerHTML = htmlContent;
+        if (userPersonaTextArea) {
+            userPersonaTextArea.value = data;
         }
     } catch (error) {
-        console.error('Error updating User Persona content:', error);
+        console.error('Error loading user persona data:', error);
+        userPersonaContent.innerHTML = '<p>No se encontraron datos para la selección actual.</p>';
     }
 });
 
 /*
 // Event listeners for User Archetype
 userArchetypeBtn.addEventListener('click', () => {
-    loadUserData('archetype', userArchetypeContent, comboboxUserArchetype, comboboxUserArchetypeSubFiltro, userArchetypeTextArea);
+    loadUserData('archetype', userArchetypeContent, comboboxUserArchetype, null, userArchetypeTextArea);
 });*/
 
 comboboxUserArchetype.addEventListener('change', async function() {
     const filter = this.value;
-    const subFilter = comboboxUserArchetypeSubFiltro.value;
+    // User Archetype no usa subfiltros según el código de análisis de datos
+    
+    // Usar la misma lógica que en AnalisisDeDatos.js
+    const study_id = new URLSearchParams(window.location.search).get('id');
+    const formData = new FormData();
+    formData.append('filter', filter);
+    formData.append('module', 'user_archetype');
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study_id;
+    
     try {
-        const response = await fetch(`/api/user_archetype?filter=${filter}&subFilter=${subFilter}`);
-        const data = await response.json();
-        if (data.content) {
-            userArchetypeContent.innerHTML = data.content;
-            userArchetypeTextArea.value = data.content;
+        const response = await axios.post(url, formData);
+        let data = response.data;
+        if (!data.startsWith("#")) {
+            data = data.substring(data.indexOf("#"));
+            data = data.substring(0, data.length - 3);
+        }
+        const htmlContent = marked(data);
+        userArchetypeContent.innerHTML = htmlContent;
+        if (userArchetypeTextArea) {
+            userArchetypeTextArea.value = data;
         }
     } catch (error) {
-        console.error('Error updating User Archetype content:', error);
+        console.error('Error loading user archetype data:', error);
+        userArchetypeContent.innerHTML = '<p>No se encontraron datos para la selección actual.</p>';
     }
 });
 /*
@@ -2024,7 +2054,6 @@ saveTextareaUserPersonaBtn.addEventListener('click', async () => {
             body: JSON.stringify({
                 content: userPersonaTextArea.value,
                 filter: comboboxUserPersona.value,
-                subFilter: comboboxUserPersonaSubFiltro.value
             })
         });
         if (response.ok) {
@@ -2047,8 +2076,8 @@ saveTextareaUserArchetypeBtn.addEventListener('click', async () => {
             },
             body: JSON.stringify({
                 content: userArchetypeTextArea.value,
-                filter: comboboxUserArchetype.value,
-                subFilter: comboboxUserArchetypeSubFiltro.value
+                filter: comboboxUserArchetype.value
+                // User Archetype no usa subfiltros
             })
         });
         if (response.ok) {
