@@ -1787,10 +1787,6 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
             compareSelect.style.display = 'inline-block';
             compareSelectLBL.style.display = 'inline-block';
         }
-        // Si ya hay un filtro principal seleccionado y el estilo es porcentual, volver a renderizar
-        if (comboBoxResumenIndividualTy && comboBoxResumenIndividualTy.value === 'percentage' && comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
-            comboBoxRI.dispatchEvent(new Event('change'));
-        }
     } else if (selectedValue === 'percentage_nonCat') {
         // Mostrar el contenido y ocultar el contenedor de charts
         chartsContainerResumenIndividual.style.display = 'none';
@@ -1823,6 +1819,12 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
             compareSelect.style.display = 'none';
             compareSelectLBL.style.display = 'none';
         }
+    }
+    
+    // IMPORTANTE: Recargar el contenido con la nueva visualización seleccionada
+    // Si ya hay un filtro principal seleccionado, disparar el evento change para actualizar el contenido
+    if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+        comboBoxRI.dispatchEvent(new Event('change'));
     }
 });
 
