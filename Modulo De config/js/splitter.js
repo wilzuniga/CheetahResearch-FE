@@ -441,7 +441,7 @@ function findCompareSubGrafico(primarySubGrafico, primarySection, compareData) {
     // Buscar en todas las secciones de comparación
     let bestMatch = null;
     let bestSimilarity = 0;
-    const threshold = 0.2; // Umbral más bajo para detectar subpreguntas similares
+    const threshold = 0.1; // Umbral más bajo para detectar subpreguntas similares
     
     compareData.forEach(compareSection => {
         if (compareSection && compareSection.subGraficos) {
@@ -787,7 +787,7 @@ function analyzeAndFilterData(primaryData, compareData) {
     function findBestMatch(primaryPregunta, compareData) {
         let bestMatch = null;
         let bestSimilarity = 0;
-        const threshold = 0.2; // Umbral mínimo de similitud
+        const threshold = 0.1; // Umbral mínimo de similitud
         
         compareData.forEach(section => {
             if (section && section.pregunta) {
