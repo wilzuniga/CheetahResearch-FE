@@ -30,14 +30,14 @@ function createStudyForm() {
     const mercadoObjetivo = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hTargetAudience">Mercado Objetivo</p>
-            <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" data-i18n-placeholder="CreacionDeEstudio.inTargetAudience" style="font-family: 'IBM Plex Sans'; border-radius : 13px">
+            <textarea class="form-control" id="MercadoObjetivoTXT" name="Mercado Objetivo" rows="4" data-i18n-placeholder="CreacionDeEstudio.inTargetAudience" style="font-family: 'IBM Plex Sans'; border-radius : 13px"></textarea>
         </div>`
     ;
 
     const objetivosDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyObjectives">Objetivos del Estudio</p>
-            <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" data-i18n-placeholder="CreacionDeEstudio.inStudyObjectives" style="font-family: 'IBM Plex Sans'; border-radius : 13px">
+            <textarea class="form-control" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" rows="4" data-i18n-placeholder="CreacionDeEstudio.inStudyObjectives" style="font-family: 'IBM Plex Sans'; border-radius : 13px"></textarea>
         </div>`
     ;
 
@@ -127,14 +127,14 @@ function createFilledStudyForm() {
     const mercadoObjetivo = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hTargetAudience">Mercado Objetivo</p>
-            <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" data-i18n-placeholder="CreacionDeEstudio.inTargetAudience" style="font-family: 'IBM Plex Sans'; border-radius : 13px" value="${selectedStudyData.mercadoObjetivo}">
+            <textarea class="form-control" id="MercadoObjetivoTXT" name="Mercado Objetivo" rows="4" data-i18n-placeholder="CreacionDeEstudio.inTargetAudience" style="font-family: 'IBM Plex Sans'; border-radius : 13px">${selectedStudyData.mercadoObjetivo}</textarea>
         </div>`
     ;
 
     const objetivosDelEstudio = `
         <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
             <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyObjectives">Objetivos del Estudio</p>
-            <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" data-i18n-placeholder="CreacionDeEstudio.inStudyObjectives" style="font-family: 'IBM Plex Sans'; border-radius : 13px" value="${selectedStudyData.objetivosDelEstudio}">
+            <textarea class="form-control" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" rows="4" data-i18n-placeholder="CreacionDeEstudio.inStudyObjectives" style="font-family: 'IBM Plex Sans'; border-radius : 13px">${selectedStudyData.objetivosDelEstudio}</textarea>
         </div>`
     ;
 
