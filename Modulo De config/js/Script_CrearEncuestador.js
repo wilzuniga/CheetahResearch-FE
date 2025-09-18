@@ -103,15 +103,21 @@ function updateSurveyerFormData(data) {
     data0.append('interviewerTone', tonoEncuestador);
     data0.append('interviewerGreeting', saludoEncuestador);
     data0.append('importantObservation', observacionesImportantes);
-    data0.append('_id', sessionStorage.getItem('selectedStudyId'));
+    // CORREGIDO: Usar el ID del interviewer, no del study
+    data0.append('_id', data._id);
     
     // Agregar la imagen si se seleccionó una nueva
     if (fileInputUpdate && fileInputUpdate.files && fileInputUpdate.files[0]) {
         data0.append('interviewerProfilePicture', fileInputUpdate.files[0]);
+        console.log('Imagen seleccionada:', fileInputUpdate.files[0].name);
+    } else {
+        console.log('No se seleccionó nueva imagen');
     }
 
+    // Debug: mostrar todos los datos que se envían
+    console.log('Datos a enviar:');
     for (let pair of data0.entries()) {
-        // console.log(pair[0]+ ': ' + pair[1]);
+        console.log(pair[0]+ ': ' + pair[1]);
     }
 
     axios.post(url, data0, {
@@ -120,14 +126,21 @@ function updateSurveyerFormData(data) {
         }
     })
     .then(response => {
-
-        // console.log(response);
+        console.log('Respuesta del servidor:', response.data);
         //Alert coso guardado
         alert(getNestedTranslation(translations[lang], 'CrearEncuestador.wUpdated'));
-
+        
+        // Recargar la página para mostrar la imagen actualizada
+        if (fileInputUpdate && fileInputUpdate.files && fileInputUpdate.files[0]) {
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        }
     })
     .catch(error => {
-        console.error(error);
+        console.error('Error completo:', error);
+        console.error('Error response:', error.response);
+        alert('Error al actualizar el encuestador: ' + (error.response?.data?.message || error.message));
     });
 
     // Guardar en sessionStorage
