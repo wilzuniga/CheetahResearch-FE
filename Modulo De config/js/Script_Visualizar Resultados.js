@@ -1832,6 +1832,8 @@ document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change
     // al seleccionar percentage que muestre ComboBox_ResumenIndividualDS, de lo contrario se mantiene oculto
     const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
     const comboBoxResumenIndividualDSLBL = document.getElementById('ComboBox_ResumenIndividualDSLBL');
+    const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+    
     if (selectedValue === 'percentage') {
         comboBoxResumenIndividualDS.style.display = 'block';
         comboBoxResumenIndividualDSLBL.style.display = 'block';
@@ -1843,6 +1845,38 @@ document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change
     } else {
         comboBoxResumenIndividualDS.style.display = 'none';
         comboBoxResumenIndividualDSLBL.style.display = 'none';
+        
+        // Cuando se cambia a narrativo, mostrar el contenido textual y ocultar gráficos
+        const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
+        const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
+        const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
+        const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+        const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+        const chartTypeSelect = document.getElementById('ComboBox_ResumenIndividualChartType');
+        const chartTypeSelectLBL = document.getElementById('ComboBox_ResumenIndividualChartTypeLBL');
+        
+        if (resumenIndividualContent && chartsContainerResumenIndividual) {
+            chartsContainerResumenIndividual.style.display = 'none';
+            resumenIndividualContent.style.display = 'block';
+            if (resumenIndividualTextArea) resumenIndividualTextArea.style.display = 'none';
+        }
+        
+        // Ocultar controles de comparación y tipo de gráfico
+        if (chartTypeSelect && chartTypeSelectLBL) {
+            chartTypeSelect.style.display = 'none';
+            chartTypeSelectLBL.style.display = 'none';
+        }
+        
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'none';
+            compareSelectLBL.style.display = 'none';
+        }
+    }
+    
+    // IMPORTANTE: Recargar el contenido con el nuevo estilo seleccionado
+    // Si ya hay un filtro seleccionado, disparar el evento change para actualizar el contenido
+    if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+        comboBoxRI.dispatchEvent(new Event('change'));
     }
 });
 

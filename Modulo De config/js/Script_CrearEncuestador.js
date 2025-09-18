@@ -14,7 +14,7 @@ function createSurveyerForm() {
             <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" data-i18n-placeholder="CrearEncuestador.inInterviewerName" style="font-family: 'IBM Plex Sans'">
             </div>
             <div class="mb-3">
-            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono Encuestador</p>
+            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono del encuestador y sugerencias relevantes</p>
             <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" data-i18n-placeholder="CrearEncuestador.inTone" style="font-family: 'IBM Plex Sans'">
             </div>
             <div class="mb-3">
@@ -55,7 +55,7 @@ function createSurveyerFormReadOnly() {
                     <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" data-i18n-placeholder="CrearEncuestador.inInterviewerName" value="${data.interviewerName}" style="font-family: 'IBM Plex Sans'">
                 </div>
                 <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono Encuestador</p>
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono del encuestador y sugerencias relevantes</p>
                     <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" data-i18n-placeholder="CrearEncuestador.inTone" value="${data.interviewerTone}" style="font-family: 'IBM Plex Sans'">
                 </div>
                 <div class="mb-3">
