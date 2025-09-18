@@ -15,11 +15,11 @@ function createSurveyerForm() {
             </div>
             <div class="mb-3">
             <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono del encuestador y sugerencias relevantes</p>
-            <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" data-i18n-placeholder="CrearEncuestador.inTone" style="font-family: 'IBM Plex Sans'">
+            <textarea class="form-control" id="TonoEncuestadorTXT" name="Tono Encuestador" rows="4" data-i18n-placeholder="CrearEncuestador.inTone" style="font-family: 'IBM Plex Sans'"></textarea>
             </div>
             <div class="mb-3">
             <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hObservations">Observaciones importantes</p>
-            <input class="form-control" type="text" id="ObservacionesImportantesTXT" name="Observaciones Importantes" data-i18n-placeholder="CrearEncuestador.inObservations" style="font-family: 'IBM Plex Sans'">
+            <textarea class="form-control" id="ObservacionesImportantesTXT" name="Observaciones Importantes" rows="4" data-i18n-placeholder="CrearEncuestador.inObservations" style="font-family: 'IBM Plex Sans'"></textarea>
             </div>
             <div class="mb-3">
             <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hGreeting">Saludo</p>
@@ -47,8 +47,10 @@ function createSurveyerFormReadOnly() {
             <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.title">Encuestador</h2>
             <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
                 <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hImg"></p>
-                    <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.selectImg">Imagen del Encuestador</p>
+                    <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px;">
+                    <input class="form-control" type="file" name="FileInput" id="FileInputUpdate" accept="image/*">
+                    <small class="form-text text-muted" data-i18n="CrearEncuestador.changeImageHelp">Selecciona una nueva imagen para cambiar la actual</small>
                 </div>
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hInterviewerName">Nombre del Encuestador</p>
@@ -56,11 +58,11 @@ function createSurveyerFormReadOnly() {
                 </div>
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono del encuestador y sugerencias relevantes</p>
-                    <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" data-i18n-placeholder="CrearEncuestador.inTone" value="${data.interviewerTone}" style="font-family: 'IBM Plex Sans'">
+                    <textarea class="form-control" id="TonoEncuestadorTXT" name="Tono Encuestador" rows="4" data-i18n-placeholder="CrearEncuestador.inTone" style="font-family: 'IBM Plex Sans'">${data.interviewerTone}</textarea>
                 </div>
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hObservations">Observaciones importantes</p>
-                    <input class="form-control" type="text" id="ObservacionesImportantesTXT" name="Observaciones Importantes" data-i18n-placeholder="CrearEncuestador.inObservations" value="${data.importantObservation}" style="font-family: 'IBM Plex Sans'">
+                    <textarea class="form-control" id="ObservacionesImportantesTXT" name="Observaciones Importantes" rows="4" data-i18n-placeholder="CrearEncuestador.inObservations" style="font-family: 'IBM Plex Sans'">${data.importantObservation}</textarea>
                 </div>
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hGreeting">Saludo</p>
@@ -91,7 +93,7 @@ function updateSurveyerFormData(data) {
     const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
     const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
     const saludoEncuestador = document.getElementById('SaludoEncuestadorTXT').value;
-    const fileInput = data.interviewerProfilePicture;
+    const fileInputUpdate = document.getElementById('FileInputUpdate');
     const observacionesImportantes = document.getElementById('ObservacionesImportantesTXT').value;
 
     const url = 'https://api.cheetah-research.ai/configuration/updateInterviewer/';
@@ -102,6 +104,11 @@ function updateSurveyerFormData(data) {
     data0.append('interviewerGreeting', saludoEncuestador);
     data0.append('importantObservation', observacionesImportantes);
     data0.append('_id', sessionStorage.getItem('selectedStudyId'));
+    
+    // Agregar la imagen si se seleccionó una nueva
+    if (fileInputUpdate && fileInputUpdate.files && fileInputUpdate.files[0]) {
+        data0.append('interviewerProfilePicture', fileInputUpdate.files[0]);
+    }
 
     for (let pair of data0.entries()) {
         // console.log(pair[0]+ ': ' + pair[1]);
