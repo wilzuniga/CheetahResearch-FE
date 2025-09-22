@@ -1,6 +1,202 @@
 // agregarCard.js
 
-otpValidado  = false;
+otpValidado = false;
+
+// ============ Sistema de Tarjetas ============
+
+// Iconos SVG
+const CARD_ICONS = {
+    objetivo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="4"></circle><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"></circle></svg>',
+    mercado: '<svg viewBox="0 0 24 24" class="ico-person" fill="currentColor" stroke="none"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8z"></path></svg>',
+    fecha: '<svg viewBox="0 0 24 24" class="ico-calendar" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2" fill="none"></rect><path d="M16 3v4M8 3v4M3 10h18" fill="none"></path><path d="M8 15h4" fill="none"></path></svg>',
+    resumen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 7-7"></path><path d="M21 10V3h-7"/></svg>',
+    def: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="3"/></svg>'
+};
+
+// Detecta color acento desde elementos existentes
+function detectAccentColor() {
+    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--bs-CR-orange').trim();
+    if (accentColor) {
+        const match = accentColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+        if (match) {
+            return { r: parseInt(match[1]), g: parseInt(match[2]), b: parseInt(match[3]) };
+        }
+        // Si es hex
+        const hexMatch = accentColor.match(/#([0-9A-Fa-f]{6})/);
+        if (hexMatch) {
+            const hex = hexMatch[1];
+            return {
+                r: parseInt(hex.substr(0, 2), 16),
+                g: parseInt(hex.substr(2, 2), 16),
+                b: parseInt(hex.substr(4, 2), 16)
+            };
+        }
+    }
+    // Fallback
+    return { r: 16, g: 185, b: 129 };
+}
+
+// Genera el CSS de las tarjetas
+function generateCardStyles(accentColor) {
+    const { r, g, b } = accentColor;
+    return `
+        <style>
+            .cr-bullet-grid { 
+                display: grid !important; 
+                grid-template-columns: 1fr !important; 
+                gap: 12px !important; 
+                margin: 12px 0 !important; 
+                padding: 0 !important; 
+            }
+            .cr-bullet-card { 
+                background: #eef1f5; 
+                border: 1px solid #dfe3ea; 
+                border-radius: 12px; 
+                padding: 12px 14px !important;
+                box-shadow: 0 2px 6px rgba(0,0,0,.05); 
+                display: flex; 
+                gap: 10px; 
+                align-items: flex-start;
+                transition: background-color .15s, box-shadow .15s, transform .15s, border-color .15s; 
+            }
+            .cr-bullet-ico { 
+                width: 35px; 
+                height: 35px; 
+                flex: 0 0 35px; 
+                display: grid; 
+                place-items: center; 
+                background: #fff;
+                border: 1px solid rgba(${r},${g},${b},0.25); 
+                border-radius: 8px; 
+                color: rgb(${r}, ${g}, ${b}); 
+            }
+            .cr-bullet-ico svg { 
+                width: 20px; 
+                height: 20px; 
+                color: inherit;
+            }
+            .cr-bullet-ico svg * { 
+                stroke: currentColor !important; 
+            }
+            .cr-bullet-ico svg *:not([fill="none"]) { 
+                fill: currentColor !important; 
+            }
+            .cr-bullet-ttl { 
+                margin: 0; 
+                font-size: 24px; 
+                line-height: 1.25; 
+                font-weight: 800; 
+                color: #0f1115;
+            }
+            .cr-bullet-txt { 
+                margin: 4px 0 0; 
+                font-size: 17px; 
+                line-height: 1.42; 
+                color: #1f2430;
+            }
+            .cr-resumen-list { 
+                margin: 6px 0 0 18px; 
+                padding: 0; 
+                list-style: disc; 
+                font-size: 17px; 
+                line-height: 1.45; 
+                color: #1f2430;
+            }
+            .cr-resumen-list li { 
+                margin: 2px 0;
+            }
+            .cr-bullet-card:hover {
+                background: rgba(${r},${g},${b},0.24) !important;
+                border-color: rgba(${r},${g},${b},${Math.min(0.24*1.6,1)}) !important;
+                box-shadow: 0 4px 10px rgba(0,0,0,.06) !important;
+                transform: translateY(-1px);
+            }
+            .study-title {
+                font-size: 2rem;
+                font-weight: bold;
+                margin-bottom: 20px;
+                text-align: center;
+                color: #0f1115;
+            }
+        </style>
+    `;
+}
+
+// Genera las tarjetas del estudio
+function generateStudyCards(estudio) {
+    const accentColor = detectAccentColor();
+    const styles = generateCardStyles(accentColor);
+    
+    // Preparar datos de las tarjetas
+    const cardData = [
+        {
+            title: 'Objetivo del Estudio',
+            titleKey: 'Overview.sStudyObjectives',
+            content: estudio.studyObjectives,
+            icon: CARD_ICONS.objetivo
+        },
+        {
+            title: 'Mercado Objetivo',
+            titleKey: 'Overview.sTargetAudience', 
+            content: estudio.marketTarget,
+            icon: CARD_ICONS.mercado
+        },
+        {
+            title: 'Fecha del Estudio',
+            titleKey: 'Overview.sStudyDate',
+            content: new Date(estudio.studyDate).toLocaleDateString(),
+            icon: CARD_ICONS.fecha
+        },
+        {
+            title: 'Resumen',
+            titleKey: 'Overview.sStudySummary',
+            content: estudio.prompt,
+            icon: CARD_ICONS.resumen,
+            isResumen: true
+        }
+    ];
+
+    // Generar HTML de las tarjetas
+    const cardsHTML = cardData.map(card => {
+        let contentHTML;
+        if (card.isResumen && card.content) {
+            // Convertir resumen en lista de viñetas
+            const sentences = card.content.replace(/\s+/g, ' ').trim()
+                .split(/(?<=\S)\.(?:\s+|$)/)
+                .map(t => t.trim())
+                .filter(Boolean)
+                .map(t => t.endsWith('.') ? t : t + '.');
+            
+            if (sentences.length > 1) {
+                contentHTML = `<ul class="cr-resumen-list">${sentences.map(s => `<li>${s}</li>`).join('')}</ul>`;
+            } else {
+                contentHTML = `<p class="cr-bullet-txt">${card.content}</p>`;
+            }
+        } else {
+            contentHTML = `<p class="cr-bullet-txt">${card.content}</p>`;
+        }
+
+        return `
+            <div class="cr-bullet-card">
+                <div class="cr-bullet-ico">${card.icon}</div>
+                <div>
+                    <h3 class="cr-bullet-ttl" data-i18n="${card.titleKey}">${card.title}</h3>
+                    ${contentHTML}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    return `
+        ${styles}
+        <div class="study-content">
+            <h2 class="study-title">${estudio.title}</h2>
+            <div class="cr-bullet-grid">
+                ${cardsHTML}
+            </div>
+        </div>
+    `;
+}
 
 
 function otp(study_id) {
@@ -312,42 +508,8 @@ async function contenido(study) {
                     const estudioActual = estudios.find(estudio => estudio._id === study);
 
                     if (estudioActual) {
-                        // Generar HTML dinámico usando los datos del objeto
-                        const htmlContent = `
-                            <style>
-                                .study-title {
-                                    font-size: 2rem;
-                                    font-weight: bold;
-                                    margin-bottom: 10px;
-                                }
-                                .study-section {
-                                    font-size: 1.2rem;
-                                    margin-bottom: 8px;
-                                }
-                                .study-section strong {
-                                    font-size: 1.3rem;
-                                }
-                                .study-content {
-                                    margin-bottom: 15px;
-                                }
-                                .study-bullets {
-                                    text-align: left;
-                                }
-                                .study-bullets li {
-                                    margin-bottom: 8px;
-                                    font-size: 1.1rem;
-                                }
-                            </style>
-                            <div class="study-content">
-                                <h2 class="study-title">${estudioActual.title}</h2>
-                                <ul class="study-bullets">
-                                    <li><strong data-i18n="Overview.sStudyObjectives">Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</li>
-                                    <li><strong data-i18n="Overview.sTargetAudience">Mercado Objetivo:</strong> ${estudioActual.marketTarget}</li>
-                                    <li><strong data-i18n="Overview.sStudyDate">Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</li>
-                                    <li><strong data-i18n="Overview.sStudySummary">Resumen:</strong> ${estudioActual.prompt}</li>
-                                </ul>
-                            </div>
-                        `;
+                        // Generar HTML dinámico usando los datos del objeto con sistema de tarjetas
+                        const htmlContent = generateStudyCards(estudioActual);
 
                         div.innerHTML = htmlContent;
                     } else {
@@ -374,33 +536,8 @@ async function contenido(study) {
                         const estudioActual = estudios.find(estudio => estudio._id === study);
 
                         if (estudioActual) {
-                            // Generar HTML dinámico usando los datos del objeto
-                            const htmlContent = `
-                                <style>
-                                    .study-title {
-                                        font-size: 2rem;
-                                        font-weight: bold;
-                                        margin-bottom: 10px;
-                                    }
-                                    .study-section {
-                                        font-size: 1.2rem;
-                                        margin-bottom: 8px;
-                                    }
-                                    .study-section strong {
-                                        font-size: 1.3rem;
-                                    }
-                                    .study-content {
-                                        margin-bottom: 15px;
-                                    }
-                                </style>
-                                <div class="study-content">
-                                    <h2 class="study-title">${estudioActual.title}</h2>
-                                    <p class="study-section"><strong data-i18n="Overview.sStudyObjectives">Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
-                                    <p class="study-section"><strong data-i18n="Overview.sTargetAudience">Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
-                                    <p class="study-section"><strong data-i18n="Overview.sStudyDate">Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
-                                    <p class="study-section"><strong data-i18n="Overview.sStudySummary">Resumen:</strong> ${estudioActual.prompt}</p>
-                                </div>
-                            `;
+                            // Generar HTML dinámico usando los datos del objeto con sistema de tarjetas
+                            const htmlContent = generateStudyCards(estudioActual);
 
                             div.innerHTML = htmlContent;
                         } else {
