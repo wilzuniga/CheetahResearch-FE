@@ -47,10 +47,8 @@ function createSurveyerFormReadOnly() {
             <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.title">Encuestador</h2>
             <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
                 <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.selectImg">Imagen del Encuestador</p>
-                    <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px;">
-                    <input class="form-control" type="file" name="FileInput" id="FileInputUpdate" accept="image/*">
-                    <small class="form-text text-muted" data-i18n="CrearEncuestador.changeImageHelp">Selecciona una nueva imagen para cambiar la actual</small>
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hImg"></p>
+                    <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
                 </div>
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hInterviewerName">Nombre del Encuestador</p>
@@ -93,7 +91,7 @@ function updateSurveyerFormData(data) {
     const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
     const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
     const saludoEncuestador = document.getElementById('SaludoEncuestadorTXT').value;
-    const fileInputUpdate = document.getElementById('FileInputUpdate');
+    const fileInput = data.interviewerProfilePicture;
     const observacionesImportantes = document.getElementById('ObservacionesImportantesTXT').value;
 
     const url = 'https://api.cheetah-research.ai/configuration/updateInterviewer/';
@@ -103,21 +101,10 @@ function updateSurveyerFormData(data) {
     data0.append('interviewerTone', tonoEncuestador);
     data0.append('interviewerGreeting', saludoEncuestador);
     data0.append('importantObservation', observacionesImportantes);
-    // CORREGIDO: Usar el ID del interviewer, no del study
-    data0.append('_id', data._id);
-    
-    // Agregar la imagen si se seleccionó una nueva
-    if (fileInputUpdate && fileInputUpdate.files && fileInputUpdate.files[0]) {
-        data0.append('interviewerProfilePicture', fileInputUpdate.files[0]);
-        console.log('Imagen seleccionada:', fileInputUpdate.files[0].name);
-    } else {
-        console.log('No se seleccionó nueva imagen');
-    }
+    data0.append('_id', sessionStorage.getItem('selectedStudyId'));
 
-    // Debug: mostrar todos los datos que se envían
-    console.log('Datos a enviar:');
     for (let pair of data0.entries()) {
-        console.log(pair[0]+ ': ' + pair[1]);
+        // console.log(pair[0]+ ': ' + pair[1]);
     }
 
     axios.post(url, data0, {
@@ -126,21 +113,14 @@ function updateSurveyerFormData(data) {
         }
     })
     .then(response => {
-        console.log('Respuesta del servidor:', response.data);
+
+        // console.log(response);
         //Alert coso guardado
         alert(getNestedTranslation(translations[lang], 'CrearEncuestador.wUpdated'));
-        
-        // Recargar la página para mostrar la imagen actualizada
-        if (fileInputUpdate && fileInputUpdate.files && fileInputUpdate.files[0]) {
-            setTimeout(() => {
-                location.reload();
-            }, 1000);
-        }
+
     })
     .catch(error => {
-        console.error('Error completo:', error);
-        console.error('Error response:', error.response);
-        alert('Error al actualizar el encuestador: ' + (error.response?.data?.message || error.message));
+        console.error(error);
     });
 
     // Guardar en sessionStorage
