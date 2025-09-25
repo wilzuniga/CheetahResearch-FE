@@ -575,8 +575,10 @@ function adjustColor(color, percent) {//Funcion loca de chatsito
                 .toString(16).slice(1).toUpperCase()}`;
 }
 
-//Función para exportar el chat a Markdown
+//Función para exportar el chat a PDF con texto plano
 function exportChatToPDF() {
+    const { jsPDF } = window.jspdf;
+    
     // Obtener todos los mensajes del chat
     const messageList = document.getElementById('Message-List');
     if (!messageList) {
@@ -594,10 +596,27 @@ function exportChatToPDF() {
         return;
     }
     
-    // Generar contenido Markdown
-    let markdownContent = `# Conversación con Sócrates\n\n`;
-    markdownContent += `**Fecha de exportación:** ${new Date().toLocaleString('es-ES')}\n\n`;
-    markdownContent += `---\n\n`;
+    const pdf = new jsPDF();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 20;
+    const maxWidth = pageWidth - (margin * 2);
+    let yPosition = margin;
+    
+    // Configurar fuente para todo el documento
+    pdf.setFont('helvetica', 'normal');
+    pdf.setTextColor(0, 0, 0); // Negro
+    
+    // Título del documento
+    pdf.setFontSize(16);
+    pdf.text('Conversación con Sócrates', margin, yPosition);
+    yPosition += 10;
+    
+    // Fecha de exportación
+    pdf.setFontSize(10);
+    const exportDate = new Date().toLocaleString('es-ES');
+    pdf.text(`Exportado el: ${exportDate}`, margin, yPosition);
+    yPosition += 20;
     
     // Procesar mensajes en pares (pregunta-respuesta)
     let currentQuestion = '';
@@ -612,7 +631,7 @@ function exportChatToPDF() {
             return;
         }
         
-        const messageText = extractMarkdownFromMessage(cardElement);
+        const messageText = extractPlainTextFromMessage(cardElement);
         
         if (!messageText.trim()) {
             console.warn('Mensaje vacío encontrado, saltando...', cardElement);
@@ -627,45 +646,120 @@ function exportChatToPDF() {
             // Es una respuesta de Sócrates
             if (isWaitingForAnswer && currentQuestion) {
                 // Tenemos una pregunta previa, crear el par pregunta-respuesta
-                markdownContent += `## Pregunta\n\n`;
-                markdownContent += `\`\`\`\n${currentQuestion}\n\`\`\`\n\n`;
-                markdownContent += `## Respuesta\n\n`;
-                markdownContent += `\`\`\`\n${messageText}\n\`\`\`\n\n`;
-                markdownContent += `---\n\n`;
+                yPosition = addQuestionAnswerPair(pdf, currentQuestion, messageText, yPosition, margin, maxWidth, pageHeight);
                 
                 currentQuestion = '';
                 isWaitingForAnswer = false;
             } else {
                 // Respuesta sin pregunta previa (mensaje inicial de Sócrates)
-                markdownContent += `## Mensaje de Sócrates\n\n`;
-                markdownContent += `\`\`\`\n${messageText}\n\`\`\`\n\n`;
-                markdownContent += `---\n\n`;
+                yPosition = addSocratesMessage(pdf, messageText, yPosition, margin, maxWidth, pageHeight);
             }
         }
     });
     
     // Si queda una pregunta sin respuesta al final
     if (isWaitingForAnswer && currentQuestion) {
-        markdownContent += `## Pregunta\n\n`;
-        markdownContent += `\`\`\`\n${currentQuestion}\n\`\`\`\n\n`;
-        markdownContent += `## Respuesta\n\n`;
-        markdownContent += `\`\`\`\n(Sin respuesta)\n\`\`\`\n\n`;
+        yPosition = addQuestionAnswerPair(pdf, currentQuestion, '(Sin respuesta)', yPosition, margin, maxWidth, pageHeight);
     }
     
-    // Crear y descargar el archivo
-    const blob = new Blob([markdownContent], { type: 'text/markdown;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    
+    // Generar y descargar el PDF
     const studyId = new URLSearchParams(window.location.search).get('id') || 'unknown';
-    const filename = `Conversacion_Socrates_${studyId}_${new Date().toISOString().split('T')[0]}.md`;
-    a.download = filename;
+    const filename = `Conversacion_Socrates_${studyId}_${new Date().toISOString().split('T')[0]}.pdf`;
+    pdf.save(filename);
+}
+
+// Función auxiliar para agregar un par pregunta-respuesta al PDF
+function addQuestionAnswerPair(pdf, question, answer, yPosition, margin, maxWidth, pageHeight) {
+    // Verificar si necesitamos una nueva página
+    if (yPosition > pageHeight - 60) {
+        pdf.addPage();
+        yPosition = margin;
+    }
     
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // Título "Pregunta"
+    pdf.setFontSize(12);
+    pdf.text('Pregunta', margin, yPosition);
+    yPosition += 8;
+    
+    // Contenido de la pregunta
+    pdf.setFontSize(10);
+    const questionLines = pdf.splitTextToSize(question, maxWidth);
+    pdf.text(questionLines, margin, yPosition);
+    yPosition += questionLines.length * 5 + 10;
+    
+    // Verificar si necesitamos una nueva página para la respuesta
+    if (yPosition > pageHeight - 40) {
+        pdf.addPage();
+        yPosition = margin;
+    }
+    
+    // Título "Respuesta"
+    pdf.setFontSize(12);
+    pdf.text('Respuesta', margin, yPosition);
+    yPosition += 8;
+    
+    // Contenido de la respuesta
+    pdf.setFontSize(10);
+    const answerLines = pdf.splitTextToSize(answer, maxWidth);
+    pdf.text(answerLines, margin, yPosition);
+    yPosition += answerLines.length * 5 + 15;
+    
+    return yPosition;
+}
+
+// Función auxiliar para agregar mensaje inicial de Sócrates
+function addSocratesMessage(pdf, message, yPosition, margin, maxWidth, pageHeight) {
+    // Verificar si necesitamos una nueva página
+    if (yPosition > pageHeight - 40) {
+        pdf.addPage();
+        yPosition = margin;
+    }
+    
+    // Título "Mensaje de Sócrates"
+    pdf.setFontSize(12);
+    pdf.text('Mensaje de Sócrates', margin, yPosition);
+    yPosition += 8;
+    
+    // Contenido del mensaje
+    pdf.setFontSize(10);
+    const messageLines = pdf.splitTextToSize(message, maxWidth);
+    pdf.text(messageLines, margin, yPosition);
+    yPosition += messageLines.length * 5 + 15;
+    
+    return yPosition;
+}
+
+// Función auxiliar para extraer texto plano sin formato
+function extractPlainTextFromMessage(cardElement) {
+    if (!cardElement) {
+        console.warn('cardElement es null en extractPlainTextFromMessage');
+        return '';
+    }
+    
+    // Buscar el elemento de texto en diferentes posibles selectores
+    let textElement = cardElement.querySelector('.card-text');
+    if (!textElement) {
+        textElement = cardElement.querySelector('.text-start');
+    }
+    if (!textElement) {
+        textElement = cardElement.querySelector('div');
+    }
+    if (!textElement) {
+        textElement = cardElement.querySelector('p');
+    }
+    
+    if (!textElement) {
+        console.warn('No se encontró elemento de texto en el card', cardElement);
+        return '';
+    }
+    
+    // Obtener solo el texto plano, sin HTML
+    let text = textElement.textContent || textElement.innerText || '';
+    
+    // Limpiar espacios extra y caracteres especiales
+    text = text.replace(/\s+/g, ' ').trim();
+    
+    return text;
 }
 
 // Función auxiliar para extraer texto limpio del mensaje
@@ -708,90 +802,6 @@ function extractTextFromMessage(cardElement) {
     return text;
 }
 
-// Función auxiliar para extraer texto preservando formato markdown
-function extractMarkdownFromMessage(cardElement) {
-    if (!cardElement) {
-        console.warn('cardElement es null en extractMarkdownFromMessage');
-        return '';
-    }
-    
-    // Buscar el elemento de texto en diferentes posibles selectores
-    let textElement = cardElement.querySelector('.card-text');
-    if (!textElement) {
-        textElement = cardElement.querySelector('.text-start');
-    }
-    if (!textElement) {
-        textElement = cardElement.querySelector('div');
-    }
-    if (!textElement) {
-        textElement = cardElement.querySelector('p');
-    }
-    
-    if (!textElement) {
-        console.warn('No se encontró elemento de texto en el card', cardElement);
-        return '';
-    }
-    
-    // Para mensajes de Sócrates, el HTML ya está procesado con marked
-    // Intentar extraer el contenido preservando el formato
-    let text = '';
-    
-    if (textElement.innerHTML && textElement.innerHTML.includes('<')) {
-        // Es contenido HTML procesado por marked, convertir de vuelta a markdown aproximado
-        text = htmlToMarkdown(textElement.innerHTML);
-    } else {
-        // Es texto plano, usar textContent
-        text = textElement.textContent || textElement.innerText || '';
-    }
-    
-    // Limpiar y normalizar
-    text = text.replace(/&nbsp;/g, ' ').trim();
-    
-    return text;
-}
-
-// Función auxiliar para convertir HTML básico de vuelta a markdown
-function htmlToMarkdown(html) {
-    let markdown = html;
-    
-    // Convertir elementos HTML comunes de vuelta a markdown
-    markdown = markdown.replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1');
-    markdown = markdown.replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1');
-    markdown = markdown.replace(/<h3[^>]*>(.*?)<\/h3>/gi, '### $1');
-    markdown = markdown.replace(/<h4[^>]*>(.*?)<\/h4>/gi, '#### $1');
-    markdown = markdown.replace(/<h5[^>]*>(.*?)<\/h5>/gi, '##### $1');
-    markdown = markdown.replace(/<h6[^>]*>(.*?)<\/h6>/gi, '###### $1');
-    
-    markdown = markdown.replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**');
-    markdown = markdown.replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**');
-    markdown = markdown.replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*');
-    markdown = markdown.replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*');
-    
-    markdown = markdown.replace(/<code[^>]*>(.*?)<\/code>/gi, '`$1`');
-    markdown = markdown.replace(/<pre[^>]*><code[^>]*>(.*?)<\/code><\/pre>/gi, '```\n$1\n```');
-    
-    markdown = markdown.replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)');
-    
-    markdown = markdown.replace(/<ul[^>]*>/gi, '');
-    markdown = markdown.replace(/<\/ul>/gi, '');
-    markdown = markdown.replace(/<ol[^>]*>/gi, '');
-    markdown = markdown.replace(/<\/ol>/gi, '');
-    markdown = markdown.replace(/<li[^>]*>/gi, '- ');
-    markdown = markdown.replace(/<\/li>/gi, '');
-    
-    markdown = markdown.replace(/<br\s*\/?>/gi, '\n');
-    markdown = markdown.replace(/<p[^>]*>/gi, '');
-    markdown = markdown.replace(/<\/p>/gi, '\n\n');
-    
-    // Limpiar tags HTML restantes
-    markdown = markdown.replace(/<[^>]*>/g, '');
-    
-    // Limpiar espacios extra
-    markdown = markdown.replace(/\n\s*\n\s*\n/g, '\n\n');
-    markdown = markdown.trim();
-    
-    return markdown;
-}
 
 
 // Función para mostrar el botón de exportar cuando hay mensajes
