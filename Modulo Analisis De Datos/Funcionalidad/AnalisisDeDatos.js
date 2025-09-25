@@ -51,6 +51,14 @@ function generateAnalysisCardStyles(accentColor) {
                 box-shadow: 0 2px 6px rgba(0,0,0,.05); 
                 transition: background-color .15s, box-shadow .15s, transform .15s, border-color .15s; 
             }
+            .analysis-card.hero-card {
+                background: linear-gradient(135deg, rgba(${r},${g},${b},0.1) 0%, rgba(${r},${g},${b},0.05) 100%);
+                border: 2px solid rgba(${r},${g},${b},0.3);
+                border-radius: 16px;
+                padding: 24px 28px !important;
+                box-shadow: 0 6px 20px rgba(0,0,0,.08);
+                margin-bottom: 20px;
+            }
             .analysis-card-title { 
                 margin: 0 0 8px 0; 
                 font-size: 20px; 
@@ -58,11 +66,26 @@ function generateAnalysisCardStyles(accentColor) {
                 font-weight: 700; 
                 color: #0f1115;
             }
+            .analysis-card.hero-card .analysis-card-title {
+                font-size: 28px;
+                font-weight: 800;
+                color: rgb(${r}, ${g}, ${b});
+                margin-bottom: 12px;
+                text-align: center;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            }
             .analysis-card-content { 
                 margin: 0; 
                 font-size: 16px; 
                 line-height: 1.42; 
                 color: #1f2430;
+            }
+            .analysis-card.hero-card .analysis-card-content {
+                font-size: 18px;
+                line-height: 1.5;
+                text-align: center;
+                color: #0f1115;
+                font-weight: 500;
             }
             .analysis-card-content p { 
                 margin: 8px 0;
@@ -79,6 +102,12 @@ function generateAnalysisCardStyles(accentColor) {
                 border-color: rgba(${r},${g},${b},${Math.min(0.24*1.6,1)}) !important;
                 box-shadow: 0 4px 10px rgba(0,0,0,.06) !important;
                 transform: translateY(-1px);
+            }
+            .analysis-card.hero-card:hover {
+                background: linear-gradient(135deg, rgba(${r},${g},${b},0.15) 0%, rgba(${r},${g},${b},0.08) 100%) !important;
+                border-color: rgba(${r},${g},${b},0.5) !important;
+                box-shadow: 0 8px 25px rgba(0,0,0,.12) !important;
+                transform: translateY(-2px) scale(1.02);
             }
         </style>
     `;
@@ -143,11 +172,13 @@ function parseHTMLToCards(htmlContent) {
     }
     
     // Generar HTML de las tarjetas
-    const cardsHTML = cards.map(card => {
+    const cardsHTML = cards.map((card, index) => {
         const contentHTML = card.content.join('');
+        const isHeroCard = index === 0; // Primera tarjeta es hero
+        const cardClass = isHeroCard ? 'analysis-card hero-card' : 'analysis-card';
         
         return `
-            <div class="analysis-card">
+            <div class="${cardClass}">
                 <h3 class="analysis-card-title">${card.title}</h3>
                 <div class="analysis-card-content">${contentHTML}</div>
             </div>
