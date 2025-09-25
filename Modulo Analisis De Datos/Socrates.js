@@ -575,35 +575,8 @@ function adjustColor(color, percent) {//Funcion loca de chatsito
                 .toString(16).slice(1).toUpperCase()}`;
 }
 
-//Función para exportar el chat a PDF
+//Función para exportar el chat a Markdown
 function exportChatToPDF() {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF();
-    
-    // Configuración del PDF
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 20;
-    const maxWidth = pageWidth - (margin * 2);
-    let yPosition = margin;
-    
-    // Obtener los colores actuales del estudio
-    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--bs-CR-orange').trim() || '#FF6B35';
-    const grayColor = '#F5F5F5';
-    
-    // Título del documento
-    pdf.setFontSize(18);
-    pdf.setFont(undefined, 'bold');
-    pdf.text('Conversación con Sócrates', margin, yPosition);
-    yPosition += 15;
-    
-    // Fecha de exportación
-    pdf.setFontSize(10);
-    pdf.setFont(undefined, 'normal');
-    const exportDate = new Date().toLocaleString('es-ES');
-    pdf.text(`Exportado el: ${exportDate}`, margin, yPosition);
-    yPosition += 20;
-    
     // Obtener todos los mensajes del chat
     const messageList = document.getElementById('Message-List');
     if (!messageList) {
@@ -617,80 +590,82 @@ function exportChatToPDF() {
     );
     
     if (messages.length === 0) {
-        pdf.setFontSize(12);
-        pdf.text('No hay mensajes en la conversación.', margin, yPosition);
-    } else {
-        messages.forEach((messageElement, index) => {
-            // Verificar si necesitamos una nueva página
-            if (yPosition > pageHeight - 40) {
-                pdf.addPage();
-                yPosition = margin;
-            }
-            
-            // Determinar si es mensaje de Sócrates o del cliente
-            const isSocratesMessage = messageElement.querySelector('.BotIMG-Div') !== null;
-            const cardElement = messageElement.querySelector('.card');
-            
-            // Verificar que el elemento card existe
-            if (!cardElement) {
-                console.warn('No se encontró elemento card en el mensaje, saltando...', messageElement);
-                return; // Saltar este mensaje si no tiene card
-            }
-            
-            const messageText = extractTextFromMessage(cardElement);
-            const timestamp = cardElement.querySelector('.card-subtitle')?.textContent || '';
-            
-            // Si no hay texto del mensaje, saltar
-            if (!messageText.trim()) {
-                console.warn('Mensaje vacío encontrado, saltando...', cardElement);
-                return;
-            }
-            
-            // Configurar colores y estilo según el tipo de mensaje
-            if (isSocratesMessage) {
-                // Mensaje de Sócrates - color de acento
-                pdf.setFillColor(hexToRgb(accentColor).r, hexToRgb(accentColor).g, hexToRgb(accentColor).b);
-                pdf.setTextColor(255, 255, 255); // Texto blanco
-            } else {
-                // Mensaje del cliente - gris claro
-                pdf.setFillColor(245, 245, 245);
-                pdf.setTextColor(33, 37, 41); // Texto oscuro
-            }
-            
-            // Calcular altura necesaria para el mensaje
-            pdf.setFontSize(10);
-            const textLines = pdf.splitTextToSize(messageText, maxWidth - 20);
-            const textHeight = textLines.length * 5 + 15; // 5 puntos por línea + padding
-            
-            // Dibujar el card/caja del mensaje
-            pdf.roundedRect(margin, yPosition, maxWidth, textHeight, 5, 5, 'F');
-            
-            // Agregar el nombre del remitente
-            pdf.setFontSize(8);
-            pdf.setFont(undefined, 'bold');
-            const senderName = isSocratesMessage ? 'Sócrates:' : 'Cliente:';
-            pdf.text(senderName, margin + 10, yPosition + 10);
-            
-            // Agregar el contenido del mensaje
-            pdf.setFontSize(10);
-            pdf.setFont(undefined, 'normal');
-            pdf.text(textLines, margin + 10, yPosition + 18);
-            
-            // Agregar timestamp
-            if (timestamp) {
-                pdf.setFontSize(7);
-                pdf.setFont(undefined, 'italic');
-                pdf.text(timestamp, margin + 10, yPosition + textHeight - 3);
-            }
-            
-            yPosition += textHeight + 10;
-        });
+        alert('No hay mensajes en la conversación para exportar.');
+        return;
     }
     
-    // Generar y descargar el PDF
+    // Generar contenido Markdown
+    let markdownContent = `# Conversación con Sócrates\n\n`;
+    markdownContent += `**Fecha de exportación:** ${new Date().toLocaleString('es-ES')}\n\n`;
+    markdownContent += `---\n\n`;
+    
+    // Procesar mensajes en pares (pregunta-respuesta)
+    let currentQuestion = '';
+    let isWaitingForAnswer = false;
+    
+    messages.forEach((messageElement, index) => {
+        const isSocratesMessage = messageElement.querySelector('.BotIMG-Div') !== null;
+        const cardElement = messageElement.querySelector('.card');
+        
+        if (!cardElement) {
+            console.warn('No se encontró elemento card en el mensaje, saltando...', messageElement);
+            return;
+        }
+        
+        const messageText = extractMarkdownFromMessage(cardElement);
+        
+        if (!messageText.trim()) {
+            console.warn('Mensaje vacío encontrado, saltando...', cardElement);
+            return;
+        }
+        
+        if (!isSocratesMessage) {
+            // Es una pregunta del cliente
+            currentQuestion = messageText;
+            isWaitingForAnswer = true;
+        } else {
+            // Es una respuesta de Sócrates
+            if (isWaitingForAnswer && currentQuestion) {
+                // Tenemos una pregunta previa, crear el par pregunta-respuesta
+                markdownContent += `## Pregunta\n\n`;
+                markdownContent += `\`\`\`\n${currentQuestion}\n\`\`\`\n\n`;
+                markdownContent += `## Respuesta\n\n`;
+                markdownContent += `\`\`\`\n${messageText}\n\`\`\`\n\n`;
+                markdownContent += `---\n\n`;
+                
+                currentQuestion = '';
+                isWaitingForAnswer = false;
+            } else {
+                // Respuesta sin pregunta previa (mensaje inicial de Sócrates)
+                markdownContent += `## Mensaje de Sócrates\n\n`;
+                markdownContent += `\`\`\`\n${messageText}\n\`\`\`\n\n`;
+                markdownContent += `---\n\n`;
+            }
+        }
+    });
+    
+    // Si queda una pregunta sin respuesta al final
+    if (isWaitingForAnswer && currentQuestion) {
+        markdownContent += `## Pregunta\n\n`;
+        markdownContent += `\`\`\`\n${currentQuestion}\n\`\`\`\n\n`;
+        markdownContent += `## Respuesta\n\n`;
+        markdownContent += `\`\`\`\n(Sin respuesta)\n\`\`\`\n\n`;
+    }
+    
+    // Crear y descargar el archivo
+    const blob = new Blob([markdownContent], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    
     const studyId = new URLSearchParams(window.location.search).get('id') || 'unknown';
-    const filename = `Conversacion_Socrates_${studyId}_${new Date().toISOString().split('T')[0]}.pdf`;
-    pdf.save(filename);
+    const filename = `Conversacion_Socrates_${studyId}_${new Date().toISOString().split('T')[0]}.md`;
+    a.download = filename;
+    
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 // Función auxiliar para extraer texto limpio del mensaje
@@ -733,15 +708,91 @@ function extractTextFromMessage(cardElement) {
     return text;
 }
 
-// Función auxiliar para convertir hex a RGB
-function hexToRgb(hex) {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : { r: 255, g: 107, b: 53 }; // Color por defecto si falla la conversión
+// Función auxiliar para extraer texto preservando formato markdown
+function extractMarkdownFromMessage(cardElement) {
+    if (!cardElement) {
+        console.warn('cardElement es null en extractMarkdownFromMessage');
+        return '';
+    }
+    
+    // Buscar el elemento de texto en diferentes posibles selectores
+    let textElement = cardElement.querySelector('.card-text');
+    if (!textElement) {
+        textElement = cardElement.querySelector('.text-start');
+    }
+    if (!textElement) {
+        textElement = cardElement.querySelector('div');
+    }
+    if (!textElement) {
+        textElement = cardElement.querySelector('p');
+    }
+    
+    if (!textElement) {
+        console.warn('No se encontró elemento de texto en el card', cardElement);
+        return '';
+    }
+    
+    // Para mensajes de Sócrates, el HTML ya está procesado con marked
+    // Intentar extraer el contenido preservando el formato
+    let text = '';
+    
+    if (textElement.innerHTML && textElement.innerHTML.includes('<')) {
+        // Es contenido HTML procesado por marked, convertir de vuelta a markdown aproximado
+        text = htmlToMarkdown(textElement.innerHTML);
+    } else {
+        // Es texto plano, usar textContent
+        text = textElement.textContent || textElement.innerText || '';
+    }
+    
+    // Limpiar y normalizar
+    text = text.replace(/&nbsp;/g, ' ').trim();
+    
+    return text;
 }
+
+// Función auxiliar para convertir HTML básico de vuelta a markdown
+function htmlToMarkdown(html) {
+    let markdown = html;
+    
+    // Convertir elementos HTML comunes de vuelta a markdown
+    markdown = markdown.replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1');
+    markdown = markdown.replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1');
+    markdown = markdown.replace(/<h3[^>]*>(.*?)<\/h3>/gi, '### $1');
+    markdown = markdown.replace(/<h4[^>]*>(.*?)<\/h4>/gi, '#### $1');
+    markdown = markdown.replace(/<h5[^>]*>(.*?)<\/h5>/gi, '##### $1');
+    markdown = markdown.replace(/<h6[^>]*>(.*?)<\/h6>/gi, '###### $1');
+    
+    markdown = markdown.replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**');
+    markdown = markdown.replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**');
+    markdown = markdown.replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*');
+    markdown = markdown.replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*');
+    
+    markdown = markdown.replace(/<code[^>]*>(.*?)<\/code>/gi, '`$1`');
+    markdown = markdown.replace(/<pre[^>]*><code[^>]*>(.*?)<\/code><\/pre>/gi, '```\n$1\n```');
+    
+    markdown = markdown.replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)');
+    
+    markdown = markdown.replace(/<ul[^>]*>/gi, '');
+    markdown = markdown.replace(/<\/ul>/gi, '');
+    markdown = markdown.replace(/<ol[^>]*>/gi, '');
+    markdown = markdown.replace(/<\/ol>/gi, '');
+    markdown = markdown.replace(/<li[^>]*>/gi, '- ');
+    markdown = markdown.replace(/<\/li>/gi, '');
+    
+    markdown = markdown.replace(/<br\s*\/?>/gi, '\n');
+    markdown = markdown.replace(/<p[^>]*>/gi, '');
+    markdown = markdown.replace(/<\/p>/gi, '\n\n');
+    
+    // Limpiar tags HTML restantes
+    markdown = markdown.replace(/<[^>]*>/g, '');
+    
+    // Limpiar espacios extra
+    markdown = markdown.replace(/\n\s*\n\s*\n/g, '\n\n');
+    markdown = markdown.trim();
+    
+    return markdown;
+}
+
 
 // Función para mostrar el botón de exportar cuando hay mensajes
 function showExportButton() {
