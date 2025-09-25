@@ -198,7 +198,7 @@ function applyCardsToMarkedContent(data, div) {
 }
 
 
-import { splitMarkdown, generateCharts, splitMarkdownAndWrap } from './splitter.js';
+import { splitMarkdown, generateCharts, splitMarkdownAndWrap, processNPSCharts } from './splitter.js';
 
 function initializePage() {
     const study_id = new URLSearchParams(window.location.search).get('id');
@@ -1298,7 +1298,9 @@ function LLenarResumenes(study) {
                     data = data.substring(0, data.length - 3);
                 }
                 const coso = splitMarkdownAndWrap(data);                          
-                div.innerHTML = coso.join('<hr>');                
+                div.innerHTML = coso.join('<hr>');
+                // Procesar gráficos NPS después de insertar el HTML
+                processNPSCharts(data);
                 // console.log(data);
             })
             .catch(function (error) {

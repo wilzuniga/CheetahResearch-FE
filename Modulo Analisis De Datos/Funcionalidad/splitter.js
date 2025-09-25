@@ -751,14 +751,9 @@ export function splitMarkdownAndWrap(markdownText) {
       const npsData = parseNPSSection(section);
       if (npsData) {
         // Agregar el gráfico de dona después del análisis NPS
-        const chartId = `nps-chart-${Date.now()}-${index}`;
+        const chartId = `nps-chart-${index}`;
         const chartHTML = generateNPSDonutChart(npsData, chartId);
         html += chartHTML;
-        
-        // Crear el gráfico después de que el HTML se inserte en el DOM
-        setTimeout(() => {
-          createNPSDonutChart(chartId, npsData);
-        }, 100);
       }
       
       // Si es la primera sección (encabezado) o la última (conclusiones),
@@ -796,40 +791,119 @@ export function splitMarkdownAndWrap(markdownText) {
     return processedSections;
   }
 
+// Nueva función para procesar gráficos NPS después de insertar el HTML
+export function processNPSCharts(markdownText) {
+    if (markdownText.endsWith('---')) {
+      markdownText = markdownText.slice(0, -3);
+    }
+
+    const sections = markdownText.split('---').map(section => section.trim());
+    
+    sections.forEach((section, index) => {
+      const npsData = parseNPSSection(section);
+      if (npsData) {
+        const chartId = `nps-chart-${index}`;
+        // Esperar un poco para que el DOM se actualice
+        setTimeout(() => {
+          createNPSDonutChart(chartId, npsData);
+        }, 200);
+      }
+    });
+  }
+
 /**
  * Función para parsear una sección y extraer datos NPS
  * @param {string} section - Sección de texto markdown
  * @returns {Object|null} Datos NPS o null si no es una sección NPS
  */
 function parseNPSSection(section) {
-    // Buscar el patrón de análisis NPS
-    const npsAnalysisRegex = /##### Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/;
-    const npsMatch = section.match(npsAnalysisRegex);
+    // Buscar múltiples patrones de análisis NPS para mayor flexibilidad
+    const npsAnalysisPatterns = [
+        /##### Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
+        /##### Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (-?\d+)%\*\*/,
+        /Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
+        /\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
+        /NPS = % Promotores - % Detractores = (\d+)%/
+    ];
     
-    if (!npsMatch) {
+    let npsTotal = null;
+    for (const pattern of npsAnalysisPatterns) {
+        const match = section.match(pattern);
+        if (match) {
+            npsTotal = parseInt(match[1]);
+            break;
+        }
+    }
+    
+    if (npsTotal === null) {
         return null;
     }
     
-    const npsTotal = parseInt(npsMatch[1]);
+    // Buscar los porcentajes de Promotores, Indiferentes y Detractores con múltiples patrones
+    const promotoresPatterns = [
+        /- Promotores: (\d+)% \(Clasificación NPS\)/,
+        /Promotores: (\d+)%/,
+        /- Promotores: (\d+)%/
+    ];
     
-    // Buscar los porcentajes de Promotores, Indiferentes y Detractores
-    const promotoresRegex = /- Promotores: (\d+)% \(Clasificación NPS\)/;
-    const indiferentesRegex = /- Indiferentes: (\d+)% \(Clasificación NPS\)/;
-    const detractoresRegex = /- Detractores: (\d+)% \(Clasificación NPS\)/;
+    const indiferentesPatterns = [
+        /- Indiferentes: (\d+)% \(Clasificación NPS\)/,
+        /Indiferentes: (\d+)%/,
+        /- Indiferentes: (\d+)%/
+    ];
     
-    const promotoresMatch = section.match(promotoresRegex);
-    const indiferentesMatch = section.match(indiferentesRegex);
-    const detractoresMatch = section.match(detractoresRegex);
+    const detractoresPatterns = [
+        /- Detractores: (\d+)% \(Clasificación NPS\)/,
+        /Detractores: (\d+)%/,
+        /- Detractores: (\d+)%/
+    ];
     
-    if (!promotoresMatch || !indiferentesMatch || !detractoresMatch) {
+    let promotores = null, indiferentes = null, detractores = null;
+    
+    // Buscar promotores
+    for (const pattern of promotoresPatterns) {
+        const match = section.match(pattern);
+        if (match) {
+            promotores = parseInt(match[1]);
+            break;
+        }
+    }
+    
+    // Buscar indiferentes
+    for (const pattern of indiferentesPatterns) {
+        const match = section.match(pattern);
+        if (match) {
+            indiferentes = parseInt(match[1]);
+            break;
+        }
+    }
+    
+    // Buscar detractores
+    for (const pattern of detractoresPatterns) {
+        const match = section.match(pattern);
+        if (match) {
+            detractores = parseInt(match[1]);
+            break;
+        }
+    }
+    
+    if (promotores === null || indiferentes === null || detractores === null) {
+        console.log('Debug NPS - No se encontraron todos los valores:', {
+            promotores, indiferentes, detractores, 
+            section: section.substring(0, 200) + '...'
+        });
         return null;
     }
+    
+    console.log('Debug NPS - Valores encontrados:', {
+        npsTotal, promotores, indiferentes, detractores
+    });
     
     return {
         npsTotal: npsTotal,
-        promotores: parseInt(promotoresMatch[1]),
-        indiferentes: parseInt(indiferentesMatch[1]),
-        detractores: parseInt(detractoresMatch[1])
+        promotores: promotores,
+        indiferentes: indiferentes,
+        detractores: detractores
     };
 }
 
