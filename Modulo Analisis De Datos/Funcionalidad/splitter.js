@@ -745,7 +745,21 @@ export function splitMarkdownAndWrap(markdownText) {
     
     const processedSections = sections.map((section, index) => {
       // Convierte la sección a HTML usando marked
-      const html = marked(section);
+      let html = marked(section);
+      
+      // Verificar si esta sección contiene análisis NPS
+      const npsData = parseNPSSection(section);
+      if (npsData) {
+        // Agregar el gráfico de dona después del análisis NPS
+        const chartId = `nps-chart-${Date.now()}-${index}`;
+        const chartHTML = generateNPSDonutChart(npsData, chartId);
+        html += chartHTML;
+        
+        // Crear el gráfico después de que el HTML se inserte en el DOM
+        setTimeout(() => {
+          createNPSDonutChart(chartId, npsData);
+        }, 100);
+      }
       
       // Si es la primera sección (encabezado) o la última (conclusiones),
       // se muestra completa sin toggle
@@ -781,6 +795,146 @@ export function splitMarkdownAndWrap(markdownText) {
     
     return processedSections;
   }
+
+/**
+ * Función para parsear una sección y extraer datos NPS
+ * @param {string} section - Sección de texto markdown
+ * @returns {Object|null} Datos NPS o null si no es una sección NPS
+ */
+function parseNPSSection(section) {
+    // Buscar el patrón de análisis NPS
+    const npsAnalysisRegex = /##### Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/;
+    const npsMatch = section.match(npsAnalysisRegex);
+    
+    if (!npsMatch) {
+        return null;
+    }
+    
+    const npsTotal = parseInt(npsMatch[1]);
+    
+    // Buscar los porcentajes de Promotores, Indiferentes y Detractores
+    const promotoresRegex = /- Promotores: (\d+)% \(Clasificación NPS\)/;
+    const indiferentesRegex = /- Indiferentes: (\d+)% \(Clasificación NPS\)/;
+    const detractoresRegex = /- Detractores: (\d+)% \(Clasificación NPS\)/;
+    
+    const promotoresMatch = section.match(promotoresRegex);
+    const indiferentesMatch = section.match(indiferentesRegex);
+    const detractoresMatch = section.match(detractoresRegex);
+    
+    if (!promotoresMatch || !indiferentesMatch || !detractoresMatch) {
+        return null;
+    }
+    
+    return {
+        npsTotal: npsTotal,
+        promotores: parseInt(promotoresMatch[1]),
+        indiferentes: parseInt(indiferentesMatch[1]),
+        detractores: parseInt(detractoresMatch[1])
+    };
+}
+
+/**
+ * Genera el HTML para el gráfico de dona NPS
+ * @param {Object} npsData - Datos NPS parseados
+ * @param {string} chartId - ID único para el gráfico
+ * @returns {string} HTML del contenedor del gráfico
+ */
+function generateNPSDonutChart(npsData, chartId) {
+    return `
+        <div class="nps-chart-container" style="margin: 20px 0; padding: 20px; background: white; border-radius: 13px; border: 1px solid #e0e0e0;">
+            <h4 style="text-align: center; margin-bottom: 20px; font-family: hedliner; color: #333;">
+                NPS TOTAL: ${npsData.npsTotal}%
+            </h4>
+            <div style="width: 300px; height: 300px; margin: 0 auto;">
+                <canvas id="${chartId}"></canvas>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Crea el gráfico de dona NPS usando Chart.js
+ * @param {string} chartId - ID del canvas
+ * @param {Object} npsData - Datos NPS
+ */
+function createNPSDonutChart(chartId, npsData) {
+    const canvas = document.getElementById(chartId);
+    if (!canvas) {
+        console.error(`Canvas con ID ${chartId} no encontrado`);
+        return;
+    }
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Colores específicos para NPS
+    const colors = {
+        promotores: '#28a745',    // Verde para promotores
+        indiferentes: '#ffc107',  // Amarillo para indiferentes  
+        detractores: '#dc3545'    // Rojo para detractores
+    };
+    
+    const data = [
+        { label: 'Promotores', value: npsData.promotores, color: colors.promotores },
+        { label: 'Indiferentes', value: npsData.indiferentes, color: colors.indiferentes },
+        { label: 'Detractores', value: npsData.detractores, color: colors.detractores }
+    ];
+    
+    // Filtrar datos que tengan valor mayor a 0
+    const filteredData = data.filter(item => item.value > 0);
+    
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: filteredData.map(item => `${item.label} (${item.value}%)`),
+            datasets: [{
+                data: filteredData.map(item => item.value),
+                backgroundColor: filteredData.map(item => item.color + '80'), // Con transparencia
+                borderColor: filteredData.map(item => item.color),
+                borderWidth: 2,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 10,
+                    bottom: 10
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        padding: 15,
+                        usePointStyle: true,
+                        font: {
+                            size: 12,
+                            family: 'hedliner'
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.label}: ${context.parsed}%`;
+                        }
+                    }
+                }
+            },
+            animation: {
+                animateRotate: true,
+                animateScale: true,
+                duration: 1000,
+                easing: 'easeOutQuart'
+            },
+            cutout: '60%',
+            radius: '90%'
+        }
+    });
+}
 
 /**
  * Analiza y filtra los datos para asegurar una comparación segura entre filtros
