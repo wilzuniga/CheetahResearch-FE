@@ -106,6 +106,11 @@ document.getElementById('btSend').addEventListener('click', function () {
     }
 });
 
+//Exportar chat a PDF
+document.getElementById('exportChatBtn').addEventListener('click', function() {
+    exportChatToPDF();
+});
+
 //Función elegir imagen al presionar botón de imagen
 document.getElementById('btIMG').addEventListener('click', function () {
     const fileInput = document.getElementById('fileInput');
@@ -199,6 +204,9 @@ function sendMessage(message, imageSrc) {
 
     //Mensaje de espera de respuesta queda abajo
     messageList.insertBefore(loadingMsg, null);
+
+    //Mostrar botón de exportar si hay mensajes
+    showExportButton();
 
     //Procesar y Enviar Respuesta como Encuestador
     const url = 'https://api.cheetah-research.ai/analysis/communicateS/';
@@ -336,6 +344,9 @@ function getMessage(message, imageSrc) {
    // Mensaje de espera de respuesta queda abajo
    let loadingMsg = document.getElementById('Typing-Msg');
    messageList.insertBefore(loadingMsg, null);
+
+   //Mostrar botón de exportar si hay mensajes
+   showExportButton();
 }
 
 //Funciones cambiar colores de botones al soltar botón (móviles)
@@ -562,4 +573,145 @@ function adjustColor(color, percent) {//Funcion loca de chatsito
                 (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 + 
                 (B < 255 ? (B < 1 ? 0 : B) : 255))
                 .toString(16).slice(1).toUpperCase()}`;
+}
+
+//Función para exportar el chat a PDF
+function exportChatToPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    
+    // Configuración del PDF
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 20;
+    const maxWidth = pageWidth - (margin * 2);
+    let yPosition = margin;
+    
+    // Obtener los colores actuales del estudio
+    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--bs-CR-orange').trim() || '#FF6B35';
+    const grayColor = '#F5F5F5';
+    
+    // Título del documento
+    pdf.setFontSize(18);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('Conversación con Sócrates', margin, yPosition);
+    yPosition += 15;
+    
+    // Fecha de exportación
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'normal');
+    const exportDate = new Date().toLocaleString('es-ES');
+    pdf.text(`Exportado el: ${exportDate}`, margin, yPosition);
+    yPosition += 20;
+    
+    // Obtener todos los mensajes del chat
+    const messageList = document.getElementById('Message-List');
+    const messages = messageList.querySelectorAll('li:not(#Typing-Msg)');
+    
+    if (messages.length === 0) {
+        pdf.setFontSize(12);
+        pdf.text('No hay mensajes en la conversación.', margin, yPosition);
+    } else {
+        messages.forEach((messageElement, index) => {
+            // Verificar si necesitamos una nueva página
+            if (yPosition > pageHeight - 40) {
+                pdf.addPage();
+                yPosition = margin;
+            }
+            
+            // Determinar si es mensaje de Sócrates o del cliente
+            const isSocratesMessage = messageElement.querySelector('.BotIMG-Div') !== null;
+            const cardElement = messageElement.querySelector('.card');
+            const messageText = extractTextFromMessage(cardElement);
+            const timestamp = cardElement.querySelector('.card-subtitle')?.textContent || '';
+            
+            // Configurar colores y estilo según el tipo de mensaje
+            if (isSocratesMessage) {
+                // Mensaje de Sócrates - color de acento
+                pdf.setFillColor(hexToRgb(accentColor).r, hexToRgb(accentColor).g, hexToRgb(accentColor).b);
+                pdf.setTextColor(255, 255, 255); // Texto blanco
+            } else {
+                // Mensaje del cliente - gris claro
+                pdf.setFillColor(245, 245, 245);
+                pdf.setTextColor(33, 37, 41); // Texto oscuro
+            }
+            
+            // Calcular altura necesaria para el mensaje
+            pdf.setFontSize(10);
+            const textLines = pdf.splitTextToSize(messageText, maxWidth - 20);
+            const textHeight = textLines.length * 5 + 15; // 5 puntos por línea + padding
+            
+            // Dibujar el card/caja del mensaje
+            pdf.roundedRect(margin, yPosition, maxWidth, textHeight, 5, 5, 'F');
+            
+            // Agregar el nombre del remitente
+            pdf.setFontSize(8);
+            pdf.setFont(undefined, 'bold');
+            const senderName = isSocratesMessage ? 'Sócrates:' : 'Cliente:';
+            pdf.text(senderName, margin + 10, yPosition + 10);
+            
+            // Agregar el contenido del mensaje
+            pdf.setFontSize(10);
+            pdf.setFont(undefined, 'normal');
+            pdf.text(textLines, margin + 10, yPosition + 18);
+            
+            // Agregar timestamp
+            if (timestamp) {
+                pdf.setFontSize(7);
+                pdf.setFont(undefined, 'italic');
+                pdf.text(timestamp, margin + 10, yPosition + textHeight - 3);
+            }
+            
+            yPosition += textHeight + 10;
+        });
+    }
+    
+    // Generar y descargar el PDF
+    const studyId = new URLSearchParams(window.location.search).get('id') || 'unknown';
+    const filename = `Conversacion_Socrates_${studyId}_${new Date().toISOString().split('T')[0]}.pdf`;
+    pdf.save(filename);
+}
+
+// Función auxiliar para extraer texto limpio del mensaje
+function extractTextFromMessage(cardElement) {
+    const textElement = cardElement.querySelector('.card-text, .text-start');
+    if (!textElement) return '';
+    
+    // Crear una copia del elemento para manipular sin afectar el original
+    const tempElement = textElement.cloneNode(true);
+    
+    // Reemplazar <br> con saltos de línea
+    const brElements = tempElement.querySelectorAll('br');
+    brElements.forEach(br => br.replaceWith('\n'));
+    
+    // Obtener el texto limpio
+    let text = tempElement.textContent || tempElement.innerText || '';
+    
+    // Limpiar espacios extra y caracteres especiales
+    text = text.replace(/&nbsp;/g, ' ').trim();
+    
+    return text;
+}
+
+// Función auxiliar para convertir hex a RGB
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : { r: 255, g: 107, b: 53 }; // Color por defecto si falla la conversión
+}
+
+// Función para mostrar el botón de exportar cuando hay mensajes
+function showExportButton() {
+    const messageList = document.getElementById('Message-List');
+    const messages = messageList.querySelectorAll('li:not(#Typing-Msg)');
+    const exportButton = document.getElementById('exportChatBtn');
+    
+    if (messages.length > 0) {
+        exportButton.style.display = 'block';
+    } else {
+        exportButton.style.display = 'none';
+    }
 }
