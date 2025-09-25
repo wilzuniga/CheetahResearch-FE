@@ -606,7 +606,15 @@ function exportChatToPDF() {
     
     // Obtener todos los mensajes del chat
     const messageList = document.getElementById('Message-List');
-    const messages = messageList.querySelectorAll('li:not(#Typing-Msg)');
+    if (!messageList) {
+        console.error('No se encontró la lista de mensajes');
+        return;
+    }
+    
+    const messages = Array.from(messageList.children).filter(li => 
+        li.id !== 'Typing-Msg' && 
+        li.querySelector('.card') !== null
+    );
     
     if (messages.length === 0) {
         pdf.setFontSize(12);
@@ -622,8 +630,21 @@ function exportChatToPDF() {
             // Determinar si es mensaje de Sócrates o del cliente
             const isSocratesMessage = messageElement.querySelector('.BotIMG-Div') !== null;
             const cardElement = messageElement.querySelector('.card');
+            
+            // Verificar que el elemento card existe
+            if (!cardElement) {
+                console.warn('No se encontró elemento card en el mensaje, saltando...', messageElement);
+                return; // Saltar este mensaje si no tiene card
+            }
+            
             const messageText = extractTextFromMessage(cardElement);
             const timestamp = cardElement.querySelector('.card-subtitle')?.textContent || '';
+            
+            // Si no hay texto del mensaje, saltar
+            if (!messageText.trim()) {
+                console.warn('Mensaje vacío encontrado, saltando...', cardElement);
+                return;
+            }
             
             // Configurar colores y estilo según el tipo de mensaje
             if (isSocratesMessage) {
@@ -674,8 +695,27 @@ function exportChatToPDF() {
 
 // Función auxiliar para extraer texto limpio del mensaje
 function extractTextFromMessage(cardElement) {
-    const textElement = cardElement.querySelector('.card-text, .text-start');
-    if (!textElement) return '';
+    if (!cardElement) {
+        console.warn('cardElement es null en extractTextFromMessage');
+        return '';
+    }
+    
+    // Buscar el elemento de texto en diferentes posibles selectores
+    let textElement = cardElement.querySelector('.card-text');
+    if (!textElement) {
+        textElement = cardElement.querySelector('.text-start');
+    }
+    if (!textElement) {
+        textElement = cardElement.querySelector('div');
+    }
+    if (!textElement) {
+        textElement = cardElement.querySelector('p');
+    }
+    
+    if (!textElement) {
+        console.warn('No se encontró elemento de texto en el card', cardElement);
+        return '';
+    }
     
     // Crear una copia del elemento para manipular sin afectar el original
     const tempElement = textElement.cloneNode(true);
@@ -688,7 +728,7 @@ function extractTextFromMessage(cardElement) {
     let text = tempElement.textContent || tempElement.innerText || '';
     
     // Limpiar espacios extra y caracteres especiales
-    text = text.replace(/&nbsp;/g, ' ').trim();
+    text = text.replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
     
     return text;
 }
@@ -706,8 +746,16 @@ function hexToRgb(hex) {
 // Función para mostrar el botón de exportar cuando hay mensajes
 function showExportButton() {
     const messageList = document.getElementById('Message-List');
-    const messages = messageList.querySelectorAll('li:not(#Typing-Msg)');
     const exportButton = document.getElementById('exportChatBtn');
+    
+    if (!messageList || !exportButton) {
+        return;
+    }
+    
+    const messages = Array.from(messageList.children).filter(li => 
+        li.id !== 'Typing-Msg' && 
+        li.querySelector('.card') !== null
+    );
     
     if (messages.length > 0) {
         exportButton.style.display = 'block';
