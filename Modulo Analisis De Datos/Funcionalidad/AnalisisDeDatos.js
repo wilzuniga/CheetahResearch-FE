@@ -6,6 +6,169 @@ let formData = new FormData();
 let markmapBlobUrl = null;
 let sankeyBlobUrl = null;
 
+// ============ Sistema de Tarjetas para Análisis ============
+
+// Detecta color acento desde elementos existentes
+function detectAnalysisAccentColor() {
+    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--bs-CR-orange').trim();
+    if (accentColor) {
+        const match = accentColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+        if (match) {
+            return { r: parseInt(match[1]), g: parseInt(match[2]), b: parseInt(match[3]) };
+        }
+        // Si es hex
+        const hexMatch = accentColor.match(/#([0-9A-Fa-f]{6})/);
+        if (hexMatch) {
+            const hex = hexMatch[1];
+            return {
+                r: parseInt(hex.substr(0, 2), 16),
+                g: parseInt(hex.substr(2, 2), 16),
+                b: parseInt(hex.substr(4, 2), 16)
+            };
+        }
+    }
+    // Fallback
+    return { r: 16, g: 185, b: 129 };
+}
+
+// Genera el CSS de las tarjetas para análisis
+function generateAnalysisCardStyles(accentColor) {
+    const { r, g, b } = accentColor;
+    return `
+        <style>
+            .analysis-card-grid { 
+                display: grid !important; 
+                grid-template-columns: 1fr !important; 
+                gap: 12px !important; 
+                margin: 12px 0 !important; 
+                padding: 0 !important; 
+            }
+            .analysis-card { 
+                background: #eef1f5; 
+                border: 1px solid #dfe3ea; 
+                border-radius: 12px; 
+                padding: 16px 18px !important;
+                box-shadow: 0 2px 6px rgba(0,0,0,.05); 
+                transition: background-color .15s, box-shadow .15s, transform .15s, border-color .15s; 
+            }
+            .analysis-card-title { 
+                margin: 0 0 8px 0; 
+                font-size: 20px; 
+                line-height: 1.25; 
+                font-weight: 700; 
+                color: #0f1115;
+            }
+            .analysis-card-content { 
+                margin: 0; 
+                font-size: 16px; 
+                line-height: 1.42; 
+                color: #1f2430;
+            }
+            .analysis-card-content p { 
+                margin: 8px 0;
+            }
+            .analysis-card-content ul, .analysis-card-content ol { 
+                margin: 8px 0 8px 18px;
+                padding: 0;
+            }
+            .analysis-card-content li { 
+                margin: 4px 0;
+            }
+            .analysis-card:hover {
+                background: rgba(${r},${g},${b},0.24) !important;
+                border-color: rgba(${r},${g},${b},${Math.min(0.24*1.6,1)}) !important;
+                box-shadow: 0 4px 10px rgba(0,0,0,.06) !important;
+                transform: translateY(-1px);
+            }
+        </style>
+    `;
+}
+
+// Parsea HTML generado por marked() y lo convierte en tarjetas
+function parseHTMLToCards(htmlContent) {
+    const accentColor = detectAnalysisAccentColor();
+    const styles = generateAnalysisCardStyles(accentColor);
+    
+    // Crear un contenedor temporal para parsear el HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+    
+    const cards = [];
+    let currentCard = null;
+    
+    // Recorrer todos los elementos
+    Array.from(tempDiv.children).forEach(element => {
+        const tagName = element.tagName.toLowerCase();
+        
+        // Si es un header (h1-h6), crear nueva tarjeta
+        if (/^h[1-6]$/.test(tagName)) {
+            // Guardar tarjeta anterior si existe
+            if (currentCard) {
+                cards.push(currentCard);
+            }
+            
+            // Crear nueva tarjeta
+            currentCard = {
+                title: element.textContent.trim(),
+                content: [],
+                level: tagName
+            };
+        } 
+        // Si es contenido y hay una tarjeta activa, agregarlo
+        else if (currentCard && element.textContent.trim()) {
+            currentCard.content.push(element.outerHTML);
+        }
+        // Si no hay tarjeta activa pero hay contenido, crear una tarjeta genérica
+        else if (!currentCard && element.textContent.trim()) {
+            currentCard = {
+                title: 'Información',
+                content: [element.outerHTML],
+                level: 'h3'
+            };
+        }
+    });
+    
+    // Agregar la última tarjeta
+    if (currentCard) {
+        cards.push(currentCard);
+    }
+    
+    // Si no se encontraron headers, crear una sola tarjeta con todo el contenido
+    if (cards.length === 0 && htmlContent.trim()) {
+        cards.push({
+            title: 'Análisis',
+            content: [htmlContent],
+            level: 'h3'
+        });
+    }
+    
+    // Generar HTML de las tarjetas
+    const cardsHTML = cards.map(card => {
+        const contentHTML = card.content.join('');
+        
+        return `
+            <div class="analysis-card">
+                <h3 class="analysis-card-title">${card.title}</h3>
+                <div class="analysis-card-content">${contentHTML}</div>
+            </div>
+        `;
+    }).join('');
+    
+    return `
+        ${styles}
+        <div class="analysis-card-grid">
+            ${cardsHTML}
+        </div>
+    `;
+}
+
+// Función helper para aplicar tarjetas a contenido marcado
+function applyCardsToMarkedContent(data, div) {
+    const markedContent = marked(data);
+    const cardContent = parseHTMLToCards(markedContent);
+    div.innerHTML = cardContent;
+}
+
 
 import { splitMarkdown, generateCharts, splitMarkdownAndWrap } from './splitter.js';
 
@@ -580,8 +743,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);
-                div.innerHTML = coso;
+                applyCardsToMarkedContent(data, div);
                 // console.log(data);
             })
             .catch(function (error) {
@@ -909,8 +1071,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
+                applyCardsToMarkedContent(data, div);                      
                 // console.log(data);
             })
             .catch(function (error) {
@@ -948,8 +1109,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;          
+                applyCardsToMarkedContent(data, div);          
                 // console.log(data);
             })
             .catch(function (error) {
@@ -1148,8 +1308,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);
-                div.innerHTML = coso;
+                applyCardsToMarkedContent(data, div);
                 // console.log(data);
             })
             .catch(function (error) {
@@ -1185,8 +1344,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;   
+                applyCardsToMarkedContent(data, div);   
 
             })
             .catch(function (error) {
@@ -1220,8 +1378,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;   
+                applyCardsToMarkedContent(data, div);   
 
             })
             .catch(function (error) {
@@ -1255,8 +1412,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;   
+                applyCardsToMarkedContent(data, div);   
 
             })
             .catch(function (error) {
@@ -1290,8 +1446,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;   
+                applyCardsToMarkedContent(data, div);   
 
             })
             .catch(function (error) {
@@ -1326,8 +1481,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;   
+                applyCardsToMarkedContent(data, div);   
                 textArea.value = data;                   
             })
             .catch(function (error) {
@@ -1364,8 +1518,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;   
+                applyCardsToMarkedContent(data, div);   
                 textArea.value = data;                   
             })
             .catch(function (error) {
@@ -1401,8 +1554,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
+                applyCardsToMarkedContent(data, div);                      
                 // console.log(data);
             })
             .catch(function (error) {
@@ -1437,8 +1589,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;   
+                applyCardsToMarkedContent(data, div);   
 
             })
             .catch(function (error) {
@@ -1466,8 +1617,7 @@ function LLenarResumenes(study) {
                     data = data.substring(data.indexOf("#"));
                     data = data.substring(0, data.length - 3);
                 }
-                const coso = marked(data);                          
-                div.innerHTML = coso;                      
+                applyCardsToMarkedContent(data, div);                      
             })
             .catch(function (error) {
                 div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
