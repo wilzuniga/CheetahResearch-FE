@@ -60,26 +60,26 @@ function generateAnalysisCardStyles(accentColor) {
                 margin-bottom: 20px;
             }
             .analysis-card-title { 
-                margin: 0 0 8px 0; 
-                font-size: 20px; 
+                margin: 0 0 10px 0; 
+                font-size: 24px; 
                 line-height: 1.25; 
                 font-weight: 700; 
                 color: #0f1115;
             }
             .analysis-card.hero-card .analysis-card-title {
-                font-size: 28px;
+                font-size: 32px;
                 font-weight: 800;
-                margin-bottom: 12px;
+                margin-bottom: 14px;
                 text-shadow: 0 1px 2px rgba(0,0,0,0.1);
             }
             .analysis-card-content { 
                 margin: 0; 
-                font-size: 16px; 
-                line-height: 1.42; 
+                font-size: 17px; 
+                line-height: 1.45; 
                 color: #1f2430;
             }
             .analysis-card.hero-card .analysis-card-content {
-                font-size: 18px;
+                font-size: 19px;
                 line-height: 1.5;
                 color: #0f1115;
                 font-weight: 500;
