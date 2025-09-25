@@ -69,9 +69,7 @@ function generateAnalysisCardStyles(accentColor) {
             .analysis-card.hero-card .analysis-card-title {
                 font-size: 28px;
                 font-weight: 800;
-                color: rgb(${r}, ${g}, ${b});
                 margin-bottom: 12px;
-                text-align: center;
                 text-shadow: 0 1px 2px rgba(0,0,0,0.1);
             }
             .analysis-card-content { 
@@ -83,7 +81,6 @@ function generateAnalysisCardStyles(accentColor) {
             .analysis-card.hero-card .analysis-card-content {
                 font-size: 18px;
                 line-height: 1.5;
-                text-align: center;
                 color: #0f1115;
                 font-weight: 500;
             }
