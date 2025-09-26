@@ -17,6 +17,7 @@
 
     <link rel="stylesheet" href="assets/assets_accounts/css/Hover.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 
     <style>
@@ -26,7 +27,153 @@
                 display: none;
             }
         }
-        
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .consumption-modal {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            font-family: 'hedliner', sans-serif;
+            border: 3px solid var(--bs-CR-orange);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--bs-CR-orange);
+            padding-bottom: 20px;
+        }
+
+        .modal-title {
+            color: #000;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .consumption-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .consumption-item {
+            background: rgba(255, 165, 0, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid var(--bs-CR-orange);
+            transition: transform 0.3s ease;
+        }
+
+        .consumption-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 165, 0, 0.3);
+        }
+
+        .consumption-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .consumption-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--bs-CR-orange);
+        }
+
+        .total-tokens {
+            grid-column: 1 / -1;
+            background: var(--bs-CR-orange);
+            color: white;
+            font-size: 18px;
+        }
+
+        .total-tokens .consumption-value {
+            color: white;
+            font-size: 28px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'hedliner', sans-serif;
+        }
+
+        .btn-export {
+            background: var(--bs-CR-orange);
+            color: white;
+        }
+
+        .btn-export:hover {
+            background: #e67e00;
+            transform: translateY(-2px);
+        }
+
+        .btn-close {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-close:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .close-x {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-x:hover {
+            background: rgba(255, 0, 0, 0.1);
+            color: #dc3545;
+        }
     </style>
 </head>
 
@@ -144,6 +291,9 @@
                                 <div class="d-xxl-flex justify-content-xxl-start align-items-xxl-end" style="width: 100%;margin-top: 10px;font-family: hedliner;">
                                     <button class="btn btn-info d-block w-100" id="analyzeSurveysBtn" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-right: 10px;margin-bottom: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Analizar Encuestas</button>
                                 </div>
+                                <div class="d-xxl-flex justify-content-xxl-start align-items-xxl-end" style="width: 100%;margin-top: 10px;font-family: hedliner;">
+                                    <button class="btn btn-success d-block w-100" id="consumptionReportBtn" style="font-weight: bold;font-size: 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;margin-right: 10px;margin-bottom: 10px;font-family: hedliner;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);">Informe de Consumo</button>
+                                </div>
                             </div>
 
                             
@@ -185,6 +335,47 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal de Informe de Consumo -->
+    <div id="consumptionModal" class="modal-overlay">
+        <div class="consumption-modal" id="modalContent">
+            <button class="close-x" onclick="closeConsumptionModal()">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Informe de Consumo</h2>
+                <p style="margin: 5px 0 0 0; color: #666; font-size: 16px;" id="studyNameInModal">Estudio: [Nombre del Estudio]</p>
+            </div>
+            <div class="consumption-grid">
+                <div class="consumption-item">
+                    <div class="consumption-label">Ejecuciones de Análisis</div>
+                    <div class="consumption-value" id="analysisExecutions">0</div>
+                </div>
+                <div class="consumption-item">
+                    <div class="consumption-label">Encuestas Realizadas</div>
+                    <div class="consumption-value" id="surveysCompleted">0</div>
+                </div>
+                <div class="consumption-item">
+                    <div class="consumption-label">Tokens de Entrada</div>
+                    <div class="consumption-value" id="inputTokens">0</div>
+                </div>
+                <div class="consumption-item">
+                    <div class="consumption-label">Tokens de Salida</div>
+                    <div class="consumption-value" id="outputTokens">0</div>
+                </div>
+                <div class="consumption-item">
+                    <div class="consumption-label">Análisis Activos</div>
+                    <div class="consumption-value" id="activeAnalysis">0</div>
+                </div>
+                <div class="consumption-item total-tokens">
+                    <div class="consumption-label">Total de Tokens</div>
+                    <div class="consumption-value" id="totalTokens">0</div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-export" onclick="exportModalAsImage()">Exportar como Imagen</button>
+                <button class="modal-btn btn-close" onclick="closeConsumptionModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/theme.js"></script>
@@ -192,6 +383,111 @@
     <script src="js/script_InfoEstudio.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/script_DuplicarEstudio.js"></script>
+    <script>
+        // Variables para datos de consumo
+        let consumptionData = {};
+        
+        // Función para generar datos mock aleatorios
+        function generateMockData() {
+            const surveysCount = parseInt(document.getElementById('EncuestasLBL').textContent) || 0;
+            
+            consumptionData = {
+                analysisExecutions: Math.floor(Math.random() * 7) + 2, // 2-8
+                surveysCompleted: surveysCount,
+                inputTokens: Math.floor(Math.random() * 3301) + 500, // 500-3800
+                outputTokens: Math.floor(Math.random() * 3301) + 500, // 500-3800
+                activeAnalysis: Math.floor(Math.random() * 16) + 1 // 1-16
+            };
+            
+            consumptionData.totalTokens = consumptionData.inputTokens + consumptionData.outputTokens;
+        }
+        
+        // Función para abrir el modal
+        function openConsumptionModal() {
+            generateMockData();
+            
+            // Actualizar valores en el modal
+            document.getElementById('analysisExecutions').textContent = consumptionData.analysisExecutions;
+            document.getElementById('surveysCompleted').textContent = consumptionData.surveysCompleted;
+            document.getElementById('inputTokens').textContent = consumptionData.inputTokens.toLocaleString();
+            document.getElementById('outputTokens').textContent = consumptionData.outputTokens.toLocaleString();
+            document.getElementById('activeAnalysis').textContent = consumptionData.activeAnalysis;
+            document.getElementById('totalTokens').textContent = consumptionData.totalTokens.toLocaleString();
+            
+            // Actualizar nombre del estudio si está disponible
+            const studyName = document.getElementById('nombreProyectoLbl').textContent || 'Estudio Actual';
+            document.getElementById('studyNameInModal').textContent = `Estudio: ${studyName}`;
+            
+            // Mostrar modal
+            document.getElementById('consumptionModal').style.display = 'flex';
+        }
+        
+        // Función para cerrar el modal
+        function closeConsumptionModal() {
+            document.getElementById('consumptionModal').style.display = 'none';
+        }
+        
+        // Función para exportar como imagen
+        function exportModalAsImage() {
+            const modalContent = document.getElementById('modalContent');
+            const studyName = document.getElementById('nombreProyectoLbl').textContent || 'EstudioActual';
+            const fileName = `${studyName.replace(/\s+/g, '_')}-consumo.jpg`;
+            
+            // Configuración para html2canvas
+            const options = {
+                backgroundColor: '#ffffff',
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                width: modalContent.offsetWidth,
+                height: modalContent.offsetHeight
+            };
+            
+            html2canvas(modalContent, options).then(canvas => {
+                // Convertir a JPG
+                const imgData = canvas.toDataURL('image/jpeg', 0.9);
+                
+                // Crear enlace de descarga
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = imgData;
+                
+                // Simular click para descargar
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Mostrar mensaje de éxito
+                alert('Imagen exportada exitosamente como: ' + fileName);
+            }).catch(error => {
+                console.error('Error al exportar imagen:', error);
+                alert('Error al exportar la imagen. Por favor, inténtelo de nuevo.');
+            });
+        }
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar event listener al botón de informe de consumo
+            const consumptionBtn = document.getElementById('consumptionReportBtn');
+            if (consumptionBtn) {
+                consumptionBtn.addEventListener('click', openConsumptionModal);
+            }
+            
+            // Cerrar modal al hacer click fuera de él
+            document.getElementById('consumptionModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeConsumptionModal();
+                }
+            });
+            
+            // Cerrar modal con tecla Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeConsumptionModal();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
