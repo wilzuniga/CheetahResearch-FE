@@ -47,8 +47,11 @@ function createSurveyerFormReadOnly() {
             <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.title">Encuestador</h2>
             <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
                 <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hImg"></p>
-                    <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
+                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hImg">Imagen del Encuestador</p>
+                    <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px;">
+                    <br>
+                    <input class="form-control" type="file" name="FileInput" id="FileInputEdit" style="margin-top: 10px;">
+                    <small class="form-text text-muted" data-i18n="CrearEncuestador.changeImageHint">Selecciona una nueva imagen para cambiar la actual (opcional)</small>
                 </div>
                 <div class="mb-3">
                     <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hInterviewerName">Nombre del Encuestador</p>
@@ -91,7 +94,7 @@ function updateSurveyerFormData(data) {
     const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
     const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
     const saludoEncuestador = document.getElementById('SaludoEncuestadorTXT').value;
-    const fileInput = data.interviewerProfilePicture;
+    const fileInputEdit = document.getElementById('FileInputEdit');
     const observacionesImportantes = document.getElementById('ObservacionesImportantesTXT').value;
 
     const url = 'https://api.cheetah-research.ai/configuration/updateInterviewer/';
@@ -102,6 +105,11 @@ function updateSurveyerFormData(data) {
     data0.append('interviewerGreeting', saludoEncuestador);
     data0.append('importantObservation', observacionesImportantes);
     data0.append('_id', sessionStorage.getItem('selectedStudyId'));
+    
+    // Agregar la nueva imagen si se seleccionó una
+    if (fileInputEdit && fileInputEdit.files && fileInputEdit.files[0]) {
+        data0.append('interviewerProfilePicture', fileInputEdit.files[0]);
+    }
 
     for (let pair of data0.entries()) {
         // console.log(pair[0]+ ': ' + pair[1]);
