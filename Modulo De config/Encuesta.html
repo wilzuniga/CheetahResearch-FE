@@ -31,23 +31,81 @@
             position: fixed; /* Posiciona el overlay de manera fija */
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+            width: 100vw; /* Ancho completo de la ventana */
+            height: 100vh; /* Alto completo de la ventana */
+            background-color: rgba(0, 0, 0, 0.6); /* Fondo semitransparente más oscuro */
             display: flex;
             align-items: center; /* Centra verticalmente */
             justify-content: center; /* Centra horizontalmente */
-            z-index: 1000; /* Asegura que el overlay esté por encima del contenido */
+            z-index: 9999; /* Z-index muy alto para estar al frente de todo */
             display: none; /* Ocultar por defecto */
+            backdrop-filter: blur(5px); /* Efecto de desenfoque */
         }
 
         #overlayContent {
-            background: white;
-            padding: 20px;
-            border-radius : 13px;
-            width: 50%;
-            max-width: 600px; /* Opcional: limita el ancho máximo */
-            box-sizing: border-box; /* Incluye el padding en el ancho total */
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            min-width: 300px;
+            box-sizing: border-box;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+            transform-origin: center;
+        }
+
+        #overlayContent::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
+            border-radius: 15px 15px 0 0;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Estilo para los elementos del modal */
+        #overlayContent .form-control {
+            margin-bottom: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        #overlayContent .form-control:focus {
+            border-color: var(--bs-CR-orange);
+            box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
+        }
+
+        #overlayContent .btn {
+            margin: 5px;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        #overlayContent label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            display: block;
         }
 
         /* Enhanced question styling */
