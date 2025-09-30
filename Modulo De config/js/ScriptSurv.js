@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             followQuestionContainer.style.display = 'none'; // Initially hidden
 
             const followQuestionList = document.createElement('ul');
-            followQuestionList.id = 'FollowQuestionList';
+            followQuestionList.classList.add('follow-question-list');
 
             const buttonsDiv = document.createElement('div');
             buttonsDiv.classList.add('question-actions');
@@ -216,7 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         let processedEditQuestion = unescapedEditQuestion.replace(/\n/g, '<br>');
                         newH5.innerHTML = `<strong style="color: var(--bs-CR-orange);">${questionNumber}.</strong> ${processedEditQuestion}`;
                         newSpan.textContent = editPeso;
-                        newSmall.textContent = editAnexo;
+                        if (editAnexo && newSmall) {
+                            newSmall.textContent = editAnexo;
+                        }
                         overlay.style.display = 'none'; // Ocultar el overlay
                     } else {
                         alert(getNestedTranslation(translations[lang], 'Encuesta.wQuestionWeight'));
@@ -350,10 +352,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to renumber all questions
     function renumberQuestions() {
         const listGroup = document.querySelector('.list-group.list-group-custom');
-        const listItems = listGroup.querySelectorAll('.list-group-item');
+        if (!listGroup) return;
+        
+        const listItems = listGroup.querySelectorAll('.list-group-item.enhanced-question');
         
         listItems.forEach((item, index) => {
-            const h5Element = item.querySelector('h5');
+            const h5Element = item.querySelector('h5.question-text');
             if (h5Element) {
                 const questionText = h5Element.innerHTML;
                 // Remove existing number if present
@@ -372,23 +376,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function guardarPreguntas() {
     const listGroup = document.querySelector('.list-group.list-group-custom');    
-    const listItems = listGroup.querySelectorAll('.list-group-item');
+    if (!listGroup) return;
+    
+    const listItems = listGroup.querySelectorAll('.list-group-item.enhanced-question');
 
     listItems.forEach((listItem, index) => {
-        const followQuestionList = listItem.querySelector('#FollowQuestionList');
-        const followQuestions = followQuestionList.querySelectorAll('li');
-        if(followQuestions.length === 0){
-
-        }else{
-            const pregunta = questions[index];
-            pregunta.feedback_questions = [];
-
-            followQuestions.forEach((followQuestion) => {
-                pregunta.feedback_questions.push(followQuestion.textContent);
-            });
+        const followQuestionList = listItem.querySelector('ul.follow-question-list');
+        if (followQuestionList) {
+            const followQuestions = followQuestionList.querySelectorAll('li');
+            if(followQuestions.length === 0){
+                // No follow-up questions
+                if (questions[index]) {
+                    questions[index].feedback_questions = [];
+                }
+            } else {
+                const pregunta = questions[index];
+                if (pregunta) {
+                    pregunta.feedback_questions = [];
+                    followQuestions.forEach((followQuestion) => {
+                        pregunta.feedback_questions.push(followQuestion.textContent);
+                    });
+                }
+            }
         }
-    }
-    );
+    });
     
     const defaultListGroup = document.querySelector('.list-group');
     const defaultListItems = defaultListGroup.querySelectorAll('.list-group-item');
@@ -678,7 +689,7 @@ function CE_DeactivateNavBy(){
                 followQuestionContainer.style.display = 'none'; // Initially hidden
 
                 const followQuestionList = document.createElement('ul');
-                followQuestionList.id = 'FollowQuestionList';
+                followQuestionList.classList.add('follow-question-list');
     
                 const buttonsDiv = document.createElement('div');
                 buttonsDiv.classList.add('question-actions');
@@ -853,9 +864,12 @@ function CE_DeactivateNavBy(){
                             //actualizar la pregunta en el listado de preguntas
                             let unescapedEditQuestion = editPregunta.replace(/\\n/g, '\n');
                             let processedEditQuestion = unescapedEditQuestion.replace(/\n/g, '<br>');
-                            newH5.innerHTML = `<strong style="color: var(--bs-CR-orange);">${questionNumber}.</strong> ${processedEditQuestion}`;
+                            const currentQuestionNumber = index + 1;
+                            newH5.innerHTML = `<strong style="color: var(--bs-CR-orange);">${currentQuestionNumber}.</strong> ${processedEditQuestion}`;
                             newSpan.textContent = editPeso;
-                            newSmall.textContent = editAnexo;
+                            if (editAnexo && newSmall) {
+                                newSmall.textContent = editAnexo;
+                            }
                             overlay.style.display = 'none'; // Ocultar el overlay
                         } else {
                             alert(getNestedTranslation(translations[lang], 'Encuesta.wQuestionWeight'));
@@ -982,7 +996,7 @@ function CE_DeactivateNavBy(){
 document.getElementById('AnexoPregunta').addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file.size > 524288 ) {
-        alert(getNestedTranslation(translations[lang], 'Encuesta.wImageTooLarge'));
+        alert("Encuesta guardada correctamente");
         event.target.value = '';
     }
 });
