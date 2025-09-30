@@ -25,87 +25,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (pregunta && peso) {
             const newListItem = document.createElement('div');
-            newListItem.classList.add('list-group-item', 'list-group-item-action', 'align-items-start');
+            newListItem.classList.add('list-group-item', 'list-group-item-action', 'enhanced-question');
             newListItem.style.fontFamily = "hedliner";
-            newListItem.style.display = 'flex';
-            newListItem.style.flexDirection = 'column';
-            newListItem.style.gap = '0.5rem';
 
-            const newDiv = document.createElement('div');
-            newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
-            newDiv.style.fontFamily = "hedliner";
+            const questionHeader = document.createElement('div');
+            questionHeader.classList.add('question-header');
 
             const newH5 = document.createElement('h5');
-            newH5.classList.add('mb-1');
+            newH5.classList.add('question-text');
             newH5.style.fontFamily = "IBM Plex Sans";
 
             // Replace escaped newlines with actual newlines, then convert to <br> for HTML
             let unescapedQuestion = pregunta.replace(/\\n/g, '\n');
             let processedQuestion = unescapedQuestion.replace(/\n/g, '<br>');
-            newH5.innerHTML = processedQuestion;
+            // Add question number
+            const questionNumber = questions.length + 1;
+            newH5.innerHTML = `<strong style="color: var(--bs-CR-orange);">${questionNumber}.</strong> ${processedQuestion}`;
 
             const newSpan = document.createElement('span');
-            newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
-            newSpan.style.fontFamily = "hedliner";
-            newSpan.style.color = 'var(--bs-CR-gray)';
-            newSpan.style.backgroundColor = 'var(--bs-CR-orange)';
+            newSpan.classList.add('question-weight');
             newSpan.textContent = peso;
 
-            const newSmall = document.createElement('small');
-            newSmall.classList.add('text-muted');
-            newSmall.style.fontFamily = "IBM Plex Sans";
-            newSmall.textContent = anexo;
+            const newSmall = document.createElement('div');
+            if (anexo) {
+                newSmall.classList.add('question-attachment');
+                newSmall.textContent = anexo;
+            }
+
+            const followQuestionContainer = document.createElement('div');
+            followQuestionContainer.classList.add('follow-questions');
+            followQuestionContainer.style.display = 'none'; // Initially hidden
 
             const followQuestionList = document.createElement('ul');
-            followQuestionList.style.color = '#000000';
             followQuestionList.id = 'FollowQuestionList';
 
             const buttonsDiv = document.createElement('div');
-            buttonsDiv.style.display = 'flex';
-            buttonsDiv.style.marginTop = '10px';
-            buttonsDiv.style.marginRight = 'auto';
+            buttonsDiv.classList.add('question-actions');
 
             const eliminarBtn = document.createElement('button');
             eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
             eliminarBtn.innerText = getNestedTranslation(translations[lang], 'Encuesta.btDelQuestion');
-            eliminarBtn.style.marginRight = '10px';
             eliminarBtn.addEventListener('click', () => {
                 newListItem.remove();
+                // Renumber remaining questions
+                renumberQuestions();
             });
             buttonsDiv.appendChild(eliminarBtn);
 
             const addFollowQuestionBTN = document.createElement('button');
             addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
             addFollowQuestionBTN.innerText = getNestedTranslation(translations[lang], 'Encuesta.btAddSubQuestion');
-            addFollowQuestionBTN.style.marginRight = '10px';
             addFollowQuestionBTN.style.color = 'var(--bs-CR-gray)';
             addFollowQuestionBTN.style.backgroundColor = 'var(--bs-CR-orange)';
             buttonsDiv.appendChild(addFollowQuestionBTN);
 
             const icon = document.createElement('i');
             icon.classList.add('fas', 'fa-bars');
-            icon.style.fontSize = '10px';
 
             const dragBtn = document.createElement('button');
-            dragBtn.classList.add('dragBtn', 'btn', 'btn-secondary');
+            dragBtn.classList.add('dragBtn', 'drag-handle');
             dragBtn.type = 'button';
-            dragBtn.style.display = 'flex';
-            dragBtn.style.width = '80px';
-            dragBtn.style.height = '20px';
-            dragBtn.style.alignSelf = 'center';
-            dragBtn.style.padding = '0';
-            dragBtn.style.justifyContent = 'center';
-            dragBtn.style.alignItems = 'center';
-            dragBtn.style.border = 'none';
-
             dragBtn.appendChild(icon);
 
-            newDiv.appendChild(newH5);
-            newDiv.appendChild(newSpan);
+            // Assemble the question structure
+            questionHeader.appendChild(newH5);
+            questionHeader.appendChild(newSpan);
+            
+            followQuestionContainer.appendChild(followQuestionList);
 
-            newListItem.appendChild(newDiv);
-            newListItem.appendChild(followQuestionList);
-            newListItem.appendChild(newSmall);
+            newListItem.appendChild(questionHeader);
+            if (anexo) {
+                newListItem.appendChild(newSmall);
+            }
+            newListItem.appendChild(followQuestionContainer);
             newListItem.appendChild(buttonsDiv);
             newListItem.appendChild(dragBtn);
 
@@ -153,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const listItem = document.createElement('li');
                         listItem.textContent = followUpQuestion;
                         followQuestionList.appendChild(listItem);
+                        followQuestionContainer.style.display = 'block'; // Show container when questions are added
                         document.getElementById('FollowUpQuestionTXT').value = ''; // Limpiar el campo de texto
                         overlay.style.display = 'none'; // Ocultar el overlay
                     } else {
@@ -219,7 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         }
                         //actualizar la pregunta en el listado de preguntas
-                        newH5.textContent = editPregunta;
+                        let unescapedEditQuestion = editPregunta.replace(/\\n/g, '\n');
+                        let processedEditQuestion = unescapedEditQuestion.replace(/\n/g, '<br>');
+                        newH5.innerHTML = `<strong style="color: var(--bs-CR-orange);">${questionNumber}.</strong> ${processedEditQuestion}`;
                         newSpan.textContent = editPeso;
                         newSmall.textContent = editAnexo;
                         overlay.style.display = 'none'; // Ocultar el overlay
@@ -240,6 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteFollowQuestionsBtn.addEventListener('click', (event) => {
                 event.preventDefault();
                 followQuestionList.innerHTML = '';
+                followQuestionContainer.style.display = 'none'; // Hide container when all questions are removed
                 questions[questions.length - 1].feedback_questions = [];
             });
 
@@ -329,6 +325,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             questions = newQuestionsOrder;
             questionsImg = newQuestionsImgOrder;
+            
+            // Renumber questions after reordering
+            renumberQuestions();
         }
 
         event.dataTransfer.clearData();
@@ -342,6 +341,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.querySelectorAll('.list-group-item').forEach(item => item.classList.remove('over'));
         }
+    }
+    
+    // Function to renumber all questions
+    function renumberQuestions() {
+        const listGroup = document.querySelector('.list-group.list-group-custom');
+        const listItems = listGroup.querySelectorAll('.list-group-item');
+        
+        listItems.forEach((item, index) => {
+            const h5Element = item.querySelector('h5');
+            if (h5Element) {
+                const questionText = h5Element.innerHTML;
+                // Remove existing number if present
+                const cleanText = questionText.replace(/^<strong[^>]*>\d+\.<\/strong>\s*/, '');
+                // Add new number
+                const newNumber = index + 1;
+                h5Element.innerHTML = `<strong style="color: var(--bs-CR-orange);">${newNumber}.</strong> ${cleanText}`;
+            }
+        });
     }
     //Fin Coso de Drag & Drop
 });
@@ -619,56 +636,52 @@ function CE_DeactivateNavBy(){
                 const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     
                 const newListItem = document.createElement('div');
-                newListItem.classList.add('list-group-item', 'list-group-item-action', 'align-items-start');
+                newListItem.classList.add('list-group-item', 'list-group-item-action', 'enhanced-question');
                 newListItem.style.fontFamily = "hedliner";
-                newListItem.style.display = 'flex';
-                newListItem.style.flexDirection = 'column';
-                newListItem.style.gap = '0.5rem';
                 
-                const newDiv = document.createElement('div');
-                newDiv.classList.add('d-flex', 'w-100', 'justify-content-between');
+                const questionHeader = document.createElement('div');
+                questionHeader.classList.add('question-header');
     
                 const newH5 = document.createElement('h5');
-                newH5.classList.add('mb-1');
+                newH5.classList.add('question-text');
                 newH5.style.fontFamily = "IBM Plex Sans";
 
                 // Replace escaped newlines with actual newlines, then convert to <br> for HTML
                 let unescapedQuestion = pregunta.question.replace(/\\n/g, '\n');
                 let processedQuestion = unescapedQuestion.replace(/\n/g, '<br>');
+                // Add question number
+                const questionNumber = index + 1;
+                newH5.innerHTML = `<strong style="color: var(--bs-CR-orange);">${questionNumber}.</strong> ${processedQuestion}`;
 
-                newH5.innerHTML = processedQuestion;
-
-
-    
                 const newSpan = document.createElement('span');
-                newSpan.classList.add('badge', 'rounded-pill', 'bg-primary', 'align-self-center');
+                newSpan.classList.add('question-weight');
                 newSpan.textContent = pregunta.weight;
-                newSpan.style.color = 'var(--bs-CR-gray)';
-                newSpan.style.backgroundColor = 'var(--bs-CR-orange)';
     
                 //verificar si la pregunta tiene anexo, url o ninguno y agregarlo
-                const newSmall = document.createElement('small');
-                newSmall.classList.add('text-muted');
-                newSmall.style.fontFamily = "IBM Plex Sans";
-                if(pregunta.url != null){
-                    newSmall.textContent = pregunta.url;
-                }else if(pregunta.file_path != null){
-                    newSmall.textContent = pregunta.file_path;
-                }else{
-                    newSmall.textContent = '';
+                const newSmall = document.createElement('div');
+                const hasAttachment = pregunta.url != null || pregunta.file_path != null;
+                if(hasAttachment){
+                    newSmall.classList.add('question-attachment');
+                    if(pregunta.url != null){
+                        newSmall.textContent = pregunta.url;
+                    }else if(pregunta.file_path != null){
+                        newSmall.textContent = pregunta.file_path;
+                    }
                 }
     
+                const followQuestionContainer = document.createElement('div');
+                followQuestionContainer.classList.add('follow-questions');
+                followQuestionContainer.style.display = 'none'; // Initially hidden
+
                 const followQuestionList = document.createElement('ul');
-                followQuestionList.style.color = '#000000';
                 followQuestionList.id = 'FollowQuestionList';
     
                 const buttonsDiv = document.createElement('div');
-                buttonsDiv.style.marginTop = '10px';
+                buttonsDiv.classList.add('question-actions');
     
                 const eliminarBtn = document.createElement('button');
                 eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
                 eliminarBtn.innerText = getNestedTranslation(translations[lang], 'Encuesta.btDelQuestion');
-                eliminarBtn.style.marginRight = '10px';
                 eliminarBtn.addEventListener('click', () => {
                     newListItem.remove();
                     questions.splice(index, 1);
@@ -677,42 +690,37 @@ function CE_DeactivateNavBy(){
                             questionsImg.splice(indexImg, 1);
                         }
                     });
-
+                    // Renumber remaining questions
+                    renumberQuestions();
                 });
                 buttonsDiv.appendChild(eliminarBtn);
     
                 const addFollowQuestionBTN = document.createElement('button');
                 addFollowQuestionBTN.classList.add('btn', 'btn-primary', 'btn-sm');
                 addFollowQuestionBTN.innerText = getNestedTranslation(translations[lang], 'Encuesta.btAddSubQuestion');
-                addFollowQuestionBTN.style.marginRight = '10px';
                 addFollowQuestionBTN.style.color = 'var(--bs-CR-gray)';
                 addFollowQuestionBTN.style.backgroundColor = 'var(--bs-CR-orange)';
                 buttonsDiv.appendChild(addFollowQuestionBTN);
     
                 const icon = document.createElement('i');
                 icon.classList.add('fas', 'fa-bars');
-                icon.style.fontSize = '10px';
     
                 const dragBtn = document.createElement('button');
-                dragBtn.classList.add('dragBtn', 'btn', 'btn-secondary');
+                dragBtn.classList.add('dragBtn', 'drag-handle');
                 dragBtn.type = 'button';
-                dragBtn.style.display = 'flex';
-                dragBtn.style.width = '80px';
-                dragBtn.style.height = '20px';
-                dragBtn.style.alignSelf = 'center';
-                dragBtn.style.padding = '0';
-                dragBtn.style.justifyContent = 'center';
-                dragBtn.style.alignItems = 'center';
-                dragBtn.style.border = 'none';
-    
                 dragBtn.appendChild(icon);
     
-                newDiv.appendChild(newH5);
-                newDiv.appendChild(newSpan);
+                // Assemble the question structure
+                questionHeader.appendChild(newH5);
+                questionHeader.appendChild(newSpan);
+                
+                followQuestionContainer.appendChild(followQuestionList);
     
-                newListItem.appendChild(newDiv);
-                newListItem.appendChild(followQuestionList);
-                newListItem.appendChild(newSmall);
+                newListItem.appendChild(questionHeader);
+                if(hasAttachment){
+                    newListItem.appendChild(newSmall);
+                }
+                newListItem.appendChild(followQuestionContainer);
                 newListItem.appendChild(buttonsDiv);
                 newListItem.appendChild(dragBtn);
     
@@ -733,15 +741,14 @@ function CE_DeactivateNavBy(){
                 newListItem.addEventListener('drop', handleDrop);
                 newListItem.addEventListener('dragend', handleDragEnd);
 
-                if(pregunta.feedback_questions != null){
-
+                if(pregunta.feedback_questions != null && pregunta.feedback_questions.length > 0){
+                    followQuestionContainer.style.display = 'block'; // Show container if there are follow-up questions
                     feedback_questions_add = pregunta.feedback_questions;
                     feedback_questions_add.forEach((followUpQuestion) => {
                         const listItem = document.createElement('li');
                         listItem.textContent = followUpQuestion;
                         followQuestionList.appendChild(listItem);
                     });
-        
                 }
     
                 addFollowQuestionBTN.addEventListener('click', (event) => {
@@ -772,6 +779,7 @@ function CE_DeactivateNavBy(){
                             const listItem = document.createElement('li');
                             listItem.textContent = followUpQuestion;
                             followQuestionList.appendChild(listItem);
+                            followQuestionContainer.style.display = 'block'; // Show container when questions are added
                             document.getElementById('FollowUpQuestionTXT').value = ''; // Limpiar el campo de texto
                             overlay.style.display = 'none'; // Ocultar el overlay
                         } else {
@@ -839,7 +847,9 @@ function CE_DeactivateNavBy(){
                                 }
                             }
                             //actualizar la pregunta en el listado de preguntas
-                            newH5.textContent = editPregunta;
+                            let unescapedEditQuestion = editPregunta.replace(/\\n/g, '\n');
+                            let processedEditQuestion = unescapedEditQuestion.replace(/\n/g, '<br>');
+                            newH5.innerHTML = `<strong style="color: var(--bs-CR-orange);">${questionNumber}.</strong> ${processedEditQuestion}`;
                             newSpan.textContent = editPeso;
                             newSmall.textContent = editAnexo;
                             overlay.style.display = 'none'; // Ocultar el overlay
@@ -860,6 +870,7 @@ function CE_DeactivateNavBy(){
                 deleteFollowQuestionsBtn.addEventListener('click', (event) => {
                     event.preventDefault();
                     followQuestionList.innerHTML = '';
+                    followQuestionContainer.style.display = 'none'; // Hide container when all questions are removed
                     questions[index].feedback_questions = [];
                 });
                 
@@ -937,6 +948,9 @@ function CE_DeactivateNavBy(){
 
             questions = newQuestionsOrder;
             questionsImg = newQuestionsImgOrder;
+            
+            // Renumber questions after reordering
+            renumberQuestions();
         }
 
         event.dataTransfer.clearData();
