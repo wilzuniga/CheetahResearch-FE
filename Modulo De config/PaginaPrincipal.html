@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="icon" type="image/x-icon" href="assets/img/NegroLogo.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, user-scalable=yes, minimum-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Pagina Principal</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
@@ -134,12 +134,11 @@
 
         /* Search section styling */
         .search-section {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            background: linear-gradient(135deg, var(--bs-black) 0%, #1a1a1a 100%);
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 25px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
         }
@@ -148,17 +147,18 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
         }
 
         .search-section h1 {
             position: relative;
             z-index: 2;
-            color: #2c3e50 !important;
-            text-shadow: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* Enhanced search input */
@@ -294,233 +294,26 @@
         }
 
         /* Responsive improvements */
-        @media (max-width: 1200px) {
-            .large-image {
-                width: 400px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .large-image {
-                width: 350px;
-            }
-            
-            #contentCard_PaginaOverview {
-                padding: 15px !important;
-            }
-            
+        @media (max-width: 768px) {
             .header-section {
                 padding: 15px;
+                margin-bottom: 20px;
             }
             
             .search-section {
                 padding: 15px;
+                margin-bottom: 20px;
             }
             
             .studies-section {
                 padding: 15px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .logo-header {
-                height: 20vh !important;
-                margin-bottom: 15px;
-            }
-            
-            .large-image {
-                width: 250px;
-            }
-            
-            #contentCard_PaginaOverview {
-                padding: 10px !important;
-                height: auto !important;
-                min-height: 80vh;
-            }
-            
-            .header-section {
-                padding: 15px;
-                margin-bottom: 15px;
-            }
-            
-            .header-section > div {
-                flex-direction: column !important;
-                gap: 10px !important;
+                margin-bottom: 20px;
             }
             
             .btn {
                 width: 100%;
                 margin-bottom: 10px;
-                justify-content: center;
             }
-            
-            .search-section {
-                padding: 15px;
-                margin-bottom: 15px;
-            }
-            
-            .search-section > div {
-                flex-direction: column !important;
-                align-items: stretch !important;
-                gap: 15px !important;
-            }
-            
-            .search-section h1 {
-                text-align: center;
-                font-size: 1.5rem;
-            }
-            
-            .search-input-group {
-                min-width: auto !important;
-                max-width: none !important;
-            }
-            
-            .studies-section {
-                padding: 15px;
-                margin-bottom: 15px;
-                flex: none !important;
-            }
-            
-            .list-group {
-                height: 50vh !important;
-            }
-            
-            .footer-text {
-                margin: 5px;
-                padding: 10px;
-                font-size: 11px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            body {
-                padding: 5px;
-            }
-            
-            .logo-header {
-                height: 15vh !important;
-                margin-bottom: 10px;
-            }
-            
-            .large-image {
-                width: 200px;
-            }
-            
-            #contentCard_PaginaOverview {
-                padding: 8px !important;
-            }
-            
-            .header-section,
-            .search-section,
-            .studies-section {
-                padding: 12px;
-                margin-bottom: 12px;
-            }
-            
-            .search-section h1 {
-                font-size: 1.2rem;
-            }
-            
-            .btn {
-                padding: 10px 16px;
-                font-size: 13px;
-            }
-            
-            .list-group {
-                height: 45vh !important;
-            }
-            
-            .list-group-item {
-                padding: 15px;
-            }
-            
-            .footer-text {
-                font-size: 10px;
-                padding: 8px;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .logo-header {
-                height: 12vh !important;
-            }
-            
-            .large-image {
-                width: 150px;
-            }
-            
-            .search-section h1 {
-                font-size: 1rem;
-            }
-            
-            .btn {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-            
-            .list-group {
-                height: 40vh !important;
-            }
-        }
-
-        /* Landscape orientation adjustments */
-        @media (max-height: 600px) and (orientation: landscape) {
-            .logo-header {
-                height: 15vh !important;
-            }
-            
-            .list-group {
-                height: 35vh !important;
-            }
-        }
-
-        /* High DPI displays */
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-            .large-image {
-                image-rendering: -webkit-optimize-contrast;
-                image-rendering: crisp-edges;
-            }
-        }
-
-        /* Touch device optimizations */
-        @media (hover: none) and (pointer: coarse) {
-            .btn {
-                min-height: 44px; /* Apple's recommended touch target size */
-                padding: 12px 20px;
-            }
-            
-            .list-group-item {
-                min-height: 60px;
-                padding: 20px;
-            }
-            
-            .form-control {
-                min-height: 44px;
-                padding: 12px 16px;
-            }
-            
-            .input-group-text {
-                min-height: 44px;
-                padding: 12px 16px;
-            }
-        }
-
-        /* Reduce motion for users who prefer it */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            /* Keep light theme for now, but structure is ready for dark mode */
         }
 
         /* Subtle animations */
@@ -585,7 +378,7 @@
         <!-- Search Section -->
         <div class="search-section">
             <div style="display: flex; flex-direction: row; align-items: center; gap: 20px; flex-wrap: wrap;">
-                <h1 style="margin: 0; font-family: hedliner;" data-i18n="PaginaPrincipal.title">SELECCIONAR ESTUDIO</h1>
+                <h1 style="margin: 0; color: var(--bs-body-bg); font-family: hedliner;" data-i18n="PaginaPrincipal.title">SELECCIONAR ESTUDIO</h1>
 
                 <div class="input-group search-input-group" style="flex: 1; min-width: 300px; max-width: 500px;">
                     <span class="input-group-text" style="border-top-left-radius: 15px; border-bottom-left-radius: 15px;">
