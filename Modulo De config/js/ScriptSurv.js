@@ -271,9 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let draggedItem = null;
 
     function handleDragStart(event) {
-        draggedItem = event.target;
+        draggedItem = event.target.closest('.list-group-item');
         event.dataTransfer.effectAllowed = 'move';
-        event.dataTransfer.setData('text/html', event.target.innerHTML);
+        event.dataTransfer.setData('text/html', draggedItem.innerHTML);
         draggedItem.classList.add('dragging');
     }
 
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
 
-        const target = event.target;
+        const target = event.target.closest('.list-group-item');
         const items = document.querySelectorAll('.list-group-item');
 
         //Efecto visual: Placeholder Anaranjado
@@ -298,8 +298,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleDrop(event) {
         event.preventDefault();
 
-        const target = event.target;
-        if (draggedItem !== target && target.classList.contains('list-group-item')) {
+        const target = event.target.closest('.list-group-item');
+        if (draggedItem !== target && target && target.classList.contains('list-group-item')) {
             const items = [...listGroup.querySelectorAll('.list-group-item')];
             const draggedIndex = items.indexOf(draggedItem);
             const targetIndex = items.indexOf(target);
@@ -331,7 +331,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         event.dataTransfer.clearData();
-        target.classList.remove('over');
+        if (target) {
+            target.classList.remove('over');
+        }
+        // Clean up all over classes
+        document.querySelectorAll('.list-group-item').forEach(item => item.classList.remove('over'));
     }
 
     function handleDragEnd(event) {
@@ -893,9 +897,9 @@ function CE_DeactivateNavBy(){
     let draggedItem = null;
 
     function handleDragStart(event) {
-        draggedItem = event.target;
+        draggedItem = event.target.closest('.list-group-item');
         event.dataTransfer.effectAllowed = 'move';
-        event.dataTransfer.setData('text/html', event.target.innerHTML);
+        event.dataTransfer.setData('text/html', draggedItem.innerHTML);
         draggedItem.classList.add('dragging');
     }
 
@@ -903,7 +907,7 @@ function CE_DeactivateNavBy(){
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
 
-        const target = event.target;
+        const target = event.target.closest('.list-group-item');
         const items = document.querySelectorAll('.list-group-item');
 
         //Efecto visual: Placeholder Anaranjado
@@ -920,8 +924,8 @@ function CE_DeactivateNavBy(){
     function handleDrop(event) {
         event.preventDefault();
 
-        const target = event.target;
-        if (draggedItem !== target && target.classList.contains('list-group-item')) {
+        const target = event.target.closest('.list-group-item');
+        if (draggedItem !== target && target && target.classList.contains('list-group-item')) {
             const listGroup = document.querySelector('.list-group.list-group-custom');  
             const items = [...listGroup.querySelectorAll('.list-group-item')];
             const draggedIndex = items.indexOf(draggedItem);
@@ -954,7 +958,11 @@ function CE_DeactivateNavBy(){
         }
 
         event.dataTransfer.clearData();
-        target.classList.remove('over');
+        if (target) {
+            target.classList.remove('over');
+        }
+        // Clean up all over classes
+        document.querySelectorAll('.list-group-item').forEach(item => item.classList.remove('over'));
     }
 
     function handleDragEnd(event) {

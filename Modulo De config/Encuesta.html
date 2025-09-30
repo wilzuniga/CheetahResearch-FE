@@ -84,16 +84,19 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 15px;
+            position: relative;
         }
 
         .question-text {
             flex: 1;
-            margin-right: 15px;
+            margin-right: 80px; /* Space for drag handle */
             line-height: 1.6;
         }
 
         .question-weight {
-            flex-shrink: 0;
+            position: absolute;
+            top: 0;
+            right: 60px; /* Position to the left of drag handle */
             font-size: 14px;
             font-weight: 600;
             padding: 8px 12px;
@@ -101,6 +104,7 @@
             background: var(--bs-CR-orange);
             color: var(--bs-CR-gray);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10;
         }
 
         .question-attachment {
@@ -140,20 +144,80 @@
             right: 15px;
             top: 15px;
             cursor: grab;
-            padding: 8px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 8px;
             background: #f8f9fa;
             border: 1px solid #dee2e6;
             transition: all 0.2s ease;
+            z-index: 20;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .drag-handle:hover {
             background: #e9ecef;
             border-color: var(--bs-CR-orange);
+            transform: scale(1.05);
         }
 
         .drag-handle:active {
             cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .drag-handle i {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        /* Drag and drop visual effects */
+        .list-group-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            border-color: var(--bs-CR-orange);
+        }
+
+        .list-group-item.over {
+            border-top: 4px solid var(--bs-CR-orange);
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .list-group-item.over::before {
+            content: 'Soltar aquí';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bs-CR-orange);
+            color: var(--bs-CR-gray);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Placeholder effect */
+        .drag-placeholder {
+            height: 4px;
+            background: var(--bs-CR-orange);
+            margin: 10px 0;
+            border-radius: 2px;
+            opacity: 0.8;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.4; }
         }
 
         .follow-questions {
