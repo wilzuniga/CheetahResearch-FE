@@ -996,7 +996,7 @@ function CE_DeactivateNavBy(){
 document.getElementById('AnexoPregunta').addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file.size > 524288 ) {
-        alert("Encuesta guardada correctamente");
+        alert("Imagen demasiado pesada");
         event.target.value = '';
     }
 });
@@ -1004,7 +1004,7 @@ document.getElementById('AnexoPregunta').addEventListener('change', (event) => {
 document.getElementById('GuardarEncuestaBtn').addEventListener('click', (event) => {
     event.preventDefault();
     guardarPreguntas(); 
-    alert(getNestedTranslation(translations[lang], 'Encuesta.wSurveySaved'));
+    alert("Encuesta guardada correctamente");
     //recargar la pagina
     location.reload();
 });
