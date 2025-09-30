@@ -71,7 +71,7 @@ const translations = {
         },
         Encuesta: {
             title: "Crear Encuesta",
-            hQuestion: "Pregunta",                                  inQuestion: "Ingresa tu pregunta",                   inWeight: "Ingresa el peso",
+            hQuestion: "Nueva pregunta",                                  inQuestion: "Ingresa tu pregunta",                   inWeight: "Ingresa el peso",
             hAttachment: "Archivo",
             hEdtQuestion: "Editar Pregunta:",
             btAddQuestion: "Agregar Pregunta",
