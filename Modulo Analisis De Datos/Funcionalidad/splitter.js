@@ -952,7 +952,7 @@ function generateNPSDonutChart(npsData, chartId) {
             </div>
             
             <!-- Barra NPS -->
-            <div class="nps-bar-container" style="width: 100%; height: 60px; display: flex; border-radius: 30px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin: 10px 0;">
+            <div class="nps-bar-container" style="width: 100%; height: 60px; display: flex; border-radius: 15px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin: 10px 0;">
                 <!-- Segmento Detractores -->
                 <div class="nps-segment nps-detractores" style="
                     width: ${detractoresWidth}%; 
@@ -1000,7 +1000,7 @@ function generateNPSDonutChart(npsData, chartId) {
             </div>
             
             <!-- Etiquetas de rangos -->
-            <div class="nps-labels-container" style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 12px; color: #666;">
+            <div class="nps-labels-container" style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 15px; color: #666;">
                 <div class="nps-label" style="text-align: left;">
                     <strong style="color: #dc3545;">Detractores</strong><br>
                     Puntuación: 0-6
