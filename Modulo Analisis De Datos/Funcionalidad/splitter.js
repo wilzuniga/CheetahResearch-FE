@@ -908,106 +908,168 @@ function parseNPSSection(section) {
 }
 
 /**
- * Genera el HTML para el gráfico de dona NPS
+ * Genera el HTML para el gráfico de barra NPS personalizado
  * @param {Object} npsData - Datos NPS parseados
  * @param {string} chartId - ID único para el gráfico
  * @returns {string} HTML del contenedor del gráfico
  */
 function generateNPSDonutChart(npsData, chartId) {
+    const detractoresWidth = npsData.detractores;
+    const indiferentesWidth = npsData.indiferentes;
+    const promotoresWidth = npsData.promotores;
+    
+    // Generar iconos basados en los porcentajes (máximo 10 iconos por segmento)
+    const getIcons = (percentage, iconType) => {
+        const iconCount = Math.max(1, Math.min(10, Math.round(percentage / 10)));
+        let iconHTML = '';
+        for (let i = 0; i < iconCount; i++) {
+            iconHTML += `<span class="nps-icon nps-icon-${iconType}">😞</span>`;
+        }
+        return iconHTML;
+    };
+
+    const detractoresIcons = getIcons(detractoresWidth, 'sad').replace(/😞/g, '😞');
+    const indiferentesIcons = getIcons(indiferentesWidth, 'neutral').replace(/😞/g, '😐');
+    const promotoresIcons = getIcons(promotoresWidth, 'happy').replace(/😞/g, '😊');
+
     return `
         <div class="nps-chart-container" style="margin: 20px 0; padding: 20px; background: white; border-radius: 13px; border: 1px solid #e0e0e0;">
             <h4 style="text-align: center; margin-bottom: 20px; font-family: hedliner; color: #333;">
                 NPS TOTAL: ${npsData.npsTotal}%
             </h4>
-            <div style="width: 300px; height: 300px; margin: 0 auto;">
-                <canvas id="${chartId}"></canvas>
+            
+            <!-- Iconos encima de la barra -->
+            <div class="nps-icons-container" style="display: flex; justify-content: space-between; margin-bottom: 10px; height: 40px; align-items: end;">
+                <div class="nps-icons-section" style="width: ${detractoresWidth}%; display: flex; justify-content: center; flex-wrap: wrap;">
+                    ${detractoresIcons}
+                </div>
+                <div class="nps-icons-section" style="width: ${indiferentesWidth}%; display: flex; justify-content: center; flex-wrap: wrap;">
+                    ${indiferentesIcons}
+                </div>
+                <div class="nps-icons-section" style="width: ${promotoresWidth}%; display: flex; justify-content: center; flex-wrap: wrap;">
+                    ${promotoresIcons}
+                </div>
+            </div>
+            
+            <!-- Barra NPS -->
+            <div class="nps-bar-container" style="width: 100%; height: 60px; display: flex; border-radius: 30px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin: 10px 0;">
+                <!-- Segmento Detractores -->
+                <div class="nps-segment nps-detractores" style="
+                    width: ${detractoresWidth}%; 
+                    background: linear-gradient(45deg, #dc3545, #c82333);
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 14px;
+                    position: relative;
+                ">
+                    ${detractoresWidth > 8 ? detractoresWidth + '%' : ''}
+                </div>
+                
+                <!-- Segmento Indiferentes -->
+                <div class="nps-segment nps-indiferentes" style="
+                    width: ${indiferentesWidth}%; 
+                    background: linear-gradient(45deg, #ffc107, #e0a800);
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 14px;
+                    position: relative;
+                ">
+                    ${indiferentesWidth > 8 ? indiferentesWidth + '%' : ''}
+                </div>
+                
+                <!-- Segmento Promotores -->
+                <div class="nps-segment nps-promotores" style="
+                    width: ${promotoresWidth}%; 
+                    background: linear-gradient(45deg, #28a745, #218838);
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 14px;
+                    position: relative;
+                ">
+                    ${promotoresWidth > 8 ? promotoresWidth + '%' : ''}
+                </div>
+            </div>
+            
+            <!-- Etiquetas de rangos -->
+            <div class="nps-labels-container" style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 12px; color: #666;">
+                <div class="nps-label" style="text-align: left;">
+                    <strong style="color: #dc3545;">Detractores</strong><br>
+                    Puntuación: 0-6
+                </div>
+                <div class="nps-label" style="text-align: center;">
+                    <strong style="color: #ffc107;">Indiferentes</strong><br>
+                    Puntuación: 7-8
+                </div>
+                <div class="nps-label" style="text-align: right;">
+                    <strong style="color: #28a745;">Promotores</strong><br>
+                    Puntuación: 9-10
+                </div>
             </div>
         </div>
+        
+        <style>
+            .nps-icon {
+                font-size: 18px;
+                margin: 0 2px;
+                display: inline-block;
+                filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+            }
+            
+            .nps-icon-sad {
+                color: #dc3545;
+            }
+            
+            .nps-icon-neutral {
+                color: #ffc107;
+            }
+            
+            .nps-icon-happy {
+                color: #28a745;
+            }
+            
+            .nps-segment {
+                transition: all 0.3s ease;
+                border-right: 1px solid rgba(255,255,255,0.2);
+            }
+            
+            .nps-segment:last-child {
+                border-right: none;
+            }
+            
+            .nps-segment:hover {
+                transform: scaleY(1.05);
+                box-shadow: inset 0 0 20px rgba(255,255,255,0.2);
+            }
+            
+            .nps-icons-section {
+                transition: transform 0.2s ease;
+            }
+            
+            .nps-icons-section:hover {
+                transform: translateY(-2px);
+            }
+        </style>
     `;
 }
 
 /**
- * Crea el gráfico de dona NPS usando Chart.js
- * @param {string} chartId - ID del canvas
- * @param {Object} npsData - Datos NPS
+ * Función simplificada para NPS - ya no necesita Chart.js
+ * @param {string} chartId - ID del canvas (ya no se usa)
+ * @param {Object} npsData - Datos NPS (ya no se usa, el HTML se genera directamente)
  */
 function createNPSDonutChart(chartId, npsData) {
-    const canvas = document.getElementById(chartId);
-    if (!canvas) {
-        console.error(`Canvas con ID ${chartId} no encontrado`);
-        return;
-    }
-    
-    const ctx = canvas.getContext('2d');
-    
-    // Colores específicos para NPS
-    const colors = {
-        promotores: '#28a745',    // Verde para promotores
-        indiferentes: '#ffc107',  // Amarillo para indiferentes  
-        detractores: '#dc3545'    // Rojo para detractores
-    };
-    
-    const data = [
-        { label: 'Promotores', value: npsData.promotores, color: colors.promotores },
-        { label: 'Indiferentes', value: npsData.indiferentes, color: colors.indiferentes },
-        { label: 'Detractores', value: npsData.detractores, color: colors.detractores }
-    ];
-    
-    // Filtrar datos que tengan valor mayor a 0
-    const filteredData = data.filter(item => item.value > 0);
-    
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: filteredData.map(item => `${item.label} (${item.value}%)`),
-            datasets: [{
-                data: filteredData.map(item => item.value),
-                backgroundColor: filteredData.map(item => item.color + '80'), // Con transparencia
-                borderColor: filteredData.map(item => item.color),
-                borderWidth: 2,
-                hoverOffset: 4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            layout: {
-                padding: {
-                    top: 10,
-                    bottom: 10
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        padding: 15,
-                        usePointStyle: true,
-                        font: {
-                            size: 12,
-                            family: 'hedliner'
-                        }
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return `${context.label}: ${context.parsed}%`;
-                        }
-                    }
-                }
-            },
-            animation: {
-                animateRotate: true,
-                animateScale: true,
-                duration: 1000,
-                easing: 'easeOutQuart'
-            },
-            cutout: '60%',
-            radius: '90%'
-        }
-    });
+    // Esta función ya no es necesaria porque el gráfico se genera completamente en HTML/CSS
+    // Se mantiene para compatibilidad pero no hace nada
+    console.log('NPS chart generated with HTML/CSS - Chart.js no longer needed');
 }
 
 /**
