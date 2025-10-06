@@ -64,7 +64,7 @@ function createSurveyerFormReadOnly() {
                 <div class="form-section">
                     <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hImg">Imagen del Encuestador</p>
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" class="interviewer-image">
+                        <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" class="interviewer-image" onclick="openImageModal('${data.interviewerProfilePicture}')">
                     </div>
                     <input class="form-control" type="file" name="FileInput" id="FileInputEdit" accept="image/*" style="margin-top: 10px;">
                     <small class="form-text text-muted" style="margin-top: 8px; display: block;" data-i18n="CrearEncuestador.changeImageHint">Selecciona una nueva imagen para cambiar la actual (opcional)</small>
@@ -362,3 +362,50 @@ function adjustColor(color, percent) {//Funcion loca de chatsito
                 (B < 255 ? (B < 1 ? 0 : B) : 255))
                 .toString(16).slice(1).toUpperCase()}`;
 }
+
+// Funciones para el modal de imagen
+function openImageModal(imageSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    
+    modalImg.src = imageSrc;
+    modal.style.display = 'block';
+    
+    // Prevenir scroll del body cuando el modal está abierto
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+    
+    // Restaurar scroll del body
+    document.body.style.overflow = 'auto';
+}
+
+// Event listeners para el modal
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('imageModal');
+    const closeBtn = document.querySelector('.close-modal');
+    
+    // Cerrar modal al hacer click en la X
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeImageModal);
+    }
+    
+    // Cerrar modal al hacer click fuera de la imagen
+    if (modal) {
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeImageModal();
+            }
+        });
+    }
+    
+    // Cerrar modal con la tecla Escape
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeImageModal();
+        }
+    });
+});
