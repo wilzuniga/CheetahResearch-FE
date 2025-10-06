@@ -46,17 +46,17 @@ function load(){    // Actualizar el título del estudio desde sessionStorage
             const data = response.data;
             studyStatus = data.studyStatus;
             if(data.studyStatus == 0){
-                document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
-                document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
+                document.getElementById('HeaderPrincipalAnalisis').innerHTML = '<i class="fas fa-chart-bar"></i> Módulo de Análisis de Datos - No Activo';
+                document.getElementById('HeaderPrincipalRecoleccion').innerHTML = '<i class="fas fa-database"></i> Modulo de Recolección de Datos - No Activo';
             }else if(data.studyStatus == 1){
-                document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
-                document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - Activo';
+                document.getElementById('HeaderPrincipalAnalisis').innerHTML = '<i class="fas fa-chart-bar"></i> Módulo de Análisis de Datos - No Activo';
+                document.getElementById('HeaderPrincipalRecoleccion').innerHTML = '<i class="fas fa-database"></i> Modulo de Recolección de Datos - Activo';
             }else if(data.studyStatus == 2){
-                document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
-                document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
+                document.getElementById('HeaderPrincipalAnalisis').innerHTML = '<i class="fas fa-chart-bar"></i> Módulo de Análisis de Datos - Activo';
+                document.getElementById('HeaderPrincipalRecoleccion').innerHTML = '<i class="fas fa-database"></i> Modulo de Recolección de Datos - No Activo';
             }else if(data.studyStatus == 3){
-                document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
-                document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - Activo';
+                document.getElementById('HeaderPrincipalAnalisis').innerHTML = '<i class="fas fa-chart-bar"></i> Módulo de Análisis de Datos - Activo';
+                document.getElementById('HeaderPrincipalRecoleccion').innerHTML = '<i class="fas fa-database"></i> Modulo de Recolección de Datos - Activo';
             }
         }
         ) 
@@ -80,7 +80,7 @@ function load(){    // Actualizar el título del estudio desde sessionStorage
                     .then(response => {
                         // console.log(response.data);
                         const data = response.data;
-                            document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - Activo';
+                            document.getElementById('HeaderPrincipalAnalisis').innerHTML = '<i class="fas fa-chart-bar"></i> Módulo de Análisis de Datos - Activo';
                             studyStatus = 3;
                             //reiniciar la pagina
                             alert('El módulo de análisis de datos ha sido activado');
@@ -104,7 +104,7 @@ function load(){    // Actualizar el título del estudio desde sessionStorage
                     .then(response => {
                         // console.log(response.data);
                         const data = response.data;
-                            document.getElementById('HeaderPrincipalAnalisis').innerText = 'Módulo de Análisis de Datos - No Activo';
+                            document.getElementById('HeaderPrincipalAnalisis').innerHTML = '<i class="fas fa-chart-bar"></i> Módulo de Análisis de Datos - No Activo';
                             studyStatus = 1;
                             //reiniciar la pagina
                             alert('El módulo de análisis de datos ha sido desactivado');
@@ -134,7 +134,7 @@ function load(){    // Actualizar el título del estudio desde sessionStorage
                     .then(response => {
                         // console.log(response.data);
                         const data = response.data;
-                            document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - Activo';
+                            document.getElementById('HeaderPrincipalRecoleccion').innerHTML = '<i class="fas fa-database"></i> Modulo de Recolección de Datos - Activo';
                             studyStatus = 2;
                             //reiniciar la pagina
                             alert('El módulo de recolección de datos ha sido activado');
@@ -157,7 +157,7 @@ function load(){    // Actualizar el título del estudio desde sessionStorage
                     .then(response => {
                         // console.log(response.data);
                         const data = response.data;
-                            document.getElementById('HeaderPrincipalRecoleccion').innerText = 'Módulo de Recolección de Datos - No Activo';
+                            document.getElementById('HeaderPrincipalRecoleccion').innerHTML = '<i class="fas fa-database"></i> Modulo de Recolección de Datos - No Activo';
                             studyStatus = 0;
                             //reiniciar la pagina
                             alert('El módulo de recolección de datos ha sido desactivado');
@@ -268,7 +268,7 @@ function load(){    // Actualizar el título del estudio desde sessionStorage
 
             const eliminarBtn = document.createElement('button');
             eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-            eliminarBtn.innerText = 'Eliminar';
+            eliminarBtn.innerHTML = '<i class="fas fa-trash"></i> Eliminar';
             eliminarBtn.addEventListener('click', () => {
                 preguntaItem.remove();
                 //eliminar el filtro del arreglo
@@ -306,7 +306,7 @@ function load(){    // Actualizar el título del estudio desde sessionStorage
 
             const eliminarBtn = document.createElement('button');
             eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-            eliminarBtn.innerText = 'Eliminar';
+            eliminarBtn.innerHTML = '<i class="fas fa-trash"></i> Eliminar';
             eliminarBtn.addEventListener('click', () => {
                 filtroItem.remove();
                 //eliminar el filtro del arreglo
@@ -347,7 +347,7 @@ function load(){    // Actualizar el título del estudio desde sessionStorage
 
             const eliminarBtn = document.createElement('button');
             eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-            eliminarBtn.innerText = 'Eliminar';
+            eliminarBtn.innerHTML = '<i class="fas fa-trash"></i> Eliminar';
             eliminarBtn.addEventListener('click', () => {
                 dominioItem.remove();
                 //eliminar el filtro del arreglo
@@ -395,7 +395,7 @@ function AgregarFiltros() {
 
                 const eliminarBtn = document.createElement('button');
                 eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-                eliminarBtn.innerText = 'Eliminar';
+                eliminarBtn.innerHTML = '<i class="fas fa-trash"></i> Eliminar';
                 eliminarBtn.addEventListener('click', () => {
                     filtroItem.remove();
                     const index = filtros.indexOf(filtroTxt);
@@ -436,7 +436,7 @@ function AgregarPreguntas() {
 
                 const eliminarBtn = document.createElement('button');
                 eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-                eliminarBtn.innerText = 'Eliminar';
+                eliminarBtn.innerHTML = '<i class="fas fa-trash"></i> Eliminar';
                 eliminarBtn.addEventListener('click', () => {
                     preguntaItem.remove();
                     const index = preguntas.indexOf(preguntaTxt);
@@ -513,7 +513,7 @@ function AgregarDominios() {
 
                 const eliminarBtn = document.createElement('button');
                 eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-                eliminarBtn.innerText = 'Eliminar';
+                eliminarBtn.innerHTML = '<i class="fas fa-trash"></i> Eliminar';
                 eliminarBtn.addEventListener('click', () => {
                     dominioItem.remove();
                     const index = dominios.indexOf(dominioTxt);
@@ -555,7 +555,7 @@ function AgregarModulos() {
 
                 const eliminarBtn = document.createElement('button');
                 eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-                eliminarBtn.innerText = 'Eliminar';
+                eliminarBtn.innerHTML = '<i class="fas fa-trash"></i> Eliminar';
                 eliminarBtn.addEventListener('click', () => {
                     moduloItem.remove();
                 });
@@ -587,7 +587,7 @@ agregarModuloBtn.addEventListener('click', (e) => {
 
         const eliminarBtn = document.createElement('button');
         eliminarBtn.classList.add('btn', 'btn-danger', 'btn-sm');
-        eliminarBtn.innerText = 'Eliminar';
+        eliminarBtn.innerHTML = '<i class="fas fa-trash"></i> Eliminar';
         eliminarBtn.addEventListener('click', () => {
             moduloItem.remove();
         });
