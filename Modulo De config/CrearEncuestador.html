@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=League+Spartan&amp;display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
     <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
     <link rel="stylesheet" href="assets/css/Features-Small-Icons-icons.css">
@@ -22,6 +23,242 @@
         .disabled {
             pointer-events: none;
             opacity: 0.6;
+        }
+
+        /* Modern page styling - BASE */
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        /* Contenedor principal con efecto cristal */
+        #contentCard_PaginaOverview {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border: none !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 20px !important;
+        }
+
+        /* Secciones modulares */
+        .form-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
+        }
+
+        /* Títulos de sección */
+        .form-section p, .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-section p::before, .section-title::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--bs-CR-orange);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Controles de formulario modernos */
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control:focus {
+            border-color: var(--bs-CR-orange);
+            box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
+            background: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .form-control:hover {
+            border-color: #dee2e6;
+            background: #ffffff;
+        }
+
+        /* Textarea mejorado */
+        textarea.form-control {
+            resize: vertical;
+            min-height: 45px;
+            line-height: 1.5;
+        }
+
+        /* File input styling */
+        .form-control[type="file"] {
+            padding: 10px;
+            border: 2px dashed #e9ecef;
+            background: rgba(248, 249, 250, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .form-control[type="file"]:hover {
+            border-color: var(--bs-CR-orange);
+            background: rgba(255, 140, 66, 0.05);
+        }
+
+        /* Botones modernos */
+        .btn {
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Botón primario */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
+            color: var(--bs-CR-gray);
+            box-shadow: 0 4px 8px rgba(255, 140, 66, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ff8c42 0%, var(--bs-CR-orange) 100%);
+            box-shadow: 0 8px 16px rgba(255, 140, 66, 0.4);
+        }
+
+        /* Botón secundario */
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+            color: white;
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #5a6268 0%, #6c757d 100%);
+            box-shadow: 0 8px 16px rgba(108, 117, 125, 0.4);
+        }
+
+        /* Imagen del encuestador */
+        .interviewer-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--bs-CR-orange);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .interviewer-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Footer */
+        .footer-text {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 12px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .form-section:nth-child(1) { animation-delay: 0s; }
+        .form-section:nth-child(2) { animation-delay: 0.1s; }
+        .form-section:nth-child(3) { animation-delay: 0.2s; }
+        .form-section:nth-child(4) { animation-delay: 0.3s; }
+        .form-section:nth-child(5) { animation-delay: 0.4s; }
+        .form-section:nth-child(6) { animation-delay: 0.5s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .interviewer-image {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        /* Sidebar z-index fix */
+        .sidebar {
+            z-index: 1000 !important;
         }
     </style>
     <style>
@@ -118,11 +355,11 @@
                 </div>
             </div>
 
-            <div style="position: absolute; bottom: 0; left: 0; text-align: center; width: 100%;">
-                <strong data-i18n="brand"></strong>
-                <span data-i18n="registered"></span>
-                <strong data-i18n="company"></strong>.
-                <span data-i18n="rights"></span>
+            <div class="footer-text">
+                <strong>Cheetah Research</strong>
+                <span> es una marca registrada de </span>
+                <strong>Marketing Total S.A.</strong>
+                <span> Todos los derechos reservados.</span>
             </div>
 
         </div>
