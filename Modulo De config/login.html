@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=League+Spartan&amp;display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <link rel="stylesheet" href="assets/assets_accounts/css/Font%20Awesome%205%20Brands.css">
     <link rel="stylesheet" href="assets/assets_accounts/css/Font%20Awesome%205%20Free.css">
@@ -22,6 +23,162 @@
     <link rel="stylesheet" href="assets/assets_accounts/css/Responsiveness.css">
     
     <style>
+        /* Modern page styling - BASE */
+        body {
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%) !important;
+            min-height: 100vh;
+        }
+
+        /* Card moderna con efecto cristal */
+        .card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border: none !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+            border-radius: 20px !important;
+        }
+
+        /* Títulos modernos */
+        h4 {
+            font-family: hedliner !important;
+            font-weight: bold !important;
+            color: #2c3e50 !important;
+            font-size: 28px !important;
+            margin-bottom: 25px !important;
+        }
+
+        /* Controles de formulario modernos */
+        .form-control {
+            border: 2px solid #e9ecef !important;
+            border-radius: 12px !important;
+            padding: 15px 20px !important;
+            font-size: 14px !important;
+            font-family: IBM Plex Sans !important;
+            transition: all 0.3s ease !important;
+            background: rgba(255, 255, 255, 0.9) !important;
+            margin-bottom: 15px !important;
+        }
+
+        .form-control:focus {
+            border-color: var(--bs-CR-orange) !important;
+            box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25) !important;
+            background: #ffffff !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .form-control:hover {
+            border-color: #dee2e6 !important;
+            background: #ffffff !important;
+        }
+
+        /* Botones modernos */
+        .btn {
+            border-radius: 12px !important;
+            padding: 15px 25px !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            font-family: hedliner !important;
+            transition: all 0.3s ease !important;
+            border: none !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .btn:active {
+            transform: translateY(0) !important;
+        }
+
+        /* Botón primario */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%) !important;
+            color: var(--bs-CR-gray) !important;
+            box-shadow: 0 4px 8px rgba(255, 140, 66, 0.3) !important;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ff8c42 0%, var(--bs-CR-orange) 100%) !important;
+            box-shadow: 0 8px 16px rgba(255, 140, 66, 0.4) !important;
+        }
+
+        /* Botón secundario */
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--bs-CR-black-dark) 0%, #1a1a1a 100%) !important;
+            color: white !important;
+            border: 2px solid var(--bs-CR-orange) !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%) !important;
+            border-color: var(--bs-CR-black-dark) !important;
+            box-shadow: 0 8px 16px rgba(255, 140, 66, 0.4) !important;
+        }
+
+        /* Enlaces modernos */
+        a {
+            color: var(--bs-CR-orange) !important;
+            font-family: hedliner !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease !important;
+        }
+
+        a:hover {
+            color: #ff8c42 !important;
+            text-decoration: underline !important;
+        }
+
+        /* Texto de error */
+        #Error-Login {
+            font-family: IBM Plex Sans !important;
+            background: rgba(220, 53, 69, 0.1) !important;
+            border: 1px solid rgba(220, 53, 69, 0.3) !important;
+            border-radius: 8px !important;
+            padding: 10px 15px !important;
+            margin-bottom: 15px !important;
+        }
+
+        /* Párrafos */
+        p {
+            font-family: IBM Plex Sans !important;
+            color: #6c757d !important;
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
         /* Estilos para el botón de herramientas de administración */
         #AdminToolsBTN {
             opacity: 0;
@@ -33,12 +190,22 @@
             opacity: 1;
             transform: translateY(0);
         }
-        
-        #AdminToolsBTN:hover {
-            background-color: var(--bs-CR-orange) !important;
-            border-color: var(--bs-CR-black-dark) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .card {
+                margin: 20px !important;
+                border-radius: 15px !important;
+            }
+            
+            h4 {
+                font-size: 24px !important;
+            }
+            
+            .btn {
+                width: 100% !important;
+                margin-bottom: 10px !important;
+            }
         }
     </style>
 </head>
@@ -65,9 +232,15 @@
                                         <div class="mb-3" style="font-family:hedliner;">
                                             <div class="custom-checkbox small" style="font-family:hedliner;"></div>
                                         </div>
-                                        <hr style="font-family:hedliner;"><button class="btn btn-primary d-block btn-user w-100" id="IniciarSesionBTN" type="submit" style="font-family:hedliner; background-color: var(--bs-CR-orange);">Iniciar Sesión</button>
+                                        <hr style="font-family:hedliner;"><button class="btn btn-primary d-block btn-user w-100" id="IniciarSesionBTN" type="submit" style="font-family:hedliner;">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                            Iniciar Sesión
+                                        </button>
                                         <hr style="font-family:hedliner;">
-                                        <button class="btn btn-secondary d-block btn-user w-100" id="AdminToolsBTN" type="button" style="font-family:hedliner; background-color: var(--bs-CR-black-dark); display: none; margin-top: 10px; border: 2px solid var(--bs-CR-orange); color: white; transition: all 0.3s ease;">Administración de la App</button>
+                                        <button class="btn btn-secondary d-block btn-user w-100" id="AdminToolsBTN" type="button" style="font-family:hedliner; display: none; margin-top: 10px;">
+                                            <i class="fas fa-cogs"></i>
+                                            Administración de la App
+                                        </button>
                                     </form>
                                     <div class="text-center" style="font-family:hedliner;"><a class="small" href="https://www.cheetah-research.ai/reset_password/" style="font-family:hedliner;">¿Olvidaste tu contraseña?</a></div>
                                     <div class="text-center" style="font-family:hedliner;"><a class="small" href="https://www.cheetah-research.ai/signup/" style="font-family:hedliner;">Solicita Acceso</a></div>
