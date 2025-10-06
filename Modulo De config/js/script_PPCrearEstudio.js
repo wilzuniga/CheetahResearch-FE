@@ -200,11 +200,8 @@ function appendStudyForm() {
     formContainer.innerHTML = createStudyForm();
 
     document.getElementById('CrearEstudioBtn').addEventListener('click', () => {
-        const studyData = CaptureAndPostformdta();
-        // console.log(studyData);
-        alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyCreated'));
-        //guardar en localsotrage el estudio creado
-        sessionStorage.setItem('selectedStudyData', JSON.stringify(studyData));
+        CaptureAndPostformdta();
+        // Nota: CaptureAndPostformdta ahora maneja todo internamente incluyendo alerts y sessionStorage
     });
 
     //Color Change: Colores Default
@@ -221,11 +218,8 @@ function appendFilledStudyForm() {
     const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
 
     document.getElementById('UpdateEstudio').addEventListener('click', () => {
-        const studyData = UpdateAndPostformdta();
-        //actualizar el estudio salvado en sessionStorage
-        sessionStorage.setItem('selectedStudyData', JSON.stringify(studyData));
-        // console.log(studyData);
-        alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyUpdated'));
+        UpdateAndPostformdta();
+        // Nota: UpdateAndPostformdta ahora maneja todo internamente incluyendo alerts y sessionStorage
     });
 
     //Color Change: Colores Default
@@ -268,6 +262,31 @@ function deleteFromLocStrg() {
     }
 }
 
+// Función para obtener datos frescos del estudio desde la API
+function getStudyFromAPI(studyId) {
+    const url = `https://api.cheetah-research.ai/configuration/info_study/${studyId}`;
+    
+    return axios.get(url, {
+        headers: {
+            'Authorization': `Token ${sessionStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        // Limpiar datos anteriores del sessionStorage
+        sessionStorage.removeItem('selectedStudyData');
+        
+        // Guardar los datos frescos
+        sessionStorage.setItem('selectedStudyData', JSON.stringify(response.data));
+        
+        return response.data;
+    })
+    .catch(error => {
+        console.error('Error al obtener datos del estudio:', error);
+        throw error;
+    });
+}
+
 function CaptureAndPostformdta() {
     const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     const tituloDelEstudio = document.getElementById('TituloDelEstudioTXT').value;
@@ -295,22 +314,19 @@ function CaptureAndPostformdta() {
     })
     .then(response => {
         alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyCreated'));
-        sessionStorage.setItem('selectedStudyId', response.data.study_id);
-        sessionStorage.setItem('selectedStudyData', JSON.stringify(response.data));
-    
+        const studyId = response.data.study_id;
+        sessionStorage.setItem('selectedStudyId', studyId);
+        
+        // Obtener datos frescos de la API después de crear
+        return getStudyFromAPI(studyId);
+    })
+    .then(freshData => {
+        // Los datos frescos ya están guardados en sessionStorage por getStudyFromAPI
         CE_DeactivateNavBy();
     })
     .catch(error => {
         console.error('Error al crear el estudio:', error);
     });
-    
-    return {
-        tituloDelEstudio,
-        mercadoObjetivo,
-        objetivosDelEstudio,
-        promptDelEstudio,
-    };
-    
 }
 
 function UpdateAndPostformdta() {
@@ -341,19 +357,17 @@ function UpdateAndPostformdta() {
     })
     .then(response => {
         alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyUpdated'));
-        sessionStorage.setItem('selectedStudyData', JSON.stringify(response.data));
+        
+        // Obtener datos frescos de la API después de actualizar
+        return getStudyFromAPI(studyId);
+    })
+    .then(freshData => {
+        // Los datos frescos ya están guardados en sessionStorage por getStudyFromAPI
+        // Actualizar la interfaz si es necesario
     })
     .catch(error => {
         console.error('Error al actualizar el estudio:', error);
     });
-    
-    return {
-        tituloDelEstudio,
-        mercadoObjetivo,
-        objetivosDelEstudio,
-        promptDelEstudio,
-    };
-    
 }
 
 // Llama a la función cuando la página se carga completamente
