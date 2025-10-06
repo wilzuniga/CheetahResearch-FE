@@ -3,32 +3,44 @@
 function createSurveyerForm() {
     const formContainer = document.createElement('div');
     formContainer.innerHTML = `
-        <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="CrearEncuestador.createTitle">Crear Encuestador</h2>
-        <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
-            <div class="mb-3">
-            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.selectImg">Seleccionar Imagen</p>
-            <input class="form-control" type="file" name="FileInput">
+        <div style="font-family: 'hedliner', sans-serif; padding: 20px;">
+            <div class="form-section">
+                <h2 class="section-title" style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.createTitle">Crear Encuestador</h2>
             </div>
-            <div class="mb-3">
-            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hInterviewerName">Nombre del Encuestador</p>
-            <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" data-i18n-placeholder="CrearEncuestador.inInterviewerName" style="font-family: 'IBM Plex Sans'">
+            
+            <div class="form-section">
+                <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.selectImg">Seleccionar Imagen</p>
+                <input class="form-control" type="file" name="FileInput" accept="image/*">
+                <small class="form-text text-muted" style="margin-top: 8px; display: block;">Selecciona una imagen para el perfil del encuestador</small>
             </div>
-            <div class="mb-3">
-            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono del encuestador y sugerencias relevantes</p>
-            <textarea class="form-control" id="TonoEncuestadorTXT" name="Tono Encuestador" rows="4" data-i18n-placeholder="CrearEncuestador.inTone" style="font-family: 'IBM Plex Sans'"></textarea>
+            
+            <div class="form-section">
+                <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hInterviewerName">Nombre del Encuestador</p>
+                <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" data-i18n-placeholder="CrearEncuestador.inInterviewerName" style="font-family: 'IBM Plex Sans';" placeholder="Ingresa el nombre del encuestador">
             </div>
-            <div class="mb-3">
-            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hObservations">Observaciones importantes</p>
-            <textarea class="form-control" id="ObservacionesImportantesTXT" name="Observaciones Importantes" rows="4" data-i18n-placeholder="CrearEncuestador.inObservations" style="font-family: 'IBM Plex Sans'"></textarea>
+            
+            <div class="form-section">
+                <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono del encuestador y sugerencias relevantes</p>
+                <textarea class="form-control" id="TonoEncuestadorTXT" name="Tono Encuestador" rows="4" data-i18n-placeholder="CrearEncuestador.inTone" style="font-family: 'IBM Plex Sans';" placeholder="Describe el tono y estilo de comunicación del encuestador"></textarea>
             </div>
-            <div class="mb-3">
-            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hGreeting">Saludo</p>
-            <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" data-i18n-placeholder="CrearEncuestador.inGreeting" style="font-family: 'IBM Plex Sans'"></textarea>
+            
+            <div class="form-section">
+                <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hObservations">Observaciones importantes</p>
+                <textarea class="form-control" id="ObservacionesImportantesTXT" name="Observaciones Importantes" rows="4" data-i18n-placeholder="CrearEncuestador.inObservations" style="font-family: 'IBM Plex Sans';" placeholder="Agrega observaciones importantes para el encuestador"></textarea>
             </div>
-            <div style="width: 250px;">
-            <button class="btn btn-primary d-block w-100" id="CrearEncuestadorBtn" type="submit" style="font-weight: bold; font-size: 20px; border-radius : 13px;" data-i18n="CrearEncuestador.btCreate">Crear Encuestador</button>
+            
+            <div class="form-section">
+                <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hGreeting">Saludo</p>
+                <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" data-i18n-placeholder="CrearEncuestador.inGreeting" style="font-family: 'IBM Plex Sans';" placeholder="Escribe el saludo inicial que usará el encuestador"></textarea>
             </div>
-        </form>
+            
+            <div class="form-section" style="text-align: center;">
+                <button class="btn btn-primary d-block" id="CrearEncuestadorBtn" type="submit" style="font-weight: bold; font-size: 16px; font-family: 'hedliner', sans-serif; min-width: 200px;" data-i18n="CrearEncuestador.btCreate">
+                    <i class="fas fa-user-plus" style="margin-right: 8px;"></i>
+                    Crear Encuestador
+                </button>
+            </div>
+        </div>
         `;
     return formContainer;
 }
@@ -44,35 +56,47 @@ function createSurveyerFormReadOnly() {
     }).then(response => {
         const data = response.data;
         formContainer.innerHTML = `
-            <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.title">Encuestador</h2>
-            <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
-                <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hImg">Imagen del Encuestador</p>
-                    <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px;">
-                    <br>
-                    <input class="form-control" type="file" name="FileInput" id="FileInputEdit" style="margin-top: 10px;">
-                    <small class="form-text text-muted" data-i18n="CrearEncuestador.changeImageHint">Selecciona una nueva imagen para cambiar la actual (opcional)</small>
+            <div style="font-family: 'hedliner', sans-serif; padding: 20px;">
+                <div class="form-section">
+                    <h2 class="section-title" style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.title">Encuestador</h2>
                 </div>
-                <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hInterviewerName">Nombre del Encuestador</p>
-                    <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" data-i18n-placeholder="CrearEncuestador.inInterviewerName" value="${data.interviewerName}" style="font-family: 'IBM Plex Sans'">
+                
+                <div class="form-section">
+                    <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hImg">Imagen del Encuestador</p>
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" class="interviewer-image">
+                    </div>
+                    <input class="form-control" type="file" name="FileInput" id="FileInputEdit" accept="image/*" style="margin-top: 10px;">
+                    <small class="form-text text-muted" style="margin-top: 8px; display: block;" data-i18n="CrearEncuestador.changeImageHint">Selecciona una nueva imagen para cambiar la actual (opcional)</small>
                 </div>
-                <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono del encuestador y sugerencias relevantes</p>
-                    <textarea class="form-control" id="TonoEncuestadorTXT" name="Tono Encuestador" rows="4" data-i18n-placeholder="CrearEncuestador.inTone" style="font-family: 'IBM Plex Sans'">${data.interviewerTone}</textarea>
+                
+                <div class="form-section">
+                    <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hInterviewerName">Nombre del Encuestador</p>
+                    <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" data-i18n-placeholder="CrearEncuestador.inInterviewerName" value="${data.interviewerName}" style="font-family: 'IBM Plex Sans';">
                 </div>
-                <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hObservations">Observaciones importantes</p>
-                    <textarea class="form-control" id="ObservacionesImportantesTXT" name="Observaciones Importantes" rows="4" data-i18n-placeholder="CrearEncuestador.inObservations" style="font-family: 'IBM Plex Sans'">${data.importantObservation}</textarea>
+                
+                <div class="form-section">
+                    <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono del encuestador y sugerencias relevantes</p>
+                    <textarea class="form-control" id="TonoEncuestadorTXT" name="Tono Encuestador" rows="4" data-i18n-placeholder="CrearEncuestador.inTone" style="font-family: 'IBM Plex Sans';">${data.interviewerTone}</textarea>
                 </div>
-                <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hGreeting">Saludo</p>
-                    <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" data-i18n-placeholder="CrearEncuestador.inGreeting" style="font-family: 'IBM Plex Sans'">${data.interviewerGreeting}</textarea>
+                
+                <div class="form-section">
+                    <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hObservations">Observaciones importantes</p>
+                    <textarea class="form-control" id="ObservacionesImportantesTXT" name="Observaciones Importantes" rows="4" data-i18n-placeholder="CrearEncuestador.inObservations" style="font-family: 'IBM Plex Sans';">${data.importantObservation}</textarea>
                 </div>
-                <div style="width: 250px;">
-                    <button class="btn btn-primary d-block w-100" id="ActualizarEncuestadorBtn" type="button" style="font-weight: bold; font-size: 20px; border-radius : 13px; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="CrearEncuestador.btUpdate">Actualizar Encuestador</button>
+                
+                <div class="form-section">
+                    <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hGreeting">Saludo</p>
+                    <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" data-i18n-placeholder="CrearEncuestador.inGreeting" style="font-family: 'IBM Plex Sans';">${data.interviewerGreeting}</textarea>
                 </div>
-            </form>
+                
+                <div class="form-section" style="text-align: center;">
+                    <button class="btn btn-primary d-block" id="ActualizarEncuestadorBtn" type="button" style="font-weight: bold; font-size: 16px; font-family: 'hedliner', sans-serif; min-width: 200px;" data-i18n="CrearEncuestador.btUpdate">
+                        <i class="fas fa-sync-alt" style="margin-right: 8px;"></i>
+                        Actualizar Encuestador
+                    </button>
+                </div>
+            </div>
         `;
 
         document.getElementById('ActualizarEncuestadorBtn').addEventListener('click', (event) => {
