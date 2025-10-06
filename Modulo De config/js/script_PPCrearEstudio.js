@@ -262,9 +262,11 @@ function deleteFromLocStrg() {
     }
 }
 
-// Función para obtener datos frescos del estudio desde la API
-function getStudyFromAPI(studyId) {
-    const url = `https://api.cheetah-research.ai/configuration/info_study/${studyId}`;
+// Función para obtener datos completos del estudio desde la API
+function getCompleteStudyFromAPI(studyId) {
+    // Primero intentamos obtener los datos de la lista de estudios del usuario
+    const userId = sessionStorage.getItem('user_id');
+    const url = `https://api.cheetah-research.ai/configuration/get_studies_by_user_id/${userId}/`;
     
     return axios.get(url, {
         headers: {
@@ -273,21 +275,29 @@ function getStudyFromAPI(studyId) {
         }
     })
     .then(response => {
-        // Limpiar datos anteriores del sessionStorage
-        sessionStorage.removeItem('selectedStudyData');
+        // Buscar el estudio específico en la lista
+        const studies = response.data;
+        const targetStudy = studies.find(study => study._id === studyId);
         
-        // Guardar los datos frescos
-        sessionStorage.setItem('selectedStudyData', JSON.stringify(response.data));
-        
-        console.log('Datos del estudio actualizados en sessionStorage:', response.data);
-        
-        // Verificar que los datos se guardaron correctamente
-        verifySessionStorageUpdate();
-        
-        return response.data;
+        if (targetStudy) {
+            // Limpiar datos anteriores del sessionStorage
+            sessionStorage.removeItem('selectedStudyData');
+            
+            // Guardar los datos frescos
+            sessionStorage.setItem('selectedStudyData', JSON.stringify(targetStudy));
+            
+            console.log('Datos completos del estudio actualizados en sessionStorage:', targetStudy);
+            
+            // Verificar que los datos se guardaron correctamente
+            verifySessionStorageUpdate();
+            
+            return targetStudy;
+        } else {
+            throw new Error(`Estudio con ID ${studyId} no encontrado`);
+        }
     })
     .catch(error => {
-        console.error('Error al obtener datos del estudio:', error);
+        console.error('Error al obtener datos completos del estudio:', error);
         throw error;
     });
 }
@@ -358,7 +368,7 @@ function CaptureAndPostformdta() {
         sessionStorage.setItem('selectedStudyId', studyId);
         
         // Obtener datos frescos de la API después de crear
-        return getStudyFromAPI(studyId);
+        return getCompleteStudyFromAPI(studyId);
     })
     .then(freshData => {
         // Los datos frescos ya están guardados en sessionStorage por getStudyFromAPI
@@ -405,7 +415,7 @@ function UpdateAndPostformdta() {
         alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyUpdated'));
         
         // Obtener datos frescos de la API después de actualizar
-        return getStudyFromAPI(studyId);
+        return getCompleteStudyFromAPI(studyId);
     })
     .then(freshData => {
         // Los datos frescos ya están guardados en sessionStorage por getStudyFromAPI
@@ -433,11 +443,15 @@ function verifySessionStorageUpdate() {
     if (selectedStudyData) {
         try {
             const parsedData = JSON.parse(selectedStudyData);
-            console.log('selectedStudyData:', parsedData);
+            console.log('selectedStudyData completo:', parsedData);
             console.log('Título:', parsedData.title);
             console.log('Mercado objetivo:', parsedData.marketTarget);
             console.log('Objetivos:', parsedData.studyObjectives);
             console.log('Prompt:', parsedData.prompt);
+            console.log('ID del estudio:', parsedData._id);
+            console.log('Fecha de creación:', parsedData.studyDate);
+            console.log('Color primario:', parsedData.primary_color);
+            console.log('Color secundario:', parsedData.secondary_color);
         } catch (error) {
             console.error('Error parseando selectedStudyData:', error);
         }
