@@ -45,12 +45,12 @@
         .form-section {
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             border-radius: 15px;
-            padding: 25px;
+            padding: 30px;
             margin-bottom: 25px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .form-section::before {
@@ -61,19 +61,21 @@
             width: 100%;
             height: 4px;
             background: linear-gradient(90deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
+            border-radius: 15px 15px 0 0;
         }
 
         /* Títulos de sección */
         .form-section p, .section-title {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 20px;
+            font-weight: bold;
             color: #2c3e50;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
             position: relative;
             z-index: 2;
+            font-family: hedliner !important;
         }
 
         .form-section p::before, .section-title::before {
@@ -122,6 +124,7 @@
             padding: 12px 24px;
             font-weight: 600;
             font-size: 14px;
+            font-family: hedliner !important;
             transition: all 0.3s ease;
             border: none;
             position: relative;
@@ -417,7 +420,7 @@
                     <div class="form-section">
                         <h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: hedliner;" data-i18n="LanzarEstudio.title">Lanzar Estudio</h2>
                         <div class="mb-3">
-                            <p id="TituloDelEstudio" class="section-title" data-i18n="LanzarEstudio.hStudyTitle">Titulo del Estudio</p>
+                            <p id="TituloDelEstudio" class="section-title" style="font-family: hedliner;" data-i18n="LanzarEstudio.hStudyTitle">Titulo del Estudio</p>
                             <p id="TituloEstudioLBL" style="font-size: 17px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: IBM Plex Sans;" data-i18n="LanzarEstudio.hStudyTitle">Titulo del Estudio</p>
                         </div>
                     </div>
@@ -429,12 +432,12 @@
                                 Filtros
                             </p>
                             <input class="form-control" type="text" id="FiltrosTXT" name="bservaciones Importantes"  data-i18n-placeholder="LanzarEstudio.inFilters" style="font-family: IBM Plex Sans;">
-                            <div class="button-group" style="margin-top: 15px;">
-                                <button class="btn btn-primary" id="AgregarFiltroBTN" type="button" data-i18n="LanzarEstudio.btAdd">
+                            <div class="button-group" style="margin-top: 15px; margin-bottom: 15px;">
+                                <button class="btn btn-primary" id="AgregarFiltroBTN" type="button" style="font-family: hedliner;" data-i18n="LanzarEstudio.btAdd">
                                     <i class="fas fa-plus"></i>
                                     Agregar
                                 </button>
-                                <button class="btn btn-primary" id="guardarFitroBTN" type="button" data-i18n="LanzarEstudio.btSave">
+                                <button class="btn btn-primary" id="guardarFitroBTN" type="button" style="font-family: hedliner;" data-i18n="LanzarEstudio.btSave">
                                     <i class="fas fa-save"></i>
                                     Guardar
                                 </button>
@@ -448,12 +451,12 @@
                                 Dominios Autorizados
                             </p>
                             <input class="form-control" type="text" id="DominiosTXT" name="bservaciones Importantes" placeholder="marketing-total.com" style="font-family: IBM Plex Sans;">
-                            <div class="button-group" style="margin-top: 15px;">
-                                <button class="btn btn-primary" id="AgregarDominioBTN" type="button" data-i18n="LanzarEstudio.btAdd">
+                            <div class="button-group" style="margin-top: 15px; margin-bottom: 15px;">
+                                <button class="btn btn-primary" id="AgregarDominioBTN" type="button" style="font-family: hedliner;" data-i18n="LanzarEstudio.btAdd">
                                     <i class="fas fa-plus"></i>
                                     Agregar
                                 </button>
-                                <button class="btn btn-primary" id="guardarDominioBTN" type="button" data-i18n="LanzarEstudio.btSave">
+                                <button class="btn btn-primary" id="guardarDominioBTN" type="button" style="font-family: hedliner;" data-i18n="LanzarEstudio.btSave">
                                     <i class="fas fa-save"></i>
                                     Guardar
                                 </button>
@@ -479,17 +482,17 @@
                                 <option value="Reputacion" data-i18n="LanzarEstudio.modReputacion">Modulo Reputación</option>
                                 <option value="PruebaProducto" data-i18n="LanzarEstudio.modPruebaProducto">Modulo Prueba de Producto</option>
                             </select>
-                            <ul class="list-group" id="ModulesLST" style="font-family: IBM Plex Sans;"></ul>
-                            <div class="button-group" style="margin-top: 15px;">
-                                <button class="btn btn-primary" id="AgregarModuloBTN" type="button" data-i18n="LanzarEstudio.btAdd">
+                            <div class="button-group" style="margin-bottom: 15px;">
+                                <button class="btn btn-primary" id="AgregarModuloBTN" type="button" style="font-family: hedliner;" data-i18n="LanzarEstudio.btAdd">
                                     <i class="fas fa-plus"></i>
                                     Agregar
                                 </button>
-                                <button class="btn btn-primary" id="guardarModuloBTN" type="button" data-i18n="LanzarEstudio.btSave">
+                                <button class="btn btn-primary" id="guardarModuloBTN" type="button" style="font-family: hedliner;" data-i18n="LanzarEstudio.btSave">
                                     <i class="fas fa-save"></i>
                                     Guardar
                                 </button>
                             </div>
+                            <ul class="list-group" id="ModulesLST" style="font-family: IBM Plex Sans;"></ul>
                         </div>
 
                         <div class="form-section">
@@ -498,12 +501,12 @@
                                 Preguntas Sugeridas
                             </p>
                             <input class="form-control" type="text" id="PreguntasTXT" name="bservaciones Importantes"  data-i18n-placeholder="LanzarEstudio.inSuggQuestion" style="font-family: IBM Plex Sans;">
-                            <div class="button-group" style="margin-top: 15px;">
-                                <button class="btn btn-primary" id="AgregarPreguntaBTN" type="button" data-i18n="LanzarEstudio.btAdd">
+                            <div class="button-group" style="margin-top: 15px; margin-bottom: 15px;">
+                                <button class="btn btn-primary" id="AgregarPreguntaBTN" type="button" style="font-family: hedliner;" data-i18n="LanzarEstudio.btAdd">
                                     <i class="fas fa-plus"></i>
                                     Agregar
                                 </button>
-                                <button class="btn btn-primary" id="guardarPreguntaBTN" type="button" data-i18n="LanzarEstudio.btSave">
+                                <button class="btn btn-primary" id="guardarPreguntaBTN" type="button" style="font-family: hedliner;" data-i18n="LanzarEstudio.btSave">
                                     <i class="fas fa-save"></i>
                                     Guardar
                                 </button>
@@ -522,7 +525,7 @@
                             </div>
                             <div class="card-body">
                                 <p id="ModuloDeRecoleccionURL" class="m-0" style="font-family: IBM Plex Sans;" data-i18n="LanzarEstudio.aRecollectionModule">LinkModuloRecoleccionDeDatos.com</p>
-                                <button id="StatusBtn_Recoleccion" class="btn btn-primary" style="margin-top: 15px;" data-i18n="LanzarEstudio.btChangeState">
+                                <button id="StatusBtn_Recoleccion" class="btn btn-primary" style="margin-top: 15px; font-family: hedliner;" data-i18n="LanzarEstudio.btChangeState">
                                     <i class="fas fa-toggle-on"></i>
                                     Cambiar Estado
                                 </button>
@@ -540,11 +543,11 @@
                             <div class="card-body">
                                 <p id="ModuloDeAnalisisURL" class="m-0" style="font-family: IBM Plex Sans;" data-i18n="LanzarEstudio.aAnalysisModule">LinkModuloAnalisisDeDatos.com</p>
                                 <div class="button-group" style="margin-top: 15px;">
-                                    <button id="StatusBtn_Analisis" class="btn btn-primary" data-i18n="LanzarEstudio.btChangeState">
+                                    <button id="StatusBtn_Analisis" class="btn btn-primary" style="font-family: hedliner;" data-i18n="LanzarEstudio.btChangeState">
                                         <i class="fas fa-toggle-on"></i>
                                         Cambiar Estado
                                     </button>
-                                    <button id="OTPBtn_Analisis" class="btn btn-primary" data-i18n="LanzarEstudio.btOTP">
+                                    <button id="OTPBtn_Analisis" class="btn btn-primary" style="font-family: hedliner;" data-i18n="LanzarEstudio.btOTP">
                                         <i class="fas fa-key"></i>
                                         Generar OTP
                                     </button>
@@ -553,7 +556,7 @@
                         </div>
 
                         <div class="form-section" style="text-align: center;">
-                            <button class="btn btn-primary" id="LanzarEstudioBtn" type="submit" style="font-weight: bold;font-size: 18px;padding: 15px 40px;" data-i18n="LanzarEstudio.btLaunch">
+                            <button class="btn btn-primary" id="LanzarEstudioBtn" type="submit" style="font-weight: bold;font-size: 18px;padding: 15px 40px; font-family: hedliner;" data-i18n="LanzarEstudio.btLaunch">
                                 <i class="fas fa-rocket"></i>
                                 Lanzar Estudio
                             </button>
