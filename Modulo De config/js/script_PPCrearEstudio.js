@@ -279,12 +279,52 @@ function getStudyFromAPI(studyId) {
         // Guardar los datos frescos
         sessionStorage.setItem('selectedStudyData', JSON.stringify(response.data));
         
+        console.log('Datos del estudio actualizados en sessionStorage:', response.data);
+        
+        // Verificar que los datos se guardaron correctamente
+        verifySessionStorageUpdate();
+        
         return response.data;
     })
     .catch(error => {
         console.error('Error al obtener datos del estudio:', error);
         throw error;
     });
+}
+
+// Función para actualizar todos los elementos de la interfaz con los datos frescos
+function updateInterfaceWithFreshData(studyData) {
+    try {
+        // Actualizar el nombre del proyecto en el sidebar
+        const nombreProyectoElement = document.getElementById('nombreProyectoLbl');
+        if (nombreProyectoElement && studyData.title) {
+            nombreProyectoElement.innerText = studyData.title;
+        }
+        
+        // Si estamos en el formulario de edición, actualizar los campos
+        const titleInput = document.getElementById('TituloDelEstudioTXT');
+        const targetInput = document.getElementById('MercadoObjetivoTXT');
+        const objectiveInput = document.getElementById('ObjetivosDelEstudioTXT');
+        const promptInput = document.getElementById('PromptGeneralTXT');
+        
+        if (titleInput && studyData.title) {
+            titleInput.value = studyData.title;
+        }
+        if (targetInput && studyData.marketTarget) {
+            targetInput.value = studyData.marketTarget;
+        }
+        if (objectiveInput && studyData.studyObjectives) {
+            objectiveInput.value = studyData.studyObjectives;
+        }
+        if (promptInput && studyData.prompt) {
+            promptInput.value = studyData.prompt;
+        }
+        
+        console.log('Interfaz actualizada con datos frescos');
+        
+    } catch (error) {
+        console.error('Error actualizando la interfaz:', error);
+    }
 }
 
 function CaptureAndPostformdta() {
@@ -322,7 +362,13 @@ function CaptureAndPostformdta() {
     })
     .then(freshData => {
         // Los datos frescos ya están guardados en sessionStorage por getStudyFromAPI
+        // Actualizar toda la interfaz con los datos frescos
+        updateInterfaceWithFreshData(freshData);
+        
+        // Actualizar navegación y otros elementos
         CE_DeactivateNavBy();
+        
+        console.log('Estudio creado y datos sincronizados correctamente');
     })
     .catch(error => {
         console.error('Error al crear el estudio:', error);
@@ -363,11 +409,42 @@ function UpdateAndPostformdta() {
     })
     .then(freshData => {
         // Los datos frescos ya están guardados en sessionStorage por getStudyFromAPI
-        // Actualizar la interfaz si es necesario
+        // Actualizar toda la interfaz con los datos frescos
+        updateInterfaceWithFreshData(freshData);
+        
+        // Actualizar navegación y otros elementos
+        CE_DeactivateNavBy();
+        
+        console.log('Estudio actualizado y datos sincronizados correctamente');
     })
     .catch(error => {
         console.error('Error al actualizar el estudio:', error);
     });
+}
+
+// Función para verificar y mostrar el estado actual del sessionStorage
+function verifySessionStorageUpdate() {
+    const selectedStudyData = sessionStorage.getItem('selectedStudyData');
+    const selectedStudyId = sessionStorage.getItem('selectedStudyId');
+    
+    console.log('=== Estado actual del sessionStorage ===');
+    console.log('selectedStudyId:', selectedStudyId);
+    
+    if (selectedStudyData) {
+        try {
+            const parsedData = JSON.parse(selectedStudyData);
+            console.log('selectedStudyData:', parsedData);
+            console.log('Título:', parsedData.title);
+            console.log('Mercado objetivo:', parsedData.marketTarget);
+            console.log('Objetivos:', parsedData.studyObjectives);
+            console.log('Prompt:', parsedData.prompt);
+        } catch (error) {
+            console.error('Error parseando selectedStudyData:', error);
+        }
+    } else {
+        console.log('selectedStudyData: null o undefined');
+    }
+    console.log('=== Fin estado sessionStorage ===');
 }
 
 // Llama a la función cuando la página se carga completamente
