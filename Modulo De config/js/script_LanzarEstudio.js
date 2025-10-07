@@ -23,17 +23,6 @@ function load(){    // Actualizar el título del estudio desde sessionStorage
     
     const datos = sessionStorage.getItem('selectedStudyData');
     // console.log(datos);
-    if (datos) {
-        const estudio = JSON.parse(datos);
-        // console.log(estudio.summary);
-
-        let coso = estudio.prompt;
-        //pasar de markdown a html
-
-        // Insertar el HTML en el div
-
-        document.getElementById('TituloEstudioLBL').innerText = estudio.title;
-    }
 
     const studyId = sessionStorage.getItem('selectedStudyId');
     setColorsFromAPI(studyId);//Setea colores
