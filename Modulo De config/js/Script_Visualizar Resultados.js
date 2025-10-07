@@ -283,6 +283,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const lang = sessionStorage.getItem('language') || 'es';
     setLanguage(lang);
     
+    // Aplicar colores del estudio
+    const studyId = sessionStorage.getItem('selectedStudyId');
+    if (studyId) {
+        setColorsFromAPI(studyId);
+    }
+    
     // Asocia el evento a todos los botones save-textarea
     document.querySelectorAll("button[id^='save-textarea_']").forEach(button => {
         button.addEventListener('click', function () {
