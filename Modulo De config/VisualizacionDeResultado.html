@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=League+Spartan&amp;display=swap">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
     <link rel="stylesheet" href="assets/css/Features-Small-Icons-icons.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
@@ -37,6 +38,151 @@
             }
         }  
         
+        /* Modern page styling - BASE */
+        body {
+            min-height: 100vh;
+        }
+
+        /* Contenedor principal con efecto cristal */
+        #contentCard_PaginaDetalleDeRespuesta {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            padding: 30px;
+            min-height: calc(100vh - 40px);
+        }
+
+        /* Estilos para los botones principales */
+        .btn {
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 12px 24px;
+            font-family: hedliner !important;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ff8c42 0%, var(--bs-CR-orange) 100%);
+            color: white;
+        }
+
+        /* Estilos para los controles de formulario */
+        select, textarea {
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            padding: 12px 16px;
+            font-family: IBM Plex Sans !important;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, textarea:focus {
+            border-color: var(--bs-CR-orange);
+            box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
+            outline: none;
+        }
+
+        /* Estilos para títulos */
+        h3 {
+            font-family: hedliner !important;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--bs-CR-orange);
+            margin-bottom: 20px;
+        }
+
+        /* Estilos para labels */
+        label {
+            font-family: hedliner !important;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        /* Estilos para la barra lateral */
+        .list-group-item {
+            border-radius: 12px !important;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .list-group-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-group-item.active {
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
+            border-color: var(--bs-CR-orange);
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-pane {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            #contentCard_PaginaDetalleDeRespuesta {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            h3 {
+                font-size: 20px;
+            }
+        }
 
     </style>
 
@@ -46,8 +192,6 @@
     <div id="wrapper">
 
         <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-end sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;background: var(--bs-CR-orange-2);">
-        
-            <nav class="navbar d-lg-flex d-xl-flex d-xxl-flex align-items-lg-end align-items-xxl-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="border-top-right-radius: 0;border-bottom-right-radius: 0;background: #000000;">
                 <div class="container-fluid d-flex flex-column p-0">
                     <a class="navbar-brand d-xxl-flex align-items-center justify-content-xxl-center align-items-xxl-center sidebar-brand m-0" href="https://www.cheetah-research.ai/home/"><img style="height: auto;width: 189px;margin: -11px;margin-bottom: 0px; margin-top: 10px;" src="assets/img/NegroLogo.png" /></a>
                     <p class="text-light" id="nombreProyectoLbl" style="font-family: 'hedliner', sans-serif;font-size: 12px;margin-left: 10px;"></p>
@@ -116,7 +260,6 @@
                         </li>
                     </ul>
                 </div>
-            </nav>
         </nav>
 
         <div class="d-flex flex-column" id="content-wrapper" style="position: relative;">
@@ -140,8 +283,8 @@
                             <div style="height: 95%;"></div>
 
                             <div class="d-xxl-flex justify-content-xxl-start" style="background: var(--bs-body-bg);margin: 10px;border-radius : 13px;width: initial;padding: initial;">
-                                <button class="btn btn-primary" id="botonForzarA" type="button" style="margin: 5px;font-weight: bold;font-family: hedliner;width: 45%; border-radius : 13px;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="VisualizacionDeResultado.btForceAnalysis">Ejecutar Analisis</button>
-                                <button class="btn btn-primary" id="botonImportar" type="button" style="margin: 5px;font-weight: bold;font-family: hedliner;width: 45%; border-radius : 13px;color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="VisualizacionDeResultado.btImport">Importar Datos</button>
+                                <button class="btn btn-primary" id="botonForzarA" type="button" style="margin: 5px;width: 45%;" data-i18n="VisualizacionDeResultado.btForceAnalysis"><i class="fas fa-play"></i> Ejecutar Analisis</button>
+                                <button class="btn btn-primary" id="botonImportar" type="button" style="margin: 5px;width: 45%;" data-i18n="VisualizacionDeResultado.btImport"><i class="fas fa-upload"></i> Importar Datos</button>
                             </div>
                         </div>
                     </div>
@@ -176,11 +319,11 @@
                                     </div>
                             
                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                    <button id="toggle-textarea_ResumenGeneral" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                    <button id="save-textarea_ResumenGeneral" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                    <button id="export_ResumenGeneral" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
-                                    <button id="download_markmap" style="display: none;">Descargar Mapa Mental</button>
-                                    <button id="download_sankey" style="display: none;">Descargar Diagrama Sankey</button>
+                                    <button class="btn btn-secondary" id="toggle-textarea_ResumenGeneral" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                    <button class="btn btn-primary" id="save-textarea_ResumenGeneral" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                    <button class="btn btn-secondary" id="export_ResumenGeneral" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
+                                    <button class="btn btn-secondary" id="download_markmap" style="display: none;"><i class="fas fa-sitemap"></i> Descargar Mapa Mental</button>
+                                    <button class="btn btn-secondary" id="download_sankey" style="display: none;"><i class="fas fa-project-diagram"></i> Descargar Diagrama Sankey</button>
 
 
                                 </div>
@@ -224,9 +367,9 @@
                                     </div>
                                 
                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                    <button id="toggle-textarea_ResumenIndividual" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                    <button id="save-textarea_ResumenIndividual" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                    <button id="export_ResumenIndividual" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                    <button class="btn btn-secondary" id="toggle-textarea_ResumenIndividual" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                    <button class="btn btn-primary" id="save-textarea_ResumenIndividual" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                    <button class="btn btn-secondary" id="export_ResumenIndividual" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                 </div>
 
@@ -301,9 +444,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_UserPersona" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_UserPersona" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_UserPersona" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_UserPersona" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_UserPersona" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_UserPersona" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
                                                 </div>
                                                 
                                                 
@@ -332,9 +475,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_UserArchetype" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_UserArchetype" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_UserArchetype" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_UserArchetype" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_UserArchetype" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_UserArchetype" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
                                                 </div>
                                                 
                                                 <!-- Contenedor para el textarea y el contenido del Arquetipo -->
@@ -368,9 +511,9 @@
                                     </div>
                             
                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                    <button id="toggle-textarea_customerExperience" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                    <button id="save-textarea_customerExperience" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                    <button id="export_customerExperience" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                    <button class="btn btn-secondary" id="toggle-textarea_customerExperience" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                    <button class="btn btn-primary" id="save-textarea_customerExperience" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                    <button class="btn btn-secondary" id="export_customerExperience" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
 
                                 </div>
@@ -412,9 +555,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_ClimaLaboral" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_ClimaLaboral" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_ClimaLaboral" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_ClimaLaboral" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_ClimaLaboral" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_ClimaLaboral" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                                 </div>
                                                 
@@ -458,9 +601,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_BrandStrenght" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_BrandStrenght" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_BrandStrenght" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_BrandStrenght" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_BrandStrenght" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_BrandStrenght" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                                 </div>
                                                 
@@ -491,9 +634,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_BrandEquity" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_BrandEquity" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_BrandEquity" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_BrandEquity" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_BrandEquity" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_BrandEquity" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                                 </div>
                                                 
@@ -542,9 +685,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_Satisfaccion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_Satisfaccion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_Satisfaccion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_Satisfaccion" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_Satisfaccion" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_Satisfaccion" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                                 </div>
                                                 
@@ -574,9 +717,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_NPS" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_NPS" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_NPS" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_NPS" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_NPS" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_NPS" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                                 </div>
                                             
@@ -633,9 +776,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_Ekman" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_Ekman" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_Ekman" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_Ekman" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_Ekman" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_Ekman" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                                 </div>
                                                 
@@ -665,9 +808,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_RasgosDePersonalidad" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_RasgosDePersonalidad" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_RasgosDePersonalidad" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_RasgosDePersonalidad" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_RasgosDePersonalidad" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_RasgosDePersonalidad" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
 
                                                 </div>
@@ -699,9 +842,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_SegmentosPsicograficos" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_SegmentosPsicograficos" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_SegmentosPsicograficos" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_SegmentosPsicograficos" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_SegmentosPsicograficos" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_SegmentosPsicograficos" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
 
                                                 </div>
@@ -733,9 +876,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_EstiloDeComunicacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_EstiloDeComunicacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_EstiloDeComunicacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_EstiloDeComunicacion" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_EstiloDeComunicacion" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_EstiloDeComunicacion" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                                 </div>
                                             
@@ -765,9 +908,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_Big5" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_Big5" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_Big5" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_Big5" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_Big5" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_Big5" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                                 </div>
                                             
@@ -812,9 +955,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_CustomerJourney" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_CustomerJourney" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_CustomerJourney" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_CustomerJourney" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_CustomerJourney" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_CustomerJourney" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                                 </div>
                                                 
@@ -860,9 +1003,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_Reputacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_Reputacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_Reputacion" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_Reputacion" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_Reputacion" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_Reputacion" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                                 </div>
                                                 
@@ -908,9 +1051,9 @@
                                                     </div>
                                             
                                                     <!-- Botón para mostrar/ocultar el textarea -->
-                                                    <button id="toggle-textarea_AP_PruebaProducto" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btEdit">Editar</button>
-                                                    <button id="save-textarea_AP_PruebaProducto" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btSave">Guardar Cambios</button>
-                                                    <button id="export_AP_PruebaProducto" style="border-radius : 13px;" data-i18n="VisualizacionDeResultado.btExport">Exportar</button>
+                                                    <button class="btn btn-secondary" id="toggle-textarea_AP_PruebaProducto" data-i18n="VisualizacionDeResultado.btEdit"><i class="fas fa-edit"></i> Editar</button>
+                                                    <button class="btn btn-primary" id="save-textarea_AP_PruebaProducto" data-i18n="VisualizacionDeResultado.btSave"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                    <button class="btn btn-secondary" id="export_AP_PruebaProducto" data-i18n="VisualizacionDeResultado.btExport"><i class="fas fa-download"></i> Exportar</button>
 
                                                 </div>
                                                 
@@ -937,11 +1080,8 @@
                 </div>
             </div>
 
-            <div style="position: absolute; bottom: 0; left: 0; text-align: center; width: 100%; margin-top: 10px; margin-bottom: -5px; background-color: #f0f0f0;">
-                <strong data-i18n="brand"></strong>
-                <span data-i18n="registered"></span>
-                <strong data-i18n="company"></strong>.
-                <span data-i18n="rights"></span>
+            <div style="position: absolute; bottom: 0; left: 0; text-align: center; width: 100%; margin-top: 10px; margin-bottom: -5px; background-color: #f0f0f0; padding: 15px; font-family: IBM Plex Sans;">
+                <strong>Cheetah Research</strong><span> es una marca registrada de </span><strong>Marketing Total S.A.</strong><span> Todos los derechos reservados.</span>
             </div>
         </div>
     </div>
