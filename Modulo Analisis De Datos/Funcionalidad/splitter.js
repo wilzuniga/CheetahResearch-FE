@@ -852,16 +852,23 @@ function parseNPSSection(section) {
     // Función auxiliar para extraer números de una línea después de dos puntos o igual
     function extractNumber(line) {
         // Buscar patrones como "label: 42%" o "label: 42" o "label = 42"
+        // Primero intentamos encontrar el último número en la línea después de : o =
         const patterns = [
-            /:\s*(-?\d+\.?\d*)%?/,  // Después de dos puntos
-            /=\s*(-?\d+\.?\d*)%?/,  // Después de igual
-            /\s+(-?\d+\.?\d*)%?\s*$/  // Número al final de la línea
+            /:\s*(\d+\.?\d*)%?\s*$/,  // Después de dos puntos al final
+            /:\s*(\d+\.?\d*)%?/,  // Después de dos puntos
+            /=\s*(\d+\.?\d*)%?\s*$/,  // Después de igual al final
+            /=\s*(\d+\.?\d*)%?/,  // Después de igual
+            /(\d+\.?\d*)%?\s*$/  // Número al final de la línea
         ];
         
         for (const pattern of patterns) {
             const match = line.match(pattern);
             if (match && match[1]) {
-                return parseFloat(match[1]);
+                const value = parseFloat(match[1]);
+                // Solo retornar valores que tengan sentido como porcentajes (0-100)
+                if (value >= 0 && value <= 100) {
+                    return value;
+                }
             }
         }
         return null;
@@ -939,8 +946,10 @@ function parseNPSSection(section) {
     // Buscar promotores con similitud
     for (const line of lines) {
         for (const pattern of promotoresBasePatterns) {
-            if (stringSimilarity(line.toLowerCase(), pattern.toLowerCase()) >= similarityThreshold) {
+            const similarity = stringSimilarity(line.toLowerCase(), pattern.toLowerCase());
+            if (similarity >= similarityThreshold) {
                 const value = extractNumber(line);
+                console.log(`Debug Promotores - Línea: "${line}", Pattern: "${pattern}", Similitud: ${similarity.toFixed(2)}, Valor: ${value}`);
                 if (value !== null && value >= 0) {
                     promotores = value;
                     break;
@@ -953,8 +962,10 @@ function parseNPSSection(section) {
     // Buscar indiferentes con similitud 
     for (const line of lines) {
         for (const pattern of indiferentesBasePatterns) {
-            if (stringSimilarity(line.toLowerCase(), pattern.toLowerCase()) >= similarityThreshold) {
+            const similarity = stringSimilarity(line.toLowerCase(), pattern.toLowerCase());
+            if (similarity >= similarityThreshold) {
                 const value = extractNumber(line);
+                console.log(`Debug Indiferentes - Línea: "${line}", Pattern: "${pattern}", Similitud: ${similarity.toFixed(2)}, Valor: ${value}`);
                 if (value !== null && value >= 0) {
                     indiferentes = value;
                     break;
@@ -967,8 +978,10 @@ function parseNPSSection(section) {
     // Buscar detractores con similitud
     for (const line of lines) {
         for (const pattern of detractoresBasePatterns) {
-            if (stringSimilarity(line.toLowerCase(), pattern.toLowerCase()) >= similarityThreshold) {
+            const similarity = stringSimilarity(line.toLowerCase(), pattern.toLowerCase());
+            if (similarity >= similarityThreshold) {
                 const value = extractNumber(line);
+                console.log(`Debug Detractores - Línea: "${line}", Pattern: "${pattern}", Similitud: ${similarity.toFixed(2)}, Valor: ${value}`);
                 if (value !== null && value >= 0) {
                     detractores = value;
                     break;
