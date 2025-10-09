@@ -819,10 +819,13 @@ export function processNPSCharts(markdownText) {
 function parseNPSSection(section) {
     // Buscar múltiples patrones de análisis NPS para mayor flexibilidad
     const npsAnalysisPatterns = [
-        /##### Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
         /##### Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (-?\d+)%\*\*/,
+        /##### Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
+        /Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (-?\d+)%\*\*/,
         /Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
+        /\*\*NPS = % Promotores - % Detractores = (-?\d+)%\*\*/,
         /\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
+        /NPS = % Promotores - % Detractores = (-?\d+)%/,
         /NPS = % Promotores - % Detractores = (\d+)%/
     ];
     
