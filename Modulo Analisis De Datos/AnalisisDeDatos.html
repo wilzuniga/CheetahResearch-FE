@@ -607,15 +607,18 @@
                                                     <h3 data-i18n="AnalisisDeDatos.titleClimaLaboral">Análisis de Clima Laboral</h3>
                                                     <p data-i18n="AnalisisDeDatos.descClimaLaboral">Este análisis integral evalúa el clima laboral a través de un estudio detallado que identifica factores clave, tendencias en los comentarios y áreas críticas de mejora. Se examinan correlaciones, se segmentan los empleados y se aplican modelos como Kano y ACSI para ofrecer una visión profunda de la situación actual y recomendaciones estratégicas.</p>
                                 
-                                                    <!-- Comboboxes y botón en una fila -->
-                                                    <div style="display: flex; align-items: end; gap: 10px; margin-bottom: 10px;">
-                                                        <div>
-                                                            <label for="Combobox_ClimaLaboral" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
-                                                            <select id="Combobox_ClimaLaboral" style="font-family: hedliner;">
-                                                                <!-- Opciones se agregarán dinámicamente aquí -->
-                                                            </select>
-
-                                                            <select id="ComboBox_ClimaLaboral_SubFiltro" style="font-family: hedliner; display: none;">
+                                                    <!-- Sección de controles mejorada -->
+                                                    <div class="controls-section">
+                                                        <div class="controls-row">
+                                                            <div class="control-group">
+                                                                <label for="Combobox_ClimaLaboral" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
+                                                                <select id="Combobox_ClimaLaboral">
+                                                                    <!-- Opciones se agregarán dinámicamente aquí -->
+                                                                </select>
+                                                            </div>
+                                                            
+                                                            <!-- Subfiltro oculto -->
+                                                            <select id="ComboBox_ClimaLaboral_SubFiltro" style="display: none;">
                                                                 <option value="---">---</option>
                                                                 <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
@@ -624,12 +627,13 @@
                                                                 <option value="2025-Ene">2025-Ene</option>
                                                                 <option value="2025-Feb">2025-Feb</option>
                                                             </select>
-
-                                                            
                                                         </div>
-                                                        <button id="export_AP_ClimaLaboral" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
+                                                        <div class="button-group">
+                                                            <button id="export_AP_ClimaLaboral" data-i18n="AnalisisDeDatos.btExport"><i class="fas fa-download"></i> Exportar</button>
+                                                        </div>
                                                     </div>
                                 
+                                                    <!-- Contenido del análisis -->
                                                     <div class="Content-Divs" id="ClimaLaboralContent" style="flex: 1;"></div>
                                                 </div>
                                             </div>
@@ -650,15 +654,18 @@
                                                     <h3 data-i18n="AnalisisDeDatos.titleCustomerJourney">Análisis de Customer Journey</h3>
                                                     <p data-i18n="AnalisisDeDatos.descCustomerJourney">Este análisis integral mapea y evalúa la experiencia completa del cliente a lo largo de su interacción con la marca. Se identifican los puntos de contacto críticos, momentos de verdad, emociones experimentadas en cada etapa, y se detectan oportunidades de mejora para optimizar el recorrido del cliente desde la conciencia inicial hasta la fidelización y recomendación.</p>
                                 
-                                                    <!-- Comboboxes y botón en una fila -->
-                                                    <div style="display: flex; align-items: end; gap: 10px; margin-bottom: 10px;">
-                                                        <div>
-                                                            <label for="Combobox_CustomerJourney" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
-                                                            <select id="Combobox_CustomerJourney" style="font-family: hedliner;">
-                                                                <!-- Opciones se agregarán dinámicamente aquí -->
-                                                            </select>
-
-                                                            <select id="ComboBox_CustomerJourney_SubFiltro" style="font-family: hedliner; display: none;">
+                                                    <!-- Sección de controles mejorada -->
+                                                    <div class="controls-section">
+                                                        <div class="controls-row">
+                                                            <div class="control-group">
+                                                                <label for="Combobox_CustomerJourney" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
+                                                                <select id="Combobox_CustomerJourney">
+                                                                    <!-- Opciones se agregarán dinámicamente aquí -->
+                                                                </select>
+                                                            </div>
+                                                            
+                                                            <!-- Subfiltro oculto -->
+                                                            <select id="ComboBox_CustomerJourney_SubFiltro" style="display: none;">
                                                                 <option value="---">---</option>
                                                                 <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
@@ -667,11 +674,13 @@
                                                                 <option value="2025-Ene">2025-Ene</option>
                                                                 <option value="2025-Feb">2025-Feb</option>
                                                             </select>
-                                                            
                                                         </div>
-                                                        <button id="export_AP_CustomerJourney" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
+                                                        <div class="button-group">
+                                                            <button id="export_AP_CustomerJourney" data-i18n="AnalisisDeDatos.btExport"><i class="fas fa-download"></i> Exportar</button>
+                                                        </div>
                                                     </div>
                                 
+                                                    <!-- Contenido del análisis -->
                                                     <div class="Content-Divs" id="CustomerJourneyContent" style="flex: 1;"></div>
                                                 </div>
                                             </div>
@@ -692,15 +701,18 @@
                                                     <h3 data-i18n="AnalisisDeDatos.titleReputacion">Análisis de Reputación</h3>
                                                     <p data-i18n="AnalisisDeDatos.descReputacion">Este análisis integral evalúa la reputación de la marca a través de un estudio detallado que examina la percepción pública, credibilidad, confianza y prestigio asociados con la organización. Se analizan menciones, sentimientos, crisis reputacionales potenciales y se identifican oportunidades para fortalecer la imagen corporativa y gestionar eficazmente la reputación digital y tradicional.</p>
                                 
-                                                    <!-- Comboboxes y botón en una fila -->
-                                                    <div style="display: flex; align-items: end; gap: 10px; margin-bottom: 10px;">
-                                                        <div>
-                                                            <label for="Combobox_Reputacion" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
-                                                            <select id="Combobox_Reputacion" style="font-family: hedliner;">
-                                                                <!-- Opciones se agregarán dinámicamente aquí -->
-                                                            </select>
-
-                                                            <select id="ComboBox_Reputacion_SubFiltro" style="font-family: hedliner; display: none;">
+                                                    <!-- Sección de controles mejorada -->
+                                                    <div class="controls-section">
+                                                        <div class="controls-row">
+                                                            <div class="control-group">
+                                                                <label for="Combobox_Reputacion" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
+                                                                <select id="Combobox_Reputacion">
+                                                                    <!-- Opciones se agregarán dinámicamente aquí -->
+                                                                </select>
+                                                            </div>
+                                                            
+                                                            <!-- Subfiltro oculto -->
+                                                            <select id="ComboBox_Reputacion_SubFiltro" style="display: none;">
                                                                 <option value="---">---</option>
                                                                 <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
@@ -709,11 +721,13 @@
                                                                 <option value="2025-Ene">2025-Ene</option>
                                                                 <option value="2025-Feb">2025-Feb</option>
                                                             </select>
-                                                            
                                                         </div>
-                                                        <button id="export_AP_Reputacion" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
+                                                        <div class="button-group">
+                                                            <button id="export_AP_Reputacion" data-i18n="AnalisisDeDatos.btExport"><i class="fas fa-download"></i> Exportar</button>
+                                                        </div>
                                                     </div>
                                 
+                                                    <!-- Contenido del análisis -->
                                                     <div class="Content-Divs" id="ReputacionContent" style="flex: 1;"></div>
                                                 </div>
                                             </div>
@@ -734,15 +748,18 @@
                                                     <h3 data-i18n="AnalisisDeDatos.titlePruebaProducto">Análisis de Prueba de Producto</h3>
                                                     <p data-i18n="AnalisisDeDatos.descPruebaProducto">Este análisis integral evalúa la efectividad y aceptación de productos a través de pruebas controladas con usuarios reales. Se examinan aspectos como usabilidad, funcionalidad, satisfacción del usuario, identificación de problemas y áreas de mejora. El análisis incluye métricas de rendimiento, feedback cualitativo y cuantitativo, y recomendaciones para optimizar el producto antes de su lanzamiento al mercado.</p>
                                 
-                                                    <!-- Comboboxes y botón en una fila -->
-                                                    <div style="display: flex; align-items: end; gap: 10px; margin-bottom: 10px;">
-                                                        <div>
-                                                            <label for="Combobox_PruebaProducto" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
-                                                            <select id="Combobox_PruebaProducto" style="font-family: hedliner;">
-                                                                <!-- Opciones se agregarán dinámicamente aquí -->
-                                                            </select>
-
-                                                            <select id="ComboBox_PruebaProducto_SubFiltro" style="font-family: hedliner; display: none;">
+                                                    <!-- Sección de controles mejorada -->
+                                                    <div class="controls-section">
+                                                        <div class="controls-row">
+                                                            <div class="control-group">
+                                                                <label for="Combobox_PruebaProducto" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
+                                                                <select id="Combobox_PruebaProducto">
+                                                                    <!-- Opciones se agregarán dinámicamente aquí -->
+                                                                </select>
+                                                            </div>
+                                                            
+                                                            <!-- Subfiltro oculto -->
+                                                            <select id="ComboBox_PruebaProducto_SubFiltro" style="display: none;">
                                                                 <option value="---">---</option>
                                                                 <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
                                                                 <option value="2024-Oct">2024-Oct</option>
@@ -751,11 +768,13 @@
                                                                 <option value="2025-Ene">2025-Ene</option>
                                                                 <option value="2025-Feb">2025-Feb</option>
                                                             </select>
-                                                            
                                                         </div>
-                                                        <button id="export_AP_PruebaProducto" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
+                                                        <div class="button-group">
+                                                            <button id="export_AP_PruebaProducto" data-i18n="AnalisisDeDatos.btExport"><i class="fas fa-download"></i> Exportar</button>
+                                                        </div>
                                                     </div>
                                 
+                                                    <!-- Contenido del análisis -->
                                                     <div class="Content-Divs" id="PruebaProductoContent" style="flex: 1;"></div>
                                                 </div>
                                             </div>
