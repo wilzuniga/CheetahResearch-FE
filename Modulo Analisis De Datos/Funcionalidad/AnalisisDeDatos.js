@@ -210,11 +210,15 @@ function initializePage() {
         document.getElementById('ComboBox_ResumenIndividualChartType').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualChartTypeLBL').style.display = 'none';
         
-        // Ocultar inicialmente los grupos de comparación y tipo de gráfico
-        const compareGroup = document.getElementById('ComboBox_ResumenIndividual_Compare_Group');
-        const chartTypeGroup = document.getElementById('ComboBox_ResumenIndividualChartType_Group');
-        if (compareGroup) compareGroup.style.display = 'none';
-        if (chartTypeGroup) chartTypeGroup.style.display = 'none';
+        // Ocultar inicialmente los elementos de comparación y tipo de gráfico
+        const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+        const compareLabel = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+        const chartTypeSelect = document.getElementById('ComboBox_ResumenIndividualChartType');
+        const chartTypeLabel = document.getElementById('ComboBox_ResumenIndividualChartTypeLBL');
+        if (compareSelect) compareSelect.style.display = 'none';
+        if (compareLabel) compareLabel.style.display = 'none';
+        if (chartTypeSelect) chartTypeSelect.style.display = 'none';
+        if (chartTypeLabel) chartTypeLabel.style.display = 'none';
 
         if (study_id === '67e2ac1b5bd042898764458a') {
             const subFiltros = [
@@ -241,13 +245,6 @@ function initializePage() {
                 const element = document.getElementById(id);
                 if (element) {
                     element.style.display = 'block';
-                }
-                
-                // También mostrar el grupo contenedor si existe
-                const groupId = id + '_Group';
-                const groupElement = document.getElementById(groupId);
-                if (groupElement) {
-                    groupElement.style.display = 'flex';
                 }
             });
 
@@ -913,14 +910,15 @@ function LLenarResumenes(study) {
     
     if (comboBoxResumenIndividualDS) {
         comboBoxResumenIndividualDS.addEventListener('change', function(event) {
-            const selectedValue = event.target.value; // Obtiene el valor seleccionado
+            const selectedValue = event.target.value;
 
             // Elementos a mostrar/ocultar
             const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
-            const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
             const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
-            const compareGroup = document.getElementById('ComboBox_ResumenIndividual_Compare_Group');
-            const chartTypeGroup = document.getElementById('ComboBox_ResumenIndividualChartType_Group');
+            const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+            const compareLabel = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+            const chartTypeSelect = document.getElementById('ComboBox_ResumenIndividualChartType');
+            const chartTypeLabel = document.getElementById('ComboBox_ResumenIndividualChartTypeLBL');
             const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
 
             // Condicional para manejar la visualización
@@ -930,28 +928,33 @@ function LLenarResumenes(study) {
                 resumenIndividualContent.style.display = 'none';
                 
                 // Mostrar selector de tipo de gráfico y comparación
-                if (chartTypeGroup) chartTypeGroup.style.display = 'flex';
-                if (compareGroup) compareGroup.style.display = 'flex';
+                if (chartTypeSelect) chartTypeSelect.style.display = 'inline-block';
+                if (chartTypeLabel) chartTypeLabel.style.display = 'inline-block';
+                if (compareSelect) compareSelect.style.display = 'inline-block';
+                if (compareLabel) compareLabel.style.display = 'inline-block';
             } else if (selectedValue === 'percentage_nonCat') {
                 // Mostrar el contenido y ocultar el contenedor de charts
                 chartsContainerResumenIndividual.style.display = 'none';
                 resumenIndividualContent.style.display = 'block';
                 
                 // Ocultar selector de tipo de gráfico y comparación
-                if (chartTypeGroup) chartTypeGroup.style.display = 'none';
-                if (compareGroup) compareGroup.style.display = 'none';
+                if (chartTypeSelect) chartTypeSelect.style.display = 'none';
+                if (chartTypeLabel) chartTypeLabel.style.display = 'none';
+                if (compareSelect) compareSelect.style.display = 'none';
+                if (compareLabel) compareLabel.style.display = 'none';
             } else {
                 // Si no se selecciona ninguna opción válida, ocultar todo
                 chartsContainerResumenIndividual.style.display = 'none';
                 resumenIndividualContent.style.display = 'none';
                 
                 // Ocultar selector de tipo de gráfico y comparación
-                if (chartTypeGroup) chartTypeGroup.style.display = 'none';
-                if (compareGroup) compareGroup.style.display = 'none';
+                if (chartTypeSelect) chartTypeSelect.style.display = 'none';
+                if (chartTypeLabel) chartTypeLabel.style.display = 'none';
+                if (compareSelect) compareSelect.style.display = 'none';
+                if (compareLabel) compareLabel.style.display = 'none';
             }
             
             // IMPORTANTE: Recargar el contenido con la nueva visualización seleccionada
-            // Si ya hay un filtro principal seleccionado, disparar el evento change para actualizar el contenido
             if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
                 comboBoxRI.dispatchEvent(new Event('change'));
             }
@@ -960,7 +963,7 @@ function LLenarResumenes(study) {
 
     if (comboBoxResumenIndividualTy) {
         comboBoxResumenIndividualTy.addEventListener('change', function(event) {
-            const selectedValue = event.target.value; // Obtiene el valor seleccionado
+            const selectedValue = event.target.value;
 
             // al seleccionar percentage que muestre ComboBox_ResumenIndividualDS, de lo contrario se mantiene oculto
             const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
@@ -980,24 +983,25 @@ function LLenarResumenes(study) {
                 
                 // Cuando se cambia a narrativo, mostrar el contenido textual y ocultar gráficos
                 const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
-                const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
                 const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
-                const compareGroup = document.getElementById('ComboBox_ResumenIndividual_Compare_Group');
-                const chartTypeGroup = document.getElementById('ComboBox_ResumenIndividualChartType_Group');
+                const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+                const compareLabel = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+                const chartTypeSelect = document.getElementById('ComboBox_ResumenIndividualChartType');
+                const chartTypeLabel = document.getElementById('ComboBox_ResumenIndividualChartTypeLBL');
                 
                 if (resumenIndividualContent && chartsContainerResumenIndividual) {
                     chartsContainerResumenIndividual.style.display = 'none';
                     resumenIndividualContent.style.display = 'block';
-                    if (resumenIndividualTextArea) resumenIndividualTextArea.style.display = 'none';
                 }
                 
                 // Ocultar controles de comparación y tipo de gráfico
-                if (chartTypeGroup) chartTypeGroup.style.display = 'none';
-                if (compareGroup) compareGroup.style.display = 'none';
+                if (chartTypeSelect) chartTypeSelect.style.display = 'none';
+                if (chartTypeLabel) chartTypeLabel.style.display = 'none';
+                if (compareSelect) compareSelect.style.display = 'none';
+                if (compareLabel) compareLabel.style.display = 'none';
             }
             
             // IMPORTANTE: Recargar el contenido con el nuevo estilo seleccionado
-            // Si ya hay un filtro seleccionado, disparar el evento change para actualizar el contenido
             if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
                 comboBoxRI.dispatchEvent(new Event('change'));
             }

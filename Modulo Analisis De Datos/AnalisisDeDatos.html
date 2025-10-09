@@ -417,7 +417,6 @@
                                     <!-- Sección de controles mejorada -->
                                     <div class="controls-section">
                                         <div class="controls-row">
-                                            <!-- Combobox para seleccionar estilo -->
                                             <div class="control-group">
                                                 <label for="ComboBox_ResumenIndividualTy" data-i18n="AnalisisDeDatos.sSelectStyle">Selecciona un estilo:</label>
                                                 <select id="ComboBox_ResumenIndividualTy">
@@ -426,37 +425,20 @@
                                                     <option value="percentage" data-i18n="AnalisisDeDatos.optPercentage">Porcentual</option>
                                                 </select>
                                             </div>
-                                    
-                                            <!-- Combobox para seleccionar filtro -->
                                             <div class="control-group">
                                                 <label for="ComboBox_ResumenIndividual" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                 <select id="ComboBox_ResumenIndividual">
                                                     <!-- Opciones se agregarán dinámicamente aquí -->
                                                 </select>
                                             </div>
-
-                                            <!-- Subfiltro (oculto por defecto) -->
-                                            <div class="control-group" style="display: none;" id="ComboBox_ResumenIndividual_SubFiltro_Group">
-                                                <label for="ComboBox_ResumenIndividual_SubFiltro">Subfiltro:</label>
-                                                <select id="ComboBox_ResumenIndividual_SubFiltro">
-                                                    <option value="---">---</option>
-                                                    <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
-                                                    <option value="2024-Oct">2024-Oct</option>
-                                                    <option value="2024-Nov">2024-Nov</option>
-                                                    <option value="2024-Dic">2024-Dic</option>
-                                                    <option value="2025-Ene">2025-Ene</option>
-                                                    <option value="2025-Feb">2025-Feb</option>
-                                                </select>
-                                            </div>
-                                    
-                                            <!-- Botones de acción -->
-                                            <div class="button-group">
-                                                <button id="export_ResumenIndividual" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
-                                            </div>
                                         </div>
+                                        <div class="button-group">
+                                            <button id="export_ResumenIndividual" data-i18n="AnalisisDeDatos.btExport"><i class="fas fa-download"></i> Exportar</button>
+                                        </div>
+                                    </div>
 
+                                    <div class="controls-section">
                                         <div class="controls-row">
-                                            <!-- Combobox para seleccionar display style -->
                                             <div class="control-group">
                                                 <label id="ComboBox_ResumenIndividualDSLBL" for="ComboBox_ResumenIndividualDS" data-i18n="AnalisisDeDatos.sSelectVisual">Selecciona visualización:</label>
                                                 <select id="ComboBox_ResumenIndividualDS">
@@ -465,25 +447,32 @@
                                                     <option value="percentage_nonCat" data-i18n="AnalisisDeDatos.optVisualText">Visualización textual</option>
                                                 </select>
                                             </div>
-
-                                            <!-- Combobox para seleccionar tipo de gráfico -->
-                                            <div class="control-group" style="display: none;" id="ComboBox_ResumenIndividualChartType_Group">
-                                                <label id="ComboBox_ResumenIndividualChartTypeLBL" for="ComboBox_ResumenIndividualChartType">Tipo de gráfico:</label>
-                                                <select id="ComboBox_ResumenIndividualChartType">
+                                            <div class="control-group">
+                                                <label id="ComboBox_ResumenIndividualChartTypeLBL" for="ComboBox_ResumenIndividualChartType" style="display: none;">Tipo de gráfico:</label>
+                                                <select id="ComboBox_ResumenIndividualChartType" style="display: none;">
                                                     <option value="bar">Gráfico de Barras</option>
                                                     <option value="doughnut">Gráfico de Dona</option>
                                                 </select>
                                             </div>
-
-                                            <!-- Combobox para comparar con otro filtro -->
-                                            <div class="control-group" style="display: none;" id="ComboBox_ResumenIndividual_Compare_Group">
-                                                <label id="ComboBox_ResumenIndividualCompareLBL" for="ComboBox_ResumenIndividual_Compare">Comparar con:</label>
-                                                <select id="ComboBox_ResumenIndividual_Compare">
+                                            <div class="control-group">
+                                                <label id="ComboBox_ResumenIndividualCompareLBL" for="ComboBox_ResumenIndividual_Compare" style="display: none;">Comparar con:</label>
+                                                <select id="ComboBox_ResumenIndividual_Compare" style="display: none;">
                                                     <!-- Opciones se agregarán dinámicamente aquí -->
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Subfiltro oculto (fuera de controls-section para uso especial) -->
+                                    <select id="ComboBox_ResumenIndividual_SubFiltro" style="display: none;">
+                                        <option value="---">---</option>
+                                        <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
+                                        <option value="2024-Oct">2024-Oct</option>
+                                        <option value="2024-Nov">2024-Nov</option>
+                                        <option value="2024-Dic">2024-Dic</option>
+                                        <option value="2025-Ene">2025-Ene</option>
+                                        <option value="2025-Feb">2025-Feb</option>
+                                    </select>
                                     
                                     <!-- Contenido del resumen individual -->
                                     <div style="display: flex; gap: 20px;">
