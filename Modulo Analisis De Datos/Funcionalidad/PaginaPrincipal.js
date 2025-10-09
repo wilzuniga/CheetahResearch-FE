@@ -274,31 +274,10 @@ function otp(study_id) {
             padding: 20px;
         ">
             <p data-i18n="Overview.warningOTP">Para acceder a esta información, necesitas un código de acceso. Por favor, ingresa el código de acceso que te proporcionaron. Si no posees un OTP, selecciona el botón "Solicitar OTP" para obtener uno.</p>
-            <input type="text" id="otpInput" style="
-                width: 75%;
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-            ">
-            <button onclick="verificarOTP('${study_id}')" style="
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-                background-color: #c0601c;
-                color: white;
-                border: none;
-                cursor: pointer;
-            " data-i18n="Overview.btVerifyOTP">Verificar</button>
+            <input type="text" id="otpInput" class="cr-input" style="margin: 10px;" >
+            <button class="btn btn-primary" onclick="verificarOTP('${study_id}')" style="margin: 10px;" data-i18n="Overview.btVerifyOTP"><i class="fas fa-check"></i> Verificar</button>
 
-           <button onclick="solicitarOTP('${study_id}')" style="
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                cursor: pointer;
-            " data-i18n="Overview.btRequestOTP">Solicitar OTP</button>
+           <button class="btn btn-primary" onclick="solicitarOTP('${study_id}')" style="margin: 10px;" data-i18n="Overview.btRequestOTP"><i class="fas fa-key"></i> Solicitar OTP</button>
 
 
 
@@ -325,22 +304,9 @@ function solicitarOTP(study_id) {
             padding: 20px;
         ">
             <p data-i18n="Overview.sMailOTP">Por favor, ingresa tu correo electrónico para solicitar el OTP.</p>
-            <input type="email" id="emailInput" data-i18n-placeholder="Overview.inMailOTP" style="
-                width: 75%;
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-            ">
+            <input type="email" id="emailInput" class="cr-input" data-i18n-placeholder="Overview.inMailOTP" style="margin: 10px;">
 
-            <button onclick="enviarOTP('${study_id}')" style="
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                cursor: pointer;
-            " data-i18n="Overview.btRequestOTP">Solicitar</button>
+            <button class="btn btn-primary" onclick="enviarOTP('${study_id}')" style="margin: 10px;" data-i18n="Overview.btRequestOTP"><i class="fas fa-paper-plane"></i> Solicitar</button>
             
         </div>
     `;
@@ -430,15 +396,7 @@ async function LegalDisclaimer(study_id) {
                     Al acceder al reporte, los usuarios aceptan cumplir con estas condiciones y dan por entendidas las responsabilidades 
                     de cualquier infracción que pueda surgir del uso indebido de la información o la plataforma.
                 </p>
-            <button id="verifyButton" style="
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-                background-color: var(--bs-CR-orange);
-                color: var(--bs-CR-gray);
-                border: none;
-                cursor: pointer;
-            " data-i18n="Overview.btAccept">Acceder Al Reporte</button>
+            <button id="verifyButton" class="btn btn-primary" style="margin: 10px;" data-i18n="Overview.btAccept"><i class="fas fa-unlock"></i> Acceder Al Reporte</button>
         </div>
     `;
 
@@ -547,11 +505,21 @@ async function contenido(study) {
     if (linkDisponible) {
         otpValidado = localStorage.getItem('otpValidado');
         if (otpValidado) {
-            // Si es día 30 del mes, se borra la variable de sesión
-            const d = new Date();
-            const dia = d.getDate();
-            if (dia === 30) {
-                localStorage.removeItem('otpValidado');
+            // Si han pasado 15 días, se borra la variable de sesión
+            const fechaGuardada = localStorage.getItem('otpFecha');
+            const fechaActual = new Date();
+            
+            if (!fechaGuardada) {
+                // Si no hay fecha guardada, guardar la fecha actual
+                localStorage.setItem('otpFecha', fechaActual.toISOString());
+            } else {
+                const fechaAnterior = new Date(fechaGuardada);
+                const diferenciaDias = Math.floor((fechaActual - fechaAnterior) / (1000 * 60 * 60 * 24));
+                
+                if (diferenciaDias >= 15) {
+                    localStorage.removeItem('otpValidado');
+                    localStorage.removeItem('otpFecha');
+                }
             }
 
             hideOverlay();
