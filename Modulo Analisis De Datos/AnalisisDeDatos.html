@@ -30,21 +30,15 @@
 
 
     <style>
-        /*media query para que desaparezca el img si el display no es hd+*/
-        @media (max-width: 1080px) {
-            img {
-                display: none;
-            }
-        }  
-        
+
+.markmap > svg {
+        width: 100%;
+        height: 100%;
+      }
+
         /* Modern page styling - BASE */
         body {
             min-height: 100vh;
-        }
-
-        .markmap > svg {
-            width: 100%;
-            height: 100%;
         }
 
         /* Contenedor principal con efecto cristal */
@@ -95,12 +89,12 @@
             transform: translateY(0);
         }
 
-        .btn-primary {
+        button[id^="export_"], button[id^="download_"] {
             background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
             color: white;
         }
 
-        .btn-primary:hover {
+        button[id^="export_"]:hover, button[id^="download_"]:hover {
             background: linear-gradient(135deg, #ff8c42 0%, var(--bs-CR-orange) 100%);
             color: white;
         }
@@ -110,7 +104,7 @@
             border-radius: 12px;
             border: 2px solid #e9ecef;
             padding: 12px 16px;
-            font-family: IBM Plex Sans, hedliner !important;
+            font-family: IBM Plex Sans !important;
             transition: all 0.3s ease;
         }
 
@@ -153,32 +147,6 @@
         .list-group-item.active {
             background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
             border-color: var(--bs-CR-orange);
-        }
-
-        /* Efectos hover para botones de análisis */
-        #BAOColumn .list-group-item.list-group-item-action {
-            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease !important;
-        }
-        
-        #BAOColumn .list-group-item.list-group-item-action:hover {
-            background-color: var(--bs-CR-orange) !important;
-            color: var(--bs-CR-gray) !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,.15) !important;
-            transform: translateX(5px) !important;
-            border-color: var(--bs-CR-orange) !important;
-        }
-
-        /* Efectos hover para sub-botones de análisis */
-        .list-group-item.list-group-item-action:not(#BAOColumn .list-group-item) {
-            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease !important;
-        }
-        
-        .list-group-item.list-group-item-action:not(#BAOColumn .list-group-item):hover {
-            background-color: var(--bs-CR-orange) !important;
-            color: var(--bs-CR-gray) !important;
-            box-shadow: 0 3px 8px rgba(0,0,0,.12) !important;
-            transform: translateY(-1px) !important;
-            border-color: var(--bs-CR-orange) !important;
         }
 
         /* Animaciones */
@@ -248,10 +216,10 @@
         .button-group {
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
+            align-items: end;
         }
 
-        .button-group .btn, .button-group button {
+        .button-group button {
             padding: 10px 20px;
             font-size: 14px;
             border-radius: 10px;
@@ -266,11 +234,53 @@
             }
             
             .control-group {
-                min-width: 100%;
+                width: 100%;
             }
             
             .button-group {
-                justify-content: center;
+                flex-direction: column;
+                width: 100%;
+            }
+        }
+
+        /* Estilos para el contenido */
+        .Content-Divs {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 140, 66, 0.15);
+        }
+
+        /* Efectos hover para botones de análisis */
+        #BAOColumn .list-group-item.list-group-item-action {
+            transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease !important;
+        }
+        
+        #BAOColumn .list-group-item.list-group-item-action:hover {
+            background-color: var(--bs-CR-orange) !important;
+            color: var(--bs-CR-gray) !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,.15) !important;
+            transform: translateY(-2px) !important;
+            border-color: var(--bs-CR-orange) !important;
+        }
+
+        /* Efectos hover para sub-botones de análisis */
+        .list-group-item.list-group-item-action:not(#BAOColumn .list-group-item) {
+            transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease !important;
+        }
+        
+        .list-group-item.list-group-item-action:not(#BAOColumn .list-group-item):hover {
+            background-color: var(--bs-CR-orange) !important;
+            color: var(--bs-CR-gray) !important;
+            box-shadow: 0 3px 8px rgba(0,0,0,.12) !important;
+            transform: translateY(-1px) !important;
+            border-color: var(--bs-CR-orange) !important;
+        }
+
+        @media (max-width: 1000px) {
+            img {
+                display: none;
             }
         }
 
@@ -351,6 +361,7 @@
                                     <!-- Sección de controles mejorada -->
                                     <div class="controls-section">
                                         <div class="controls-row">
+                                            <!-- Combobox para seleccionar estilo -->
                                             <div class="control-group">
                                                 <label for="ComboBox_ResumenGeneralTy" data-i18n="AnalisisDeDatos.sSelectStyle">Selecciona un estilo:</label>
                                                 <select id="ComboBox_ResumenGeneralTy">
@@ -359,14 +370,18 @@
                                                     <option value="factual" data-i18n="AnalisisDeDatos.optFactual">Factual</option>
                                                 </select>
                                             </div>
+                                    
+                                            <!-- Combobox para seleccionar filtro -->
                                             <div class="control-group">
                                                 <label for="ComboBox_ResumenGeneral" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                 <select id="ComboBox_ResumenGeneral">
                                                     <!-- Opciones se agregarán dinámicamente aquí -->
                                                 </select>
                                             </div>
-                                            <div class="control-group" id="ComboBox_ResumenGeneral_SubFiltro_Container" style="display: none;">
-                                                <label for="ComboBox_ResumenGeneral_SubFiltro">SubFiltro:</label>
+
+                                            <!-- Subfiltro (oculto por defecto) -->
+                                            <div class="control-group" style="display: none;" id="ComboBox_ResumenGeneral_SubFiltro_Group">
+                                                <label for="ComboBox_ResumenGeneral_SubFiltro">Subfiltro:</label>
                                                 <select id="ComboBox_ResumenGeneral_SubFiltro">
                                                     <option value="---">---</option>
                                                     <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
@@ -377,15 +392,19 @@
                                                     <option value="2025-Feb">2025-Feb</option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="button-group">
-                                            <button class="btn btn-primary" id="export_ResumenGeneral" data-i18n="AnalisisDeDatos.btExport"><i class="fas fa-download"></i> Exportar</button>
-                                            <button class="btn btn-primary" id="download_markmap" style="display: none;"><i class="fas fa-sitemap"></i> Descargar Mapa Mental</button>
-                                            <button class="btn btn-primary" id="download_sankey" style="display: none;"><i class="fas fa-project-diagram"></i> Descargar Diagrama Sankey</button>
+                                    
+                                            <!-- Botones de acción -->
+                                            <div class="button-group">
+                                                <button id="export_ResumenGeneral" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
+                                                <button id="download_markmap" style="display: none;">Descargar Mapa Mental</button>
+                                                <button id="download_sankey" style="display: none;">Descargar Diagrama Sankey</button>
+                                            </div>
                                         </div>
                                     </div>
                                 
-                                    <div class="Content-Divs" id="ResumenGeneralContent" style="flex: 1;"></div>
+                                    <!-- Contenido del resumen general -->
+                                    <div class="Content-Divs" id="ResumenGeneralContent">
+                                    </div>
                                 </div>
 
                                                        
@@ -398,6 +417,7 @@
                                     <!-- Sección de controles mejorada -->
                                     <div class="controls-section">
                                         <div class="controls-row">
+                                            <!-- Combobox para seleccionar estilo -->
                                             <div class="control-group">
                                                 <label for="ComboBox_ResumenIndividualTy" data-i18n="AnalisisDeDatos.sSelectStyle">Selecciona un estilo:</label>
                                                 <select id="ComboBox_ResumenIndividualTy">
@@ -406,14 +426,18 @@
                                                     <option value="percentage" data-i18n="AnalisisDeDatos.optPercentage">Porcentual</option>
                                                 </select>
                                             </div>
+                                    
+                                            <!-- Combobox para seleccionar filtro -->
                                             <div class="control-group">
                                                 <label for="ComboBox_ResumenIndividual" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
                                                 <select id="ComboBox_ResumenIndividual">
                                                     <!-- Opciones se agregarán dinámicamente aquí -->
                                                 </select>
                                             </div>
-                                            <div class="control-group" id="ComboBox_ResumenIndividual_SubFiltro_Container" style="display: none;">
-                                                <label for="ComboBox_ResumenIndividual_SubFiltro">SubFiltro:</label>
+
+                                            <!-- Subfiltro (oculto por defecto) -->
+                                            <div class="control-group" style="display: none;" id="ComboBox_ResumenIndividual_SubFiltro_Group">
+                                                <label for="ComboBox_ResumenIndividual_SubFiltro">Subfiltro:</label>
                                                 <select id="ComboBox_ResumenIndividual_SubFiltro">
                                                     <option value="---">---</option>
                                                     <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
@@ -424,9 +448,16 @@
                                                     <option value="2025-Feb">2025-Feb</option>
                                                 </select>
                                             </div>
+                                    
+                                            <!-- Botones de acción -->
+                                            <div class="button-group">
+                                                <button id="export_ResumenIndividual" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
+                                            </div>
                                         </div>
+
                                         <div class="controls-row">
-                                            <div class="control-group" id="ComboBox_ResumenIndividualDS_Container">
+                                            <!-- Combobox para seleccionar display style -->
+                                            <div class="control-group">
                                                 <label id="ComboBox_ResumenIndividualDSLBL" for="ComboBox_ResumenIndividualDS" data-i18n="AnalisisDeDatos.sSelectVisual">Selecciona visualización:</label>
                                                 <select id="ComboBox_ResumenIndividualDS">
                                                     <option value="---">---</option>
@@ -434,29 +465,34 @@
                                                     <option value="percentage_nonCat" data-i18n="AnalisisDeDatos.optVisualText">Visualización textual</option>
                                                 </select>
                                             </div>
-                                            <div class="control-group" id="ComboBox_ResumenIndividualChartType_Container" style="display: none;">
+
+                                            <!-- Combobox para seleccionar tipo de gráfico -->
+                                            <div class="control-group" style="display: none;" id="ComboBox_ResumenIndividualChartType_Group">
                                                 <label id="ComboBox_ResumenIndividualChartTypeLBL" for="ComboBox_ResumenIndividualChartType">Tipo de gráfico:</label>
                                                 <select id="ComboBox_ResumenIndividualChartType">
                                                     <option value="bar">Gráfico de Barras</option>
                                                     <option value="doughnut">Gráfico de Dona</option>
                                                 </select>
                                             </div>
-                                            <div class="control-group" id="ComboBox_ResumenIndividual_Compare_Container" style="display: none;">
+
+                                            <!-- Combobox para comparar con otro filtro -->
+                                            <div class="control-group" style="display: none;" id="ComboBox_ResumenIndividual_Compare_Group">
                                                 <label id="ComboBox_ResumenIndividualCompareLBL" for="ComboBox_ResumenIndividual_Compare">Comparar con:</label>
                                                 <select id="ComboBox_ResumenIndividual_Compare">
                                                     <!-- Opciones se agregarán dinámicamente aquí -->
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="button-group">
-                                            <button class="btn btn-primary" id="export_ResumenIndividual" data-i18n="AnalisisDeDatos.btExport"><i class="fas fa-download"></i> Exportar</button>
-                                        </div>
                                     </div>
                                     
                                     <!-- Contenido del resumen individual -->
                                     <div style="display: flex; gap: 20px;">
-                                        <div class="Content-Divs" id="ResumenIndividualContent" style="flex: 1;"></div>
-                                        <div id="charts-containerResumenIndividualContent" style="flex: 1; background: white; border-radius: 13px; padding: 15px;"></div>
+                                        <!-- Contenido del resumen individual -->
+                                        <div class="Content-Divs" id="ResumenIndividualContent" style="flex: 1;">
+                                        </div>
+    
+                                        <div id="charts-containerResumenIndividualContent" style="flex: 1; background: rgba(255, 255, 255, 0.9); border-radius: 15px; padding: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); border: 1px solid rgba(255, 140, 66, 0.15);">
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -473,44 +509,32 @@
                                                 <div id="A_UserPersona" class="tab-pane fade" role="tabpanel">
                                                     <h3 data-i18n="AnalisisDeDatos.titleUserPersona">User Persona</h3>
                                                     <p data-i18n="AnalisisDeDatos.descUserPersona">En esta sección se muestra información sobre el perfil del usuario objetivo, conocido como User Persona. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
-                                                    
-                                                    <!-- Sección de controles mejorada -->
-                                                    <div class="controls-section">
-                                                        <div class="controls-row">
-                                                            <div class="control-group">
-                                                                <label for="Combobox_UserPersona" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
-                                                                <select id="Combobox_UserPersona">
-                                                                    <!-- Opciones se agregarán dinámicamente aquí -->
-                                                                </select>
-                                                            </div>
+                                                    <div style="display: flex; align-items: end; gap: 10px; margin-bottom: 10px;">
+                                                        <div>
+                                                            <label for="Combobox_UserPersona" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_UserPersona" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
                                                         </div>
-                                                        <div class="button-group">
-                                                            <button class="btn btn-primary" id="export_UserPersona" data-i18n="AnalisisDeDatos.btExport"><i class="fas fa-download"></i> Exportar</button>
-                                                        </div>
+                                                        <button id="export_UserPersona" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
                                                     </div>
-                                                    
-                                                    <div class="Content-Divs" id="UserPersonaContent" style="flex: 1;"></div>
+                                                    <div class="Content-Divs" id="UserPersonaContent" style="flex: 1;">
+                                                    </div>
                                                 </div>
                                                 <div id="A_UserArchetype" class="tab-pane fade" role="tabpanel">
                                                     <h3 data-i18n="AnalisisDeDatos.titleUserArchetype">User Archetype</h3>
                                                     <p data-i18n="AnalisisDeDatos.descUserArchetype">En esta sección se muestra información sobre el arquetipo de persona. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
-                                                    
-                                                    <!-- Sección de controles mejorada -->
-                                                    <div class="controls-section">
-                                                        <div class="controls-row">
-                                                            <div class="control-group">
-                                                                <label for="Combobox_UserArchetype" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
-                                                                <select id="Combobox_UserArchetype">
-                                                                    <!-- Opciones se agregarán dinámicamente aquí -->
-                                                                </select>
-                                                            </div>
+                                                    <div style="display: flex; align-items: end; gap: 10px; margin-bottom: 10px;">
+                                                        <div>
+                                                            <label for="Combobox_UserArchetype" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
+                                                            <select id="Combobox_UserArchetype" style="font-family: hedliner;">
+                                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                                            </select>
                                                         </div>
-                                                        <div class="button-group">
-                                                            <button class="btn btn-primary" id="export_UserArchetype" data-i18n="AnalisisDeDatos.btExport"><i class="fas fa-download"></i> Exportar</button>
-                                                        </div>
+                                                        <button id="export_UserArchetype" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
                                                     </div>
-                                                    
-                                                    <div class="Content-Divs" id="UserArchetypeContent" style="flex: 1;"></div>
+                                                    <div class="Content-Divs" id="UserArchetypeContent" style="flex: 1;">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -518,37 +542,40 @@
                                 </div>
 
                                 <div id="customerExperience" class="tab-pane fade" role="tabpanel">
-                                    <h3 data-i18n="AnalisisDeDatos.titleCustomerExperience">Experiencia de Usuario</h3>
+                                    <h3 data-i18n="AnalisisDeDatos.titleCustomerExperience">Experiencia de Usuario                                </h3>
                                     <p data-i18n="AnalisisDeDatos.descCustomerExperience">En esta sección se evalúa las percepciones, emociones y comportamiento de los clientes en cada punto de interacción con una marca, para identificar áreas de mejora y fortalecer la satisfacción y fidelización. Puedes seleccionar un filtro específico para obtener detalles relevantes.</p>
                                     
-                                    <!-- Sección de controles mejorada -->
-                                    <div class="controls-section">
-                                        <div class="controls-row">
-                                            <div class="control-group">
-                                                <label for="Combobox_customerExperience" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
-                                                <select id="Combobox_customerExperience">
-                                                    <!-- Opciones se agregarán dinámicamente aquí -->
-                                                </select>
-                                            </div>
-                                            <div class="control-group" id="ComboBox_customerExperience_SubFiltro_Container" style="display: none;">
-                                                <label for="ComboBox_customerExperience_SubFiltro">SubFiltro:</label>
-                                                <select id="ComboBox_customerExperience_SubFiltro">
-                                                    <option value="---">---</option>
-                                                    <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
-                                                    <option value="2024-Oct">2024-Oct</option>
-                                                    <option value="2024-Nov">2024-Nov</option>
-                                                    <option value="2024-Dic">2024-Dic</option>
-                                                    <option value="2025-Ene">2025-Ene</option>
-                                                    <option value="2025-Feb">2025-Feb</option>
-                                                </select>
-                                            </div>
+                                    <!-- Comboboxes y botón en una fila -->
+                                    <div style="display: flex; align-items: end; gap: 10px; margin-bottom: 10px;">
+                                        <!-- Combobox para seleccionar filtro -->
+                                        <div>
+                                            <label for="Combobox_customerExperience" style="font-family: hedliner;" data-i18n="AnalisisDeDatos.sSelectFilter">Selecciona un Filtro:</label>
+                                            <select id="Combobox_customerExperience" style="font-family: hedliner;">
+                                                <!-- Opciones se agregarán dinámicamente aquí -->
+                                            </select>
+
+                                            <select id="ComboBox_customerExperience_SubFiltro" style="font-family: hedliner; display: none;">
+                                                <option value="---">---</option>
+                                                <option value="General" data-i18n="AnalisisDeDatos.optGeneral">General</option>
+                                                <option value="2024-Oct">2024-Oct</option>
+                                                <option value="2024-Nov">2024-Nov</option>
+                                                <option value="2024-Dic">2024-Dic</option>
+                                                <option value="2025-Ene">2025-Ene</option>
+                                                <option value="2025-Feb">2025-Feb</option>
+                                            </select>
+
                                         </div>
-                                        <div class="button-group">
-                                            <button class="btn btn-primary" id="export_customerExperience" data-i18n="AnalisisDeDatos.btExport"><i class="fas fa-download"></i> Exportar</button>
-                                        </div>
+                                
+                                        <!-- Botón para mostrar/ocultar el textarea -->                                
+                                        <button id="export_customerExperience" style="border-radius : 13px;" data-i18n="AnalisisDeDatos.btExport">Exportar</button>
+    
+    
                                     </div>
                                     
-                                    <div class="Content-Divs" id="customerExperienceContent" style="flex: 1;"></div>
+                                    <!-- Contenedor para el textarea y el contenido del User Persona -->
+                                    
+                                        <div class="Content-Divs" id="customerExperienceContent" style="flex: 1;">
+                                        </div>
                                 </div>
 
 
@@ -1145,23 +1172,6 @@
         link2.href = 'https://www.cheetah-research.ai/analysis/DataAnalysis/?id=' + studyId;
         link3.href = 'https://www.cheetah-research.ai/analysis/home/?id=' + studyId;
         link4.href = 'https://www.cheetah-research.ai/analysis/home/?id=' + studyId;
-        
-        // Modernizar automáticamente todos los botones de exportación
-        document.addEventListener('DOMContentLoaded', function() {
-            const exportButtons = document.querySelectorAll('button[id^="export_"]');
-            exportButtons.forEach(button => {
-                if (!button.classList.contains('btn')) {
-                    button.classList.add('btn', 'btn-primary');
-                    if (!button.querySelector('i')) {
-                        const icon = document.createElement('i');
-                        icon.className = 'fas fa-download';
-                        button.insertBefore(icon, button.firstChild);
-                        button.insertBefore(document.createTextNode(' '), icon.nextSibling);
-                    }
-                    button.style.removeProperty('border-radius');
-                }
-            });
-        });
     </script>
 </body>
 
