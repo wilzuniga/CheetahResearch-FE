@@ -818,26 +818,77 @@ export function processNPSCharts(markdownText) {
  */
 function parseNPSSection(section) {
     // Buscar múltiples patrones de análisis NPS para mayor flexibilidad
-    const npsAnalysisPatterns = [
-        /##### Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (-?\d+)%\*\*/,
-        /##### Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
-        /Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (-?\d+)%\*\*/,
-        /Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
-        /\*\*NPS = % Promotores - % Detractores = (-?\d+)%\*\*/,
-        /\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
-        /NPS = % Promotores - % Detractores = (-?\d+)%/,
-        /NPS = % Promotores - % Detractores = (\d+)%/
-    ];
-    
-    let npsTotal = null;
-    for (const pattern of npsAnalysisPatterns) {
-        const match = section.match(pattern);
-        if (match) {
-            npsTotal = parseInt(match[1]);
-            break;
+    // Función para calcular la similitud entre dos cadenas usando distancia de Levenshtein
+    function levenshteinDistance(str1, str2) {
+        const m = str1.length;
+        const n = str2.length;
+        const dp = Array(m + 1).fill().map(() => Array(n + 1).fill(0));
+
+        for (let i = 0; i <= m; i++) dp[i][0] = i;
+        for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+        for (let i = 1; i <= m; i++) {
+            for (let j = 1; j <= n; j++) {
+                if (str1[i - 1] === str2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = 1 + Math.min(
+                        dp[i - 1][j],     // deletion
+                        dp[i][j - 1],     // insertion
+                        dp[i - 1][j - 1]  // substitution
+                    );
+                }
+            }
         }
+        return dp[m][n];
     }
+
+    // Función para calcular la similitud normalizada (0-1)
+    function stringSimilarity(str1, str2) {
+        const maxLength = Math.max(str1.length, str2.length);
+        const distance = levenshteinDistance(str1, str2);
+        return 1 - (distance / maxLength);
+    }
+
+    // Patrones base para buscar NPS
+    const npsBasePatterns = [
+        "Análisis NPS: NPS = % Promotores - % Detractores =",
+        "NPS = % Promotores - % Detractores =",
+        "Net Promoter Score:",
+        "Resultado NPS:",
+        "NPS Total:",
+        "NPS General:",
+        "Índice NPS:",
+        "Puntuación NPS:",
+        "NPS Score:",
+        "NPS Value:"
+    ];
+
+    let npsTotal = null;
+    const similarityThreshold = 0.4; // Umbral de similitud (40%)
+
+    // Limpiamos el texto de markdown y caracteres especiales
+    const cleanText = section.replace(/[#*_]/g, '').trim();
     
+    // Buscamos líneas que contengan números y porcentajes
+    const lines = cleanText.split('\n');
+    
+    for (const line of lines) {
+        // Verificamos si la línea tiene similitud con alguno de los patrones base
+        for (const pattern of npsBasePatterns) {
+            if (stringSimilarity(line.toLowerCase(), pattern.toLowerCase()) >= similarityThreshold) {
+                // Extraemos el número con signo y porcentaje
+                const numberMatch = line.match(/-?\d+%?/);
+                if (numberMatch) {
+                    const extractedNumber = numberMatch[0].replace('%', '');
+                    npsTotal = parseInt(extractedNumber);
+                    break;
+                }
+            }
+        }
+        if (npsTotal !== null) break;
+    }
+
     if (npsTotal === null) {
         return null;
     }
