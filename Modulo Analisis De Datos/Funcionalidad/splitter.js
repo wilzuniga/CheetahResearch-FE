@@ -892,53 +892,70 @@ function parseNPSSection(section) {
     if (npsTotal === null) {
         return null;
     }
-    
-    // Buscar los porcentajes de Promotores, Indiferentes y Detractores con múltiples patrones
-    const promotoresPatterns = [
-        /- Promotores: (\d+)% \(Clasificación NPS\)/,
-        /Promotores: (\d+)%/,
-        /- Promotores: (\d+)%/
+    // Patrones base para buscar porcentajes
+    const promotoresBasePatterns = [
+        "Promotores:",
+        "% Promotores:",
+        "Promotores (%)",
+        "Porcentaje de Promotores:"
     ];
-    
-    const indiferentesPatterns = [
-        /- Indiferentes: (\d+)% \(Clasificación NPS\)/,
-        /Indiferentes: (\d+)%/,
-        /- Indiferentes: (\d+)%/
+
+    const indiferentesBasePatterns = [
+        "Indiferentes:", 
+        "% Indiferentes:",
+        "Indiferentes (%)",
+        "Porcentaje de Indiferentes:"
     ];
-    
-    const detractoresPatterns = [
-        /- Detractores: (\d+)% \(Clasificación NPS\)/,
-        /Detractores: (\d+)%/,
-        /- Detractores: (\d+)%/
+
+    const detractoresBasePatterns = [
+        "Detractores:",
+        "% Detractores:", 
+        "Detractores (%)",
+        "Porcentaje de Detractores:"
     ];
-    
+
     let promotores = null, indiferentes = null, detractores = null;
-    
-    // Buscar promotores
-    for (const pattern of promotoresPatterns) {
-        const match = section.match(pattern);
-        if (match) {
-            promotores = parseInt(match[1]);
-            break;
+
+    // Buscar promotores con similitud
+    for (const line of lines) {
+        for (const pattern of promotoresBasePatterns) {
+            if (stringSimilarity(line.toLowerCase(), pattern.toLowerCase()) >= similarityThreshold) {
+                const numberMatch = line.match(/\d+/);
+                if (numberMatch) {
+                    promotores = parseInt(numberMatch[0]);
+                    break;
+                }
+            }
         }
+        if (promotores !== null) break;
     }
-    
-    // Buscar indiferentes
-    for (const pattern of indiferentesPatterns) {
-        const match = section.match(pattern);
-        if (match) {
-            indiferentes = parseInt(match[1]);
-            break;
+
+    // Buscar indiferentes con similitud 
+    for (const line of lines) {
+        for (const pattern of indiferentesBasePatterns) {
+            if (stringSimilarity(line.toLowerCase(), pattern.toLowerCase()) >= similarityThreshold) {
+                const numberMatch = line.match(/\d+/);
+                if (numberMatch) {
+                    indiferentes = parseInt(numberMatch[0]);
+                    break;
+                }
+            }
         }
+        if (indiferentes !== null) break;
     }
-    
-    // Buscar detractores
-    for (const pattern of detractoresPatterns) {
-        const match = section.match(pattern);
-        if (match) {
-            detractores = parseInt(match[1]);
-            break;
+
+    // Buscar detractores con similitud
+    for (const line of lines) {
+        for (const pattern of detractoresBasePatterns) {
+            if (stringSimilarity(line.toLowerCase(), pattern.toLowerCase()) >= similarityThreshold) {
+                const numberMatch = line.match(/\d+/);
+                if (numberMatch) {
+                    detractores = parseInt(numberMatch[0]);
+                    break;
+                }
+            }
         }
+        if (detractores !== null) break;
     }
     
     if (promotores === null || indiferentes === null || detractores === null) {
