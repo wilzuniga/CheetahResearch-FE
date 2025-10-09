@@ -404,11 +404,11 @@ function loadInterviewer() {
 
     formContainer.innerHTML = `
         <div id="overlayContent" class="text-wrap">
-            <img src="${imagen}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
-            <p id="greeting"">
-            ${interviewerGreeting}
+            <img src="${imagen}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 12px;">
+            <p id="greeting">
+                ${interviewerGreeting}
             </p>
-            <button id="AceptarChat" class="btn" style="margin: 10px 10px 0 0;background: var(--bs-CR-black);">Iniciar</button>
+            <button id="AceptarChat" class="btn btn-primary" style="margin: 10px 10px 0 0;"><i class="fas fa-comments"></i> Iniciar</button>
         </div>
         `;
 

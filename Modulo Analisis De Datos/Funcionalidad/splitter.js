@@ -817,86 +817,211 @@ export function processNPSCharts(markdownText) {
  * @returns {Object|null} Datos NPS o null si no es una sección NPS
  */
 function parseNPSSection(section) {
-    // Buscar múltiples patrones de análisis NPS para mayor flexibilidad
-    const npsAnalysisPatterns = [
-        /##### Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
-        /##### Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (-?\d+)%\*\*/,
-        /Análisis NPS:\s*\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
-        /\*\*NPS = % Promotores - % Detractores = (\d+)%\*\*/,
-        /NPS = % Promotores - % Detractores = (\d+)%/
-    ];
+    // Función para calcular la similitud entre dos cadenas usando distancia de Levenshtein
+    function levenshteinDistance(str1, str2) {
+        const m = str1.length;
+        const n = str2.length;
+        const dp = Array(m + 1).fill().map(() => Array(n + 1).fill(0));
+
+        for (let i = 0; i <= m; i++) dp[i][0] = i;
+        for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+        for (let i = 1; i <= m; i++) {
+            for (let j = 1; j <= n; j++) {
+                if (str1[i - 1] === str2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = 1 + Math.min(
+                        dp[i - 1][j],     // deletion
+                        dp[i][j - 1],     // insertion
+                        dp[i - 1][j - 1]  // substitution
+                    );
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    // Función para calcular la similitud normalizada (0-1)
+    function stringSimilarity(str1, str2) {
+        const maxLength = Math.max(str1.length, str2.length);
+        const distance = levenshteinDistance(str1, str2);
+        return 1 - (distance / maxLength);
+    }
+
+    // Función auxiliar para extraer números de una línea después de dos puntos o igual
+    function extractNumber(line) {
+        // Buscar patrones como "label: 42%" o "label: 42" o "label = 42"
+        // Primero intentamos encontrar el último número en la línea después de : o =
+        const patterns = [
+            /:\s*(\d+\.?\d*)%?\s*$/,  // Después de dos puntos al final
+            /:\s*(\d+\.?\d*)%?/,  // Después de dos puntos
+            /=\s*(\d+\.?\d*)%?\s*$/,  // Después de igual al final
+            /=\s*(\d+\.?\d*)%?/,  // Después de igual
+            /(\d+\.?\d*)%?\s*$/  // Número al final de la línea
+        ];
+        
+        for (const pattern of patterns) {
+            const match = line.match(pattern);
+            if (match && match[1]) {
+                const value = parseFloat(match[1]);
+                // Solo retornar valores que tengan sentido como porcentajes (0-100)
+                if (value >= 0 && value <= 100) {
+                    return value;
+                }
+            }
+        }
+        return null;
+    }
+
+    // Limpiamos el texto de markdown y caracteres especiales
+    const cleanText = section.replace(/[#*_]/g, '').trim();
+    const lines = cleanText.split('\n').map(line => line.trim());
     
     let npsTotal = null;
-    for (const pattern of npsAnalysisPatterns) {
-        const match = section.match(pattern);
-        if (match) {
-            npsTotal = parseInt(match[1]);
-            break;
-        }
-    }
+    let promotores = null, indiferentes = null, detractores = null;
     
+    const similarityThreshold = 0.4; // Umbral de similitud (40%)
+
+    // Patrones base para buscar NPS
+    const npsBasePatterns = [
+        "Análisis NPS: NPS = % Promotores - % Detractores =",
+        "NPS = % Promotores - % Detractores =",
+        "Net Promoter Score:",
+        "Resultado NPS:",
+        "NPS Total:",
+        "NPS General:",
+        "Índice NPS:",
+        "Puntuación NPS:",
+        "NPS Score:",
+        "NPS Value:"
+    ];
+
+    // Buscar NPS Total con similitud
+    for (const line of lines) {
+        for (const pattern of npsBasePatterns) {
+            if (stringSimilarity(line.toLowerCase(), pattern.toLowerCase()) >= similarityThreshold) {
+                // Para NPS total, buscar específicamente números con signo (positivos o negativos)
+                const npsMatch = line.match(/:\s*(-?\d+\.?\d*)%?|=\s*(-?\d+\.?\d*)%?/);
+                if (npsMatch) {
+                    const value = npsMatch[1] || npsMatch[2];
+                    if (value !== undefined && value !== null) {
+                        npsTotal = parseFloat(value);
+                        break;
+                    }
+                }
+            }
+        }
+        if (npsTotal !== null) break;
+    }
+
     if (npsTotal === null) {
         return null;
     }
-    
-    // Buscar los porcentajes de Promotores, Indiferentes y Detractores con múltiples patrones
-    const promotoresPatterns = [
-        /- Promotores: (\d+)% \(Clasificación NPS\)/,
-        /Promotores: (\d+)%/,
-        /- Promotores: (\d+)%/
+
+    // Patrones base para buscar porcentajes
+    const promotoresBasePatterns = [
+        "Promotores:",
+        "% Promotores:",
+        "Promotores (%)",
+        "Porcentaje de Promotores:"
     ];
-    
-    const indiferentesPatterns = [
-        /- Indiferentes: (\d+)% \(Clasificación NPS\)/,
-        /Indiferentes: (\d+)%/,
-        /- Indiferentes: (\d+)%/
+
+    const indiferentesBasePatterns = [
+        "Indiferentes:", 
+        "% Indiferentes:",
+        "Indiferentes (%)",
+        "Porcentaje de Indiferentes:",
+        "Pasivos:",
+        "Neutros:"
     ];
-    
-    const detractoresPatterns = [
-        /- Detractores: (\d+)% \(Clasificación NPS\)/,
-        /Detractores: (\d+)%/,
-        /- Detractores: (\d+)%/
+
+    const detractoresBasePatterns = [
+        "Detractores:",
+        "% Detractores:", 
+        "Detractores (%)",
+        "Porcentaje de Detractores:"
     ];
-    
-    let promotores = null, indiferentes = null, detractores = null;
-    
-    // Buscar promotores
-    for (const pattern of promotoresPatterns) {
-        const match = section.match(pattern);
-        if (match) {
-            promotores = parseInt(match[1]);
-            break;
+
+    // Buscar promotores con similitud - asegurar que la línea contenga "promot"
+    for (const line of lines) {
+        // Verificar que la línea realmente contenga "promot" para evitar falsos positivos
+        if (!line.toLowerCase().includes('promot')) continue;
+        
+        for (const pattern of promotoresBasePatterns) {
+            const similarity = stringSimilarity(line.toLowerCase(), pattern.toLowerCase());
+            if (similarity >= similarityThreshold) {
+                const value = extractNumber(line);
+                console.log(`Debug Promotores - Línea: "${line}", Pattern: "${pattern}", Similitud: ${similarity.toFixed(2)}, Valor: ${value}`);
+                if (value !== null && value >= 0) {
+                    promotores = value;
+                    break;
+                }
+            }
         }
+        if (promotores !== null) break;
+    }
+
+    // Buscar indiferentes con similitud - asegurar que la línea contenga "indif" o "pasiv" o "neutr"
+    for (const line of lines) {
+        const lowerLine = line.toLowerCase();
+        // Verificar que la línea realmente contenga alguna palabra clave
+        if (!lowerLine.includes('indif') && !lowerLine.includes('pasiv') && !lowerLine.includes('neutr')) continue;
+        
+        for (const pattern of indiferentesBasePatterns) {
+            const similarity = stringSimilarity(lowerLine, pattern.toLowerCase());
+            if (similarity >= similarityThreshold) {
+                const value = extractNumber(line);
+                console.log(`Debug Indiferentes - Línea: "${line}", Pattern: "${pattern}", Similitud: ${similarity.toFixed(2)}, Valor: ${value}`);
+                if (value !== null && value >= 0) {
+                    indiferentes = value;
+                    break;
+                }
+            }
+        }
+        if (indiferentes !== null) break;
+    }
+
+    // Buscar detractores con similitud - asegurar que la línea contenga "detract"
+    for (const line of lines) {
+        // Verificar que la línea realmente contenga "detract" y NO contenga "promot"
+        const lowerLine = line.toLowerCase();
+        if (!lowerLine.includes('detract')) continue;
+        if (lowerLine.includes('promot')) continue; // Evitar confusión con "promotores"
+        
+        for (const pattern of detractoresBasePatterns) {
+            const similarity = stringSimilarity(lowerLine, pattern.toLowerCase());
+            if (similarity >= similarityThreshold) {
+                const value = extractNumber(line);
+                console.log(`Debug Detractores - Línea: "${line}", Pattern: "${pattern}", Similitud: ${similarity.toFixed(2)}, Valor: ${value}`);
+                if (value !== null && value >= 0) {
+                    detractores = value;
+                    break;
+                }
+            }
+        }
+        if (detractores !== null) break;
     }
     
-    // Buscar indiferentes
-    for (const pattern of indiferentesPatterns) {
-        const match = section.match(pattern);
-        if (match) {
-            indiferentes = parseInt(match[1]);
-            break;
-        }
-    }
-    
-    // Buscar detractores
-    for (const pattern of detractoresPatterns) {
-        const match = section.match(pattern);
-        if (match) {
-            detractores = parseInt(match[1]);
-            break;
-        }
-    }
-    
-    if (promotores === null || indiferentes === null || detractores === null) {
+    // Validar que tenemos todos los valores necesarios
+    if (npsTotal === null || promotores === null || indiferentes === null || detractores === null) {
         console.log('Debug NPS - No se encontraron todos los valores:', {
-            promotores, indiferentes, detractores, 
-            section: section.substring(0, 200) + '...'
+            npsTotal, promotores, indiferentes, detractores, 
+            section: section.substring(0, 300) + '...'
         });
         return null;
     }
     
+    // Validar que los porcentajes sumen aproximadamente 100
+    const suma = promotores + indiferentes + detractores;
+    if (Math.abs(suma - 100) > 5) { // Permitir un margen de error de 5%
+        console.log('Debug NPS - Los porcentajes no suman 100:', {
+            promotores, indiferentes, detractores, suma
+        });
+    }
+    
     console.log('Debug NPS - Valores encontrados:', {
-        npsTotal, promotores, indiferentes, detractores
+        npsTotal, promotores, indiferentes, detractores, suma
     });
     
     return {
