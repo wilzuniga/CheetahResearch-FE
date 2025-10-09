@@ -47,7 +47,7 @@ const translations = {
             hStudyTitle: "Titulo del Estudio",          inStudyTitle: "Titulo",
             hTargetAudience: "Mercado Objetivo",        inTargetAudience: "Mercado Objetivo",
             hStudyObjectives: "Objetivos del Estudio",  inStudyObjectives: "Objetivos generales del estudio, separados por comas (\",\")",
-            hPrompt: "Prompt del Estudio",              inPrompt: "Ingresa el prompt general de la encuesta",
+            hPrompt: "Contexto del Estudio",              inPrompt: "Ingresa el contexto general de la encuesta",
             color1: "Color Principal del Estudio",      color2: "Color Secundario del Estudio",
             btSaveColors: "Guardar Colores",            btDefaultColors: "Colores Predefinidos",
             btCreate: "Crear Estudio",                  btUpdate: "Actualizar Estudio",
