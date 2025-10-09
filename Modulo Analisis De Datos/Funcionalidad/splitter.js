@@ -943,8 +943,11 @@ function parseNPSSection(section) {
         "Porcentaje de Detractores:"
     ];
 
-    // Buscar promotores con similitud
+    // Buscar promotores con similitud - asegurar que la línea contenga "promot"
     for (const line of lines) {
+        // Verificar que la línea realmente contenga "promot" para evitar falsos positivos
+        if (!line.toLowerCase().includes('promot')) continue;
+        
         for (const pattern of promotoresBasePatterns) {
             const similarity = stringSimilarity(line.toLowerCase(), pattern.toLowerCase());
             if (similarity >= similarityThreshold) {
@@ -959,10 +962,14 @@ function parseNPSSection(section) {
         if (promotores !== null) break;
     }
 
-    // Buscar indiferentes con similitud 
+    // Buscar indiferentes con similitud - asegurar que la línea contenga "indif" o "pasiv" o "neutr"
     for (const line of lines) {
+        const lowerLine = line.toLowerCase();
+        // Verificar que la línea realmente contenga alguna palabra clave
+        if (!lowerLine.includes('indif') && !lowerLine.includes('pasiv') && !lowerLine.includes('neutr')) continue;
+        
         for (const pattern of indiferentesBasePatterns) {
-            const similarity = stringSimilarity(line.toLowerCase(), pattern.toLowerCase());
+            const similarity = stringSimilarity(lowerLine, pattern.toLowerCase());
             if (similarity >= similarityThreshold) {
                 const value = extractNumber(line);
                 console.log(`Debug Indiferentes - Línea: "${line}", Pattern: "${pattern}", Similitud: ${similarity.toFixed(2)}, Valor: ${value}`);
@@ -975,10 +982,15 @@ function parseNPSSection(section) {
         if (indiferentes !== null) break;
     }
 
-    // Buscar detractores con similitud
+    // Buscar detractores con similitud - asegurar que la línea contenga "detract"
     for (const line of lines) {
+        // Verificar que la línea realmente contenga "detract" y NO contenga "promot"
+        const lowerLine = line.toLowerCase();
+        if (!lowerLine.includes('detract')) continue;
+        if (lowerLine.includes('promot')) continue; // Evitar confusión con "promotores"
+        
         for (const pattern of detractoresBasePatterns) {
-            const similarity = stringSimilarity(line.toLowerCase(), pattern.toLowerCase());
+            const similarity = stringSimilarity(lowerLine, pattern.toLowerCase());
             if (similarity >= similarityThreshold) {
                 const value = extractNumber(line);
                 console.log(`Debug Detractores - Línea: "${line}", Pattern: "${pattern}", Similitud: ${similarity.toFixed(2)}, Valor: ${value}`);
