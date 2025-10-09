@@ -21,33 +21,81 @@
     <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
+        /* Overlay moderno con blur oscurecido */
         #overlay {
-            position: fixed; /* Posiciona el overlay de manera fija */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(3px); /* Filtro de desenfoque */ 
-            display: flex;
-            align-items: center; /* Centra verticalmente */
-            justify-content: center; /* Centra horizontalmente */
-            z-index: 1000; /* Asegura que el overlay esté por encima del contenido */
-            display: none; /* Ocultar por defecto */
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
         }
+
+        #overlay[style*="display: flex"] { display: flex !important; }
 
         #overlayContent {
-            background: var(--bs-CR-white);
-            padding: 20px;
-            border-radius : 13px;
-            width: 50%;
-            max-width: 600px; /* Opcional: limita el ancho máximo */
-            box-sizing: border-box; /* Incluye el padding en el ancho total */
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 90%;
+            padding: 24px;
+            position: relative;
+            box-sizing: border-box;
         }
 
-        .card-body {
-            word-wrap: break-word; /* Permite que el texto haga salto de línea */
-            word-break: break-word; /* O también puedes usar word-break: break-all; */
+        /* Botones modernos */
+        .btn {
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 10px 20px;
+            font-family: hedliner !important;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
         }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn:hover::before { left: 100%; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .btn:active { transform: translateY(0); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%) !important;
+            color: #fff !important;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ff8c42 0%, var(--bs-CR-orange) 100%) !important;
+        }
+
+        /* Input bar moderna */
+        #TypeB-BG { border-radius: 15px; background: var(--bs-CR-gray-dark); }
+        #Message-Input {
+            font-family: 'IBM Plex Sans', sans-serif;
+            outline: none; height: 100%; width: 100%; resize: none;
+            border-radius: 12px; padding: 12px 14px; background: #ffffff; color: #072934; border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        #Message-Input:focus { border-color: var(--bs-CR-orange); box-shadow: 0 0 0 0.2rem rgba(255,140,66,0.25); }
+
+        /* Tarjetas del chat */
+        .card-body { word-wrap: break-word; word-break: break-word; }
     </style>
     <style>
         @media (max-width: 1080px) {
