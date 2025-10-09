@@ -210,17 +210,11 @@ function initializePage() {
         document.getElementById('ComboBox_ResumenIndividualChartType').style.display = 'none';
         document.getElementById('ComboBox_ResumenIndividualChartTypeLBL').style.display = 'none';
         
-        // Ocultar inicialmente los elementos de comparación
-        const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
-        const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
-        if (compareSelect) compareSelect.style.display = 'none';
-        if (compareSelectLBL) compareSelectLBL.style.display = 'none';
-        
-        // Ocultar inicialmente el selector de tipo de gráfico
-        const chartTypeSelect = document.getElementById('ComboBox_ResumenIndividualChartType');
-        const chartTypeSelectLBL = document.getElementById('ComboBox_ResumenIndividualChartTypeLBL');
-        if (chartTypeSelect) chartTypeSelect.style.display = 'none';
-        if (chartTypeSelectLBL) chartTypeSelectLBL.style.display = 'none';
+        // Ocultar inicialmente los grupos de comparación y tipo de gráfico
+        const compareGroup = document.getElementById('ComboBox_ResumenIndividual_Compare_Group');
+        const chartTypeGroup = document.getElementById('ComboBox_ResumenIndividualChartType_Group');
+        if (compareGroup) compareGroup.style.display = 'none';
+        if (chartTypeGroup) chartTypeGroup.style.display = 'none';
 
         if (study_id === '67e2ac1b5bd042898764458a') {
             const subFiltros = [
@@ -662,7 +656,6 @@ function AgregarFiltros(study) {
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');
             const comboBox2 = document.getElementById('ComboBox_ResumenIndividual');
             const comboBoxRICompare = document.getElementById('ComboBox_ResumenIndividual_Compare');
-            const comboBoxRICompareLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
             const comboBox3 = document.getElementById('Combobox_UserPersona');
             const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBox4 = document.getElementById('Combobox_EKMAN');
