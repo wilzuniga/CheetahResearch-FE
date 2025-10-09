@@ -43,8 +43,8 @@ function createStudyForm() {
 
     const promptDelEstudio = `
         <div class="form-section">
-            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hPrompt">Prompt del Estudio</p>
-            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" data-i18n-placeholder="CreacionDeEstudio.inPrompt" style="font-family: 'IBM Plex Sans', sans-serif; color: #072934;" placeholder="Describe el contexto y las instrucciones para tu estudio"></textarea>
+            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hPrompt">Contexto del Estudio</p>
+            <textarea class="form-control" id="PromptGeneralTXT" name="Contexto del Estudio" rows="6" data-i18n-placeholder="CreacionDeEstudio.inPrompt" style="font-family: 'IBM Plex Sans', sans-serif; color: #072934;" placeholder="Describe el contexto y las instrucciones para tu estudio"></textarea>
         </div>`
     ;
 
@@ -137,8 +137,8 @@ function createFilledStudyForm() {
 
     const promptDelEstudio = `
         <div class="form-section">
-            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hPrompt">Prompt del Estudio</p>
-            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" data-i18n-placeholder="CreacionDeEstudio.inPrompt" style="font-family: 'IBM Plex Sans', sans-serif; color: #072934;">${selectedStudyData.Resumen}</textarea>
+            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hPrompt">Contexto del Estudio</p>
+            <textarea class="form-control" id="PromptGeneralTXT" name="Contexto del Estudio" rows="6" data-i18n-placeholder="CreacionDeEstudio.inPrompt" style="font-family: 'IBM Plex Sans', sans-serif; color: #072934;">${selectedStudyData.Resumen}</textarea>
         </div>`
     ;
 
