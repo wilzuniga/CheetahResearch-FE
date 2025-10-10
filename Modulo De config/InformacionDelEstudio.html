@@ -759,8 +759,7 @@
             
             try {
                 const response = await axios.get(`https://api.cheetah-research.ai/configuration/get_modules/${studyId}`);
-                const modules = response.data;
-                console.log(modules);
+                const modules = response.data.modules;
                 
                 if (modules && Object.keys(modules).length > 0) {
                     const moduleNames = Object.values(modules);
