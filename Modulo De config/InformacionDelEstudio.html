@@ -793,7 +793,7 @@
             
             try {
                 const response = await axios.get(`https://api.cheetah-research.ai/configuration/get_filters/${studyId}`);
-                const filters = response.data;
+                const filters = response.data.filters;
                 
                 let count = 0;
                 if (filters && typeof filters === 'object') {
