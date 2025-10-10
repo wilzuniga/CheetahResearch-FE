@@ -818,7 +818,7 @@
                 formData.append('study_id', studyId);
                 
                 const response = await axios.post('https://api.cheetah-research.ai/chatbot/calculate/', formData);
-                const tokens = response.data.calculation + response.data.calculation*0.05 || 0;
+                const tokens = Math.round(response.data.calculation + response.data.calculation*0.05) || 0;
                 
                 tokenCountElement.textContent = tokens.toLocaleString();
                 consumptionData.totalTokens = tokens;
