@@ -760,6 +760,7 @@
             try {
                 const response = await axios.get(`https://api.cheetah-research.ai/configuration/get_modules/${studyId}`);
                 const modules = response.data;
+                console.log(modules);
                 
                 if (modules && Object.keys(modules).length > 0) {
                     const moduleNames = Object.values(modules);
@@ -818,7 +819,7 @@
                 formData.append('study_id', studyId);
                 
                 const response = await axios.post('https://api.cheetah-research.ai/chatbot/calculate/', formData);
-                const tokens = response.data.total_tokens || 0;
+                const tokens = response.data.calculation || 0;
                 
                 tokenCountElement.textContent = tokens.toLocaleString();
                 consumptionData.totalTokens = tokens;
