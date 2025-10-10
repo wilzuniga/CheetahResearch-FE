@@ -275,11 +275,33 @@
             padding: 40px;
             max-width: 700px;
             width: 90%;
+            max-height: 90vh;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             position: relative;
             font-family: 'hedliner', sans-serif;
             border: 3px solid var(--bs-CR-orange);
             animation: slideUp 0.4s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Estilo del scrollbar para el modal */
+        .consumption-modal::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .consumption-modal::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .consumption-modal::-webkit-scrollbar-thumb {
+            background: var(--bs-CR-orange);
+            border-radius: 10px;
+        }
+
+        .consumption-modal::-webkit-scrollbar-thumb:hover {
+            background: #ff8c42;
         }
 
         @keyframes slideUp {
@@ -338,7 +360,28 @@
             border-radius: 10px;
             padding: 15px;
             min-height: 60px;
+            max-height: 300px;
+            overflow-y: auto;
             font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        /* Estilo del scrollbar para la sección de análisis */
+        .section-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .section-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .section-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 165, 0, 0.5);
+            border-radius: 10px;
+        }
+
+        .section-content::-webkit-scrollbar-thumb:hover {
+            background: var(--bs-CR-orange);
         }
 
         .analysis-list {
