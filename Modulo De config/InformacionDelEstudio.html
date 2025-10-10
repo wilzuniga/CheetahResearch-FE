@@ -679,6 +679,34 @@
                 </div>
             </div>
 
+            <!-- Encuestas Realizadas -->
+            <div class="consumption-section">
+                <div class="stat-box">
+                    <span class="stat-label">
+                        <i class="fas fa-clipboard-check"></i> Encuestas Realizadas
+                    </span>
+                    <span class="stat-value" id="surveyCount">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Cantidad de Preguntas -->
+            <div class="consumption-section">
+                <div class="stat-box">
+                    <span class="stat-label">
+                        <i class="fas fa-question-circle"></i> Cantidad de Preguntas
+                    </span>
+                    <span class="stat-value" id="questionCount">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
             <!-- Cantidad de Filtros -->
             <div class="consumption-section">
                 <div class="stat-box">
@@ -742,6 +770,12 @@
                 // Cargar análisis activos
                 loadActiveAnalysis(studyId);
                 
+                // Cargar encuestas realizadas
+                loadSurveyCount(studyId);
+                
+                // Cargar cantidad de preguntas
+                loadQuestionCount(studyId);
+                
                 // Cargar cantidad de filtros
                 loadFilterCount(studyId);
                 
@@ -784,6 +818,61 @@
             } catch (error) {
                 console.error('Error al cargar análisis:', error);
                 analysisContent.innerHTML = '<div class="no-data" style="color: #dc3545;">Error al cargar análisis</div>';
+            }
+        }
+
+        // Cargar cantidad de encuestas
+        async function loadSurveyCount(studyId) {
+            const surveyCountElement = document.getElementById('surveyCount');
+            
+            try {
+                const formData = new FormData();
+                formData.append('study_id', studyId);
+                
+                const response = await axios.post('https://api.cheetah-research.ai/chatbot/survey_count/', formData);
+                const count = response.data.survey_count || 0;
+                
+                surveyCountElement.textContent = count;
+                consumptionData.surveyCount = count;
+            } catch (error) {
+                console.error('Error al cargar encuestas:', error);
+                surveyCountElement.innerHTML = '<span style="font-size: 16px; color: #dc3545;">Error</span>';
+            }
+        }
+
+        // Cargar cantidad de preguntas
+        async function loadQuestionCount(studyId) {
+            const questionCountElement = document.getElementById('questionCount');
+            
+            try {
+                const response = await axios.get(`https://api.cheetah-research.ai/configuration/get_survey/${studyId}`);
+                const surveyData = response.data;
+                
+                let totalQuestions = 0;
+                
+                // Contar preguntas principales
+                if (surveyData.questions && Array.isArray(surveyData.questions)) {
+                    totalQuestions += surveyData.questions.length;
+                    
+                    // Contar preguntas de seguimiento (feedback_questions)
+                    surveyData.questions.forEach(question => {
+                        if (question.feedback_questions && Array.isArray(question.feedback_questions)) {
+                            totalQuestions += question.feedback_questions.length;
+                        }
+                    });
+                }
+                
+                // Contar preguntas por defecto activas
+                if (surveyData.default_questions && Array.isArray(surveyData.default_questions)) {
+                    const activeDefaultQuestions = surveyData.default_questions.filter(q => q.status === 1 || q.status === '1');
+                    totalQuestions += activeDefaultQuestions.length;
+                }
+                
+                questionCountElement.textContent = totalQuestions;
+                consumptionData.questionCount = totalQuestions;
+            } catch (error) {
+                console.error('Error al cargar preguntas:', error);
+                questionCountElement.innerHTML = '<span style="font-size: 16px; color: #dc3545;">Error</span>';
             }
         }
 
