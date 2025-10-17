@@ -867,7 +867,7 @@ function showKioskoInfoOverlay() {
                 </h5>
                 <p style="margin-bottom: 20px;">
                     El <strong>Modo Kiosko</strong> es una configuración especial que permite que la encuesta se realice 
-                    múltiples veces desde el mismo dispositivo sin restricciones de tiempo.
+                    múltiples veces desde el mismo dispositivo sin restricciones.
                 </p>
                 
                 <h5 style="font-family: hedliner; color: var(--bs-CR-black-dark); margin-bottom: 15px;">
@@ -916,7 +916,7 @@ function showKioskoInfoOverlay() {
             </div>
             
             <div style="text-align: center; margin-top: 25px;">
-                <button class="btn btn-primary" onclick="closeKioskoOverlay()" style="font-family: hedliner; padding: 12px 30px;">
+                <button id="closeKioskoBtn" class="btn btn-primary" style="font-family: hedliner; padding: 12px 30px;">
                     <i class="fas fa-check"></i>
                     Entendido
                 </button>
@@ -925,12 +925,27 @@ function showKioskoInfoOverlay() {
     `;
     
     overlay.style.display = 'flex';
+    
+    // Agregar event listener al botón de cerrar después de crear el contenido
+    const closeBtn = document.getElementById('closeKioskoBtn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeKioskoOverlay);
+    }
+    
+    // También permitir cerrar haciendo clic fuera del contenido
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            closeKioskoOverlay();
+        }
+    });
 }
 
 // Función para cerrar el overlay
 function closeKioskoOverlay() {
     const overlay = document.getElementById('overlay');
-    overlay.style.display = 'none';
+    if (overlay) {
+        overlay.style.display = 'none';
+    }
 }
 
 // Función para cambiar el estado del Modo Kiosko
@@ -940,7 +955,7 @@ function toggleKioskoMode() {
     
     const confirmMessage = newKioskoState
         ? '¿Está seguro de que desea ACTIVAR el Modo Kiosko?\n\nEsto permitirá que múltiples personas respondan la encuesta desde el mismo dispositivo sin restricciones.'
-        : '¿Está seguro de que desea DESACTIVAR el Modo Kiosko?\n\nCada dispositivo solo podrá responder la encuesta una vez cada 2 días.';
+        : '¿Está seguro de que desea DESACTIVAR el Modo Kiosko?.';
     
     if (!confirm(confirmMessage)) {
         return;
