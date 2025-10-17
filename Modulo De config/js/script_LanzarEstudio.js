@@ -910,7 +910,7 @@ function showKioskoInfoOverlay() {
                     </strong>
                     <p style="margin: 8px 0 0 0; color: #856404;">
                         Con el Modo Kiosko <strong>desactivado</strong>, cada dispositivo solo podrá responder la 
-                        encuesta una vez cada 2 días. Esto ayuda a prevenir respuestas duplicadas.
+                        encuesta una vez. Esto ayuda a prevenir respuestas duplicadas.
                     </p>
                 </div>
             </div>
@@ -978,7 +978,7 @@ function toggleKioskoMode() {
             
             const successMessage = isKioskoMode
                 ? 'El Modo Kiosko ha sido ACTIVADO exitosamente.\n\nAhora múltiples personas pueden responder desde el mismo dispositivo.'
-                : 'El Modo Kiosko ha sido DESACTIVADO exitosamente.\n\nCada dispositivo ahora está limitado a una respuesta cada 2 días.';
+                : 'El Modo Kiosko ha sido DESACTIVADO exitosamente.\n\nCada dispositivo ahora está limitado a una respuesta única.';
             
             alert(successMessage);
         } else {

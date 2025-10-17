@@ -311,7 +311,7 @@ function sendMessage(message, imageSrc) {
             // Bloquear el estudio en este dispositivo si debe hacerlo (modo kiosko desactivado)
             if (shouldBlockAfterCompletion) {
                 blockStudy(study_id);
-                console.log('Estudio bloqueado en este dispositivo por 2 días');
+                console.log('Estudio bloqueado en este dispositivo');
                 shouldBlockAfterCompletion = false; // Reset
             }
 
@@ -345,7 +345,7 @@ function sendMessage(message, imageSrc) {
             // Bloquear el estudio en este dispositivo si debe hacerlo (modo kiosko desactivado)
             if (shouldBlockAfterCompletion) {
                 blockStudy(study_id);
-                console.log('Estudio bloqueado en este dispositivo por 2 días (no cumple requisitos)');
+                console.log('Estudio bloqueado en este dispositivo (no cumple requisitos)');
                 shouldBlockAfterCompletion = false; // Reset
             }
 
@@ -584,16 +584,16 @@ function isStudyBlocked(study_id) {
     try {
         const { timestamp } = JSON.parse(blockData);
         const now = new Date().getTime();
-        const twoDaysInMs = 2 * 24 * 60 * 60 * 1000; // 2 días en milisegundos
+        const blockDurationInMs = 7 * 24 * 60 * 60 * 1000; // 7 días en milisegundos
         
-        // Verificar si han pasado 2 días
-        if (now - timestamp >= twoDaysInMs) {
-            // Ya pasaron 2 días, eliminar el bloqueo
+        // Verificar si han pasado los días configurados
+        if (now - timestamp >= blockDurationInMs) {
+            // Ya pasó el tiempo, eliminar el bloqueo
             localStorage.removeItem(blockKey);
             return false;
         }
         
-        // Aún no han pasado 2 días
+        // Aún no ha pasado el tiempo
         return true;
     } catch (error) {
         console.error('Error al verificar bloqueo:', error);
@@ -603,7 +603,7 @@ function isStudyBlocked(study_id) {
     }
 }
 
-// Función para bloquear un estudio en este dispositivo por 2 días
+// Función para bloquear un estudio en este dispositivo
 function blockStudy(study_id) {
     const blockKey = `study_block_${study_id}`;
     const blockData = {
@@ -625,9 +625,9 @@ function getRemainingBlockTime(study_id) {
     try {
         const { timestamp } = JSON.parse(blockData);
         const now = new Date().getTime();
-        const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
+        const blockDurationInMs = 7 * 24 * 60 * 60 * 1000; // 7 días en milisegundos
         const elapsed = now - timestamp;
-        const remaining = twoDaysInMs - elapsed;
+        const remaining = blockDurationInMs - elapsed;
         
         return remaining > 0 ? remaining : 0;
     } catch (error) {
@@ -759,14 +759,13 @@ async function loadInterviewer(study_id) {
         
         // Determinar el mensaje según la razón del bloqueo
         if (verificacion.reason === 'blocked') {
-            // Ya está bloqueado, mostrar tiempo restante
-            const timeRemaining = formatRemainingTime(verificacion.remainingTime);
-            messageIcon = '⏱️';
+            // Ya está bloqueado
+            messageIcon = '🚫';
             
             if (isEnglishStudy(study_id)) {
-                unavailableMessage = `You have already completed this survey from this device. You can take it again in ${timeRemaining}.`;
+                unavailableMessage = `You have already completed this survey from this device.`;
             } else {
-                unavailableMessage = `Ya has completado esta encuesta desde este dispositivo. Podrás realizarla nuevamente en ${timeRemaining}.`;
+                unavailableMessage = `Ya has completado esta encuesta desde este dispositivo.`;
             }
         } else {
             // Razón de status o error
