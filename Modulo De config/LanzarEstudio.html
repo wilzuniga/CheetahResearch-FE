@@ -543,6 +543,36 @@
                             </div>
                         </div>
 
+                        <div class="card mb-4">
+                            <div class="card-header py-3" style="display: flex; align-items: center; justify-content: space-between;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <h6 class="m-0" style="color: var(--bs-CR-black-dark); font-family: hedliner;">
+                                        <i class="fas fa-desktop"></i>
+                                        Modo Kiosko
+                                    </h6>
+                                    <button id="InfoKioskoBtn" class="btn btn-sm" style="background: transparent; border: 2px solid var(--bs-CR-orange); color: var(--bs-CR-orange); padding: 2px 8px; font-size: 12px; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Información sobre el Modo Kiosko">
+                                        <i class="fas fa-info" style="font-size: 10px;"></i>
+                                    </button>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span style="font-family: IBM Plex Sans; font-size: 14px; color: #6c757d;">Estado:</span>
+                                    <span id="KioskoStatus" style="font-family: hedliner; font-weight: bold; font-size: 14px; padding: 4px 12px; border-radius: 6px; background: #e9ecef; color: #6c757d;">
+                                        <i class="fas fa-circle" style="font-size: 8px;"></i>
+                                        Inactivo
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="m-0" style="font-family: IBM Plex Sans; color: #6c757d; font-size: 14px; margin-bottom: 15px !important;">
+                                    El Modo Kiosko permite que la encuesta se realice múltiples veces desde el mismo dispositivo sin restricciones de tiempo.
+                                </p>
+                                <button id="StatusBtn_Kiosko" class="btn btn-primary" style="font-family: hedliner;">
+                                    <i class="fas fa-toggle-on"></i>
+                                    Cambiar Estado
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="form-section" style="text-align: center;">
                             <button class="btn btn-primary" id="LanzarEstudioBtn" type="submit" style="font-weight: bold;font-size: 18px;padding: 15px 40px; font-family: hedliner;" data-i18n="LanzarEstudio.btLaunch">
                                 <i class="fas fa-rocket"></i>

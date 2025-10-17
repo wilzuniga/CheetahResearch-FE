@@ -557,6 +557,85 @@ function load(study_id) {
     });
 }
 
+// Función para verificar si un estudio está bloqueado en este dispositivo
+function isStudyBlocked(study_id) {
+    const blockKey = `study_block_${study_id}`;
+    const blockData = localStorage.getItem(blockKey);
+    
+    if (!blockData) {
+        return false; // No hay bloqueo
+    }
+    
+    try {
+        const { timestamp } = JSON.parse(blockData);
+        const now = new Date().getTime();
+        const twoDaysInMs = 2 * 24 * 60 * 60 * 1000; // 2 días en milisegundos
+        
+        // Verificar si han pasado 2 días
+        if (now - timestamp >= twoDaysInMs) {
+            // Ya pasaron 2 días, eliminar el bloqueo
+            localStorage.removeItem(blockKey);
+            return false;
+        }
+        
+        // Aún no han pasado 2 días
+        return true;
+    } catch (error) {
+        console.error('Error al verificar bloqueo:', error);
+        // Si hay error parseando, eliminar el dato corrupto
+        localStorage.removeItem(blockKey);
+        return false;
+    }
+}
+
+// Función para bloquear un estudio en este dispositivo por 2 días
+function blockStudy(study_id) {
+    const blockKey = `study_block_${study_id}`;
+    const blockData = {
+        timestamp: new Date().getTime(),
+        study_id: study_id
+    };
+    localStorage.setItem(blockKey, JSON.stringify(blockData));
+}
+
+// Función para obtener el tiempo restante de bloqueo
+function getRemainingBlockTime(study_id) {
+    const blockKey = `study_block_${study_id}`;
+    const blockData = localStorage.getItem(blockKey);
+    
+    if (!blockData) {
+        return 0;
+    }
+    
+    try {
+        const { timestamp } = JSON.parse(blockData);
+        const now = new Date().getTime();
+        const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
+        const elapsed = now - timestamp;
+        const remaining = twoDaysInMs - elapsed;
+        
+        return remaining > 0 ? remaining : 0;
+    } catch (error) {
+        return 0;
+    }
+}
+
+// Función para formatear tiempo restante en formato legible
+function formatRemainingTime(milliseconds) {
+    const hours = Math.floor(milliseconds / (1000 * 60 * 60));
+    const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
+    
+    if (hours >= 24) {
+        const days = Math.floor(hours / 24);
+        const remainingHours = hours % 24;
+        return `${days} día${days > 1 ? 's' : ''} y ${remainingHours} hora${remainingHours !== 1 ? 's' : ''}`;
+    } else if (hours > 0) {
+        return `${hours} hora${hours !== 1 ? 's' : ''} y ${minutes} minuto${minutes !== 1 ? 's' : ''}`;
+    } else {
+        return `${minutes} minuto${minutes !== 1 ? 's' : ''}`;
+    }
+}
+
 function verificarLink(study_id) {
     const VerifURL = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
     
@@ -566,26 +645,53 @@ function verificarLink(study_id) {
             const data = response.data;
             let studyStatus = data.studyStatus;
             
+            // Verificar primero el estado del estudio
             if(studyStatus == 0) {
-                return false;
+                return { available: false, reason: 'status' };
             } else if(studyStatus == 2) {
-                return false;
-            } else {
-                return true;
+                return { available: false, reason: 'status' };
             }
+            
+            // Verificar isKiosk
+            if (data.isKiosk === true) {
+                // Si es true, la encuesta se hace con normalidad
+                return { available: true, reason: 'kiosk' };
+            } else if (data.isKiosk === false) {
+                // Si es false, verificar si está bloqueado en este dispositivo
+                if (isStudyBlocked(study_id)) {
+                    // Ya está bloqueado, no se puede hacer
+                    const remainingTime = getRemainingBlockTime(study_id);
+                    return { 
+                        available: false, 
+                        reason: 'blocked',
+                        remainingTime: remainingTime 
+                    };
+                } else {
+                    // No está bloqueado, pero hay que bloquearlo ahora
+                    blockStudy(study_id);
+                    return { 
+                        available: false, 
+                        reason: 'non-kiosk',
+                        justBlocked: true 
+                    };
+                }
+            }
+            
+            // Si isKiosk no está definido, permitir por defecto (compatibilidad)
+            return { available: true, reason: 'default' };
         })
         .catch(error => {
             console.error('Error al enviar los datos:', error);
-            return false;
+            return { available: false, reason: 'error' };
         });
 }
 
 
 //Función Cargar Entrevistador
 async function loadInterviewer(study_id) {
-    const linkDisponible = await verificarLink(study_id);
+    const verificacion = await verificarLink(study_id);
 
-    if (linkDisponible) {
+    if (verificacion.available) {
         const url = "https://api.cheetah-research.ai/configuration/getInterviewer/";
 
         axios.post(url, { study_id: study_id }, {
@@ -631,16 +737,41 @@ async function loadInterviewer(study_id) {
     } else {
         const formContainer = document.createElement('div');
         let unavailableMessage;
+        let messageIcon = '⚠️';
         
-        if (isEnglishStudy(study_id)) {
-            unavailableMessage = `It seems the link is no longer available. If you need to access this information, don't hesitate to contact us, we're here to help you resolve it!`;
+        // Determinar el mensaje según la razón del bloqueo
+        if (verificacion.reason === 'blocked') {
+            // Ya está bloqueado, mostrar tiempo restante
+            const timeRemaining = formatRemainingTime(verificacion.remainingTime);
+            messageIcon = '⏱️';
+            
+            if (isEnglishStudy(study_id)) {
+                unavailableMessage = `You have already completed this survey from this device. You can take it again in ${timeRemaining}.`;
+            } else {
+                unavailableMessage = `Ya has completado esta encuesta desde este dispositivo. Podrás realizarla nuevamente en ${timeRemaining}.`;
+            }
+        } else if (verificacion.reason === 'non-kiosk') {
+            // Acaba de ser bloqueado
+            messageIcon = 'ℹ️';
+            
+            if (isEnglishStudy(study_id)) {
+                unavailableMessage = `Thank you for your interest! This survey can only be completed once per device every 2 days. Please try again later.`;
+            } else {
+                unavailableMessage = `¡Gracias por tu interés! Esta encuesta solo puede completarse una vez por dispositivo cada 2 días. Por favor, intenta más tarde.`;
+            }
         } else {
-            unavailableMessage = `Parece que el enlace ya no está disponible. Si necesitas acceder a esta información, no dudes en contactarnos, ¡estamos aquí para ayudarte a resolverlo!`;
+            // Razón de status o error
+            if (isEnglishStudy(study_id)) {
+                unavailableMessage = `It seems the link is no longer available. If you need to access this information, don't hesitate to contact us, we're here to help you resolve it!`;
+            } else {
+                unavailableMessage = `Parece que el enlace ya no está disponible. Si necesitas acceder a esta información, no dudes en contactarnos, ¡estamos aquí para ayudarte a resolverlo!`;
+            }
         }
         
         formContainer.innerHTML = `
-            <div id="overlayContent" class="text-wrap">
-                <p>${unavailableMessage}</p>
+            <div id="overlayContent" class="text-wrap" style="text-align: center;">
+                <div style="font-size: 60px; margin-bottom: 20px;">${messageIcon}</div>
+                <p style="font-size: 16px; line-height: 1.5;">${unavailableMessage}</p>
             </div>
         `;
 

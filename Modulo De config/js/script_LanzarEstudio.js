@@ -3,6 +3,7 @@ let modules = [];
 let dominios = [];
 let preguntas = [];
 let studyStatus = 0;
+let isKioskoMode = false;
 let formData = new FormData();  
 
 
@@ -34,6 +35,8 @@ function load(){    // Actualizar el título del estudio desde sessionStorage
             // console.log(response.data);
             const data = response.data;
             studyStatus = data.studyStatus;
+            
+            // Actualizar estado de los módulos
             if(data.studyStatus == 0){
                 document.getElementById('HeaderPrincipalAnalisis').innerHTML = '<i class="fas fa-chart-bar"></i> Módulo de Análisis de Datos - No Activo';
                 document.getElementById('HeaderPrincipalRecoleccion').innerHTML = '<i class="fas fa-database"></i> Modulo de Recolección de Datos - No Activo';
@@ -47,6 +50,10 @@ function load(){    // Actualizar el título del estudio desde sessionStorage
                 document.getElementById('HeaderPrincipalAnalisis').innerHTML = '<i class="fas fa-chart-bar"></i> Módulo de Análisis de Datos - Activo';
                 document.getElementById('HeaderPrincipalRecoleccion').innerHTML = '<i class="fas fa-database"></i> Modulo de Recolección de Datos - Activo';
             }
+            
+            // Actualizar estado del Modo Kiosko
+            isKioskoMode = data.isKiosk === true;
+            updateKioskoUI(isKioskoMode);
         }
         ) 
         .catch(error => {
@@ -797,5 +804,188 @@ function adjustColor(color, percent) {//Funcion loca de chatsito
                 (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 + 
                 (B < 255 ? (B < 1 ? 0 : B) : 255))
                 .toString(16).slice(1).toUpperCase()}`;
+}
+
+// ============ MODO KIOSKO ============
+
+// Función para actualizar la UI del estado del Modo Kiosko
+function updateKioskoUI(isActive) {
+    const statusElement = document.getElementById('KioskoStatus');
+    
+    if (isActive) {
+        statusElement.innerHTML = '<i class="fas fa-circle" style="font-size: 8px;"></i> Activo';
+        statusElement.style.background = '#d4edda';
+        statusElement.style.color = '#155724';
+        statusElement.style.border = '1px solid #c3e6cb';
+    } else {
+        statusElement.innerHTML = '<i class="fas fa-circle" style="font-size: 8px;"></i> Inactivo';
+        statusElement.style.background = '#f8d7da';
+        statusElement.style.color = '#721c24';
+        statusElement.style.border = '1px solid #f5c6cb';
+    }
+}
+
+// Event Listener para el botón de información del Modo Kiosko
+document.addEventListener('DOMContentLoaded', function() {
+    const infoKioskoBtn = document.getElementById('InfoKioskoBtn');
+    const statusKioskoBtn = document.getElementById('StatusBtn_Kiosko');
+    
+    // Botón de información
+    if (infoKioskoBtn) {
+        infoKioskoBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showKioskoInfoOverlay();
+        });
+    }
+    
+    // Botón de cambiar estado
+    if (statusKioskoBtn) {
+        statusKioskoBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleKioskoMode();
+        });
+    }
+});
+
+// Función para mostrar el overlay de información del Modo Kiosko
+function showKioskoInfoOverlay() {
+    const overlay = document.getElementById('overlay');
+    
+    overlay.innerHTML = `
+        <div id="overlayContent" style="max-width: 600px; padding: 30px;">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <i class="fas fa-desktop" style="font-size: 60px; color: var(--bs-CR-orange);"></i>
+                <h3 style="font-family: hedliner; color: var(--bs-CR-black-dark); margin-top: 15px; margin-bottom: 10px;">
+                    Modo Kiosko
+                </h3>
+            </div>
+            
+            <div style="font-family: IBM Plex Sans; color: #495057; line-height: 1.6; text-align: left;">
+                <h5 style="font-family: hedliner; color: var(--bs-CR-black-dark); margin-bottom: 15px;">
+                    <i class="fas fa-question-circle" style="color: var(--bs-CR-orange);"></i>
+                    ¿Qué es el Modo Kiosko?
+                </h5>
+                <p style="margin-bottom: 20px;">
+                    El <strong>Modo Kiosko</strong> es una configuración especial que permite que la encuesta se realice 
+                    múltiples veces desde el mismo dispositivo sin restricciones de tiempo.
+                </p>
+                
+                <h5 style="font-family: hedliner; color: var(--bs-CR-black-dark); margin-bottom: 15px;">
+                    <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                    Cuándo usar el Modo Kiosko:
+                </h5>
+                <ul style="margin-bottom: 20px; padding-left: 20px;">
+                    <li style="margin-bottom: 8px;">
+                        <strong>Eventos presenciales:</strong> Cuando tienes un dispositivo compartido en ferias, 
+                        conferencias o puntos de venta.
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <strong>Encuestas en punto de venta:</strong> Para recopilar feedback inmediato de múltiples 
+                        clientes desde un mismo dispositivo.
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <strong>Tablets compartidas:</strong> Ideal para entrevistas cara a cara donde el encuestador 
+                        usa el mismo dispositivo con diferentes personas.
+                    </li>
+                </ul>
+                
+                <h5 style="font-family: hedliner; color: var(--bs-CR-black-dark); margin-bottom: 15px;">
+                    <i class="fas fa-times-circle" style="color: #dc3545;"></i>
+                    Cuándo NO usar el Modo Kiosko:
+                </h5>
+                <ul style="margin-bottom: 20px; padding-left: 20px;">
+                    <li style="margin-bottom: 8px;">
+                        <strong>Encuestas online remotas:</strong> Cuando los participantes responden desde sus propios 
+                        dispositivos personales.
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <strong>Control de duplicados:</strong> Si necesitas evitar que una persona responda varias 
+                        veces (en este caso, déjalo desactivado).
+                    </li>
+                </ul>
+                
+                <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+                    <strong style="color: #856404;">
+                        <i class="fas fa-exclamation-triangle"></i> Importante:
+                    </strong>
+                    <p style="margin: 8px 0 0 0; color: #856404;">
+                        Con el Modo Kiosko <strong>desactivado</strong>, cada dispositivo solo podrá responder la 
+                        encuesta una vez cada 2 días. Esto ayuda a prevenir respuestas duplicadas.
+                    </p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 25px;">
+                <button class="btn btn-primary" onclick="closeKioskoOverlay()" style="font-family: hedliner; padding: 12px 30px;">
+                    <i class="fas fa-check"></i>
+                    Entendido
+                </button>
+            </div>
+        </div>
+    `;
+    
+    overlay.style.display = 'flex';
+}
+
+// Función para cerrar el overlay
+function closeKioskoOverlay() {
+    const overlay = document.getElementById('overlay');
+    overlay.style.display = 'none';
+}
+
+// Función para cambiar el estado del Modo Kiosko
+function toggleKioskoMode() {
+    const studyId = sessionStorage.getItem('selectedStudyId');
+    const newKioskoState = !isKioskoMode;
+    
+    const confirmMessage = newKioskoState
+        ? '¿Está seguro de que desea ACTIVAR el Modo Kiosko?\n\nEsto permitirá que múltiples personas respondan la encuesta desde el mismo dispositivo sin restricciones.'
+        : '¿Está seguro de que desea DESACTIVAR el Modo Kiosko?\n\nCada dispositivo solo podrá responder la encuesta una vez cada 2 días.';
+    
+    if (!confirm(confirmMessage)) {
+        return;
+    }
+    
+    const url = `https://api.cheetah-research.ai/configuration/updateKiosk/${studyId}`;
+    
+    axios.post(url, {
+        isKiosk: newKioskoState
+    }, {
+        headers: {
+            'Authorization': `Token ${sessionStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.data.status === 'success') {
+            isKioskoMode = newKioskoState;
+            updateKioskoUI(isKioskoMode);
+            
+            const successMessage = isKioskoMode
+                ? 'El Modo Kiosko ha sido ACTIVADO exitosamente.\n\nAhora múltiples personas pueden responder desde el mismo dispositivo.'
+                : 'El Modo Kiosko ha sido DESACTIVADO exitosamente.\n\nCada dispositivo ahora está limitado a una respuesta cada 2 días.';
+            
+            alert(successMessage);
+        } else {
+            alert('Error al cambiar el estado del Modo Kiosko. Por favor, intente nuevamente.');
+        }
+    })
+    .catch(error => {
+        console.error('Error al cambiar el estado del Modo Kiosko:', error);
+        
+        let errorMessage = 'Error al cambiar el estado del Modo Kiosko.';
+        
+        if (error.response) {
+            if (error.response.status === 403) {
+                errorMessage = 'No tiene permisos para modificar este estudio.';
+            } else if (error.response.status === 404) {
+                errorMessage = 'Estudio no encontrado.';
+            } else if (error.response.data && error.response.data.message) {
+                errorMessage = error.response.data.message;
+            }
+        }
+        
+        alert(errorMessage);
+    });
 }
 
