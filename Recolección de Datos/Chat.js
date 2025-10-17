@@ -1,5 +1,6 @@
 let imgPP;
 let hash = 0;
+let shouldBlockAfterCompletion = false; // Variable para rastrear si debe bloquearse al terminar
 
 // Función para determinar si el estudio requiere textos en inglés
 function isEnglishStudy(study_id) {
@@ -305,7 +306,14 @@ function sendMessage(message, imageSrc) {
 
             getMessage(farewellMessage, null);
             loadingMsg.style.display = 'none';
-            endChat()
+            endChat();
+            
+            // Bloquear el estudio en este dispositivo si debe hacerlo (modo kiosko desactivado)
+            if (shouldBlockAfterCompletion) {
+                blockStudy(study_id);
+                console.log('Estudio bloqueado en este dispositivo por 2 días');
+                shouldBlockAfterCompletion = false; // Reset
+            }
 
             const url = 'https://api.cheetah-research.ai/chatbot/logs/';
 
@@ -332,7 +340,14 @@ function sendMessage(message, imageSrc) {
             
             getMessage(farewellMessage, null);
             loadingMsg.style.display = 'none';
-            endChat()
+            endChat();
+            
+            // Bloquear el estudio en este dispositivo si debe hacerlo (modo kiosko desactivado)
+            if (shouldBlockAfterCompletion) {
+                blockStudy(study_id);
+                console.log('Estudio bloqueado en este dispositivo por 2 días (no cumple requisitos)');
+                shouldBlockAfterCompletion = false; // Reset
+            }
 
         
         }else {
@@ -654,30 +669,33 @@ function verificarLink(study_id) {
             
             // Verificar isKiosk
             if (data.isKiosk === true) {
-                // Si es true, la encuesta se hace con normalidad
+                // Si es true, la encuesta se hace con normalidad sin bloqueo
+                shouldBlockAfterCompletion = false;
                 return { available: true, reason: 'kiosk' };
             } else if (data.isKiosk === false) {
                 // Si es false, verificar si está bloqueado en este dispositivo
                 if (isStudyBlocked(study_id)) {
                     // Ya está bloqueado, no se puede hacer
                     const remainingTime = getRemainingBlockTime(study_id);
+                    shouldBlockAfterCompletion = false;
                     return { 
                         available: false, 
                         reason: 'blocked',
                         remainingTime: remainingTime 
                     };
                 } else {
-                    // No está bloqueado, pero hay que bloquearlo ahora
-                    blockStudy(study_id);
+                    // No está bloqueado, PERMITIR ENTRAR pero marcar para bloquear al terminar
+                    shouldBlockAfterCompletion = true;
                     return { 
-                        available: false, 
+                        available: true, 
                         reason: 'non-kiosk',
-                        justBlocked: true 
+                        willBlockAfter: true 
                     };
                 }
             }
             
             // Si isKiosk no está definido, permitir por defecto (compatibilidad)
+            shouldBlockAfterCompletion = false;
             return { available: true, reason: 'default' };
         })
         .catch(error => {
@@ -749,15 +767,6 @@ async function loadInterviewer(study_id) {
                 unavailableMessage = `You have already completed this survey from this device. You can take it again in ${timeRemaining}.`;
             } else {
                 unavailableMessage = `Ya has completado esta encuesta desde este dispositivo. Podrás realizarla nuevamente en ${timeRemaining}.`;
-            }
-        } else if (verificacion.reason === 'non-kiosk') {
-            // Acaba de ser bloqueado
-            messageIcon = 'ℹ️';
-            
-            if (isEnglishStudy(study_id)) {
-                unavailableMessage = `Thank you for your interest! This survey can only be completed once per device every 2 days. Please try again later.`;
-            } else {
-                unavailableMessage = `¡Gracias por tu interés! Esta encuesta solo puede completarse una vez por dispositivo cada 2 días. Por favor, intenta más tarde.`;
             }
         } else {
             // Razón de status o error
