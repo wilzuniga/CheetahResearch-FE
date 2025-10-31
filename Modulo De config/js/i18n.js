@@ -104,7 +104,7 @@ const translations = {
             modCustomerJourney: "Módulo Customer Journey",
             modReputacion: "Módulo Reputación",
             modPruebaProducto: "Módulo Prueba de Producto",
-            modFocusDecoder: "Módulo Focus Group Decoder",
+            modFocusDecoder: "Módulo Focus Groups Decoder",
 
             hSuggQuestion: "Preguntas Sugeridas",                  inSuggQuestion: "Agrega preguntas sugeridas para Sócrates",
             hRecollectionModule: "Módulo de Recolección de Datos", aRecollectionModule: "RecoleccionDeDatos.com",
