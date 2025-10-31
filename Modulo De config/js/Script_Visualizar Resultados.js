@@ -815,7 +815,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     //enviar el texto del textarea al backend
                     const formDataFD = new FormData();
                     formDataFD.append('filter', StyleSelectedOptionFDValue);
-                    formDataFD.append('module', 'focus_groups_decoder');
+                    formDataFD.append('module', 'focus_decoder');
+                    formDataFD.append('sub_module', 'focus_groups_decoder');
                     const fileContent = textarea.value;
                     const blob = new Blob([fileContent], { type: 'text/markdown' });
                     const filename = StyleSelectedOptionFDValue + '.md';
@@ -1556,7 +1557,8 @@ function LLenarResumenes(){
 
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
-                formData.append('module', 'focus_groups_decoder');
+                formData.append('module', 'focus_decoder');
+                formData.append('sub_module', 'focus_groups_decoder');
                 const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {

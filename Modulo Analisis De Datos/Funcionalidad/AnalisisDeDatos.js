@@ -1477,7 +1477,8 @@ function LLenarResumenes(study) {
         } else {
             formData.append('filter', selectedValue);
         }
-        formData.append('module', 'focus_groups_decoder');
+        formData.append('module', 'focus_decoder');
+        formData.append('sub_module', 'focus_groups_decoder');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
         axios.post(url, formData)
             .then(function (response) {
