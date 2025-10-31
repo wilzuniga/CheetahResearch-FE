@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="assets/assets_accounts/css/Hover.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="stylesheet" href="assets/assets_accounts/css/Hover.css">
 
     <style>
@@ -321,6 +322,236 @@
         .sidebar {
             z-index: 1000 !important;
         }
+
+        /* Modal de compartir */
+        .share-modal {
+            display: none;
+            position: fixed;
+            z-index: 100000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .share-modal-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .share-modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
+        }
+
+        .share-modal-header {
+            padding: 25px 30px;
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .share-modal-header h5 {
+            margin: 0;
+            font-family: hedliner;
+            font-size: 22px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            font-size: 28px;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 140, 66, 0.1);
+            color: var(--bs-CR-orange);
+            transform: rotate(90deg);
+        }
+
+        .share-modal-body {
+            padding: 30px;
+        }
+
+        .share-option {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .share-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 140, 66, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .share-option:hover::before {
+            left: 100%;
+        }
+
+        .share-option:hover {
+            border-color: var(--bs-CR-orange);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 140, 66, 0.2);
+        }
+
+        .share-option:active {
+            transform: translateY(-1px);
+        }
+
+        .share-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .share-option-title {
+            font-family: hedliner;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .share-option-description {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 13px;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        .coming-soon-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        #qrCodeContainer {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #qrcode {
+            display: inline-block;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+        }
+
+        #qrcode canvas,
+        #qrcode img {
+            border-radius: 8px;
+        }
+
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            z-index: 100001;
+            font-family: hedliner;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        .toast-notification.hiding {
+            animation: slideOutRight 0.3s ease-out;
+        }
     </style>
     <style>
         /*media query para que desaparezca el img si el display no es hd+*/
@@ -513,10 +744,16 @@
                             </div>
                             <div class="card-body">
                                 <p id="ModuloDeRecoleccionURL" class="m-0" style="font-family: IBM Plex Sans;" data-i18n="LanzarEstudio.aRecollectionModule">LinkModuloRecoleccionDeDatos.com</p>
-                                <button id="StatusBtn_Recoleccion" class="btn btn-primary" style="margin-top: 15px; font-family: hedliner;" data-i18n="LanzarEstudio.btChangeState">
-                                    <i class="fas fa-toggle-on"></i>
-                                    Cambiar Estado
-                                </button>
+                                <div class="button-group" style="margin-top: 15px;">
+                                    <button id="StatusBtn_Recoleccion" class="btn btn-primary" style="font-family: hedliner;" data-i18n="LanzarEstudio.btChangeState">
+                                        <i class="fas fa-toggle-on"></i>
+                                        Cambiar Estado
+                                    </button>
+                                    <button id="ShareBtn_Recoleccion" class="btn btn-primary" style="font-family: hedliner;">
+                                        <i class="fas fa-share-alt"></i>
+                                        Compartir
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -590,6 +827,50 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal de compartir -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-modal-content">
+            <div class="share-modal-header">
+                <h5>
+                    <i class="fas fa-share-alt"></i>
+                    Compartir Encuesta
+                </h5>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="share-modal-body">
+                <div class="share-option" id="copyLinkOption">
+                    <div class="share-option-title">
+                        <i class="fas fa-link"></i>
+                        Copiar Link Normal
+                    </div>
+                    <p class="share-option-description">Copia el enlace de la encuesta al portapapeles</p>
+                </div>
+
+                <div class="share-option" id="copyQROption">
+                    <div class="share-option-title">
+                        <i class="fas fa-qrcode"></i>
+                        Copiar Código QR
+                    </div>
+                    <p class="share-option-description">Genera y copia el código QR al portapapeles</p>
+                </div>
+
+                <div id="qrCodeContainer">
+                    <div id="qrcode"></div>
+                </div>
+
+                <div class="share-option disabled">
+                    <div class="share-option-title">
+                        <i class="fas fa-users"></i>
+                        Cheetah Research Panel
+                        <span class="coming-soon-badge">Coming Soon</span>
+                    </div>
+                    <p class="share-option-description">Accede a nuestro panel de encuestados</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/theme.js"></script>
@@ -597,6 +878,171 @@
     <script src="js/Script_RecoleccionDeDatos.js"></script>
     <script src="js/Script_CheckSession.js"></script>
     <script src="js/i18n.js"></script>
+
+    <script>
+        // Funcionalidad del modal de compartir
+        const shareModal = document.getElementById('shareModal');
+        const shareBtn = document.getElementById('ShareBtn_Recoleccion');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const copyLinkOption = document.getElementById('copyLinkOption');
+        const copyQROption = document.getElementById('copyQROption');
+        const qrCodeContainer = document.getElementById('qrCodeContainer');
+        const qrcodeDiv = document.getElementById('qrcode');
+        let qrCodeGenerated = false;
+        let currentQRDataURL = null;
+
+        // Función para mostrar notificación
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // Función para copiar al portapapeles
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (err) {
+                // Fallback para navegadores antiguos
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    return true;
+                } catch (err) {
+                    document.body.removeChild(textArea);
+                    return false;
+                }
+            }
+        }
+
+        // Función para obtener el link de recolección
+        function getRecoleccionLink() {
+            const studioID = sessionStorage.getItem('selectedStudyId');
+            if (studioID && studioID.trim() !== '') {
+                return `https://www.cheetah-research.ai/chatbot?id=${studioID}`;
+            }
+            return null;
+        }
+
+        // Abrir modal
+        shareBtn.addEventListener('click', () => {
+            const link = getRecoleccionLink();
+            if (!link) {
+                alert('Por favor, lanza el estudio primero para obtener el enlace.');
+                return;
+            }
+            shareModal.style.display = 'block';
+        });
+
+        // Cerrar modal
+        closeModalBtn.addEventListener('click', () => {
+            shareModal.style.display = 'none';
+            qrCodeContainer.style.display = 'none';
+            qrCodeGenerated = false;
+        });
+
+        // Cerrar modal al hacer clic fuera
+        window.addEventListener('click', (e) => {
+            if (e.target === shareModal) {
+                shareModal.style.display = 'none';
+                qrCodeContainer.style.display = 'none';
+                qrCodeGenerated = false;
+            }
+        });
+
+        // Copiar link normal
+        copyLinkOption.addEventListener('click', async () => {
+            const link = getRecoleccionLink();
+            if (link) {
+                const success = await copyToClipboard(link);
+                if (success) {
+                    showToast('🔗 Link copiado al portapapeles');
+                } else {
+                    alert('Error al copiar el link. Por favor, intenta nuevamente.');
+                }
+            }
+        });
+
+        // Generar y copiar código QR
+        copyQROption.addEventListener('click', async () => {
+            const link = getRecoleccionLink();
+            if (!link) return;
+
+            // Limpiar QR anterior si existe
+            qrcodeDiv.innerHTML = '';
+            qrCodeGenerated = false;
+            currentQRDataURL = null;
+
+            // Generar nuevo QR
+            try {
+                const qr = new QRCode(qrcodeDiv, {
+                    text: link,
+                    width: 200,
+                    height: 200,
+                    colorDark: '#000000',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+
+                // Esperar a que se genere el QR
+                setTimeout(async () => {
+                    const canvas = qrcodeDiv.querySelector('canvas');
+                    if (canvas) {
+                        // Convertir canvas a blob
+                        canvas.toBlob(async (blob) => {
+                            try {
+                                // Copiar imagen al portapapeles
+                                await navigator.clipboard.write([
+                                    new ClipboardItem({
+                                        'image/png': blob
+                                    })
+                                ]);
+                                showToast('🔗 Código QR copiado al portapapeles');
+                                qrCodeContainer.style.display = 'block';
+                                qrCodeGenerated = true;
+                            } catch (err) {
+                                console.error('Error al copiar QR:', err);
+                                // Si falla copiar imagen, mostrar el QR para descarga manual
+                                qrCodeContainer.style.display = 'block';
+                                qrCodeGenerated = true;
+                                showToast('QR generado. Puedes hacer captura de pantalla');
+                            }
+                        }, 'image/png');
+                    } else {
+                        // Intentar con img
+                        const img = qrcodeDiv.querySelector('img');
+                        if (img) {
+                            qrCodeContainer.style.display = 'block';
+                            qrCodeGenerated = true;
+                            showToast('QR generado. Puedes hacer captura de pantalla');
+                        }
+                    }
+                }, 500);
+            } catch (error) {
+                console.error('Error al generar QR:', error);
+                alert('Error al generar el código QR. Por favor, intenta nuevamente.');
+            }
+        });
+    </script>
 </body>
 
 </html>

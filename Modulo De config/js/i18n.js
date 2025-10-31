@@ -109,7 +109,7 @@ const translations = {
             hRecollectionModule: "Módulo de Recolección de Datos", aRecollectionModule: "RecoleccionDeDatos.com",
             hAnalysisModule: "Módulo de Recolección de Datos",     aAnalysisModule: "AnalisisDeDatos.com",
             btChangeState: "Cambiar Estado",                       btOTP: "Generar OTP",
-            btLaunch: "Lanzar Estudio"
+            btLaunch: "Activar Links"
         },
         InformacionDelEstudio: {
             title: "Transcripción de Encuestas",
