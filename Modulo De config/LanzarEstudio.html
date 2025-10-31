@@ -749,7 +749,7 @@
                                         <i class="fas fa-toggle-on"></i>
                                         Cambiar Estado
                                     </button>
-                                    <button id="ShareBtn_Recoleccion" class="btn btn-primary" style="font-family: hedliner;">
+                                    <button id="ShareBtn_Recoleccion" class="btn btn-primary" type="button" style="font-family: hedliner;">
                                         <i class="fas fa-share-alt"></i>
                                         Compartir
                                     </button>
@@ -944,7 +944,8 @@
         }
 
         // Abrir modal
-        shareBtn.addEventListener('click', () => {
+        shareBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             const link = getRecoleccionLink();
             if (!link) {
                 alert('Por favor, lanza el estudio primero para obtener el enlace.');
