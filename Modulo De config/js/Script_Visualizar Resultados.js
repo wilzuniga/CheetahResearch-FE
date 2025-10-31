@@ -1032,6 +1032,9 @@ function LLenarResumenes(){
             const comboBoxCL = document.getElementById('Combobox_ClimaLaboral');
             const comboBoxBS = document.getElementById('Combobox_BrandStrenght');
             const comboBoxBE = document.getElementById('Combobox_BrandEquity');
+            const comboBoxCJ = document.getElementById('Combobox_CustomerJourney');
+            const comboBoxREP = document.getElementById('Combobox_Reputacion');
+            const comboBoxPP = document.getElementById('Combobox_PruebaProducto');
 
             //User Persona, perfecto
             comboBoxUP.addEventListener('change', (event) => {
