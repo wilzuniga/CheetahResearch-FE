@@ -276,7 +276,7 @@ const translations = {
             modCustomerJourney: "Customer Journey Module",
             modReputacion: "Reputation Module",
             modPruebaProducto: "Product Testing Module",
-            modFocusDecoder: "Focus Group Decoder Module",
+            modFocusDecoder: "Focus Groups Decoder Module",
 
             hSuggQuestion: "Suggested Questions",       inSuggQuestion: "Add suggested questions for Socrates",
             hRecollectionModule: "Data Collection Module", aRecollectionModule: "DataCollection.com",
@@ -453,7 +453,7 @@ const translations = {
             modCustomerJourney: "Módulo Customer Journey",
             modReputacion: "Módulo Reputação",
             modPruebaProducto: "Módulo Teste de Produto",
-            modFocusDecoder: "Módulo Focus Group Decoder",
+            modFocusDecoder: "Módulo Focus Groups Decoder",
 
             hSuggQuestion: "Perguntas Sugeridas",       inSuggQuestion: "Adicione perguntas sugeridas para Sócrates",
             hRecollectionModule: "Módulo de Coleta de Dados", aRecollectionModule: "ColetaDeDados.com",

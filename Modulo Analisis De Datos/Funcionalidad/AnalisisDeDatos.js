@@ -620,7 +620,7 @@ function AgregarModulos(study) {
                 if (modulo === 'Módulo Prueba de Producto') {
                     PruebaProductoBtn.style.display = 'block';
                 }
-                if (modulo === 'Módulo Focus Group Decoder') {
+                if (modulo === 'Módulo Focus Groups Decoder') {
                     FocusDecoderBtn.style.display = 'block';
                 }
             });
