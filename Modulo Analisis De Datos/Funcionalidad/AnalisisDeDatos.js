@@ -672,7 +672,7 @@ function AgregarFiltros(study) {
             const comboBox14 = document.getElementById('Combobox_CustomerJourney');
             const comboBox15 = document.getElementById('Combobox_Reputacion');
             const comboBox16 = document.getElementById('Combobox_PruebaProducto');
-            const comboBox17 = document.getElementById('Combobox_FocusDecoder');
+            const comboBox18 = document.getElementById('Combobox_FocusDecoder');
             const comboBox12 = document.getElementById('Combobox_BrandStrenght');
             const comboBox13 = document.getElementById('Combobox_BrandEquity');
 
@@ -693,7 +693,7 @@ function AgregarFiltros(study) {
             comboBox14.innerHTML = '';
             comboBox15.innerHTML = '';
             comboBox16.innerHTML = '';
-            comboBox17.innerHTML = '';
+            comboBox18.innerHTML = '';
             comboBox12.innerHTML = '';
             comboBox13.innerHTML = '';
             
@@ -719,7 +719,7 @@ function AgregarFiltros(study) {
             comboBox14.appendChild(option.cloneNode(true));
             comboBox15.appendChild(option.cloneNode(true));
             comboBox16.appendChild(option.cloneNode(true));
-            comboBox17.appendChild(option.cloneNode(true));
+            comboBox18.appendChild(option.cloneNode(true));
             comboBox12.appendChild(option.cloneNode(true));
             comboBox13.appendChild(option.cloneNode(true));
             comboBoxUA.appendChild(option.cloneNode(true));
