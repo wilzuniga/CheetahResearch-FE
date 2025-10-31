@@ -104,6 +104,7 @@ const translations = {
             modCustomerJourney: "Módulo Customer Journey",
             modReputacion: "Módulo Reputación",
             modPruebaProducto: "Módulo Prueba de Producto",
+            modFocusDecoder: "Módulo Focus Group Decoder",
 
             hSuggQuestion: "Preguntas Sugeridas",                  inSuggQuestion: "Agrega preguntas sugeridas para Sócrates",
             hRecollectionModule: "Módulo de Recolección de Datos", aRecollectionModule: "RecoleccionDeDatos.com",
@@ -174,6 +175,8 @@ const translations = {
             btReputacion:"Reputación", titleReputacion:"Análisis de Reputación", descReputacion:"Este análisis integral evalúa la reputación de la marca a través de un estudio detallado que examina la percepción pública, credibilidad, confianza y prestigio asociados con la organización. Se analizan menciones, sentimientos, crisis reputacionales potenciales y se identifican oportunidades para fortalecer la imagen corporativa y gestionar eficazmente la reputación digital y tradicional.",
             
             btPruebaProducto:"Prueba de Producto", titlePruebaProducto:"Análisis de Prueba de Producto", descPruebaProducto:"Este análisis integral evalúa la efectividad y aceptación de productos a través de pruebas controladas con usuarios reales. Se examinan aspectos como usabilidad, funcionalidad, satisfacción del usuario, identificación de problemas y áreas de mejora. El análisis incluye métricas de rendimiento, feedback cualitativo y cuantitativo, y recomendaciones para optimizar el producto antes de su lanzamiento al mercado.",
+            
+            btFocusDecoder:"Focus Group Decoder", titleFocusDecoder:"Análisis de Focus Group Decoder", descFocusDecoder:"Este análisis especializado procesa y decodifica transcripciones de focus groups para extraer insights clave. Se identifican patrones de conversación, temas recurrentes, emociones expresadas, dinámicas de grupo y opiniones convergentes o divergentes. El análisis ofrece una comprensión profunda de las percepciones colectivas y recomendaciones basadas en las discusiones grupales.",
 
             //Otros
             sSelectStyle:"Selecciona un estilo:",      sSelectFilter:"Selecciona un Filtro:", sSelectVisual:"Selecciona una Visualización:",//Quitar 'SELECCIONAR FILTRO' de combobox
@@ -273,6 +276,7 @@ const translations = {
             modCustomerJourney: "Customer Journey Module",
             modReputacion: "Reputation Module",
             modPruebaProducto: "Product Testing Module",
+            modFocusDecoder: "Focus Group Decoder Module",
 
             hSuggQuestion: "Suggested Questions",       inSuggQuestion: "Add suggested questions for Socrates",
             hRecollectionModule: "Data Collection Module", aRecollectionModule: "DataCollection.com",
@@ -348,6 +352,8 @@ const translations = {
             // Product Testing
             btPruebaProducto: "Product Testing",
             titlePruebaProducto: "Product Testing Analysis", descPruebaProducto: "This comprehensive analysis evaluates product effectiveness and acceptance through controlled testing with real users. Aspects such as usability, functionality, user satisfaction, problem identification and improvement areas are examined. The analysis includes performance metrics, qualitative and quantitative feedback, and recommendations to optimize the product before market launch.",
+            
+            btFocusDecoder:"Focus Group Decoder", titleFocusDecoder:"Focus Group Decoder Analysis", descFocusDecoder:"This specialized analysis processes and decodes focus group transcriptions to extract key insights. Conversation patterns, recurring themes, expressed emotions, group dynamics and convergent or divergent opinions are identified. The analysis provides a deep understanding of collective perceptions and recommendations based on group discussions.",
         
             // Others
             sSelectStyle: "Select a style:", sSelectFilter: "Select a Filter:", sSelectVisual: "Select a Visualization:",
@@ -447,6 +453,7 @@ const translations = {
             modCustomerJourney: "Módulo Customer Journey",
             modReputacion: "Módulo Reputação",
             modPruebaProducto: "Módulo Teste de Produto",
+            modFocusDecoder: "Módulo Focus Group Decoder",
 
             hSuggQuestion: "Perguntas Sugeridas",       inSuggQuestion: "Adicione perguntas sugeridas para Sócrates",
             hRecollectionModule: "Módulo de Coleta de Dados", aRecollectionModule: "ColetaDeDados.com",
@@ -522,6 +529,8 @@ const translations = {
             //Teste de Produto
             btPruebaProducto: "Teste de Produto",
             titlePruebaProducto: "Análise de Teste de Produto", descPruebaProducto: "Esta análise abrangente avalia a eficácia e aceitação de produtos por meio de testes controlados com usuários reais. São examinados aspectos como usabilidade, funcionalidade, satisfação do usuário, identificação de problemas e áreas de melhoria. A análise inclui métricas de desempenho, feedback qualitativo e quantitativo, e recomendações para otimizar o produto antes de seu lançamento no mercado.",
+            
+            btFocusDecoder:"Focus Group Decoder", titleFocusDecoder:"Análise de Focus Group Decoder", descFocusDecoder:"Esta análise especializada processa e decodifica transcrições de focus groups para extrair insights-chave. São identificados padrões de conversação, temas recorrentes, emoções expressas, dinâmicas de grupo e opiniões convergentes ou divergentes. A análise oferece uma compreensão profunda das percepções coletivas e recomendações baseadas nas discussões em grupo.",
         
             //Outros
             sSelectStyle: "Selecione um estilo:", sSelectFilter: "Selecione um Filtro:", sSelectVisual: "Selecione uma Visualização:",

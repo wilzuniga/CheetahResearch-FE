@@ -569,6 +569,7 @@ function AgregarModulos(study) {
             const CustomerJourneyBtn = document.getElementById('CustomerJourneyBtn');
             const ReputacionBtn = document.getElementById('ReputacionBtn');
             const PruebaProductoBtn = document.getElementById('PruebaProductoBtn');
+            const FocusDecoderBtn = document.getElementById('FocusDecoderBtn');
             
 
 
@@ -583,6 +584,7 @@ function AgregarModulos(study) {
             CustomerJourneyBtn.style.display = 'none';
             ReputacionBtn.style.display = 'none';
             PruebaProductoBtn.style.display = 'none';
+            FocusDecoderBtn.style.display = 'none';
 
             ActiveModules.forEach(modulo => {
                 if (modulo === 'Módulo de Análisis General') {
@@ -617,6 +619,9 @@ function AgregarModulos(study) {
                 }
                 if (modulo === 'Módulo Prueba de Producto') {
                     PruebaProductoBtn.style.display = 'block';
+                }
+                if (modulo === 'Módulo Focus Group Decoder') {
+                    FocusDecoderBtn.style.display = 'block';
                 }
             });
 
@@ -667,6 +672,7 @@ function AgregarFiltros(study) {
             const comboBox14 = document.getElementById('Combobox_CustomerJourney');
             const comboBox15 = document.getElementById('Combobox_Reputacion');
             const comboBox16 = document.getElementById('Combobox_PruebaProducto');
+            const comboBox17 = document.getElementById('Combobox_FocusDecoder');
             const comboBox12 = document.getElementById('Combobox_BrandStrenght');
             const comboBox13 = document.getElementById('Combobox_BrandEquity');
 
@@ -687,6 +693,7 @@ function AgregarFiltros(study) {
             comboBox14.innerHTML = '';
             comboBox15.innerHTML = '';
             comboBox16.innerHTML = '';
+            comboBox17.innerHTML = '';
             comboBox12.innerHTML = '';
             comboBox13.innerHTML = '';
             
@@ -712,6 +719,7 @@ function AgregarFiltros(study) {
             comboBox14.appendChild(option.cloneNode(true));
             comboBox15.appendChild(option.cloneNode(true));
             comboBox16.appendChild(option.cloneNode(true));
+            comboBox17.appendChild(option.cloneNode(true));
             comboBox12.appendChild(option.cloneNode(true));
             comboBox13.appendChild(option.cloneNode(true));
             comboBoxUA.appendChild(option.cloneNode(true));
@@ -1436,6 +1444,40 @@ function LLenarResumenes(study) {
             formData.append('filter', selectedValue);
         }
         formData.append('module', 'product_testing');
+        const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
+        axios.post(url, formData)
+            .then(function (response) {
+                var data = response.data;
+                if (!data.startsWith("#")) {
+                    data = data.substring(data.indexOf("#"));
+                    data = data.substring(0, data.length - 3);
+                }
+                applyCardsToMarkedContent(data, div);   
+
+            })
+            .catch(function (error) {
+                div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                console.log(error);
+            })
+            .then(function () {
+
+            });
+    });
+
+    //Focus Group Decoder
+    const comboBoxFD = document.getElementById('Combobox_FocusDecoder');
+    comboBoxFD.addEventListener('change', (event) => {
+        var div = document.getElementById('FocusDecoderContent');
+        const selectedValue = event.target.value;
+        const subFilterValue = document.getElementById('ComboBox_FocusDecoder_SubFiltro').value;
+
+        formData = new FormData();     
+        if (study === '67e2ac1b5bd042898764458a') {
+            formData.append('filter', `${selectedValue} ${subFilterValue}`);
+        } else {
+            formData.append('filter', selectedValue);
+        }
+        formData.append('module', 'focus_groups_decoder');
         const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study;
         axios.post(url, formData)
             .then(function (response) {

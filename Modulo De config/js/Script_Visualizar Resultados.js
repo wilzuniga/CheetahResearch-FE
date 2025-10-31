@@ -216,6 +216,7 @@ function AgregarFiltros() {
             const comboBox14 = document.getElementById('Combobox_CustomerJourney');
             const comboBox15 = document.getElementById('Combobox_Reputacion');
             const comboBox16 = document.getElementById('Combobox_PruebaProducto');
+            const comboBox17 = document.getElementById('Combobox_FocusDecoder');
 
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
@@ -236,6 +237,7 @@ function AgregarFiltros() {
             comboBox14.innerHTML = '';
             comboBox15.innerHTML = '';
             comboBox16.innerHTML = '';
+            comboBox17.innerHTML = '';
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -261,6 +263,7 @@ function AgregarFiltros() {
             comboBox14.appendChild(option.cloneNode(true));
             comboBox15.appendChild(option.cloneNode(true));
             comboBox16.appendChild(option.cloneNode(true));
+            comboBox17.appendChild(option.cloneNode(true));
 
         });
         }
@@ -314,7 +317,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 'save-textarea_AP_ClimaLaboral': 'ClimaLaboralTextArea',
                 'save-textarea_AP_CustomerJourney': 'CustomerJourneyTextArea',
                 'save-textarea_AP_Reputacion': 'ReputacionTextArea',
-                'save-textarea_AP_PruebaProducto': 'PruebaProductoTextArea'
+                'save-textarea_AP_PruebaProducto': 'PruebaProductoTextArea',
+                'save-textarea_AP_FocusDecoder': 'FocusDecoderTextArea'
                 
                 
             };
@@ -339,6 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const comboBoxCJ = document.getElementById('Combobox_CustomerJourney');
             const comboBoxREP = document.getElementById('Combobox_Reputacion');
             const comboBoxPP = document.getElementById('Combobox_PruebaProducto');
+            const comboBoxFD = document.getElementById('Combobox_FocusDecoder');
 
             //conseguir el combobox seleccionado de cada seccion
             const StyleSelectedOptionRG = comboBoxRG.options[comboBoxRG.selectedIndex];
@@ -359,6 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionCJ = comboBoxCJ.options[comboBoxCJ.selectedIndex];
             const StyleSelectedOptionREP = comboBoxREP.options[comboBoxREP.selectedIndex];
             const StyleSelectedOptionPP = comboBoxPP.options[comboBoxPP.selectedIndex];
+            const StyleSelectedOptionFD = comboBoxFD.options[comboBoxFD.selectedIndex];
 
             //conseguir el valor del combobox seleccionado de cada seccion
             const StyleSelectedOptionRGValue = StyleSelectedOptionRG.value;
@@ -379,6 +385,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionCJValue = StyleSelectedOptionCJ.value;
             const StyleSelectedOptionREPValue = StyleSelectedOptionREP.value;
             const StyleSelectedOptionPPValue = StyleSelectedOptionPP.value;
+            const StyleSelectedOptionFDValue = StyleSelectedOptionFD.value;
 
             //en el caso de el resumen general y el resumen individual, conseguir los subfiltros 
             const StyleSelectedOptionRGSub = document.getElementById('ComboBox_ResumenGeneralTy');
@@ -794,6 +801,28 @@ document.addEventListener('DOMContentLoaded', function () {
                     formDataPP.append('file', blob, filename);
                     const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataPP)
+                        .then(function (response) {
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                }
+                break;
+
+                case 'save-textarea_AP_FocusDecoder':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataFD = new FormData();
+                    formDataFD.append('filter', StyleSelectedOptionFDValue);
+                    formDataFD.append('module', 'focus_groups_decoder');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionFDValue + '.md';
+
+                    formDataFD.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataFD)
                         .then(function (response) {
                             alert('Resumen guardado exitosamente');
                         })
@@ -1497,6 +1526,37 @@ function LLenarResumenes(){
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
                 formData.append('module', 'product_testing');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        const coso = marked(data);                          
+                        div.innerHTML = coso;   
+                        textArea.value = data;                   
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.log(error);
+                    })
+                    .then(function () {
+
+                    });
+            });
+
+            //Focus Group Decoder
+            const comboBoxFD = document.getElementById('Combobox_FocusDecoder');
+            comboBoxFD.addEventListener('change', (event) => {
+                var div = document.getElementById('FocusDecoderContent');
+                var textArea = document.getElementById('FocusDecoderTextArea');
+                const selectedValue = event.target.value;
+
+                formData = new FormData();     
+                formData.append('filter', selectedValue);
+                formData.append('module', 'focus_groups_decoder');
                 const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {

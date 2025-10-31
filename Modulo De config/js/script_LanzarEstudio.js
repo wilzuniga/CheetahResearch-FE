@@ -595,30 +595,6 @@ agregarModuloBtn.addEventListener('click', (e) => {
 });
 
 
-    // Añadir botones de copiar en las tarjetas de módulos
-    const modulos = [
-        { id: 'ModuloDeRecoleccionURL', label: 'Modulo de Recolección de Datos' },
-        { id: 'ModuloDeAnalisisURL', label: 'Modulo de Análisis de Datos' }
-    ];
-
-    modulos.forEach(modulo => {
-        const moduloElement = document.getElementById(modulo.id);
-        const cardHeader = moduloElement.closest('.card').querySelector('.card-header');
-
-        const copiarIcono = document.createElement('i');
-        copiarIcono.classList.add('fa', 'fa-copy');
-        copiarIcono.style.cursor = 'pointer';
-        copiarIcono.style.marginLeft = '10px';
-        copiarIcono.style.color = 'var(--bs-CR-orange-2)';
-
-        copiarIcono.addEventListener('click', () => {
-            navigator.clipboard.writeText(moduloElement.innerText).then(() => {
-                alert(`Contenido copiado: ${moduloElement.innerText}`);
-            });
-        });
-
-        cardHeader.appendChild(copiarIcono);
-    });
 };
 
 
