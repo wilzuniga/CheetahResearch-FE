@@ -11,28 +11,39 @@ function isEnglishStudy(study_id) {
 function isSimilarToDisqualification(message) {
     if (!message || typeof message !== 'string') return false;
     
-    // Convertir a minúsculas para comparación sin distinción de mayúsculas
-    const lowerMessage = message.toLowerCase();
+    // Función auxiliar para normalizar el texto (minúsculas y sin acentos)
+    function normalizeText(text) {
+        return text.toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // Remover acentos
+            .replace(/[¡!¿?.,;:]/g, ''); // Remover puntuación
+    }
+    
+    const normalizedMessage = normalizeText(message);
     
     // Frases clave que indican descalificación
     const disqualificationPatterns = [
         // Patrón 1: no cumples con el perfil
-        ['no cumples', 'perfil', 'encuesta'],
-        ['no cumples', 'perfil', 'continuar'],
+        ['no cumples', 'perfil'],
         
-        // Patrón 2: agradecimiento + despedida
+        // Patrón 2: agradecimiento + tiempo/participación + despedida
         ['agradezco', 'tiempo', 'buen dia'],
-        ['agradezco', 'tiempo', 'buen día'],
+        ['agradezco', 'participacion', 'buen dia'],
+        ['agradezco', 'tiempo', 'tengas'],
+        ['agradezco', 'participacion', 'tenga'],
         
-        // Patrón 3: agradecimiento + participación
-        ['agradezco', 'participacion', 'buen dia'],
-        ['agradezco', 'participación', 'buen día'],
-        ['agradezco', 'participacion', 'buen dia'],
+        // Patrón 3: variaciones de "tu tiempo"
+        ['tu tiempo', 'buen dia'],
+        ['su participacion', 'buen dia'],
     ];
     
     // Verificar si el mensaje contiene todos los elementos de algún patrón
     for (const pattern of disqualificationPatterns) {
-        const matchesAllKeywords = pattern.every(keyword => lowerMessage.includes(keyword));
+        const matchesAllKeywords = pattern.every(keyword => {
+            const normalizedKeyword = normalizeText(keyword);
+            return normalizedMessage.includes(normalizedKeyword);
+        });
+        
         if (matchesAllKeywords) {
             console.log('Mensaje detectado como descalificación:', message);
             return true;
@@ -327,36 +338,14 @@ function sendMessage(message, imageSrc) {
         }
     }).then((response) => {
         const data = response.data;
-        // IMPORTANTE: Verificar descalificación PRIMERO antes que LISTO
-        if (data.response.includes('NO SIRVE') || isSimilarToDisqualification(data.response)) {
-            const study_id = new URLSearchParams(window.location.search).get('id');
-            let farewellMessage;
-            
-            if (isEnglishStudy(study_id)) {
-                farewellMessage = `Sorry, you don't meet the requirements for this study!\n\nThank you very much!\n\nHave a great day!`;
-            } else {
-                farewellMessage = `¡Lo sentimos no cumples con los requisitos para este estudio!\n\n¡Muchas Gracias !\n\n¡Que tengas un excelente día!`;
-            }
-            
-            getMessage(farewellMessage, null);
-            loadingMsg.style.display = 'none';
-            endChat();
-            
-            // Bloquear el estudio en este dispositivo si debe hacerlo (modo kiosko desactivado)
-            if (shouldBlockAfterCompletion) {
-                blockStudy(study_id);
-                console.log('Estudio bloqueado en este dispositivo (no cumple requisitos)');
-                shouldBlockAfterCompletion = false; // Reset
-            }
-
-        } else if (data.response.includes('LISTO')) {
+        if (data.response.includes('LISTO')) {
             const study_id = new URLSearchParams(window.location.search).get('id');
             let farewellMessage;
             
             if (study_id === '68b75b285cbd2fb848ff7c81') {
                 farewellMessage = `Great! Thanks again for your time.\n💡 We'll keep you updated on how Cheetah Research AI is reshaping the future of market research.\nOne of our team members will reach out to you shortly to continue the conversation.\n🚀 Talk soon!`;
             } else if (study_id === '68b75b285cbd2fb848ff7c82') {
-                farewellMessage = `Gracias por conversar. Compartiré tu experiencia con el equipo para seguir mejorando!!`;
+                farewellMessage = `Gracias por conversar. Compartiré tu experiencia con el equipo para seguir mejorando!!`;
             } else {   
                 farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
             }
@@ -385,7 +374,29 @@ function sendMessage(message, imageSrc) {
                 console.log('Error:', error);
             });
 
-        } else {
+        } else if (data.response.includes('NO SIRVE') || isSimilarToDisqualification(data.response)) {
+            const study_id = new URLSearchParams(window.location.search).get('id');
+            let farewellMessage;
+            
+            if (isEnglishStudy(study_id)) {
+                farewellMessage = `Sorry, you don't meet the requirements for this study!\n\nThank you very much!\n\nHave a great day!`;
+            } else {
+                farewellMessage = `¡Lo sentimos no cumples con los requisitos para este estudio!\n\n¡Muchas Gracias !\n\n¡Que tengas un excelente día!`;
+            }
+            
+            getMessage(farewellMessage, null);
+            loadingMsg.style.display = 'none';
+            endChat();
+            
+            // Bloquear el estudio en este dispositivo si debe hacerlo (modo kiosko desactivado)
+            if (shouldBlockAfterCompletion) {
+                blockStudy(study_id);
+                console.log('Estudio bloqueado en este dispositivo (no cumple requisitos)');
+                shouldBlockAfterCompletion = false; // Reset
+            }
+
+        
+        }else {
             //eliminar todo el contenido entre [] en el mensaje
             data.response = data.response.replace(/\[.*?\]/g, '');
             console.log('Respuesta del encuestador:', data.response);
