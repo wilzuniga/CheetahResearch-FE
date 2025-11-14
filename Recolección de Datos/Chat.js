@@ -327,14 +327,36 @@ function sendMessage(message, imageSrc) {
         }
     }).then((response) => {
         const data = response.data;
-        if (data.response.includes('LISTO')) {
+        // IMPORTANTE: Verificar descalificación PRIMERO antes que LISTO
+        if (data.response.includes('NO SIRVE') || isSimilarToDisqualification(data.response)) {
+            const study_id = new URLSearchParams(window.location.search).get('id');
+            let farewellMessage;
+            
+            if (isEnglishStudy(study_id)) {
+                farewellMessage = `Sorry, you don't meet the requirements for this study!\n\nThank you very much!\n\nHave a great day!`;
+            } else {
+                farewellMessage = `¡Lo sentimos no cumples con los requisitos para este estudio!\n\n¡Muchas Gracias !\n\n¡Que tengas un excelente día!`;
+            }
+            
+            getMessage(farewellMessage, null);
+            loadingMsg.style.display = 'none';
+            endChat();
+            
+            // Bloquear el estudio en este dispositivo si debe hacerlo (modo kiosko desactivado)
+            if (shouldBlockAfterCompletion) {
+                blockStudy(study_id);
+                console.log('Estudio bloqueado en este dispositivo (no cumple requisitos)');
+                shouldBlockAfterCompletion = false; // Reset
+            }
+
+        } else if (data.response.includes('LISTO')) {
             const study_id = new URLSearchParams(window.location.search).get('id');
             let farewellMessage;
             
             if (study_id === '68b75b285cbd2fb848ff7c81') {
                 farewellMessage = `Great! Thanks again for your time.\n💡 We'll keep you updated on how Cheetah Research AI is reshaping the future of market research.\nOne of our team members will reach out to you shortly to continue the conversation.\n🚀 Talk soon!`;
             } else if (study_id === '68b75b285cbd2fb848ff7c82') {
-                farewellMessage = `Gracias por conversar. Compartiré tu experiencia con el equipo para seguir mejorando!!`;
+                farewellMessage = `Gracias por conversar. Compartiré tu experiencia con el equipo para seguir mejorando!!`;
             } else {   
                 farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
             }
@@ -363,29 +385,7 @@ function sendMessage(message, imageSrc) {
                 console.log('Error:', error);
             });
 
-        } else if (data.response.includes('NO SIRVE') || isSimilarToDisqualification(data.response)) {
-            const study_id = new URLSearchParams(window.location.search).get('id');
-            let farewellMessage;
-            
-            if (isEnglishStudy(study_id)) {
-                farewellMessage = `Sorry, you don't meet the requirements for this study!\n\nThank you very much!\n\nHave a great day!`;
-            } else {
-                farewellMessage = `¡Lo sentimos no cumples con los requisitos para este estudio!\n\n¡Muchas Gracias !\n\n¡Que tengas un excelente día!`;
-            }
-            
-            getMessage(farewellMessage, null);
-            loadingMsg.style.display = 'none';
-            endChat();
-            
-            // Bloquear el estudio en este dispositivo si debe hacerlo (modo kiosko desactivado)
-            if (shouldBlockAfterCompletion) {
-                blockStudy(study_id);
-                console.log('Estudio bloqueado en este dispositivo (no cumple requisitos)');
-                shouldBlockAfterCompletion = false; // Reset
-            }
-
-        
-        }else {
+        } else {
             //eliminar todo el contenido entre [] en el mensaje
             data.response = data.response.replace(/\[.*?\]/g, '');
             console.log('Respuesta del encuestador:', data.response);
