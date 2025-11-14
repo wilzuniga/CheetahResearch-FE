@@ -7,6 +7,41 @@ function isEnglishStudy(study_id) {
     return study_id === '68b75b285cbd2fb848ff7c81';
 }
 
+// Función para detectar similitudes con mensajes de descalificación
+function isSimilarToDisqualification(message) {
+    if (!message || typeof message !== 'string') return false;
+    
+    // Convertir a minúsculas para comparación sin distinción de mayúsculas
+    const lowerMessage = message.toLowerCase();
+    
+    // Frases clave que indican descalificación
+    const disqualificationPatterns = [
+        // Patrón 1: no cumples con el perfil
+        ['no cumples', 'perfil', 'encuesta'],
+        ['no cumples', 'perfil', 'continuar'],
+        
+        // Patrón 2: agradecimiento + despedida
+        ['agradezco', 'tiempo', 'buen dia'],
+        ['agradezco', 'tiempo', 'buen día'],
+        
+        // Patrón 3: agradecimiento + participación
+        ['agradezco', 'participacion', 'buen dia'],
+        ['agradezco', 'participación', 'buen día'],
+        ['agradezco', 'participacion', 'buen dia'],
+    ];
+    
+    // Verificar si el mensaje contiene todos los elementos de algún patrón
+    for (const pattern of disqualificationPatterns) {
+        const matchesAllKeywords = pattern.every(keyword => lowerMessage.includes(keyword));
+        if (matchesAllKeywords) {
+            console.log('Mensaje detectado como descalificación:', message);
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 //Color Change: getColores
 function setColorsFromAPI(study_id) {
     const url = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
@@ -328,7 +363,7 @@ function sendMessage(message, imageSrc) {
                 console.log('Error:', error);
             });
 
-        } else if (data.response.includes('NO SIRVE')) {
+        } else if (data.response.includes('NO SIRVE') || isSimilarToDisqualification(data.response)) {
             const study_id = new URLSearchParams(window.location.search).get('id');
             let farewellMessage;
             
