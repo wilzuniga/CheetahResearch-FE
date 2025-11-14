@@ -7,7 +7,7 @@ function isEnglishStudy(study_id) {
     return study_id === '68b75b285cbd2fb848ff7c81';
 }
 
-// Función para detectar similitudes con mensajes de descalificación
+// Función para detectar similitudes con mensajes de descalificación usando Fuse.js
 function isSimilarToDisqualification(message) {
     if (!message || typeof message !== 'string') return false;
     
@@ -20,11 +20,13 @@ function isSimilarToDisqualification(message) {
     }
     
     const normalizedMessage = normalizeText(message);
+    const messageWords = normalizedMessage.split(/\s+/);
     
     // Frases clave que indican descalificación
     const disqualificationPatterns = [
         // Patrón 1: no cumples con el perfil
         ['no cumples', 'perfil'],
+        ['no calificas', 'perfil'],
         
         // Patrón 2: agradecimiento + tiempo/participación + despedida
         ['agradezco', 'tiempo', 'buen dia'],
@@ -35,13 +37,54 @@ function isSimilarToDisqualification(message) {
         // Patrón 3: variaciones de "tu tiempo"
         ['tu tiempo', 'buen dia'],
         ['su participacion', 'buen dia'],
+        
+        // Patrón 4: Finalizar entrevista
+        ['daremos', 'entrevista', 'por', 'finalizada', 'aqui'],
+        ['damos', 'entrevista', 'por', 'finalizada'],
     ];
     
-    // Verificar si el mensaje contiene todos los elementos de algún patrón
+    // Configuración de Fuse.js para fuzzy matching
+    const fuseOptions = {
+        includeScore: true,
+        threshold: 0.3, // 0 = exacto, 1 = cualquier cosa. 0.3 = ~70% de similitud
+        distance: 100,
+        minMatchCharLength: 3,
+        ignoreLocation: true
+    };
+    
+    // Verificar si el mensaje contiene todos los elementos de algún patrón con similitud
     for (const pattern of disqualificationPatterns) {
         const matchesAllKeywords = pattern.every(keyword => {
             const normalizedKeyword = normalizeText(keyword);
-            return normalizedMessage.includes(normalizedKeyword);
+            
+            // Primero intentar match exacto (más rápido)
+            if (normalizedMessage.includes(normalizedKeyword)) {
+                console.log(`Match exacto encontrado: "${normalizedKeyword}"`);
+                return true;
+            }
+            
+            // Si no hay match exacto, usar Fuse.js para fuzzy matching
+            const fuse = new Fuse(messageWords, fuseOptions);
+            const results = fuse.search(normalizedKeyword);
+            
+            // Si hay al menos un resultado con score bajo (buena coincidencia)
+            if (results.length > 0 && results[0].score < 0.3) {
+                console.log(`Match difuso encontrado con Fuse.js: "${normalizedKeyword}" ≈ "${results[0].item}" (score: ${results[0].score.toFixed(3)})`);
+                return true;
+            }
+            
+            // También buscar frases completas si la keyword tiene múltiples palabras
+            if (normalizedKeyword.includes(' ')) {
+                const fuse2 = new Fuse([normalizedMessage], fuseOptions);
+                const results2 = fuse2.search(normalizedKeyword);
+                
+                if (results2.length > 0 && results2[0].score < 0.3) {
+                    console.log(`Match difuso de frase encontrado: "${normalizedKeyword}" (score: ${results2[0].score.toFixed(3)})`);
+                    return true;
+                }
+            }
+            
+            return false;
         });
         
         if (matchesAllKeywords) {
