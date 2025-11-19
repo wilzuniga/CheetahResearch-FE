@@ -7,7 +7,7 @@ async function concederAcceso() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${sessionStorage.getItem('token')}`
                 },
                 body: JSON.stringify({ email: selectedEmail })
             });

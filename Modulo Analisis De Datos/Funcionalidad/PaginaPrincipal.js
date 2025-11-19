@@ -1,6 +1,261 @@
 // agregarCard.js
 
-otpValidado  = false;
+otpValidado = false;
+
+// ============ Sistema de Tarjetas ============
+
+// Iconos SVG
+const CARD_ICONS = {
+    objetivo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="4"></circle><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"></circle></svg>',
+    mercado: '<svg viewBox="0 0 24 24" class="ico-person" fill="currentColor" stroke="none"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8z"></path></svg>',
+    fecha: '<svg viewBox="0 0 24 24" class="ico-calendar" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2" fill="none"></rect><path d="M16 3v4M8 3v4M3 10h18" fill="none"></path><path d="M8 15h4" fill="none"></path></svg>',
+    resumen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 7-7"></path><path d="M21 10V3h-7"/></svg>',
+    def: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="3"/></svg>'
+};
+
+// Detecta color acento desde elementos existentes
+function detectAccentColor() {
+    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--bs-CR-orange').trim();
+    if (accentColor) {
+        const match = accentColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+        if (match) {
+            return { r: parseInt(match[1]), g: parseInt(match[2]), b: parseInt(match[3]) };
+        }
+        // Si es hex
+        const hexMatch = accentColor.match(/#([0-9A-Fa-f]{6})/);
+        if (hexMatch) {
+            const hex = hexMatch[1];
+            return {
+                r: parseInt(hex.substr(0, 2), 16),
+                g: parseInt(hex.substr(2, 2), 16),
+                b: parseInt(hex.substr(4, 2), 16)
+            };
+        }
+    }
+    // Fallback
+    return { r: 16, g: 185, b: 129 };
+}
+
+// Genera el CSS de las tarjetas con estilo moderno
+function generateCardStyles(accentColor) {
+    const { r, g, b } = accentColor;
+    return `
+        <style>
+            .cr-bullet-grid { 
+                display: grid !important; 
+                grid-template-columns: 1fr !important; 
+                gap: 20px !important; 
+                margin: 20px 0 !important; 
+                padding: 0 !important; 
+            }
+            .cr-bullet-card { 
+                background: rgba(255, 255, 255, 0.9) !important;
+                backdrop-filter: blur(10px) !important;
+                border: 1px solid rgba(255, 255, 255, 0.3) !important;
+                border-radius: 15px !important; 
+                padding: 20px !important;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.1) !important; 
+                display: flex; 
+                gap: 15px; 
+                align-items: flex-start;
+                transition: all 0.3s ease !important;
+                position: relative;
+                overflow: hidden;
+            }
+            .cr-bullet-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, rgb(${r},${g},${b}) 0%, #ff8c42 100%);
+                border-radius: 15px 15px 0 0;
+            }
+            .cr-bullet-card:hover {
+                transform: translateY(-5px) !important;
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
+            }
+            .cr-bullet-ico { 
+                width: 45px; 
+                height: 45px; 
+                flex: 0 0 45px; 
+                display: grid; 
+                place-items: center; 
+                background: linear-gradient(135deg, rgba(${r},${g},${b},0.1) 0%, rgba(${r},${g},${b},0.2) 100%);
+                border: 2px solid rgba(${r},${g},${b},0.3); 
+                border-radius: 12px; 
+                color: rgb(${r}, ${g}, ${b}); 
+                box-shadow: 0 4px 15px rgba(${r},${g},${b},0.2);
+            }
+            .cr-bullet-ico svg { 
+                width: 24px; 
+                height: 24px; 
+                color: inherit;
+            }
+            .cr-bullet-ico svg * { 
+                stroke: currentColor !important; 
+            }
+            .cr-bullet-ico svg *:not([fill="none"]) { 
+                fill: currentColor !important; 
+            }
+            .cr-bullet-ttl { 
+                margin: 0; 
+                font-size: 24px; 
+                line-height: 1.25; 
+                font-weight: bold; 
+                color: #0f1115;
+                font-family: hedliner !important;
+            }
+            .cr-bullet-txt { 
+                margin: 8px 0 0; 
+                font-size: 16px; 
+                line-height: 1.5; 
+                color: #1f2430;
+                font-family: IBM Plex Sans !important;
+            }
+            .cr-resumen-list { 
+                margin: 10px 0 0 20px; 
+                padding: 0; 
+                list-style: disc; 
+                font-size: 16px; 
+                line-height: 1.5; 
+                color: #1f2430;
+                font-family: IBM Plex Sans !important;
+            }
+            .cr-resumen-list li { 
+                margin-bottom: 6px; 
+            }
+            .cr-bullet-card:hover .cr-bullet-ico { 
+                transform: scale(1.05); 
+                box-shadow: 0 6px 20px rgba(${r},${g},${b},0.3);
+            }
+            .cr-bullet-card:hover .cr-bullet-ttl { 
+                color: rgb(${r}, ${g}, ${b}); 
+            }
+            .study-title {
+                font-size: 2.5rem;
+                font-weight: bold;
+                margin-bottom: 30px;
+                text-align: center;
+                color: var(--bs-CR-orange);
+                font-family: hedliner !important;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            /* Estilos para botones modernos */
+            .cr-button {
+                background: linear-gradient(135deg, rgb(${r},${g},${b}) 0%, #ff8c42 100%) !important;
+                border: none !important;
+                border-radius: 12px !important;
+                padding: 12px 24px !important;
+                font-family: hedliner !important;
+                font-weight: 600 !important;
+                color: white !important;
+                transition: all 0.3s ease !important;
+                box-shadow: 0 4px 15px rgba(${r},${g},${b},0.3) !important;
+                position: relative;
+                overflow: hidden;
+            }
+            .cr-button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: left 0.5s;
+            }
+            .cr-button:hover::before {
+                left: 100%;
+            }
+            .cr-button:hover {
+                transform: translateY(-2px) !important;
+                box-shadow: 0 8px 25px rgba(${r},${g},${b},0.4) !important;
+                background: linear-gradient(135deg, #ff8c42 0%, rgb(${r},${g},${b}) 100%) !important;
+            }
+            .cr-button:active {
+                transform: translateY(0) !important;
+            }
+        </style>
+    `;
+}
+
+// Genera las tarjetas del estudio
+function generateStudyCards(estudio) {
+    const accentColor = detectAccentColor();
+    const styles = generateCardStyles(accentColor);
+    
+    // Preparar datos de las tarjetas
+    const cardData = [
+        {
+            title: 'Objetivo del Estudio',
+            titleKey: 'Overview.sStudyObjectives',
+            content: estudio.studyObjectives,
+            icon: CARD_ICONS.objetivo
+        },
+        {
+            title: 'Mercado Objetivo',
+            titleKey: 'Overview.sTargetAudience', 
+            content: estudio.marketTarget,
+            icon: CARD_ICONS.mercado
+        },
+        {
+            title: 'Fecha del Estudio',
+            titleKey: 'Overview.sStudyDate',
+            content: new Date(estudio.studyDate).toLocaleDateString(),
+            icon: CARD_ICONS.fecha
+        },
+        {
+            title: 'Resumen',
+            titleKey: 'Overview.sStudySummary',
+            content: estudio.prompt,
+            icon: CARD_ICONS.resumen,
+            isResumen: true
+        }
+    ];
+
+    // Generar HTML de las tarjetas
+    const cardsHTML = cardData.map(card => {
+        let contentHTML;
+        if (card.isResumen && card.content) {
+            // Convertir resumen en lista de viñetas
+            const sentences = card.content.replace(/\s+/g, ' ').trim()
+                .split(/(?<=\S)\.(?:\s+|$)/)
+                .map(t => t.trim())
+                .filter(Boolean)
+                .map(t => t.endsWith('.') ? t : t + '.');
+            
+            if (sentences.length > 1) {
+                contentHTML = `<ul class="cr-resumen-list">${sentences.map(s => `<li>${s}</li>`).join('')}</ul>`;
+            } else {
+                contentHTML = `<p class="cr-bullet-txt">${card.content}</p>`;
+            }
+        } else {
+            contentHTML = `<p class="cr-bullet-txt">${card.content}</p>`;
+        }
+
+        return `
+            <div class="cr-bullet-card">
+                <div class="cr-bullet-ico">${card.icon}</div>
+                <div>
+                    <h3 class="cr-bullet-ttl" data-i18n="${card.titleKey}">${card.title}</h3>
+                    ${contentHTML}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    return `
+        ${styles}
+        <div class="study-content">
+            <h2 class="study-title">${estudio.title}</h2>
+            <div class="cr-bullet-grid">
+                ${cardsHTML}
+            </div>
+        </div>
+    `;
+}
 
 
 function otp(study_id) {
@@ -19,31 +274,10 @@ function otp(study_id) {
             padding: 20px;
         ">
             <p data-i18n="Overview.warningOTP">Para acceder a esta información, necesitas un código de acceso. Por favor, ingresa el código de acceso que te proporcionaron. Si no posees un OTP, selecciona el botón "Solicitar OTP" para obtener uno.</p>
-            <input type="text" id="otpInput" style="
-                width: 75%;
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-            ">
-            <button onclick="verificarOTP('${study_id}')" style="
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-                background-color: #c0601c;
-                color: white;
-                border: none;
-                cursor: pointer;
-            " data-i18n="Overview.btVerifyOTP">Verificar</button>
+            <input type="text" id="otpInput" class="cr-input" style="margin: 10px;" >
+            <button class="btn btn-primary" onclick="verificarOTP('${study_id}')" style="margin: 10px;" data-i18n="Overview.btVerifyOTP"><i class="fas fa-check"></i> Verificar</button>
 
-           <button onclick="solicitarOTP('${study_id}')" style="
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                cursor: pointer;
-            " data-i18n="Overview.btRequestOTP">Solicitar OTP</button>
+           <button class="btn btn-primary" onclick="solicitarOTP('${study_id}')" style="margin: 10px;" data-i18n="Overview.btRequestOTP"><i class="fas fa-key"></i> Solicitar OTP</button>
 
 
 
@@ -70,22 +304,9 @@ function solicitarOTP(study_id) {
             padding: 20px;
         ">
             <p data-i18n="Overview.sMailOTP">Por favor, ingresa tu correo electrónico para solicitar el OTP.</p>
-            <input type="email" id="emailInput" data-i18n-placeholder="Overview.inMailOTP" style="
-                width: 75%;
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-            ">
+            <input type="email" id="emailInput" class="cr-input" data-i18n-placeholder="Overview.inMailOTP" style="margin: 10px;">
 
-            <button onclick="enviarOTP('${study_id}')" style="
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                cursor: pointer;
-            " data-i18n="Overview.btRequestOTP">Solicitar</button>
+            <button class="btn btn-primary" onclick="enviarOTP('${study_id}')" style="margin: 10px;" data-i18n="Overview.btRequestOTP"><i class="fas fa-paper-plane"></i> Solicitar</button>
             
         </div>
     `;
@@ -104,6 +325,9 @@ function enviarOTP(study_id) {
             mongo_studio_id: study_id,
             recipients: [email] // Convertir a un arreglo, ya que el endpoint espera un array
         };
+
+        console.log('Enviando OTP a:', body.recipients);
+        console.log('ID de estudio:', study_id);
 
         // Usar axios para enviar la solicitud con el encabezado adecuado
         axios.post(url, body, {
@@ -172,15 +396,7 @@ async function LegalDisclaimer(study_id) {
                     Al acceder al reporte, los usuarios aceptan cumplir con estas condiciones y dan por entendidas las responsabilidades 
                     de cualquier infracción que pueda surgir del uso indebido de la información o la plataforma.
                 </p>
-            <button id="verifyButton" style="
-                padding: 10px;
-                border-radius : 13px;
-                margin: 10px;
-                background-color: var(--bs-CR-orange);
-                color: var(--bs-CR-gray);
-                border: none;
-                cursor: pointer;
-            " data-i18n="Overview.btAccept">Acceder Al Reporte</button>
+            <button id="verifyButton" class="btn btn-primary" style="margin: 10px;" data-i18n="Overview.btAccept"><i class="fas fa-unlock"></i> Acceder Al Reporte</button>
         </div>
     `;
 
@@ -289,11 +505,21 @@ async function contenido(study) {
     if (linkDisponible) {
         otpValidado = localStorage.getItem('otpValidado');
         if (otpValidado) {
-            // Si es día 30 del mes, se borra la variable de sesión
-            const d = new Date();
-            const dia = d.getDate();
-            if (dia === 30) {
-                localStorage.removeItem('otpValidado');
+            // Si han pasado 15 días, se borra la variable de sesión
+            const fechaGuardada = localStorage.getItem('otpFecha');
+            const fechaActual = new Date();
+            
+            if (!fechaGuardada) {
+                // Si no hay fecha guardada, guardar la fecha actual
+                localStorage.setItem('otpFecha', fechaActual.toISOString());
+            } else {
+                const fechaAnterior = new Date(fechaGuardada);
+                const diferenciaDias = Math.floor((fechaActual - fechaAnterior) / (1000 * 60 * 60 * 24));
+                
+                if (diferenciaDias >= 15) {
+                    localStorage.removeItem('otpValidado');
+                    localStorage.removeItem('otpFecha');
+                }
             }
 
             hideOverlay();
@@ -309,42 +535,8 @@ async function contenido(study) {
                     const estudioActual = estudios.find(estudio => estudio._id === study);
 
                     if (estudioActual) {
-                        // Generar HTML dinámico usando los datos del objeto
-                        const htmlContent = `
-                            <style>
-                                .study-title {
-                                    font-size: 2rem;
-                                    font-weight: bold;
-                                    margin-bottom: 10px;
-                                }
-                                .study-section {
-                                    font-size: 1.2rem;
-                                    margin-bottom: 8px;
-                                }
-                                .study-section strong {
-                                    font-size: 1.3rem;
-                                }
-                                .study-content {
-                                    margin-bottom: 15px;
-                                }
-                                .study-bullets {
-                                    text-align: left;
-                                }
-                                .study-bullets li {
-                                    margin-bottom: 8px;
-                                    font-size: 1.1rem;
-                                }
-                            </style>
-                            <div class="study-content">
-                                <h2 class="study-title">${estudioActual.title}</h2>
-                                <ul class="study-bullets">
-                                    <li><strong data-i18n="Overview.sStudyObjectives">Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</li>
-                                    <li><strong data-i18n="Overview.sTargetAudience">Mercado Objetivo:</strong> ${estudioActual.marketTarget}</li>
-                                    <li><strong data-i18n="Overview.sStudyDate">Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</li>
-                                    <li><strong data-i18n="Overview.sStudySummary">Resumen:</strong> ${estudioActual.prompt}</li>
-                                </ul>
-                            </div>
-                        `;
+                        // Generar HTML dinámico usando los datos del objeto con sistema de tarjetas
+                        const htmlContent = generateStudyCards(estudioActual);
 
                         div.innerHTML = htmlContent;
                     } else {
@@ -371,33 +563,8 @@ async function contenido(study) {
                         const estudioActual = estudios.find(estudio => estudio._id === study);
 
                         if (estudioActual) {
-                            // Generar HTML dinámico usando los datos del objeto
-                            const htmlContent = `
-                                <style>
-                                    .study-title {
-                                        font-size: 2rem;
-                                        font-weight: bold;
-                                        margin-bottom: 10px;
-                                    }
-                                    .study-section {
-                                        font-size: 1.2rem;
-                                        margin-bottom: 8px;
-                                    }
-                                    .study-section strong {
-                                        font-size: 1.3rem;
-                                    }
-                                    .study-content {
-                                        margin-bottom: 15px;
-                                    }
-                                </style>
-                                <div class="study-content">
-                                    <h2 class="study-title">${estudioActual.title}</h2>
-                                    <p class="study-section"><strong data-i18n="Overview.sStudyObjectives">Objetivo del Estudio:</strong> ${estudioActual.studyObjectives}</p>
-                                    <p class="study-section"><strong data-i18n="Overview.sTargetAudience">Mercado Objetivo:</strong> ${estudioActual.marketTarget}</p>
-                                    <p class="study-section"><strong data-i18n="Overview.sStudyDate">Fecha del Estudio:</strong> ${new Date(estudioActual.studyDate).toLocaleDateString()}</p>
-                                    <p class="study-section"><strong data-i18n="Overview.sStudySummary">Resumen:</strong> ${estudioActual.prompt}</p>
-                                </div>
-                            `;
+                            // Generar HTML dinámico usando los datos del objeto con sistema de tarjetas
+                            const htmlContent = generateStudyCards(estudioActual);
 
                             div.innerHTML = htmlContent;
                         } else {

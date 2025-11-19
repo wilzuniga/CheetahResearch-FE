@@ -8,8 +8,8 @@ function enableNavItems() {
 
 function CE_DeactivateNavBy(){
     // console.log('Verificando si se activan los botones');
-    if(localStorage.getItem('selectedStudyId') != null){
-        // console.log('Study id:', localStorage.getItem('selectedStudyId'));
+    if(sessionStorage.getItem('selectedStudyId') != null){
+        // console.log('Study id:', sessionStorage.getItem('selectedStudyId'));
         enableNavItems();
     }else{
         disableNavItems();
@@ -18,92 +18,89 @@ function CE_DeactivateNavBy(){
 
 //FORMULARIO DE CREACION DE ESTUDIO
 function createStudyForm() {
-    const title = '<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: \'hedliner\', sans-serif;" data-i18n="CreacionDeEstudio.title">Creación de Estudio</h2>';
+    const title = '<div class="form-section"><h2 class="section-title" style="color: var(--bs-emphasis-color);font-weight: bold;font-family: \'hedliner\', sans-serif;" data-i18n="CreacionDeEstudio.title">Creación de Estudio</h2></div>';
 
     const tituloDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyTitle">Titulo del Estudio</p>
-            <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" data-i18n-placeholder="CreacionDeEstudio.inStudyTitle" style="font-family: 'IBM Plex Sans'; border-radius : 13px">
+        <div class="form-section">
+            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyTitle">Titulo del Estudio</p>
+            <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" data-i18n-placeholder="CreacionDeEstudio.inStudyTitle" style="font-family: 'IBM Plex Sans';" placeholder="Ingresa el título de tu estudio">
         </div>`
     ;
 
     const mercadoObjetivo = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hTargetAudience">Mercado Objetivo</p>
-            <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" data-i18n-placeholder="CreacionDeEstudio.inTargetAudience" style="font-family: 'IBM Plex Sans'; border-radius : 13px">
+        <div class="form-section">
+            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hTargetAudience">Mercado Objetivo</p>
+            <textarea class="form-control" id="MercadoObjetivoTXT" name="Mercado Objetivo" rows="4" data-i18n-placeholder="CreacionDeEstudio.inTargetAudience" style="font-family: 'IBM Plex Sans';" placeholder="Describe tu mercado objetivo"></textarea>
         </div>`
     ;
 
     const objetivosDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyObjectives">Objetivos del Estudio</p>
-            <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" data-i18n-placeholder="CreacionDeEstudio.inStudyObjectives" style="font-family: 'IBM Plex Sans'; border-radius : 13px">
+        <div class="form-section">
+            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyObjectives">Objetivos del Estudio</p>
+            <textarea class="form-control" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" rows="4" data-i18n-placeholder="CreacionDeEstudio.inStudyObjectives" style="font-family: 'IBM Plex Sans';" placeholder="Define los objetivos de tu estudio"></textarea>
         </div>`
     ;
 
     const promptDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hPrompt">Prompt del Estudio</p>
-            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" data-i18n-placeholder="CreacionDeEstudio.inPrompt" style="font-family: 'IBM Plex Sans', sans-serif;  color: #072934; border-radius : 13px"></textarea>
+        <div class="form-section">
+            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hPrompt">Contexto del Estudio</p>
+            <textarea class="form-control" id="PromptGeneralTXT" name="Contexto del Estudio" rows="6" data-i18n-placeholder="CreacionDeEstudio.inPrompt" style="font-family: 'IBM Plex Sans', sans-serif; color: #072934;" placeholder="Describe el contexto y las instrucciones para tu estudio"></textarea>
         </div>`
     ;
 
-    const colorInput1 = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.color1">Color Principal del Estudio</p>
-            <input type="color" class="form-control" id="colorInput1" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius : 13px" value="#C0601C">
+    const colorsSection = `
+        <div class="form-section">
+            <p style="font-family: 'hedliner', sans-serif;">Personalización de Colores</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div>
+                    <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px; display: block;" data-i18n="CreacionDeEstudio.color1">Color Principal del Estudio</label>
+                    <input type="color" class="form-control" id="colorInput1" name="Color del Estudio" style="font-family: 'IBM Plex Sans';" value="#C0601C">
+                </div>
+                <div>
+                    <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px; display: block;" data-i18n="CreacionDeEstudio.color2">Color Secundario del Estudio</label>
+                    <input type="color" class="form-control" id="colorInput2" name="Color del Estudio" style="font-family: 'IBM Plex Sans';" value="#212121">
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.btSaveColors">
+                    <i class="fas fa-palette" style="margin-right: 8px;"></i>
+                    Guardar Colores
+                </button>
+                <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.btDefaultColors">
+                    <i class="fas fa-undo" style="margin-right: 8px;"></i>
+                    Colores Default
+                </button>
+            </div>
         </div>`
     ;
 
-    const colorInput2 = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.color2">Color Secundario del Estudio</p>
-            <input type="color" class="form-control" id="colorInput2" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius : 13px" value="#212121">
-        </div>`
-    ;
-
-    const setDefaultColorButton = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.btDefaultColors">Colores Default</button>
-        </div>`
-    ;
-    const saveColorsButton = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif;  background-color:var(--bs-CR-orange-2);" data-i18n="CreacionDeEstudio.btSaveColors">Guardar Colores</button>
-        </div>`
-    ;
-    const colorButtonsContainer = `
-        <div class="d-flex justify-content-between mb-3" style="font-family: 'hedliner', sans-serif;">
-            ${saveColorsButton}
-            ${setDefaultColorButton}
-        </div>`
-    ;//Aparecen horizontalmente
-
-    const submitButton = `
-        <div style="width: 250px;font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-primary d-block w-100" id="CrearEstudioBtn" type="button" style="font-weight: bold;font-size: 20px;border-radius : 13px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.btCreate">Crear Estudio</button>
+    const submitSection = `
+        <div class="form-section" style="text-align: center;">
+            <button class="btn btn-primary d-block" id="CrearEstudioBtn" type="button" style="font-weight: bold; font-size: 16px; font-family: 'hedliner', sans-serif; min-width: 200px;" data-i18n="CreacionDeEstudio.btCreate">
+                <i class="fas fa-plus-circle" style="margin-right: 8px;"></i>
+                Crear Estudio
+            </button>
         </div>`
     ;
 
     const form = `
-        <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
+        <div style="font-family: 'hedliner', sans-serif; padding: 20px;">
+            ${title}
             ${tituloDelEstudio}
             ${mercadoObjetivo}
             ${objetivosDelEstudio}
             ${promptDelEstudio}
-            ${colorInput1}
-            ${colorInput2}
-            ${colorButtonsContainer}
-            ${submitButton}
-        </form>`;
+            ${colorsSection}
+            ${submitSection}
+        </div>`;
 
-    return title + form;
+    return form;
 }
 
 function createFilledStudyForm() {
 
-    //crear u¿el formulario lleno sin el boton de crear estudio y en vez de que sea el prompt que sea el  resumen del estudio. Todo con el localstorage selectedStudyData. Solo lectura
-    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    //crear u¿el formulario lleno sin el boton de crear estudio y en vez de que sea el prompt que sea el  resumen del estudio. Todo con el sessionStorage selectedStudyData. Solo lectura
+    const studyData = JSON.parse(sessionStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
         tituloDelEstudio: studyData.title,
         mercadoObjetivo: studyData.marketTarget,
@@ -115,115 +112,114 @@ function createFilledStudyForm() {
 
     document.getElementById('nombreProyectoLbl').innerText = selectedStudyData.tituloDelEstudio;
 
-    const title = `<h2 style="color: var(--bs-emphasis-color);font-weight: bold;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.summaryTitle">Resumen del Estudio</h2>`;
+    const title = '<div class="form-section"><h2 class="section-title" style="color: var(--bs-emphasis-color);font-weight: bold;font-family: \'hedliner\', sans-serif;" data-i18n="CreacionDeEstudio.summaryTitle">Resumen del Estudio</h2></div>';
 
     const tituloDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyTitle">Titulo del Estudio</p>
-            <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" data-i18n-placeholder="CreacionDeEstudio.inStudyTitle" style="font-family: 'IBM Plex Sans'; border-radius : 13px" value="${selectedStudyData.tituloDelEstudio}">
+        <div class="form-section">
+            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyTitle">Titulo del Estudio</p>
+            <input class="form-control" type="text" id="TituloDelEstudioTXT" name="Titulo" data-i18n-placeholder="CreacionDeEstudio.inStudyTitle" style="font-family: 'IBM Plex Sans';" value="${selectedStudyData.tituloDelEstudio}">
         </div>`
     ;
 
     const mercadoObjetivo = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hTargetAudience">Mercado Objetivo</p>
-            <input class="form-control" type="text" id="MercadoObjetivoTXT" name="Mercado Objetivo" data-i18n-placeholder="CreacionDeEstudio.inTargetAudience" style="font-family: 'IBM Plex Sans'; border-radius : 13px" value="${selectedStudyData.mercadoObjetivo}">
+        <div class="form-section">
+            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hTargetAudience">Mercado Objetivo</p>
+            <textarea class="form-control" id="MercadoObjetivoTXT" name="Mercado Objetivo" rows="4" data-i18n-placeholder="CreacionDeEstudio.inTargetAudience" style="font-family: 'IBM Plex Sans';">${selectedStudyData.mercadoObjetivo}</textarea>
         </div>`
     ;
 
     const objetivosDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyObjectives">Objetivos del Estudio</p>
-            <input class="form-control" type="text" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" data-i18n-placeholder="CreacionDeEstudio.inStudyObjectives" style="font-family: 'IBM Plex Sans'; border-radius : 13px" value="${selectedStudyData.objetivosDelEstudio}">
+        <div class="form-section">
+            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hStudyObjectives">Objetivos del Estudio</p>
+            <textarea class="form-control" id="ObjetivosDelEstudioTXT" name="Objetivos del Estudio" rows="4" data-i18n-placeholder="CreacionDeEstudio.inStudyObjectives" style="font-family: 'IBM Plex Sans';">${selectedStudyData.objetivosDelEstudio}</textarea>
         </div>`
     ;
 
     const promptDelEstudio = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hPrompt">Prompt del Estudio</p>
-            <textarea class="form-control" id="PromptGeneralTXT" name="Prompt del Estudio" rows="6" data-i18n-placeholder="CreacionDeEstudio.inPrompt" style="font-family: 'IBM Plex Sans', sans-serif;  color: #072934; border-radius : 13px" >${selectedStudyData.Resumen}</textarea>
+        <div class="form-section">
+            <p style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.hPrompt">Contexto del Estudio</p>
+            <textarea class="form-control" id="PromptGeneralTXT" name="Contexto del Estudio" rows="6" data-i18n-placeholder="CreacionDeEstudio.inPrompt" style="font-family: 'IBM Plex Sans', sans-serif; color: #072934;">${selectedStudyData.Resumen}</textarea>
         </div>`
     ;
 
-    const colorInput1 = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.color1">Color Principal del Estudio</p>
-            <input type="color" class="form-control" id="colorInput1" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius : 13px" value="${selectedStudyData.color1DelEstudio}">
+    const colorsSection = `
+        <div class="form-section">
+            <p style="font-family: 'hedliner', sans-serif;">Personalización de Colores</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div>
+                    <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px; display: block;" data-i18n="CreacionDeEstudio.color1">Color Principal del Estudio</label>
+                    <input type="color" class="form-control" id="colorInput1" name="Color del Estudio" style="font-family: 'IBM Plex Sans';" value="${selectedStudyData.color1DelEstudio}">
+                </div>
+                <div>
+                    <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px; display: block;" data-i18n="CreacionDeEstudio.color2">Color Secundario del Estudio</label>
+                    <input type="color" class="form-control" id="colorInput2" name="Color del Estudio" style="font-family: 'IBM Plex Sans';" value="${selectedStudyData.color2DelEstudio}">
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.btSaveColors">
+                    <i class="fas fa-palette" style="margin-right: 8px;"></i>
+                    Guardar Colores
+                </button>
+                <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.btDefaultColors">
+                    <i class="fas fa-undo" style="margin-right: 8px;"></i>
+                    Colores Default
+                </button>
+            </div>
         </div>`
     ;
 
-    const colorInput2 = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <p style="font-size: 20px;color: var(--bs-emphasis-color);margin-bottom: 5px;font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.color2">Color Secundario del Estudio</p>
-            <input type="color" class="form-control" id="colorInput2" name="Color del Estudio" style="font-family: 'IBM Plex Sans'; border-radius : 13px" value="${selectedStudyData.color2DelEstudio}">
-        </div>`
-    ;
-
-    const setDefaultColorButton = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="setDefaultColorButton" type="button" style="font-family: 'hedliner', sans-serif;" data-i18n="CreacionDeEstudio.btDefaultColors">Colores Default</button>
-        </div>`
-    ;
-    const saveColorsButton = `
-        <div class="mb-3" style="font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-secondary" id="saveColorsButton" type="button" style="font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="CreacionDeEstudio.btSaveColors">Guardar Colores</button>
-        </div>`
-    ;
-    const colorButtonsContainer = `
-        <div class="d-flex justify-content-between mb-3" style="font-family: 'hedliner', sans-serif;">
-            ${saveColorsButton}
-            ${setDefaultColorButton}
-        </div>`
-    ;//Aparecen horizontalmente
-
-    const submitButton = `
-        <div style="width: 250px;font-family: 'hedliner', sans-serif;">
-            <button class="btn btn-primary d-block w-100" id="UpdateEstudio" type="button" style="font-weight: bold;font-size: 20px;border-radius : 13px;font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray);background-color: var(--bs-CR-orange);" data-i18n="CreacionDeEstudio.btUpdate">Actualizar Estudio</button>
+    const submitSection = `
+        <div class="form-section" style="text-align: center;">
+            <button class="btn btn-primary d-block" id="UpdateEstudio" type="button" style="font-weight: bold; font-size: 16px; font-family: 'hedliner', sans-serif; min-width: 200px;" data-i18n="CreacionDeEstudio.btUpdate">
+                <i class="fas fa-sync-alt" style="margin-right: 8px;"></i>
+                Actualizar Estudio
+            </button>
         </div>`
     ;
 
     // console.log(studyData);
 
-
     const form = `
-        <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
+        <div style="font-family: 'hedliner', sans-serif; padding: 20px;">
+            ${title}
             ${tituloDelEstudio}
             ${mercadoObjetivo}
             ${objetivosDelEstudio}
             ${promptDelEstudio}
-            ${colorInput1}
-            ${colorInput2}
-            ${colorButtonsContainer}
-            ${submitButton}
-        </form>`
+            ${colorsSection}
+            ${submitSection}
+        </div>`
     ;
     
-    return title + form;
+    return form;
 }
 
 function appendStudyForm() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     const formContainer = document.getElementById('form-containerStudy');
     formContainer.innerHTML = createStudyForm();
 
     document.getElementById('CrearEstudioBtn').addEventListener('click', () => {
-        const studyData = CaptureAndPostformdta();
-        // console.log(studyData);
-        alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyCreated'));
-        //guardar en localsotrage el estudio creado
-        localStorage.setItem('selectedStudyData', JSON.stringify(studyData));
+        CaptureAndPostformdta();
+        // Nota: CaptureAndPostformdta ahora maneja todo internamente incluyendo alerts y sessionStorage
     });
+
+    //Color Change: Colores Default
+    document.getElementById('setDefaultColorButton').addEventListener('click', () => {
+        document.getElementById('colorInput1').value = '#C0601C';
+        document.getElementById('colorInput2').value = '#212121';
+    });
+
+    //Color Change: Guardar Colores
+    document.getElementById('saveColorsButton').addEventListener('click', saveColorsToStudy);
 }
 
 function appendFilledStudyForm() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
 
     document.getElementById('UpdateEstudio').addEventListener('click', () => {
-        const studyData = UpdateAndPostformdta();
-        //actualizar el estudio salvado en localstorage
-        localStorage.setItem('selectedStudyData', JSON.stringify(studyData));
-        // console.log(studyData);
-        alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyUpdated'));
+        UpdateAndPostformdta();
+        // Nota: UpdateAndPostformdta ahora maneja todo internamente incluyendo alerts y sessionStorage
     });
 
     //Color Change: Colores Default
@@ -237,43 +233,118 @@ function appendFilledStudyForm() {
 }
 
 function StudysaveToLocStrg() {//Funcion de prueba
-    localStorage.setItem('tituloDelEstudio', document.getElementById('TituloDelEstudioTXT').value);
-    localStorage.setItem('mercadoObjetivo', document.getElementById('MercadoObjetivoTXT').value);
-    localStorage.setItem('objetivosDelEstudio', document.getElementById('ObjetivosDelEstudioTXT').value);
-    localStorage.setItem('promptDelEstudio', document.getElementById('PromptGeneralTXT').value);
-    localStorage.setItem('color1DelEstudio', document.getElementById('colorInput1').value);
-    localStorage.setItem('color2DelEstudio', document.getElementById('colorInput2').value);
+    sessionStorage.setItem('tituloDelEstudio', document.getElementById('TituloDelEstudioTXT').value);
+    sessionStorage.setItem('mercadoObjetivo', document.getElementById('MercadoObjetivoTXT').value);
+    sessionStorage.setItem('objetivosDelEstudio', document.getElementById('ObjetivosDelEstudioTXT').value);
+    sessionStorage.setItem('promptDelEstudio', document.getElementById('PromptGeneralTXT').value);
+    sessionStorage.setItem('color1DelEstudio', document.getElementById('colorInput1').value);
+    sessionStorage.setItem('color2DelEstudio', document.getElementById('colorInput2').value);
 }
 
 function deleteFromLocStrg() {
     //verificar si se esta en PaginaPrincipal.html o CreacionDeEstudio.html
     if(window.location.href.includes('home')){
         // console.log('Borrando datos del estudio');
-        localStorage.removeItem('tituloDelEstudio');
-        localStorage.removeItem('mercadoObjetivo');
-        localStorage.removeItem('objetivosDelEstudio');
-        localStorage.removeItem('promptDelEstudio');
-        localStorage.removeItem('color1DelEstudio');
-        localStorage.removeItem('color2DelEstudio');
-        localStorage.removeItem('nombreEncuestador');
-        localStorage.removeItem('tonoEncuestador');
-        localStorage.removeItem('observacionesImportantes');
-        localStorage.removeItem('saludoEncuestador');
-        localStorage.removeItem('preguntas');
+        sessionStorage.removeItem('tituloDelEstudio');
+        sessionStorage.removeItem('mercadoObjetivo');
+        sessionStorage.removeItem('objetivosDelEstudio');
+        sessionStorage.removeItem('promptDelEstudio');
+        sessionStorage.removeItem('color1DelEstudio');
+        sessionStorage.removeItem('color2DelEstudio');
+        sessionStorage.removeItem('nombreEncuestador');
+        sessionStorage.removeItem('tonoEncuestador');
+        sessionStorage.removeItem('observacionesImportantes');
+        sessionStorage.removeItem('saludoEncuestador');
+        sessionStorage.removeItem('preguntas');
 
-        localStorage.removeItem('selectedStudyId');
-        localStorage.removeItem('selectedStudyData');
+        sessionStorage.removeItem('selectedStudyId');
+        sessionStorage.removeItem('selectedStudyData');
+    }
+}
+
+// Función para obtener datos completos del estudio desde la API
+function getCompleteStudyFromAPI(studyId) {
+    // Primero intentamos obtener los datos de la lista de estudios del usuario
+    const userId = sessionStorage.getItem('user_id');
+    const url = `https://api.cheetah-research.ai/configuration/get_studies_by_user_id/${userId}/`;
+    
+    return axios.get(url, {
+        headers: {
+            'Authorization': `Token ${sessionStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        // Buscar el estudio específico en la lista
+        const studies = response.data;
+        const targetStudy = studies.find(study => study._id === studyId);
+        
+        if (targetStudy) {
+            // Limpiar datos anteriores del sessionStorage
+            sessionStorage.removeItem('selectedStudyData');
+            
+            // Guardar los datos frescos
+            sessionStorage.setItem('selectedStudyData', JSON.stringify(targetStudy));
+            
+            console.log('Datos completos del estudio actualizados en sessionStorage:', targetStudy);
+            
+            // Verificar que los datos se guardaron correctamente
+            verifySessionStorageUpdate();
+            
+            return targetStudy;
+        } else {
+            throw new Error(`Estudio con ID ${studyId} no encontrado`);
+        }
+    })
+    .catch(error => {
+        console.error('Error al obtener datos completos del estudio:', error);
+        throw error;
+    });
+}
+
+// Función para actualizar todos los elementos de la interfaz con los datos frescos
+function updateInterfaceWithFreshData(studyData) {
+    try {
+        // Actualizar el nombre del proyecto en el sidebar
+        const nombreProyectoElement = document.getElementById('nombreProyectoLbl');
+        if (nombreProyectoElement && studyData.title) {
+            nombreProyectoElement.innerText = studyData.title;
+        }
+        
+        // Si estamos en el formulario de edición, actualizar los campos
+        const titleInput = document.getElementById('TituloDelEstudioTXT');
+        const targetInput = document.getElementById('MercadoObjetivoTXT');
+        const objectiveInput = document.getElementById('ObjetivosDelEstudioTXT');
+        const promptInput = document.getElementById('PromptGeneralTXT');
+        
+        if (titleInput && studyData.title) {
+            titleInput.value = studyData.title;
+        }
+        if (targetInput && studyData.marketTarget) {
+            targetInput.value = studyData.marketTarget;
+        }
+        if (objectiveInput && studyData.studyObjectives) {
+            objectiveInput.value = studyData.studyObjectives;
+        }
+        if (promptInput && studyData.prompt) {
+            promptInput.value = studyData.prompt;
+        }
+        
+        console.log('Interfaz actualizada con datos frescos');
+        
+    } catch (error) {
+        console.error('Error actualizando la interfaz:', error);
     }
 }
 
 function CaptureAndPostformdta() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     const tituloDelEstudio = document.getElementById('TituloDelEstudioTXT').value;
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
     
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     const url = 'https://api.cheetah-research.ai/configuration/createStudy/';
     
     // Armamos el body como JSON
@@ -287,39 +358,42 @@ function CaptureAndPostformdta() {
     // Hacemos el POST con headers explícitos
     axios.post(url, data, {
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Authorization': `Token ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     })
     .then(response => {
         alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyCreated'));
-        localStorage.setItem('selectedStudyId', response.data.study_id);
-        localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
-    
+        const studyId = response.data.study_id;
+        sessionStorage.setItem('selectedStudyId', studyId);
+        
+        // Obtener datos frescos de la API después de crear
+        return getCompleteStudyFromAPI(studyId);
+    })
+    .then(freshData => {
+        // Los datos frescos ya están guardados en sessionStorage por getStudyFromAPI
+        // Actualizar toda la interfaz con los datos frescos
+        updateInterfaceWithFreshData(freshData);
+        
+        // Actualizar navegación y otros elementos
         CE_DeactivateNavBy();
+        
+        console.log('Estudio creado y datos sincronizados correctamente');
     })
     .catch(error => {
         console.error('Error al crear el estudio:', error);
     });
-    
-    return {
-        tituloDelEstudio,
-        mercadoObjetivo,
-        objetivosDelEstudio,
-        promptDelEstudio,
-    };
-    
 }
 
 function UpdateAndPostformdta() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     const tituloDelEstudio = document.getElementById('TituloDelEstudioTXT').value;
     const mercadoObjetivo = document.getElementById('MercadoObjetivoTXT').value;
     const objetivosDelEstudio = document.getElementById('ObjetivosDelEstudioTXT').value;
     const promptDelEstudio = document.getElementById('PromptGeneralTXT').value;
     
-    const token = localStorage.getItem('token');
-    const studyId = localStorage.getItem('selectedStudyId');
+    const token = sessionStorage.getItem('token');
+    const studyId = sessionStorage.getItem('selectedStudyId');
     const url = `https://api.cheetah-research.ai/configuration/updateStudy/${studyId}`;
     
     // Armamos el body como JSON
@@ -333,25 +407,58 @@ function UpdateAndPostformdta() {
     // Hacemos el POST con los headers adecuados
     axios.post(url, data, {
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Authorization': `Token ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     })
     .then(response => {
         alert(getNestedTranslation(translations[lang], 'CreacionDeEstudio.wStudyUpdated'));
-        localStorage.setItem('selectedStudyData', JSON.stringify(response.data));
+        
+        // Obtener datos frescos de la API después de actualizar
+        return getCompleteStudyFromAPI(studyId);
+    })
+    .then(freshData => {
+        // Los datos frescos ya están guardados en sessionStorage por getStudyFromAPI
+        // Actualizar toda la interfaz con los datos frescos
+        updateInterfaceWithFreshData(freshData);
+        
+        // Actualizar navegación y otros elementos
+        CE_DeactivateNavBy();
+        
+        console.log('Estudio actualizado y datos sincronizados correctamente');
     })
     .catch(error => {
         console.error('Error al actualizar el estudio:', error);
     });
+}
+
+// Función para verificar y mostrar el estado actual del sessionStorage
+function verifySessionStorageUpdate() {
+    const selectedStudyData = sessionStorage.getItem('selectedStudyData');
+    const selectedStudyId = sessionStorage.getItem('selectedStudyId');
     
-    return {
-        tituloDelEstudio,
-        mercadoObjetivo,
-        objetivosDelEstudio,
-        promptDelEstudio,
-    };
+    console.log('=== Estado actual del sessionStorage ===');
+    console.log('selectedStudyId:', selectedStudyId);
     
+    if (selectedStudyData) {
+        try {
+            const parsedData = JSON.parse(selectedStudyData);
+            console.log('selectedStudyData completo:', parsedData);
+            console.log('Título:', parsedData.title);
+            console.log('Mercado objetivo:', parsedData.marketTarget);
+            console.log('Objetivos:', parsedData.studyObjectives);
+            console.log('Prompt:', parsedData.prompt);
+            console.log('ID del estudio:', parsedData._id);
+            console.log('Fecha de creación:', parsedData.studyDate);
+            console.log('Color primario:', parsedData.primary_color);
+            console.log('Color secundario:', parsedData.secondary_color);
+        } catch (error) {
+            console.error('Error parseando selectedStudyData:', error);
+        }
+    } else {
+        console.log('selectedStudyData: null o undefined');
+    }
+    console.log('=== Fin estado sessionStorage ===');
 }
 
 // Llama a la función cuando la página se carga completamente
@@ -361,46 +468,46 @@ window.addEventListener('DOMContentLoaded', (event) => {
     if (searchBar) searchBar.value = '';
 
     if(window.location.href.includes('https://www.cheetah-research.ai/configuration/study/')){
-        if(localStorage.getItem('selectedStudyId') == null){//PaginaPrincipal
-            console.log('Study id:', localStorage.getItem('selectedStudyId'));
+        if(sessionStorage.getItem('selectedStudyId') == null){//PaginaPrincipal
+            console.log('Study id:', sessionStorage.getItem('selectedStudyId'));
             CE_DeactivateNavBy();
             appendStudyForm();
         }else{//CreacionDeEstudio
             //Idioma
-            const lang = localStorage.getItem('language') || 'es';
+            const lang = sessionStorage.getItem('language') || 'es';
             setLanguage(lang);
 
             const formContainer = document.getElementById('form-containerStudy');
             formContainer.innerHTML = createFilledStudyForm();       
             appendFilledStudyForm();  
-            setColorsFromAPI();//Setea colores en LocalStorage y en la interfaz
+            setColorsFromAPI();//Setea colores en sessionStorage y en la interfaz
         }
     }else if(window.location.href.includes('home')){
 
-        console.log('Study id:', localStorage.getItem('selectedStudyId'));
+        console.log('Study id:', sessionStorage.getItem('selectedStudyId'));
         loadStudies();
     }
 });
 
 function ApendStudies(){
-    document.getElementById('TituloDelEstudioTXT').value = localStorage.getItem('tituloDelEstudio');
-    document.getElementById('MercadoObjetivoTXT').value = localStorage.getItem('mercadoObjetivo');
-    document.getElementById('ObjetivosDelEstudioTXT').value = localStorage.getItem('objetivosDelEstudio');
-    document.getElementById('PromptGeneralTXT').value = localStorage.getItem('promptDelEstudio');
-    document.getElementById('colorInput1').value = localStorage.getItem('color1DelEstudio');
-    document.getElementById('colorInput2').value = localStorage.getItem('color2DelEstudio');
+    document.getElementById('TituloDelEstudioTXT').value = sessionStorage.getItem('tituloDelEstudio');
+    document.getElementById('MercadoObjetivoTXT').value = sessionStorage.getItem('mercadoObjetivo');
+    document.getElementById('ObjetivosDelEstudioTXT').value = sessionStorage.getItem('objetivosDelEstudio');
+    document.getElementById('PromptGeneralTXT').value = sessionStorage.getItem('promptDelEstudio');
+    document.getElementById('colorInput1').value = sessionStorage.getItem('color1DelEstudio');
+    document.getElementById('colorInput2').value = sessionStorage.getItem('color2DelEstudio');
 }
 
 function loadStudies() { //Carga los estudios en la Main Page
 
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('user_id'); // Asegurate que no sea NaN
+    const token = sessionStorage.getItem('token');
+    const userId = sessionStorage.getItem('user_id'); // Asegurate que no sea NaN
     
     const url = `https://api.cheetah-research.ai/configuration/get_studies_by_user_id/${userId}/`;
     
     axios.get(url, {
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Authorization': `Token ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     })
@@ -457,6 +564,7 @@ function createStudyElement(study) {
     const h5 = document.createElement('h5');
     h5.classList.add('mb-1');
     h5.style.fontFamily = "'hedliner', sans-serif";
+    h5.style.fontWeight = 'bold';
     h5.textContent = study.title;
 
     const span = document.createElement('span');
@@ -490,13 +598,20 @@ function createStudyElement(study) {
     // Formatear la fecha
     const studyDate = new Date(study.studyDate);
     const formattedDate = `${studyDate.toLocaleDateString()} ${studyDate.toLocaleTimeString()}`;
-    small.textContent = formattedDate;
+    small.textContent = `Creado el: ${formattedDate}`;
     a.appendChild(small);
 
-    // Guardar el study id en localStorage y los datos en un json al hacer clic
+    // Añadir un atributo data-id para identificar el estudio
+    const smallId = document.createElement('small');
+    smallId.classList.add('text-muted');
+    smallId.style.fontFamily = "'hedliner', sans-serif";
+    smallId.textContent = `     ID: ${study._id}`;
+    a.appendChild(smallId);
+
+    // Guardar el study id en sessionStorage y los datos en un json al hacer clic
     a.addEventListener('click', () => {
-        localStorage.setItem('selectedStudyId', study._id);
-        localStorage.setItem('selectedStudyData', JSON.stringify(study));
+        sessionStorage.setItem('selectedStudyId', study._id);
+        sessionStorage.setItem('selectedStudyData', JSON.stringify(study));
     });
 
     return a;
@@ -504,8 +619,8 @@ function createStudyElement(study) {
 
 // Color Change
 function saveColorsToStudy() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
-    const studyId = localStorage.getItem('selectedStudyId');
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
+    const studyId = sessionStorage.getItem('selectedStudyId');
     const primaryColor = document.getElementById('colorInput1').value;
     const secondaryColor = document.getElementById('colorInput2').value;
 
@@ -532,15 +647,15 @@ function setColorsLocally(color1, color2) {
     applyColors({ color1, color2 });
 
     //Enviar colores a Chatbot
-    const selectedStudyData = JSON.parse(localStorage.getItem('selectedStudyData')) || {};
+    const selectedStudyData = JSON.parse(sessionStorage.getItem('selectedStudyData')) || {};
     selectedStudyData.primary_color = color1;
     selectedStudyData.secondary_color = color2;
-    localStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
+    sessionStorage.setItem('selectedStudyData', JSON.stringify(selectedStudyData));
 }
 
 //Colores
 function setColorsFromAPI() {
-    const studyId = localStorage.getItem('selectedStudyId');
+    const studyId = sessionStorage.getItem('selectedStudyId');
     const url = 'https://api.cheetah-research.ai/configuration/info_study/' + studyId;
     return axios.get(url)
         .then(response => {

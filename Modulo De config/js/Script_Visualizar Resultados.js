@@ -1,6 +1,8 @@
 let Demographic_Filters = [];
 let formData = new FormData();  // Asegúrate de que esta línea está presente donde se necesita
 let markmapBlobUrl = null;
+let sankeyBlobUrl = null;
+
 
 
 import { splitMarkdown, generateCharts } from './splitter.js';
@@ -60,9 +62,125 @@ function generateMarkmapHTML(content , filter) {
     }
 }
 
+function generateSankeyHTML(matrixData, filter) {
+    // Parsear la matriz del endpoint
+    let matriz;
+    try {
+        if (typeof matrixData === 'string') {
+            let cleanData = matrixData.trim();
+            
+            // Remover comillas triples si existen
+            if (cleanData.startsWith("'''") && cleanData.endsWith("'''")) {
+                cleanData = cleanData.slice(3, -3).trim();
+            }
+            
+            // Si contiene "var matriz = ", extraer solo la parte de la matriz
+            if (cleanData.includes('var matriz = ')) {
+                const startIndex = cleanData.indexOf('var matriz = ') + 'var matriz = '.length;
+                let endIndex = cleanData.length;
+                
+                // Buscar el punto y coma final si existe
+                const semicolonIndex = cleanData.indexOf(';', startIndex);
+                if (semicolonIndex !== -1) {
+                    endIndex = semicolonIndex;
+                }
+                
+                cleanData = cleanData.substring(startIndex, endIndex).trim();
+            }
+            
+            // Evaluar la matriz
+            matriz = eval(cleanData);
+        } else {
+            matriz = matrixData;
+        }
+    } catch (error) {
+        console.error('Error parsing Sankey matrix:', error);
+        console.error('Raw data:', matrixData);
+        matriz = [];
+    }
+
+    // Estructura HTML con el contenido dinámico
+    var htmlContent = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Diagrama Sankey - ${filter}</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%; background: #fff; font-family: sans-serif;
+    }
+    #sankey_wrapper {
+      width: 100%; height: 100vh; overflow: auto; padding: 16px; box-sizing: border-box;
+    }
+    #sankey_chart {
+      width: 1200px; /* ancho fijo para permitir scroll horizontal */
+      height: 800px; /* alto suficiente para scroll vertical si hace falta */
+    }
+  </style>
+  <script>
+    google.charts.load('current', {packages:['sankey']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      const data = new google.visualization.DataTable();
+      data.addColumn('string', 'From');
+      data.addColumn('string', 'To');
+      data.addColumn('number', 'Weight');
+
+      var matriz = ${JSON.stringify(matriz)};
+      data.addRows(matriz);
+
+      const options = {
+        sankey: {
+          node: { nodePadding: 20, label: { fontSize: 12 } },
+          link: { colorMode: 'gradient' }
+        }
+      };
+
+      const chart = new google.visualization.Sankey(document.getElementById('sankey_chart'));
+      chart.draw(data, options);
+    }
+
+    window.addEventListener('resize', drawChart);
+  </script>
+</head>
+<body>
+  <div id="sankey_wrapper">
+    <div id="sankey_chart"></div>
+  </div>
+</body>
+</html>`;
+
+    // Crear un Blob con el contenido HTML
+    var blob = new Blob([htmlContent], { type: "text/html" });
+
+    // Revocar URL anterior si existe (para liberar memoria)
+    if (sankeyBlobUrl) {
+        URL.revokeObjectURL(sankeyBlobUrl);
+    }
+
+    // Crear un nuevo objeto URL
+    sankeyBlobUrl = URL.createObjectURL(blob);
+
+    // Habilitar el botón de descarga
+    let downloadBtn = document.getElementById("download_sankey");
+    if (downloadBtn) {
+        downloadBtn.style.display = "block"; // Mostrar el botón
+        downloadBtn.onclick = function () {
+            let a = document.createElement("a");
+            a.href = sankeyBlobUrl;
+            a.download = `sankey - ${filter}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+    }
+}
+
 
 function AgregarFiltros() {
-    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + localStorage.getItem('selectedStudyId');
+    const url = "https://api.cheetah-research.ai/configuration/get_filters/" + sessionStorage.getItem('selectedStudyId');
 
     axios.get(url)
         .then(function (response) {
@@ -80,6 +198,8 @@ function AgregarFiltros() {
 
             const comboBox = document.getElementById('ComboBox_ResumenGeneral');
             const comboBox2 = document.getElementById('ComboBox_ResumenIndividual');
+            const comboBoxRICompare = document.getElementById('ComboBox_ResumenIndividual_Compare');
+            const comboBoxRICompareLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
             const comboBox3 = document.getElementById('Combobox_UserPersona');
             const comboBoxUA = document.getElementById('Combobox_UserArchetype');
             const comboBox4 = document.getElementById('Combobox_EKMAN');
@@ -87,14 +207,19 @@ function AgregarFiltros() {
             const comboBox6 = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBox7 = document.getElementById('Combobox_NPS');
             const comboBox8 = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBoxBig5_1 = document.getElementById('Combobox_Big5');
             const comboBox9 = document.getElementById('Combobox_customerExperience');
             const comboBox10 = document.getElementById('Combobox_Satisfaccion');
             const comboBox11 = document.getElementById('Combobox_ClimaLaboral');
             const comboBox12 = document.getElementById('Combobox_BrandStrenght');
             const comboBox13 = document.getElementById('Combobox_BrandEquity');
+            const comboBox14 = document.getElementById('Combobox_CustomerJourney');
+            const comboBox15 = document.getElementById('Combobox_Reputacion');
+            const comboBox16 = document.getElementById('Combobox_PruebaProducto');
 
             comboBox.innerHTML = '';
             comboBox2.innerHTML = '';
+            if (comboBoxRICompare) comboBoxRICompare.innerHTML = '';
             comboBox3.innerHTML = '';
             comboBoxUA.innerHTML = '';
             comboBox4.innerHTML = '';
@@ -102,11 +227,15 @@ function AgregarFiltros() {
             comboBox6.innerHTML = '';
             comboBox7.innerHTML = '';
             comboBox8.innerHTML = '';
+            comboBoxBig5_1.innerHTML = '';
             comboBox9.innerHTML = '';
             comboBox10.innerHTML = '';
             comboBox11.innerHTML = '';
             comboBox12.innerHTML = '';
             comboBox13.innerHTML = '';
+            comboBox14.innerHTML = '';
+            comboBox15.innerHTML = '';
+            comboBox16.innerHTML = '';
 
         // Agregar opciones al combobox
         Demographic_Filters.forEach(optionText => {
@@ -115,6 +244,7 @@ function AgregarFiltros() {
             option.text = optionText;
             comboBox.appendChild(option);
             comboBox2.appendChild(option.cloneNode(true));
+            if (comboBoxRICompare) comboBoxRICompare.appendChild(option.cloneNode(true));
             comboBox3.appendChild(option.cloneNode(true));
             comboBoxUA.appendChild(option.cloneNode(true));
             comboBox4.appendChild(option.cloneNode(true));
@@ -122,11 +252,15 @@ function AgregarFiltros() {
             comboBox6.appendChild(option.cloneNode(true));
             comboBox7.appendChild(option.cloneNode(true));
             comboBox8.appendChild(option.cloneNode(true));
+            comboBoxBig5_1.appendChild(option.cloneNode(true));
             comboBox9.appendChild(option.cloneNode(true));
             comboBox10.appendChild(option.cloneNode(true));
             comboBox11.appendChild(option.cloneNode(true));
             comboBox12.appendChild(option.cloneNode(true));
             comboBox13.appendChild(option.cloneNode(true));
+            comboBox14.appendChild(option.cloneNode(true));
+            comboBox15.appendChild(option.cloneNode(true));
+            comboBox16.appendChild(option.cloneNode(true));
 
         });
         }
@@ -146,8 +280,14 @@ function AgregarFiltros() {
 
 document.addEventListener('DOMContentLoaded', function () {
     //Idioma
-    const lang = localStorage.getItem('language') || 'es';
+    const lang = sessionStorage.getItem('language') || 'es';
     setLanguage(lang);
+    
+    // Aplicar colores del estudio
+    const studyId = sessionStorage.getItem('selectedStudyId');
+    if (studyId) {
+        setColorsFromAPI(studyId);
+    }
     
     // Asocia el evento a todos los botones save-textarea
     document.querySelectorAll("button[id^='save-textarea_']").forEach(button => {
@@ -166,11 +306,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 'save-textarea_AP_SegmentosPsicograficos': 'SegmentosPsicograficosTextArea',
                 'save-textarea_AP_NPS': 'NPSTextArea',
                 'save-textarea_AP_EstiloDeComunicacion': 'EstiloDeComunicacionTextArea',
+                'save-textarea_AP_Big5': 'Big5TextArea',
                 'save-textarea_customerExperience': 'customerExperienceTextArea',
                 'save-textarea_AP_Satisfaccion' : 'SatisfaccionTextArea',
                 'save-textarea_AP_BrandStrenght': 'BrandStrenghtTextArea',
                 'save-textarea_AP_BrandEquity': 'BrandEquityTextArea',
-                'save-textarea_AP_ClimaLaboral': 'ClimaLaboralTextArea'
+                'save-textarea_AP_ClimaLaboral': 'ClimaLaboralTextArea',
+                'save-textarea_AP_CustomerJourney': 'CustomerJourneyTextArea',
+                'save-textarea_AP_Reputacion': 'ReputacionTextArea',
+                'save-textarea_AP_PruebaProducto': 'PruebaProductoTextArea'
                 
                 
             };
@@ -186,11 +330,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBoxBig5 = document.getElementById('Combobox_Big5');
             const comboBoxCE = document.getElementById('Combobox_customerExperience');
             const comboBoxSat = document.getElementById('Combobox_Satisfaccion');
             const comboBoxCL = document.getElementById('Combobox_ClimaLaboral');
             const comboBoxBS = document.getElementById('Combobox_BrandStrenght');
             const comboBoxBE = document.getElementById('Combobox_BrandEquity');
+            const comboBoxCJ = document.getElementById('Combobox_CustomerJourney');
+            const comboBoxREP = document.getElementById('Combobox_Reputacion');
+            const comboBoxPP = document.getElementById('Combobox_PruebaProducto');
 
             //conseguir el combobox seleccionado de cada seccion
             const StyleSelectedOptionRG = comboBoxRG.options[comboBoxRG.selectedIndex];
@@ -202,11 +350,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionSP = comboBoxSP.options[comboBoxSP.selectedIndex];
             const StyleSelectedOptionNPS = comboBoxNPS.options[comboBoxNPS.selectedIndex];
             const StyleSelectedOptionEC = comboBoxEC.options[comboBoxEC.selectedIndex];
+            const StyleSelectedOptionBig5 = comboBoxBig5.options[comboBoxBig5.selectedIndex];
             const StyleSelectedOptionCE = comboBoxCE.options[comboBoxCE.selectedIndex];
             const StyleSelectedOptionSat = comboBoxSat.options[comboBoxSat.selectedIndex];
             const StyleSelectedOptionCL = comboBoxCL.options[comboBoxCL.selectedIndex];
             const StyleSelectedOptionBS = comboBoxBS.options[comboBoxBS.selectedIndex];
             const StyleSelectedOptionBE = comboBoxBE.options[comboBoxBE.selectedIndex];
+            const StyleSelectedOptionCJ = comboBoxCJ.options[comboBoxCJ.selectedIndex];
+            const StyleSelectedOptionREP = comboBoxREP.options[comboBoxREP.selectedIndex];
+            const StyleSelectedOptionPP = comboBoxPP.options[comboBoxPP.selectedIndex];
 
             //conseguir el valor del combobox seleccionado de cada seccion
             const StyleSelectedOptionRGValue = StyleSelectedOptionRG.value;
@@ -218,11 +370,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const StyleSelectedOptionSPValue = StyleSelectedOptionSP.value;
             const StyleSelectedOptionNPSValue = StyleSelectedOptionNPS.value;
             const StyleSelectedOptionECValue = StyleSelectedOptionEC.value;
+            const StyleSelectedOptionBig5Value = StyleSelectedOptionBig5.value;
             const StyleSelectedOptionCEValue = StyleSelectedOptionCE.value;
             const StyleSelectedOptionSatValue = StyleSelectedOptionSat.value;
             const StyleSelectedOptionCLValue = StyleSelectedOptionCL.value;
             const StyleSelectedOptionBSValue = StyleSelectedOptionBS.value;
             const StyleSelectedOptionBEValue = StyleSelectedOptionBE.value;
+            const StyleSelectedOptionCJValue = StyleSelectedOptionCJ.value;
+            const StyleSelectedOptionREPValue = StyleSelectedOptionREP.value;
+            const StyleSelectedOptionPPValue = StyleSelectedOptionPP.value;
 
             //en el caso de el resumen general y el resumen individual, conseguir los subfiltros 
             const StyleSelectedOptionRGSub = document.getElementById('ComboBox_ResumenGeneralTy');
@@ -249,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionRGValue + '.md';
 
                     formDataRG.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataRG)
                         .then(function (response) {
                             // console.log(response.data);
@@ -272,7 +428,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionRIValue + '.md';
 
                     formDataRI.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataRI)
                         .then(function (response) {
                             // console.log(response.data);
@@ -294,7 +450,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionUPValue + '.md';
 
                     formDataUP.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataUP)
                         .then(function (response) {
                             // console.log(response.data);
@@ -315,7 +471,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionUAValue + '.md';
 
                     formDataUA.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataUA)
                         .then(function (response) {
                             alert('Resumen guardado exitosamente');
@@ -337,7 +493,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionEKValue + '.md';
 
                     formDataEK.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataEK)
                         .then(function (response) {
                             // console.log(response.data);
@@ -359,7 +515,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionRPValue + '.md';
 
                     formDataRP.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataRP)
                         .then(function (response) {
                             // console.log(response.data);
@@ -382,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionSPValue + '.md';
 
                     formDataSP.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataSP)
                         .then(function (response) {
                             // console.log(response.data);
@@ -404,7 +560,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionNPSValue + '.md';
 
                     formDataNPS.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataNPS)
                         .then(function (response) {
                             // console.log(response.data);
@@ -427,10 +583,33 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionECValue + '.md';
 
                     formDataEC.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataEC)
                         .then(function (response) {
                             // console.log(response.data);
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                    }
+                    break;
+
+                case 'save-textarea_AP_Big5':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataBig5 = new FormData();
+                    formDataBig5.append('filter', StyleSelectedOptionBig5Value);
+                    formDataBig5.append('module', 'psicographic_questions');
+                    formDataBig5.append('sub_module', 'big5');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionBig5Value + '.md';
+
+                    formDataBig5.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataBig5)
+                        .then(function (response) {
                             alert('Resumen guardado exitosamente');
                         })
                         .catch(function (error) {
@@ -450,7 +629,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionCEValue + '.md';
 
                     formDataCE.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataCE)
                         .then(function (response) {
                             // console.log(response.data);
@@ -474,7 +653,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionSatValue + '.md';
 
                     formDataSat.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataSat)
                         .then(function (response) {
                             // console.log(response.data);
@@ -499,7 +678,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionCLValue + '.md';
 
                     formDataCL.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataCL)
                         .then(function (response) {
 
@@ -523,7 +702,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionBSValue + '.md';
 
                     formDataBS.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataBS)
                         .then(function (response) {
 
@@ -547,8 +726,74 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filename = StyleSelectedOptionBEValue + '.md';
 
                     formDataBE.append('file', blob, filename);
-                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${localStorage.getItem('selectedStudyId')}`;
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
                     axios.post(url, formDataBE)
+                        .then(function (response) {
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                }
+                break;
+
+                case 'save-textarea_AP_CustomerJourney':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataCJ = new FormData();
+                    formDataCJ.append('filter', StyleSelectedOptionCJValue);
+                    formDataCJ.append('module', 'customer_journey');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionCJValue + '.md';
+
+                    formDataCJ.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataCJ)
+                        .then(function (response) {
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                }
+                break;
+
+                case 'save-textarea_AP_Reputacion':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataREP = new FormData();
+                    formDataREP.append('filter', StyleSelectedOptionREPValue);
+                    formDataREP.append('module', 'reputation');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionREPValue + '.md';
+
+                    formDataREP.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataREP)
+                        .then(function (response) {
+                            alert('Resumen guardado exitosamente');
+                        })
+                        .catch(function (error) {
+                            console.error('Error al enviar los datos:', error);
+                        });
+                }
+                break;
+
+                case 'save-textarea_AP_PruebaProducto':
+                    {
+                    //enviar el texto del textarea al backend
+                    const formDataPP = new FormData();
+                    formDataPP.append('filter', StyleSelectedOptionPPValue);
+                    formDataPP.append('module', 'product_testing');
+                    const fileContent = textarea.value;
+                    const blob = new Blob([fileContent], { type: 'text/markdown' });
+                    const filename = StyleSelectedOptionPPValue + '.md';
+
+                    formDataPP.append('file', blob, filename);
+                    const url = `https://api.cheetah-research.ai/configuration/upload_md/${sessionStorage.getItem('selectedStudyId')}`;
+                    axios.post(url, formDataPP)
                         .then(function (response) {
                             alert('Resumen guardado exitosamente');
                         })
@@ -585,7 +830,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'general');
                 formData.append('sub_module', StyleSelectedOption.value);
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -621,6 +866,22 @@ function LLenarResumenes(){
                             })
                             .catch(function (error) {
                                 console.error('Error al obtener el contenido de Markmap:', error);
+                            })
+                            .then(function () {
+                                // Tercera petición para Sankey
+                                formData = new FormData();
+                                formData.append('filter', selectedValue);
+                                formData.append('module', 'general');
+                                formData.append('sub_module', 'sankey');
+                
+                                axios.post(url, formData)
+                                    .then(function (response) {
+                                        var data = response.data;
+                                        generateSankeyHTML(data, selectedValue);
+                                    })
+                                    .catch(function (error) {
+                                        console.error('Error al obtener el contenido de Sankey:', error);
+                                    });
                             });                    
                         
                     });
@@ -631,11 +892,13 @@ function LLenarResumenes(){
             //Resumen Individual
             //lenar el div con el resumen general y agregar el event listener al combobox con id ComboBox_ResumenIndividual
             const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+            const comboBoxRICompare = document.getElementById('ComboBox_ResumenIndividual_Compare');
             
-            comboBoxRI.addEventListener('change', (event) => {
+            comboBoxRI.addEventListener('change', async (event) => {
                 // console.log(event.target.value);
 
                 const StyleSelectedOption = document.getElementById('ComboBox_ResumenIndividualTy');
+                const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
 
                 var div = document.getElementById('ResumenIndividualContent');
                 var textArea = document.getElementById('ResumenIndividualTextArea');
@@ -646,30 +909,83 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'individual_questions');
                 formData.append('sub_module', StyleSelectedOption.value);
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
-                axios.post(url, formData)
-                    .then(function (response) {
-                        var data = response.data;
-                        if (!data.startsWith("#")) {
-                            data = data.substring(data.indexOf("#"));
-                            data = data.substring(0, data.length - 3);
-                        }
-                        const coso = marked(data);                          
-                        div.innerHTML = coso;          
-                        textArea.value = data;     
-                        let graphDta = splitMarkdown(data);    
-                        generateCharts(graphDta);
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
+                try {
+                    const primaryResp = await axios.post(url, formData);
+                    let data = primaryResp.data;
+                    if (!data.startsWith("#")) {
+                        data = data.substring(data.indexOf("#"));
+                        data = data.substring(0, data.length - 3);
+                    }
+                    const coso = marked(data);
+                    div.innerHTML = coso;
+                    textArea.value = data;
+                    // Generar gráficos siempre que la visualización seleccionada sea gráfica.
+                    const displaySelect = document.getElementById('ComboBox_ResumenIndividualDS');
+                    if (displaySelect && displaySelect.value === 'individual_Cat') {
+                        // Solicitar SIEMPRE el sub_module 'percentage' para gráficos, independiente del estilo narrativo/textual mostrado
+                        const formDataGraph = new FormData();
+                        formDataGraph.append('filter', selectedValue);
+                        formDataGraph.append('module', 'individual_questions');
+                        formDataGraph.append('sub_module', 'percentage');
 
-                        // console.log(data);
-                    })
-                    .catch(function (error) {
-                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
-                        console.log(error);
-                    })
-                    .then(function () {
-                        // always executed
-                    });
+                        let graphDta = [];
+                        try {
+                            const graphResp = await axios.post(url, formDataGraph);
+                            let dataG = graphResp.data;
+                            if (!dataG.startsWith("#")) {
+                                dataG = dataG.substring(dataG.indexOf("#"));
+                                dataG = dataG.substring(0, dataG.length - 3);
+                            }
+                            graphDta = splitMarkdown(dataG);
+                        } catch (e) {
+                            console.error('Error al obtener datos para gráficos:', e);
+                        }
+
+                        // Intentar cargar comparación si hay un filtro elegido distinto al principal
+                        let compareGraphData = null;
+                        const compareValue = compareSelect ? compareSelect.value : null;
+                        if (compareValue && compareValue !== 'Seleccionar filtro' && compareValue !== selectedValue) {
+                            const formDataCompare = new FormData();
+                            formDataCompare.append('filter', compareValue);
+                            formDataCompare.append('module', 'individual_questions');
+                            formDataCompare.append('sub_module', 'percentage');
+                            try {
+                                const compareResp = await axios.post(url, formDataCompare);
+                                let dataC = compareResp.data;
+                                if (!dataC.startsWith("#")) {
+                                    dataC = dataC.substring(dataC.indexOf("#"));
+                                    dataC = dataC.substring(0, dataC.length - 3);
+                                }
+                                compareGraphData = splitMarkdown(dataC);
+                            } catch (e) {
+                                console.error('Error al obtener datos de comparación:', e);
+                            }
+                        }
+
+                        // Obtener el tipo de gráfico seleccionado
+                        const chartTypeSelect = document.getElementById('ComboBox_ResumenIndividualChartType');
+                        const selectedChartType = chartTypeSelect ? chartTypeSelect.value : 'bar';
+                        
+                        generateCharts(graphDta, compareGraphData, selectedValue, compareValue || '', selectedChartType);
+                    }
+                } catch (error) {
+                    div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                    console.log(error);
+                } finally {
+                    // always executed
+                }
             });
+
+            // Si cambia el filtro de comparación, volver a disparar el render con el valor actual del principal
+            if (comboBoxRICompare) {
+                comboBoxRICompare.addEventListener('change', function () {
+                    const currentMain = comboBoxRI.value;
+                    if (currentMain && currentMain !== 'Seleccionar filtro') {
+                        comboBoxRI.dispatchEvent(new Event('change'));
+                    }
+                });
+            }
 
 
             //Analisis Psicograficos, no tienen narrativo ni factual. Solo filtros
@@ -680,6 +996,7 @@ function LLenarResumenes(){
             const comboBoxSP = document.getElementById('Combobox_SegmentosPsicograficos');
             const comboBoxNPS = document.getElementById('Combobox_NPS');
             const comboBoxEC = document.getElementById('Combobox_EstiloDeComunicacion');
+            const comboBoxBig5 = document.getElementById('Combobox_Big5');
             const comboBoxCE = document.getElementById('Combobox_customerExperience');
             const comboBoxSat = document.getElementById('Combobox_Satisfaccion');
             const comboBoxCL = document.getElementById('Combobox_ClimaLaboral');
@@ -703,7 +1020,7 @@ function LLenarResumenes(){
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
                 formData.append('module', 'user_personas');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -739,7 +1056,7 @@ function LLenarResumenes(){
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
                 formData.append('module', 'customer_experience');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -777,7 +1094,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'ekman');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -817,7 +1134,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'personality');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -853,7 +1170,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'segmentos');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -888,7 +1205,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'nps');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -925,7 +1242,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'customer_satisfaction');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -962,7 +1279,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'psicographic_questions');
                 formData.append('sub_module', 'estilo');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -984,6 +1301,36 @@ function LLenarResumenes(){
                     });
             });
 
+            //Big 5
+            comboBoxBig5.addEventListener('change', (event) => {
+                var div = document.getElementById('Big5Content');
+                var textArea = document.getElementById('Big5TextArea');
+                const selectedValue = event.target.value;
+
+                formData = new FormData();     
+                formData.append('filter', selectedValue);
+                formData.append('module', 'psicographic_questions');
+                formData.append('sub_module', 'big5');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        const coso = marked(data);                          
+                        div.innerHTML = coso;   
+                        textArea.value = data;                   
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.log(error);
+                    })
+                    .then(function () {
+                    });
+            });
+
 
 
             //clima laboral, perfecto
@@ -996,7 +1343,7 @@ function LLenarResumenes(){
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
                 formData.append('module', 'work_environment');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -1028,7 +1375,7 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'brand_status');
                 formData.append('sub_module', 'brand_strength');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -1060,7 +1407,97 @@ function LLenarResumenes(){
                 formData.append('filter', selectedValue);
                 formData.append('module', 'brand_status');
                 formData.append('sub_module', 'brand_equity');
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        const coso = marked(data);                          
+                        div.innerHTML = coso;   
+                        textArea.value = data;                   
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.log(error);
+                    })
+                    .then(function () {
+
+                    });
+            });
+
+            //customer journey
+            comboBoxCJ.addEventListener('change', (event) => {
+                var div = document.getElementById('CustomerJourneyContent');
+                var textArea = document.getElementById('CustomerJourneyTextArea');
+                const selectedValue = event.target.value;
+
+                formData = new FormData();     
+                formData.append('filter', selectedValue);
+                formData.append('module', 'customer_journey');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        const coso = marked(data);                          
+                        div.innerHTML = coso;   
+                        textArea.value = data;                   
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.log(error);
+                    })
+                    .then(function () {
+
+                    });
+            });
+
+            //reputacion
+            comboBoxREP.addEventListener('change', (event) => {
+                var div = document.getElementById('ReputacionContent');
+                var textArea = document.getElementById('ReputacionTextArea');
+                const selectedValue = event.target.value;
+
+                formData = new FormData();     
+                formData.append('filter', selectedValue);
+                formData.append('module', 'reputation');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
+                axios.post(url, formData)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (!data.startsWith("#")) {
+                            data = data.substring(data.indexOf("#"));
+                            data = data.substring(0, data.length - 3);
+                        }
+                        const coso = marked(data);                          
+                        div.innerHTML = coso;   
+                        textArea.value = data;                   
+                    })
+                    .catch(function (error) {
+                        div.innerHTML = "<p>No se encontraron datos para la selección actual.</p>";
+                        console.log(error);
+                    })
+                    .then(function () {
+
+                    });
+            });
+
+            //prueba de producto
+            comboBoxPP.addEventListener('change', (event) => {
+                var div = document.getElementById('PruebaProductoContent');
+                var textArea = document.getElementById('PruebaProductoTextArea');
+                const selectedValue = event.target.value;
+
+                formData = new FormData();     
+                formData.append('filter', selectedValue);
+                formData.append('module', 'product_testing');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -1090,7 +1527,7 @@ function LLenarResumenes(){
                 formData = new FormData();     
                 formData.append('filter', selectedValue);
                 formData.append('module', 'user_archetype'); // API endpoint for User Archetype
-                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + localStorage.getItem('selectedStudyId');
+                const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + sessionStorage.getItem('selectedStudyId');
                 axios.post(url, formData)
                     .then(function (response) {
                         var data = response.data;
@@ -1114,7 +1551,7 @@ function LLenarResumenes(){
 
 // insertar lorem ipsilum en el div coon id ResumenGeneral al cargarlo 
 document.addEventListener('DOMContentLoaded', () => {
-    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    const studyData = JSON.parse(sessionStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
         tituloDelEstudio: studyData.title,
         mercadoObjetivo: studyData.marketTarget,
@@ -1127,6 +1564,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('charts-containerResumenIndividualContent').style.display = 'none';
     document.getElementById('ComboBox_ResumenIndividualDS').style.display = 'none';
     document.getElementById('ComboBox_ResumenIndividualDSLBL').style.display = 'none';
+    document.getElementById('ComboBox_ResumenIndividualChartType').style.display = 'none';
+    document.getElementById('ComboBox_ResumenIndividualChartTypeLBL').style.display = 'none';
 
     AgregarFiltros();
     LLenarResumenes();
@@ -1278,7 +1717,7 @@ botonImportar.addEventListener('click', () => {
     fileChooser.addEventListener('change', (event) => {
         const files = event.target.files;
 
-        const url = "https://api.cheetah-research.ai/configuration/upload_files/" + localStorage.getItem('selectedStudyId');
+        const url = "https://api.cheetah-research.ai/configuration/upload_files/" + sessionStorage.getItem('selectedStudyId');
 
         const formData = new FormData();
         for (const file of files) {
@@ -1303,18 +1742,21 @@ botonImportar.addEventListener('click', () => {
     fileChooser.click();
 });
 
-// LLAMAR A /configuration/forzar/<study_id> para forzar el analisis al presionarl el boton botonForzarA
+// LLAMAR A /configuration/forzar/<study_id> para forzssar el analisis al presionarl el boton botonForzarA
+
 const botonForzarA = document.getElementById('botonForzarA');
 botonForzarA.addEventListener('click', () => {
-    const url = "https://api.cheetah-research.ai/configuration/forzar/" + localStorage.getItem('selectedStudyId');
+    if (!confirm('¿Está seguro que desea ejecutar el análisis del estudio? Esta acción puede sobrescribir resultados previos y consume tokens.')) {
+        return;
+    }
+    const url = "https://api.cheetah-research.ai/configuration/forzar/" + sessionStorage.getItem('selectedStudyId');
 
     axios.get(url)
         .then(response => {
-            // console.log(response.data);
-            alert('Análisis forzado exitosamente');
+            alert('Análisis ejecutado exitosamente');
         })
         .catch(error => {
-            console.error('Error al forzar el análisis:', error);
+            console.error('Error al ejecutar el análisis:', error);
         });
 });
 
@@ -1327,6 +1769,12 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
     const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
     const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
     const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
+    const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+    const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+    const chartTypeSelect = document.getElementById('ComboBox_ResumenIndividualChartType');
+    const chartTypeSelectLBL = document.getElementById('ComboBox_ResumenIndividualChartTypeLBL');
+    const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+    const comboBoxResumenIndividualTy = document.getElementById('ComboBox_ResumenIndividualTy');
 
     // Condicional para manejar la visualización
     if (selectedValue === 'individual_Cat') {
@@ -1334,16 +1782,55 @@ document.getElementById('ComboBox_ResumenIndividualDS').addEventListener('change
         chartsContainerResumenIndividual.style.display = 'block';
         resumenIndividualContent.style.display = 'none';
         resumenIndividualTextArea.style.display = 'none';
+        
+        // Mostrar selector de tipo de gráfico
+        if (chartTypeSelect && chartTypeSelectLBL) {
+            chartTypeSelect.style.display = 'inline-block';
+            chartTypeSelectLBL.style.display = 'inline-block';
+        }
+        
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'inline-block';
+            compareSelectLBL.style.display = 'inline-block';
+        }
     } else if (selectedValue === 'percentage_nonCat') {
         // Mostrar el contenido y ocultar el contenedor de charts
         chartsContainerResumenIndividual.style.display = 'none';
         resumenIndividualContent.style.display = 'block';
         resumenIndividualTextArea.style.display = 'none';
+        
+        // Ocultar selector de tipo de gráfico
+        if (chartTypeSelect && chartTypeSelectLBL) {
+            chartTypeSelect.style.display = 'none';
+            chartTypeSelectLBL.style.display = 'none';
+        }
+        
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'none';
+            compareSelectLBL.style.display = 'none';
+        }
     } else {
         // Si no se selecciona ninguna opción válida, ocultar todo
         chartsContainerResumenIndividual.style.display = 'none';
         resumenIndividualContent.style.display = 'none';
         resumenIndividualTextArea.style.display = 'none';
+        
+        // Ocultar selector de tipo de gráfico
+        if (chartTypeSelect && chartTypeSelectLBL) {
+            chartTypeSelect.style.display = 'none';
+            chartTypeSelectLBL.style.display = 'none';
+        }
+        
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'none';
+            compareSelectLBL.style.display = 'none';
+        }
+    }
+    
+    // IMPORTANTE: Recargar el contenido con la nueva visualización seleccionada
+    // Si ya hay un filtro principal seleccionado, disparar el evento change para actualizar el contenido
+    if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+        comboBoxRI.dispatchEvent(new Event('change'));
     }
 });
 
@@ -1353,15 +1840,63 @@ document.getElementById('ComboBox_ResumenIndividualTy').addEventListener('change
     // al seleccionar percentage que muestre ComboBox_ResumenIndividualDS, de lo contrario se mantiene oculto
     const comboBoxResumenIndividualDS = document.getElementById('ComboBox_ResumenIndividualDS');
     const comboBoxResumenIndividualDSLBL = document.getElementById('ComboBox_ResumenIndividualDSLBL');
+    const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+    
     if (selectedValue === 'percentage') {
         comboBoxResumenIndividualDS.style.display = 'block';
         comboBoxResumenIndividualDSLBL.style.display = 'block';
+        // Preseleccionar visualización gráfica y disparar el cambio para mostrar controles de comparación
+        if (comboBoxResumenIndividualDS.value !== 'individual_Cat') {
+            comboBoxResumenIndividualDS.value = 'individual_Cat';
+            comboBoxResumenIndividualDS.dispatchEvent(new Event('change'));
+        }
     } else {
         comboBoxResumenIndividualDS.style.display = 'none';
         comboBoxResumenIndividualDSLBL.style.display = 'none';
+        
+        // Cuando se cambia a narrativo, mostrar el contenido textual y ocultar gráficos
+        const resumenIndividualContent = document.getElementById('ResumenIndividualContent');
+        const resumenIndividualTextArea = document.getElementById('ResumenIndividualTextArea');
+        const chartsContainerResumenIndividual = document.getElementById('charts-containerResumenIndividualContent');
+        const compareSelect = document.getElementById('ComboBox_ResumenIndividual_Compare');
+        const compareSelectLBL = document.getElementById('ComboBox_ResumenIndividualCompareLBL');
+        const chartTypeSelect = document.getElementById('ComboBox_ResumenIndividualChartType');
+        const chartTypeSelectLBL = document.getElementById('ComboBox_ResumenIndividualChartTypeLBL');
+        
+        if (resumenIndividualContent && chartsContainerResumenIndividual) {
+            chartsContainerResumenIndividual.style.display = 'none';
+            resumenIndividualContent.style.display = 'block';
+            if (resumenIndividualTextArea) resumenIndividualTextArea.style.display = 'none';
+        }
+        
+        // Ocultar controles de comparación y tipo de gráfico
+        if (chartTypeSelect && chartTypeSelectLBL) {
+            chartTypeSelect.style.display = 'none';
+            chartTypeSelectLBL.style.display = 'none';
+        }
+        
+        if (compareSelect && compareSelectLBL) {
+            compareSelect.style.display = 'none';
+            compareSelectLBL.style.display = 'none';
+        }
     }
+    
+    // IMPORTANTE: Recargar el contenido con el nuevo estilo seleccionado
+    // Si ya hay un filtro seleccionado, disparar el evento change para actualizar el contenido
+    if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+        comboBoxRI.dispatchEvent(new Event('change'));
+    }
+});
 
-
+// Event listener para el cambio del tipo de gráfico
+document.getElementById('ComboBox_ResumenIndividualChartType').addEventListener('change', function(event) {
+    const selectedChartType = event.target.value;
+    
+    // Si ya hay un filtro principal seleccionado, volver a renderizar con el nuevo tipo de gráfico
+    const comboBoxRI = document.getElementById('ComboBox_ResumenIndividual');
+    if (comboBoxRI && comboBoxRI.value && comboBoxRI.value !== 'Seleccionar filtro') {
+        comboBoxRI.dispatchEvent(new Event('change'));
+    }
 });
 
 //Colores
@@ -1421,8 +1956,10 @@ const userPersonaContent = document.getElementById('UserPersonaContent');
 const userArchetypeContent = document.getElementById('UserArchetypeContent');
 const comboboxUserPersona = document.getElementById('Combobox_UserPersona');
 const comboboxUserArchetype = document.getElementById('Combobox_UserArchetype');
-const comboboxUserPersonaSubFiltro = document.getElementById('ComboBox_UserPersona_SubFiltro');
-const comboboxUserArchetypeSubFiltro = document.getElementById('ComboBox_UserArchetype_SubFiltro');
+// User Persona no usa subfiltros en el módulo de visualización (elemento no existe en HTML)
+// const comboboxUserPersonaSubFiltro = document.getElementById('ComboBox_UserPersona_SubFiltro');
+// User Archetype no usa subfiltros según el código de análisis de datos
+// const comboboxUserArchetypeSubFiltro = document.getElementById('ComboBox_UserArchetype_SubFiltro');
 const exportUserPersonaBtn = document.getElementById('export_UserPersona');
 const exportUserArchetypeBtn = document.getElementById('export_UserArchetype');
 const toggleTextareaUserPersonaBtn = document.getElementById('toggle-textarea_UserPersona');
@@ -1471,42 +2008,70 @@ async function loadUserData(type, contentDiv, combobox, subFiltro, textarea) {
 /*
 // Event listeners for User Persona
 userPersonaBtn.addEventListener('click', () => {
-    loadUserData('persona', userPersonaContent, comboboxUserPersona, comboboxUserPersonaSubFiltro, userPersonaTextArea);
+    loadUserData('persona', userPersonaContent, comboboxUserPersona, null, userPersonaTextArea);
 });*/
 
 comboboxUserPersona.addEventListener('change', async function() {
     const filter = this.value;
-    const subFilter = comboboxUserPersonaSubFiltro.value;
+    // User Persona no usa subfiltros en el módulo de visualización
+    
+    // Usar la misma lógica que el resto del archivo de visualización
+    const study_id = sessionStorage.getItem('selectedStudyId');
+    const formData = new FormData();
+    formData.append('filter', filter);
+    formData.append('module', 'user_personas');
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study_id;
+    
     try {
-        const response = await fetch(`/api/user_persona?filter=${filter}&subFilter=${subFilter}`);
-        const data = await response.json();
-        if (data.content) {
-            userPersonaContent.innerHTML = data.content;
-            userPersonaTextArea.value = data.content;
+        const response = await axios.post(url, formData);
+        let data = response.data;
+        if (!data.startsWith("#")) {
+            data = data.substring(data.indexOf("#"));
+            data = data.substring(0, data.length - 3);
+        }
+        const htmlContent = marked(data);
+        userPersonaContent.innerHTML = htmlContent;
+        if (userPersonaTextArea) {
+            userPersonaTextArea.value = data;
         }
     } catch (error) {
-        console.error('Error updating User Persona content:', error);
+        console.error('Error loading user persona data:', error);
+        userPersonaContent.innerHTML = '<p>No se encontraron datos para la selección actual.</p>';
     }
 });
 
 /*
 // Event listeners for User Archetype
 userArchetypeBtn.addEventListener('click', () => {
-    loadUserData('archetype', userArchetypeContent, comboboxUserArchetype, comboboxUserArchetypeSubFiltro, userArchetypeTextArea);
+    loadUserData('archetype', userArchetypeContent, comboboxUserArchetype, null, userArchetypeTextArea);
 });*/
 
 comboboxUserArchetype.addEventListener('change', async function() {
     const filter = this.value;
-    const subFilter = comboboxUserArchetypeSubFiltro.value;
+    // User Archetype no usa subfiltros según el código de análisis de datos
+    
+    // Usar la misma lógica que el resto del archivo de visualización
+    const study_id = sessionStorage.getItem('selectedStudyId');
+    const formData = new FormData();
+    formData.append('filter', filter);
+    formData.append('module', 'user_archetype');
+    const url = "https://api.cheetah-research.ai/configuration/getSummaries/" + study_id;
+    
     try {
-        const response = await fetch(`/api/user_archetype?filter=${filter}&subFilter=${subFilter}`);
-        const data = await response.json();
-        if (data.content) {
-            userArchetypeContent.innerHTML = data.content;
-            userArchetypeTextArea.value = data.content;
+        const response = await axios.post(url, formData);
+        let data = response.data;
+        if (!data.startsWith("#")) {
+            data = data.substring(data.indexOf("#"));
+            data = data.substring(0, data.length - 3);
+        }
+        const htmlContent = marked(data);
+        userArchetypeContent.innerHTML = htmlContent;
+        if (userArchetypeTextArea) {
+            userArchetypeTextArea.value = data;
         }
     } catch (error) {
-        console.error('Error updating User Archetype content:', error);
+        console.error('Error loading user archetype data:', error);
+        userArchetypeContent.innerHTML = '<p>No se encontraron datos para la selección actual.</p>';
     }
 });
 /*
@@ -1531,7 +2096,6 @@ saveTextareaUserPersonaBtn.addEventListener('click', async () => {
             body: JSON.stringify({
                 content: userPersonaTextArea.value,
                 filter: comboboxUserPersona.value,
-                subFilter: comboboxUserPersonaSubFiltro.value
             })
         });
         if (response.ok) {
@@ -1554,8 +2118,8 @@ saveTextareaUserArchetypeBtn.addEventListener('click', async () => {
             },
             body: JSON.stringify({
                 content: userArchetypeTextArea.value,
-                filter: comboboxUserArchetype.value,
-                subFilter: comboboxUserArchetypeSubFiltro.value
+                filter: comboboxUserArchetype.value
+                // User Archetype no usa subfiltros
             })
         });
         if (response.ok) {

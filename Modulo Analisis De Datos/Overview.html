@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="assets/css/Features-Small-Icons-icons.css">
-    <link rel="stylesheet" href="assets/css/custom-styles.css">">
+    <link rel="stylesheet" href="assets/css/custom-styles.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
     <link rel="stylesheet" href="assets/css/Hover.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -28,6 +29,226 @@
             --bs-text-opacity: 1;
             color: rgb(0, 0, 0) !important;
         }
+
+        /* Overlay moderno con blur oscurecido */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
+
+        #overlay[style*="display: flex"] { display: flex !important; }
+
+        #overlayContent {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 90%;
+            padding: 24px;
+            position: relative;
+        }
+
+        /* Inputs modernos para OTP y correo */
+        .cr-input {
+            width: 75%;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            padding: 12px 16px;
+            font-family: IBM Plex Sans, sans-serif !important;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+            color: #212529;
+        }
+        .cr-input:focus {
+            border-color: var(--bs-CR-orange);
+            box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
+            outline: none;
+        }
+        
+        /* Modern page styling - BASE */
+        body {
+            background: linear-gradient(15deg, var(--bs-CR-orange) 0%, #000000 100%) !important;
+            min-height: 100vh;
+        }
+
+        /* Contenedor principal con efecto cristal */
+        #contentCard_PaginaOverviewCont {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            padding: 30px;
+            min-height: calc(100vh - 40px);
+        }
+
+        #contentCard_PaginaOverview {
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        /* Estilos para las tarjetas existentes */
+        .cr-bullet-card {
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            border-radius: 15px !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .cr-bullet-card:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* Estilos para títulos */
+        h1, h2, h3 {
+            font-family: hedliner !important;
+            font-weight: bold;
+            color: var(--bs-CR-orange);
+            margin-bottom: 20px;
+        }
+
+        /* Estilos para botones */
+        .btn {
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 12px 24px;
+            font-family: hedliner !important;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ff8c42 0%, var(--bs-CR-orange) 100%);
+            color: white;
+        }
+
+        /* Estilos para modales con blurred background */
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.7) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 20px !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(255, 140, 66, 0.2) !important;
+            background: linear-gradient(135deg, var(--bs-CR-orange) 0%, #ff8c42 100%) !important;
+            color: white !important;
+            border-radius: 20px 20px 0 0 !important;
+        }
+
+        .modal-title {
+            font-family: hedliner !important;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            font-family: IBM Plex Sans !important;
+        }
+
+        /* Estilos para el footer */
+        .footer-text {
+            position: relative;
+            bottom: 0;
+            left: 0;
+            text-align: center;
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            font-family: IBM Plex Sans;
+            background-color: rgba(240, 240, 240, 0.8);
+            border-radius: 0 0 20px 20px;
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            #contentCard_PaginaOverviewCont {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            h1, h2, h3 {
+                font-size: 20px;
+            }
+        }
+
     </style>
 
 </head>
@@ -73,11 +294,8 @@
                     <!-- Content goes here -->
                 </div>
 
-                <div style="position: relative; bottom: 0; left: 0; text-align: center; width: 100%; margin-top: 10px; ">
-                    <strong data-i18n="brand"></strong>
-                    <span data-i18n="registered"></span>
-                    <strong data-i18n="company"></strong>.
-                    <span data-i18n="rights"></span>
+                <div class="footer-text">
+                    <strong>Cheetah Research</strong><span> es una marca registrada de </span><strong>Marketing Total S.A.</strong><span> Todos los derechos reservados.</span>
                 </div>
             </div>
             

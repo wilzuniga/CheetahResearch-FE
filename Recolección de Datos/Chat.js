@@ -1,6 +1,11 @@
 let imgPP;
 let hash = 0;
 
+// Función para determinar si el estudio requiere textos en inglés
+function isEnglishStudy(study_id) {
+    return study_id === '68b75b285cbd2fb848ff7c81';
+}
+
 //Color Change: getColores
 function setColorsFromAPI(study_id) {
     const url = 'https://api.cheetah-research.ai/configuration/info_study/' + study_id;
@@ -287,11 +292,17 @@ function sendMessage(message, imageSrc) {
     }).then((response) => {
         const data = response.data;
         if (data.response.includes('LISTO')) {
-            const farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
+            const study_id = new URLSearchParams(window.location.search).get('id');
+            let farewellMessage;
+            
+            if (study_id === '68b75b285cbd2fb848ff7c81') {
+                farewellMessage = `Great! Thanks again for your time.\n💡 We'll keep you updated on how Cheetah Research AI is reshaping the future of market research.\nOne of our team members will reach out to you shortly to continue the conversation.\n🚀 Talk soon!`;
+            } else {
+                farewellMessage = `Gracias por tomarte el tiempo para completar nuestra encuesta. Tus respuestas son muy valiosas para nosotros y nos ayudarán a mejorar nuestros servicios.\n\nSi tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.\n\n¡Que tengas un excelente día!`;
+            }
 
             getMessage(farewellMessage, null);
             loadingMsg.style.display = 'none';
-            const study_id = new URLSearchParams(window.location.search).get('id');
             endChat()
 
             const url = 'https://api.cheetah-research.ai/chatbot/logs/';
@@ -307,8 +318,15 @@ function sendMessage(message, imageSrc) {
                 console.log('Error:', error);
             });
 
-        }if (data.response.includes('NO SIRVE')) {
-            const farewellMessage = `¡Lo sentimos no cumples con los requisitos para este estudio!\n\n¡Muchas Gracias !\n\n¡Que tengas un excelente día!`;
+        } else if (data.response.includes('NO SIRVE')) {
+            const study_id = new URLSearchParams(window.location.search).get('id');
+            let farewellMessage;
+            
+            if (isEnglishStudy(study_id)) {
+                farewellMessage = `Sorry, you don't meet the requirements for this study!\n\nThank you very much!\n\nHave a great day!`;
+            } else {
+                farewellMessage = `¡Lo sentimos no cumples con los requisitos para este estudio!\n\n¡Muchas Gracias !\n\n¡Que tengas un excelente día!`;
+            }
             
             getMessage(farewellMessage, null);
             loadingMsg.style.display = 'none';
@@ -338,13 +356,33 @@ function sendMessage(message, imageSrc) {
 
     }).catch((error) => {
         console.log('Error:', error);
-        getMessage('¿Deseas agregar algo mas a tu respuesta?.', null);
+        const study_id = new URLSearchParams(window.location.search).get('id');
+        let errorMessage;
+        
+        if (isEnglishStudy(study_id)) {
+            errorMessage = 'Would you like to add anything else to your response?';
+        } else {
+            errorMessage = '¿Deseas agregar algo mas a tu respuesta?';
+        }
+        
+        getMessage(errorMessage, null);
         loadingMsg.style.display = 'none';
+    });
+}
+
+//Función para decodificar caracteres Unicode
+function decodeUnicode(str) {
+    if (typeof str !== 'string') return str;
+    return str.replace(/\\u([0-9a-fA-F]{4})/g, (match, hex) => {
+        return String.fromCharCode(parseInt(hex, 16));
     });
 }
 
 //Función para recibir un mensaje de encuestador
 function getMessage(message, imageSrc, link) {
+    // Decodificar caracteres Unicode en el mensaje
+    message = decodeUnicode(message);
+    
     const Feed = document.getElementById('Feed'); // Validar Feed Vacío
     const emptyFeed = document.getElementById('Empty-Feed');
     if (Feed.style.display === 'none') {
@@ -560,13 +598,16 @@ async function loadInterviewer(study_id) {
             document.getElementById('Bot-Name').innerText = nombre;
             const formContainer = document.createElement('div');
 
+            // Determinar el texto del botón según el idioma del estudio
+            const buttonText = isEnglishStudy(study_id) ? 'Start Chat' : 'Iniciar Chat';
+            
             formContainer.innerHTML = `
             <div id="overlayContent" class="text-wrap">
                 <img src="${imgPP}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
                 <p id="greeting">
                 ${data.interviewerGreeting}
                 </p>
-                <button id="AceptarChat" class="btn" style="margin: 10px 10px 0 0;background: var(--bs-CR-black);">Iniciar Chat</button>
+                <button id="AceptarChat" class="btn" style="margin: 10px 10px 0 0;background: var(--bs-CR-black);">${buttonText}</button>
             </div>
             `;
 
@@ -587,9 +628,17 @@ async function loadInterviewer(study_id) {
         });
     } else {
         const formContainer = document.createElement('div');
+        let unavailableMessage;
+        
+        if (isEnglishStudy(study_id)) {
+            unavailableMessage = `It seems the link is no longer available. If you need to access this information, don't hesitate to contact us, we're here to help you resolve it!`;
+        } else {
+            unavailableMessage = `Parece que el enlace ya no está disponible. Si necesitas acceder a esta información, no dudes en contactarnos, ¡estamos aquí para ayudarte a resolverlo!`;
+        }
+        
         formContainer.innerHTML = `
             <div id="overlayContent" class="text-wrap">
-                <p>Parece que el enlace ya no está disponible. Si necesitas acceder a esta información, no dudes en contactarnos, ¡estamos aquí para ayudarte a resolverlo!</p>
+                <p>${unavailableMessage}</p>
             </div>
         `;
 
@@ -600,12 +649,19 @@ async function loadInterviewer(study_id) {
 
 //Función para deshabilitar Chat al terminarlo
 function endChat() {
+    const study_id = new URLSearchParams(window.location.search).get('id');
     const messageInput = document.getElementById("Message-Input");
     const loadingMsg = document.getElementById("Typing-Msg");
     const btSend = document.getElementById("btSend");
     const btIMG = document.getElementById("btIMG");
 
-    messageInput.placeholder = "¡Gracias por responder!";
+    // Mostrar placeholder en inglés o español según el estudio
+    if (isEnglishStudy(study_id)) {
+        messageInput.placeholder = "Thanks for responding!";
+    } else {
+        messageInput.placeholder = "¡Gracias por responder!";
+    }
+    
     loadingMsg.style.display = 'none';
     messageInput.disabled = true;
     btSend.disabled = true;

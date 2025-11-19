@@ -81,6 +81,9 @@ const translations = {
             btPsicSegments:"Segmentos Psicográficos",
             btCommStyles:"Estilo de Comunicación",
 
+            //Big 5
+            btBig5:"Big 5",
+            titleBig5:"Análisis Big 5", descBig5:"En esta sección se realiza un análisis de personalidad basado en el modelo Big 5 (Cinco Grandes Factores de Personalidad), evaluando las cinco dimensiones principales: Apertura a la experiencia, Responsabilidad, Extroversión, Amabilidad y Neuroticismo. Este análisis permite identificar patrones de personalidad dominantes en las respuestas y proporciona insights profundos sobre el perfil psicológico de los encuestados.",
 
             //NPS y Satisfacción
             btNPS_Satisfaction:"NPS y Satisfacción",
@@ -100,12 +103,24 @@ const translations = {
             btClimaLaboral:"Clima Laboral",
             titleClimaLaboral:"Análisis de Clima Laboral", descClimaLaboral:"Este análisis integral evalúa el clima laboral a través de un estudio detallado que identifica factores clave, tendencias en los comentarios y áreas críticas de mejora. Se examinan correlaciones, se segmentan los empleados y se aplican modelos como Kano y ACSI para ofrecer una visión profunda de la situación actual y recomendaciones estratégicas.",
 
+            //Customer Journey
+            btCustomerJourney:"Customer Journey",
+            titleCustomerJourney:"Análisis de Customer Journey", descCustomerJourney:"Este análisis integral mapea y evalúa la experiencia completa del cliente a lo largo de su interacción con la marca. Se identifican los puntos de contacto críticos, momentos de verdad, emociones experimentadas en cada etapa, y se detectan oportunidades de mejora para optimizar el recorrido del cliente desde la conciencia inicial hasta la fidelización y recomendación.",
+
+            //Reputación
+            btReputacion:"Reputación",
+            titleReputacion:"Análisis de Reputación", descReputacion:"Este análisis integral evalúa la reputación de la marca a través de un estudio detallado que examina la percepción pública, credibilidad, confianza y prestigio asociados con la organización. Se analizan menciones, sentimientos, crisis reputacionales potenciales y se identifican oportunidades para fortalecer la imagen corporativa y gestionar eficazmente la reputación digital y tradicional.",
+
+            //Prueba de Producto
+            btPruebaProducto:"Prueba de Producto",
+            titlePruebaProducto:"Análisis de Prueba de Producto", descPruebaProducto:"Este análisis integral evalúa la efectividad y aceptación de productos a través de pruebas controladas con usuarios reales. Se examinan aspectos como usabilidad, funcionalidad, satisfacción del usuario, identificación de problemas y áreas de mejora. El análisis incluye métricas de rendimiento, feedback cualitativo y cuantitativo, y recomendaciones para optimizar el producto antes de su lanzamiento al mercado.",
+
             //Otros
             sSelectStyle:"Selecciona un estilo:",      sSelectFilter:"Selecciona un Filtro:", sSelectVisual:"Selecciona una Visualización:",//Quitar 'SELECCIONAR FILTRO' de combobox
             optNarrative:"Narrativo", optFactual:"Factual", optPercentage:"Porcentual", optGeneral:"General",
             optVisualGraphics:"Visualización grafica", optVisualText:"Visualización textual",
             btEdit:"Editar",                           btSave:"Guardar Cambios",              btExport:"Exportar",
-            btForceAnalysis:"Forzar Análisis",         btImport:"Importar Resultados",
+            btForceAnalysis:"Ejecutar Análisis",         btImport:"Importar Resultados",
         },
         //data-i18n="AnalisisDeDatos."
         //data-i18n-placeholder="AnalisisDeDatos."
@@ -173,6 +188,10 @@ const translations = {
             btPsicSegments: "Psychographic Segments",
             btCommStyles: "Communication Style",
 
+            // Big 5
+            btBig5: "Big 5",
+            titleBig5: "Big 5 Analysis", descBig5: "This section performs a personality analysis based on the Big 5 model (Big Five Personality Factors), evaluating the five main dimensions: Openness to experience, Conscientiousness, Extraversion, Agreeableness, and Neuroticism. This analysis allows identifying dominant personality patterns in responses and provides deep insights into the psychological profile of respondents.",
+
             // NPS & Satisfaction
             btNPS_Satisfaction: "NPS and Satisfaction",
             titleCustomerSatisfaction: "Satisfaction Analysis", descCustomerSatisfaction: "This comprehensive analysis evaluates customer satisfaction through a detailed study that identifies key factors, trends in comments, and critical areas for improvement. Correlations are examined, customers are segmented, and models such as Kano and ACSI are applied to provide a deep insight into the current situation and strategic recommendations.",
@@ -190,6 +209,18 @@ const translations = {
             // Work Environment
             btClimaLaboral: "Work Environment",
             titleClimaLaboral: "Work Environment Analysis", descClimaLaboral: "This comprehensive analysis evaluates the work environment through a detailed study that identifies key factors, trends in comments, and critical areas for improvement. Correlations are examined, employees are segmented, and models such as Kano and ACSI are applied to provide a deep insight into the current situation and strategic recommendations.",
+        
+            // Customer Journey
+            btCustomerJourney: "Customer Journey",
+            titleCustomerJourney: "Customer Journey Analysis", descCustomerJourney: "This comprehensive analysis maps and evaluates the complete customer experience throughout their interaction with the brand. Critical touchpoints, moments of truth, emotions experienced at each stage are identified, and improvement opportunities are detected to optimize the customer journey from initial awareness to loyalty and recommendation.",
+        
+            // Reputation
+            btReputacion: "Reputation",
+            titleReputacion: "Reputation Analysis", descReputacion: "This comprehensive analysis evaluates the brand's reputation through a detailed study that examines public perception, credibility, trust and prestige associated with the organization. Mentions, sentiments, potential reputational crises are analyzed and opportunities are identified to strengthen corporate image and effectively manage digital and traditional reputation.",
+        
+            // Product Testing
+            btPruebaProducto: "Product Testing",
+            titlePruebaProducto: "Product Testing Analysis", descPruebaProducto: "This comprehensive analysis evaluates product effectiveness and acceptance through controlled testing with real users. Aspects such as usability, functionality, user satisfaction, problem identification and improvement areas are examined. The analysis includes performance metrics, qualitative and quantitative feedback, and recommendations to optimize the product before market launch.",
         
             // Others
             sSelectStyle: "Select a style:", sSelectFilter: "Select a Filter:", sSelectVisual: "Select a Visualization:",
@@ -262,6 +293,10 @@ const translations = {
             btPsicSegments: "Segmentos Psicográficos",
             btCommStyles: "Estilo de Comunicação",
         
+            //Big 5
+            btBig5: "Big 5",
+            titleBig5: "Análise Big 5", descBig5: "Esta seção realiza uma análise de personalidade baseada no modelo Big 5 (Cinco Grandes Fatores de Personalidade), avaliando as cinco dimensões principais: Abertura à experiência, Conscienciosidade, Extroversão, Amabilidade e Neuroticismo. Esta análise permite identificar padrões de personalidade dominantes nas respostas e fornece insights profundos sobre o perfil psicológico dos entrevistados.",
+        
             //NPS e Satisfação
             btNPS_Satisfaction: "NPS e Satisfação",
             titleCustomerSatisfaction: "Análise de Satisfação", descCustomerSatisfaction: "Esta análise abrangente avalia a satisfação do cliente por meio de um estudo detalhado que identifica fatores-chave, tendências nos comentários e áreas críticas de melhoria. São examinadas correlações, os clientes são segmentados e modelos como Kano e ACSI são aplicados para fornecer uma visão aprofundada da situação atual e recomendações estratégicas.",
@@ -279,6 +314,18 @@ const translations = {
             //Clima Organizacional
             btClimaLaboral: "Clima Organizacional",
             titleClimaLaboral: "Análise de Clima Organizacional", descClimaLaboral: "Esta análise abrangente avalia o clima organizacional por meio de um estudo detalhado que identifica fatores-chave, tendências nos comentários e áreas críticas de melhoria. São examinadas correlações, os funcionários são segmentados e modelos como Kano e ACSI são aplicados para fornecer uma visão aprofundada da situação atual e recomendações estratégicas.",
+        
+            //Customer Journey
+            btCustomerJourney: "Customer Journey",
+            titleCustomerJourney: "Análise de Customer Journey", descCustomerJourney: "Esta análise abrangente mapeia e avalia a experiência completa do cliente ao longo de sua interação com a marca. São identificados os pontos de contato críticos, momentos da verdade, emoções experimentadas em cada etapa, e são detectadas oportunidades de melhoria para otimizar a jornada do cliente desde a conscientização inicial até a fidelização e recomendação.",
+        
+            //Reputação
+            btReputacion: "Reputação",
+            titleReputacion: "Análise de Reputação", descReputacion: "Esta análise abrangente avalia a reputação da marca por meio de um estudo detalhado que examina a percepção pública, credibilidade, confiança e prestígio associados à organização. São analisadas menções, sentimentos, crises reputacionais potenciais e são identificadas oportunidades para fortalecer a imagem corporativa e gerenciar eficazmente a reputação digital e tradicional.",
+        
+            //Teste de Produto
+            btPruebaProducto: "Teste de Produto",
+            titlePruebaProducto: "Análise de Teste de Produto", descPruebaProducto: "Esta análise abrangente avalia a eficácia e aceitação de produtos por meio de testes controlados com usuários reais. São examinados aspectos como usabilidade, funcionalidade, satisfação do usuário, identificação de problemas e áreas de melhoria. A análise inclui métricas de desempenho, feedback qualitativo e quantitativo, e recomendações para otimizar o produto antes do lançamento no mercado.",
         
             //Outros
             sSelectStyle: "Selecione um estilo:", sSelectFilter: "Selecione um Filtro:", sSelectVisual: "Selecione uma Visualização:",

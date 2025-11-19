@@ -3,32 +3,44 @@
 function createSurveyerForm() {
     const formContainer = document.createElement('div');
     formContainer.innerHTML = `
-        <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="CrearEncuestador.createTitle">Crear Encuestador</h2>
-        <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
-            <div class="mb-3">
-            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.selectImg">Seleccionar Imagen</p>
-            <input class="form-control" type="file" name="FileInput">
+        <div style="font-family: 'hedliner', sans-serif; padding: 20px;">
+            <div class="form-section">
+                <h2 class="section-title" style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.createTitle">Crear Encuestador</h2>
             </div>
-            <div class="mb-3">
-            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hInterviewerName">Nombre del Encuestador</p>
-            <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" data-i18n-placeholder="CrearEncuestador.inInterviewerName" style="font-family: 'IBM Plex Sans'">
+            
+            <div class="form-section">
+                <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.selectImg">Seleccionar Imagen</p>
+                <input class="form-control" type="file" name="FileInput" accept="image/*">
+                <small class="form-text text-muted" style="margin-top: 8px; display: block;">Selecciona una imagen para el perfil del encuestador</small>
             </div>
-            <div class="mb-3">
-            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono Encuestador</p>
-            <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" data-i18n-placeholder="CrearEncuestador.inTone" style="font-family: 'IBM Plex Sans'">
+            
+            <div class="form-section">
+                <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hInterviewerName">Nombre del Encuestador</p>
+                <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" data-i18n-placeholder="CrearEncuestador.inInterviewerName" style="font-family: 'IBM Plex Sans';" placeholder="Ingresa el nombre del encuestador">
             </div>
-            <div class="mb-3">
-            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hObservations">Observaciones importantes</p>
-            <input class="form-control" type="text" id="ObservacionesImportantesTXT" name="Observaciones Importantes" data-i18n-placeholder="CrearEncuestador.inObservations" style="font-family: 'IBM Plex Sans'">
+            
+            <div class="form-section">
+                <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono del encuestador y sugerencias relevantes</p>
+                <textarea class="form-control" id="TonoEncuestadorTXT" name="Tono Encuestador" rows="4" data-i18n-placeholder="CrearEncuestador.inTone" style="font-family: 'IBM Plex Sans';" placeholder="Describe el tono y estilo de comunicación del encuestador"></textarea>
             </div>
-            <div class="mb-3">
-            <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hGreeting">Saludo</p>
-            <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" data-i18n-placeholder="CrearEncuestador.inGreeting" style="font-family: 'IBM Plex Sans'"></textarea>
+            
+            <div class="form-section">
+                <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hObservations">Observaciones importantes</p>
+                <textarea class="form-control" id="ObservacionesImportantesTXT" name="Observaciones Importantes" rows="4" data-i18n-placeholder="CrearEncuestador.inObservations" style="font-family: 'IBM Plex Sans';" placeholder="Agrega observaciones importantes para el encuestador"></textarea>
             </div>
-            <div style="width: 250px;">
-            <button class="btn btn-primary d-block w-100" id="CrearEncuestadorBtn" type="submit" style="font-weight: bold; font-size: 20px; border-radius : 13px;" data-i18n="CrearEncuestador.btCreate">Crear Encuestador</button>
+            
+            <div class="form-section">
+                <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hGreeting">Saludo</p>
+                <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" data-i18n-placeholder="CrearEncuestador.inGreeting" style="font-family: 'IBM Plex Sans';" placeholder="Escribe el saludo inicial que usará el encuestador"></textarea>
             </div>
-        </form>
+            
+            <div class="form-section" style="text-align: center;">
+                <button class="btn btn-primary d-block" id="CrearEncuestadorBtn" type="submit" style="font-weight: bold; font-size: 16px; font-family: 'hedliner', sans-serif; min-width: 200px;" data-i18n="CrearEncuestador.btCreate">
+                    <i class="fas fa-user-plus" style="margin-right: 8px;"></i>
+                    Crear Encuestador
+                </button>
+            </div>
+        </div>
         `;
     return formContainer;
 }
@@ -37,39 +49,54 @@ function createSurveyerFormReadOnly() {
     const formContainer = document.createElement('div');
     url = 'https://api.cheetah-research.ai/configuration/getInterviewer/';
 
-    axios.post(url, { study_id: localStorage.getItem('selectedStudyId') }, {
+    axios.post(url, { study_id: sessionStorage.getItem('selectedStudyId') }, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }
     }).then(response => {
         const data = response.data;
         formContainer.innerHTML = `
-            <h2 style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.title">Encuestador</h2>
-            <form class="p-3 p-xl-4" method="post" style="font-family: 'hedliner', sans-serif;">
-                <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hImg"></p>
-                    <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
+            <div style="font-family: 'hedliner', sans-serif; padding: 20px;">
+                <div class="form-section">
+                    <h2 class="section-title" style="color: var(--bs-emphasis-color); font-weight: bold; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.title">Encuestador</h2>
                 </div>
-                <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hInterviewerName">Nombre del Encuestador</p>
-                    <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" data-i18n-placeholder="CrearEncuestador.inInterviewerName" value="${data.interviewerName}" style="font-family: 'IBM Plex Sans'">
+                
+                <div class="form-section">
+                    <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hImg">Imagen del Encuestador</p>
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <img src="${data.interviewerProfilePicture}" alt="Imagen del encuestador" class="interviewer-image" onclick="openImageModal('${data.interviewerProfilePicture}')">
+                    </div>
+                    <input class="form-control" type="file" name="FileInput" id="FileInputEdit" accept="image/*" style="margin-top: 10px;">
+                    <small class="form-text text-muted" style="margin-top: 8px; display: block;" data-i18n="CrearEncuestador.changeImageHint">Selecciona una nueva imagen para cambiar la actual (opcional)</small>
                 </div>
-                <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono Encuestador</p>
-                    <input class="form-control" type="text" id="TonoEncuestadorTXT" name="Tono Encuestador" data-i18n-placeholder="CrearEncuestador.inTone" value="${data.interviewerTone}" style="font-family: 'IBM Plex Sans'">
+                
+                <div class="form-section">
+                    <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hInterviewerName">Nombre del Encuestador</p>
+                    <input class="form-control" type="text" id="NombreEncuestadorTXT" name="Nombre" data-i18n-placeholder="CrearEncuestador.inInterviewerName" value="${data.interviewerName}" style="font-family: 'IBM Plex Sans';">
                 </div>
-                <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hObservations">Observaciones importantes</p>
-                    <input class="form-control" type="text" id="ObservacionesImportantesTXT" name="Observaciones Importantes" data-i18n-placeholder="CrearEncuestador.inObservations" value="${data.importantObservation}" style="font-family: 'IBM Plex Sans'">
+                
+                <div class="form-section">
+                    <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hTone">Tono del encuestador y sugerencias relevantes</p>
+                    <textarea class="form-control" id="TonoEncuestadorTXT" name="Tono Encuestador" rows="4" data-i18n-placeholder="CrearEncuestador.inTone" style="font-family: 'IBM Plex Sans';">${data.interviewerTone}</textarea>
                 </div>
-                <div class="mb-3">
-                    <p style="font-size: 20px; color: var(--bs-emphasis-color); margin-bottom: 5px; font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hGreeting">Saludo</p>
-                    <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" data-i18n-placeholder="CrearEncuestador.inGreeting" style="font-family: 'IBM Plex Sans'">${data.interviewerGreeting}</textarea>
+                
+                <div class="form-section">
+                    <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hObservations">Observaciones importantes</p>
+                    <textarea class="form-control" id="ObservacionesImportantesTXT" name="Observaciones Importantes" rows="4" data-i18n-placeholder="CrearEncuestador.inObservations" style="font-family: 'IBM Plex Sans';">${data.importantObservation}</textarea>
                 </div>
-                <div style="width: 250px;">
-                    <button class="btn btn-primary d-block w-100" id="ActualizarEncuestadorBtn" type="button" style="font-weight: bold; font-size: 20px; border-radius : 13px; color: var(--bs-CR-gray); background-color: var(--bs-CR-orange);" data-i18n="CrearEncuestador.btUpdate">Actualizar Encuestador</button>
+                
+                <div class="form-section">
+                    <p style="font-family: 'hedliner', sans-serif;" data-i18n="CrearEncuestador.hGreeting">Saludo</p>
+                    <textarea class="form-control" id="SaludoEncuestadorTXT" name="message" rows="6" data-i18n-placeholder="CrearEncuestador.inGreeting" style="font-family: 'IBM Plex Sans';">${data.interviewerGreeting}</textarea>
                 </div>
-            </form>
+                
+                <div class="form-section" style="text-align: center;">
+                    <button class="btn btn-primary d-block" id="ActualizarEncuestadorBtn" type="button" style="font-weight: bold; font-size: 16px; font-family: 'hedliner', sans-serif; min-width: 200px;" data-i18n="CrearEncuestador.btUpdate">
+                        <i class="fas fa-sync-alt" style="margin-right: 8px;"></i>
+                        Actualizar Encuestador
+                    </button>
+                </div>
+            </div>
         `;
 
         document.getElementById('ActualizarEncuestadorBtn').addEventListener('click', (event) => {
@@ -87,11 +114,11 @@ function createSurveyerFormReadOnly() {
 }
 
 function updateSurveyerFormData(data) {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
     const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
     const saludoEncuestador = document.getElementById('SaludoEncuestadorTXT').value;
-    const fileInput = data.interviewerProfilePicture;
+    const fileInputEdit = document.getElementById('FileInputEdit');
     const observacionesImportantes = document.getElementById('ObservacionesImportantesTXT').value;
 
     const url = 'https://api.cheetah-research.ai/configuration/updateInterviewer/';
@@ -101,7 +128,12 @@ function updateSurveyerFormData(data) {
     data0.append('interviewerTone', tonoEncuestador);
     data0.append('interviewerGreeting', saludoEncuestador);
     data0.append('importantObservation', observacionesImportantes);
-    data0.append('_id', localStorage.getItem('selectedStudyId'));
+    data0.append('_id', sessionStorage.getItem('selectedStudyId'));
+    
+    // Agregar la nueva imagen si se seleccionó una
+    if (fileInputEdit && fileInputEdit.files && fileInputEdit.files[0]) {
+        data0.append('interviewerProfilePicture', fileInputEdit.files[0]);
+    }
 
     for (let pair of data0.entries()) {
         // console.log(pair[0]+ ': ' + pair[1]);
@@ -123,11 +155,11 @@ function updateSurveyerFormData(data) {
         console.error(error);
     });
 
-    // Guardar en localStorage
-    localStorage.setItem('nombreEncuestador', nombreEncuestador);
-    localStorage.setItem('tonoEncuestador', tonoEncuestador);
-    localStorage.setItem('observacionesImportantes', observacionesImportantes);
-    localStorage.setItem('saludoEncuestador', saludoEncuestador);
+    // Guardar en sessionStorage
+    sessionStorage.setItem('nombreEncuestador', nombreEncuestador);
+    sessionStorage.setItem('tonoEncuestador', tonoEncuestador);
+    sessionStorage.setItem('observacionesImportantes', observacionesImportantes);
+    sessionStorage.setItem('saludoEncuestador', saludoEncuestador);
 
     
     CSrvyr_DeactivateNavBy();
@@ -140,9 +172,9 @@ function updateSurveyerFormData(data) {
 // Función para agregar el formulario al contenedor
 async function appendSurveyerForm() {
     const url = 'https://api.cheetah-research.ai/configuration/getInterviewer/';
-    const study_id = localStorage.getItem('selectedStudyId');
+    const study_id = sessionStorage.getItem('selectedStudyId');
     try {
-        const response = await axios.post(url, { study_id: localStorage.getItem('selectedStudyId') }, {
+        const response = await axios.post(url, { study_id: sessionStorage.getItem('selectedStudyId') }, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
@@ -178,7 +210,7 @@ async function appendSurveyerForm() {
 
 // Función para capturar y guardar datos del formulario del encuestador
 function captureSurveyerFormData() {
-    const lang = localStorage.getItem('language') || 'es'; // Get del idioma
+    const lang = sessionStorage.getItem('language') || 'es'; // Get del idioma
     const nombreEncuestador = document.getElementById('NombreEncuestadorTXT').value;
     const tonoEncuestador = document.getElementById('TonoEncuestadorTXT').value;
     const observacionesImportantes = document.getElementById('ObservacionesImportantesTXT').value;
@@ -194,7 +226,7 @@ function captureSurveyerFormData() {
     data.append('interviewerTone', tonoEncuestador);
     data.append('interviewerGreeting', saludoEncuestador);
     data.append('importantObservation', observacionesImportantes);
-    data.append('study_id', localStorage.getItem('selectedStudyId'));
+    data.append('study_id', sessionStorage.getItem('selectedStudyId'));
 
     for (let pair of data.entries()) {
         // console.log(pair[0]+ ': ' + pair[1]);
@@ -216,11 +248,11 @@ function captureSurveyerFormData() {
         alert(getNestedTranslation(translations[lang], 'CrearEncuestador.wCreate'));
     });
 
-    // Guardar en localStorage
-    localStorage.setItem('nombreEncuestador', nombreEncuestador);
-    localStorage.setItem('tonoEncuestador', tonoEncuestador);
-    localStorage.setItem('observacionesImportantes', observacionesImportantes);
-    localStorage.setItem('saludoEncuestador', saludoEncuestador);
+    // Guardar en sessionStorage
+    sessionStorage.setItem('nombreEncuestador', nombreEncuestador);
+    sessionStorage.setItem('tonoEncuestador', tonoEncuestador);
+    sessionStorage.setItem('observacionesImportantes', observacionesImportantes);
+    sessionStorage.setItem('saludoEncuestador', saludoEncuestador);
 
     //hacer el formulario solo lectura y que cada que se cargue la pagina regresen los datos
     document.getElementById('NombreEncuestadorTXT').readOnly = true;
@@ -233,17 +265,17 @@ function captureSurveyerFormData() {
     CSrvyr_DeactivateNavBy();
 
     //log
-    // console.log(localStorage.getItem('nombreEncuestador'));
-    // console.log(localStorage.getItem('tonoEncuestador'));
-    // console.log(localStorage.getItem('observacionesImportantes'));
-    // console.log(localStorage.getItem('saludoEncuestador'));
+    // console.log(sessionStorage.getItem('nombreEncuestador'));
+    // console.log(sessionStorage.getItem('tonoEncuestador'));
+    // console.log(sessionStorage.getItem('observacionesImportantes'));
+    // console.log(sessionStorage.getItem('saludoEncuestador'));
     // console.log('Encuestador creado exitosamente');
 }
 
 
 window.onload = () => {
     //Idioma
-    const lang = localStorage.getItem('language') || 'es';
+    const lang = sessionStorage.getItem('language') || 'es';
     setLanguage(lang);
     
     CSrvyr_DeactivateNavBy();
@@ -260,7 +292,7 @@ function enableNavItems() {
 }
 
 function CSrvyr_DeactivateNavBy(){
-    const studyData = JSON.parse(localStorage.getItem('selectedStudyData'));
+    const studyData = JSON.parse(sessionStorage.getItem('selectedStudyData'));
     const selectedStudyData = {
         tituloDelEstudio: studyData.title,
         mercadoObjetivo: studyData.marketTarget,
@@ -272,7 +304,7 @@ function CSrvyr_DeactivateNavBy(){
 
 
     // console.log('Verificando si se activan los botones');
-    if(localStorage.getItem('nombreEncuestador') != null){
+    if(sessionStorage.getItem('nombreEncuestador') != null){
         enableNavItems();
         // console.log('Activando botones');
     }else{
@@ -330,3 +362,50 @@ function adjustColor(color, percent) {//Funcion loca de chatsito
                 (B < 255 ? (B < 1 ? 0 : B) : 255))
                 .toString(16).slice(1).toUpperCase()}`;
 }
+
+// Funciones para el modal de imagen
+function openImageModal(imageSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    
+    modalImg.src = imageSrc;
+    modal.style.display = 'block';
+    
+    // Prevenir scroll del body cuando el modal está abierto
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+    
+    // Restaurar scroll del body
+    document.body.style.overflow = 'auto';
+}
+
+// Event listeners para el modal
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('imageModal');
+    const closeBtn = document.querySelector('.close-modal');
+    
+    // Cerrar modal al hacer click en la X
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeImageModal);
+    }
+    
+    // Cerrar modal al hacer click fuera de la imagen
+    if (modal) {
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeImageModal();
+            }
+        });
+    }
+    
+    // Cerrar modal con la tecla Escape
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeImageModal();
+        }
+    });
+});

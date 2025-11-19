@@ -1,12 +1,12 @@
 function llenar() {
     //Idioma
-    const lang = localStorage.getItem('language') || 'es';
+    const lang = sessionStorage.getItem('language') || 'es';
     setLanguage(lang);
     
-    const studyDataJSON = localStorage.getItem('selectedStudyData');
+    const studyDataJSON = sessionStorage.getItem('selectedStudyData');
     
     if (!studyDataJSON) {
-        console.error('No se encontró el estudio seleccionado en localStorage.');
+        console.error('No se encontró el estudio seleccionado en sessionStorage.');
         return;
     }
 
@@ -28,9 +28,9 @@ function llenar() {
 
     const url = 'https://api.cheetah-research.ai/chatbot/download_logs/';
     const formData = new FormData();
-    const studyId = localStorage.getItem('selectedStudyId');
+    const studyId = sessionStorage.getItem('selectedStudyId');
     if (!studyId) {
-        console.error('No se encontró "selectedStudyId" en localStorage.');
+        console.error('No se encontró "selectedStudyId" en sessionStorage.');
         return;
     }
     formData.append('study_id', studyId);
@@ -80,9 +80,9 @@ boton BorrarBtn
     const deleteButton = document.getElementById('BorrarBtn');
     if (deleteButton) {
         deleteButton.addEventListener('click', () => {
-            const studyId = localStorage.getItem('selectedStudyId');
+            const studyId = sessionStorage.getItem('selectedStudyId');
             if (!studyId) {
-                console.error('No se encontró "selectedStudyId" en localStorage.');
+                console.error('No se encontró "selectedStudyId" en sessionStorage.');
                 return;
             }
 
@@ -206,14 +206,28 @@ boton BorrarBtn
         console.error('Elemento con ID "EncuestasLBL" no encontrado.');
     }
 
-    const token = localStorage.getItem('token');
-    const studyIdForSurveys = localStorage.getItem('selectedStudyId');
+    const token = sessionStorage.getItem('token');
+    const studyIdForSurveys = sessionStorage.getItem('selectedStudyId');
     const surveyTableBody = document.getElementById('tablaEncuestas');
     const surveyNavContainer = document.getElementById('divEncuestas');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const tableContainer = document.getElementById('tableContainer');
 
     let surveyData = [];
 
+    // Función para decodificar caracteres Unicode escapados
+    function decodeUnicode(str) {
+        if (typeof str !== 'string') return str;
+        return str.replace(/\\u([0-9a-fA-F]{4})/g, (match, hex) => {
+            return String.fromCharCode(parseInt(hex, 16));
+        });
+    }
+
     function updateSurveyTable() {
+        // Ocultar spinner y mostrar tabla
+        if (loadingSpinner) loadingSpinner.style.display = 'none';
+        if (tableContainer) tableContainer.style.display = 'block';
+        
         if (surveyData.length > 0 && surveyNavContainer) {
             surveyNavContainer.style.display = 'block';
             
@@ -226,14 +240,15 @@ boton BorrarBtn
                 
                 // Número de encuesta
                 const tdNumero = document.createElement('td');
-                tdNumero.textContent = index + 1;
+                tdNumero.textContent = survey.id;
                 tdNumero.style.fontWeight = 'bold';
                 row.appendChild(tdNumero);
                 
-                // ID
-                const tdId = document.createElement('td');
-                tdId.textContent = survey.id;
-                row.appendChild(tdId);
+                // Rating (estrellas)
+                const tdRating = document.createElement('td');
+                tdRating.innerHTML = survey.rating || 'Sin calificación';
+                tdRating.style.textAlign = 'center';
+                row.appendChild(tdRating);
                 
                 // Respuesta con botón "Leer Más"
                 const tdRespuesta = document.createElement('td');
@@ -246,22 +261,23 @@ boton BorrarBtn
                 // Texto truncado inicial
                 const textoTruncado = document.createElement('span');
                 textoTruncado.id = `texto-truncado-${index}`;
-                textoTruncado.textContent = survey.transcription.length > 100 
-                    ? survey.transcription.substring(0, 100) + '...' 
-                    : survey.transcription;
+                const surveyText = survey.survey || '';
+                textoTruncado.textContent = surveyText.length > 100 
+                    ? surveyText.substring(0, 100) + '...' 
+                    : surveyText;
                 textoContainer.appendChild(textoTruncado);
                 
                 // Texto completo (oculto inicialmente)
                 const textoCompleto = document.createElement('span');
                 textoCompleto.id = `texto-completo-${index}`;
-                textoCompleto.textContent = survey.transcription;
+                textoCompleto.textContent = surveyText;
                 textoCompleto.style.display = 'none';
                 textoContainer.appendChild(textoCompleto);
                 
                 tdRespuesta.appendChild(textoContainer);
                 
                 // Botón "Leer Más" (solo si el texto es largo)
-                if (survey.transcription.length > 100) {
+                if (surveyText.length > 100) {
                     const btnLeerMas = document.createElement('button');
                     btnLeerMas.className = 'btn btn-link btn-sm';
                     btnLeerMas.id = `btn-leer-mas-${index}`;
@@ -310,6 +326,88 @@ boton BorrarBtn
                 
                 row.appendChild(tdRespuesta);
                 
+                // Comentarios con botón "Leer Más"
+                const tdComentarios = document.createElement('td');
+                tdComentarios.style.position = 'relative';
+                
+                if (survey.comment) {
+                    // Contenedor para el comentario
+                    const comentarioContainer = document.createElement('div');
+                    comentarioContainer.id = `comentario-${index}`;
+                    
+                    // Comentario truncado inicial
+                    const comentarioTruncado = document.createElement('span');
+                    comentarioTruncado.id = `comentario-truncado-${index}`;
+                    const commentText = survey.comment || '';
+                    comentarioTruncado.textContent = commentText.length > 80 
+                        ? commentText.substring(0, 80) + '...' 
+                        : commentText;
+                    comentarioContainer.appendChild(comentarioTruncado);
+                    
+                    // Comentario completo (oculto inicialmente)
+                    const comentarioCompleto = document.createElement('span');
+                    comentarioCompleto.id = `comentario-completo-${index}`;
+                    comentarioCompleto.textContent = commentText;
+                    comentarioCompleto.style.display = 'none';
+                    comentarioContainer.appendChild(comentarioCompleto);
+                    
+                    tdComentarios.appendChild(comentarioContainer);
+                    
+                    // Botón "Leer Más" para comentarios (solo si el texto es largo)
+                    if (commentText.length > 80) {
+                        const btnLeerMasComentario = document.createElement('button');
+                        btnLeerMasComentario.className = 'btn btn-link btn-sm';
+                        btnLeerMasComentario.id = `btn-leer-mas-comentario-${index}`;
+                        btnLeerMasComentario.textContent = 'Leer Más';
+                        btnLeerMasComentario.style.fontSize = '12px';
+                        btnLeerMasComentario.style.padding = '2px 8px';
+                        btnLeerMasComentario.style.marginTop = '5px';
+                        btnLeerMasComentario.style.color = 'var(--bs-CR-orange)';
+                        
+                        btnLeerMasComentario.addEventListener('click', () => {
+                            // Colapsar todos los otros comentarios expandidos
+                            surveyData.forEach((_, otherIndex) => {
+                                if (otherIndex !== index) {
+                                    const otherTruncado = document.getElementById(`comentario-truncado-${otherIndex}`);
+                                    const otherCompleto = document.getElementById(`comentario-completo-${otherIndex}`);
+                                    const otherBtn = document.getElementById(`btn-leer-mas-comentario-${otherIndex}`);
+                                    
+                                    if (otherTruncado && otherCompleto && otherBtn) {
+                                        otherTruncado.style.display = 'inline';
+                                        otherCompleto.style.display = 'none';
+                                        otherBtn.textContent = 'Leer Más';
+                                    }
+                                }
+                            });
+                            
+                            // Toggle del comentario actual
+                            const comentarioTruncado = document.getElementById(`comentario-truncado-${index}`);
+                            const comentarioCompleto = document.getElementById(`comentario-completo-${index}`);
+                            const btn = document.getElementById(`btn-leer-mas-comentario-${index}`);
+                            
+                            if (comentarioTruncado.style.display !== 'none') {
+                                // Expandir
+                                comentarioTruncado.style.display = 'none';
+                                comentarioCompleto.style.display = 'inline';
+                                btn.textContent = 'Leer Menos';
+                            } else {
+                                // Colapsar
+                                comentarioTruncado.style.display = 'inline';
+                                comentarioCompleto.style.display = 'none';
+                                btn.textContent = 'Leer Más';
+                            }
+                        });
+                        
+                        tdComentarios.appendChild(btnLeerMasComentario);
+                    }
+                } else {
+                    tdComentarios.textContent = 'Sin comentarios';
+                    tdComentarios.style.color = '#999';
+                    tdComentarios.style.fontStyle = 'italic';
+                }
+                
+                row.appendChild(tdComentarios);
+                
                 // Botón eliminar
                 const tdAcciones = document.createElement('td');
                 const btnEliminar = document.createElement('button');
@@ -319,7 +417,7 @@ boton BorrarBtn
                 btnEliminar.style.fontSize = '14px';
                 
                 btnEliminar.addEventListener('click', () => {
-                    const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar la encuesta ${index + 1}?`);
+                    const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar la encuesta ${survey.id}?`);
                     if (confirmDelete) {
                         const deleteUrl = `https://api.cheetah-research.ai/configuration/delete_survey_answer/${studyIdForSurveys}/${survey.id}`;
                         axios.post(deleteUrl, {}, {
@@ -343,6 +441,9 @@ boton BorrarBtn
                 surveyTableBody.appendChild(row);
             });
         } else if (surveyNavContainer) {
+            // Ocultar spinner y tabla si no hay datos
+            if (loadingSpinner) loadingSpinner.style.display = 'none';
+            if (tableContainer) tableContainer.style.display = 'none';
             surveyNavContainer.style.display = 'none';
         }
     }
@@ -352,6 +453,11 @@ boton BorrarBtn
     }
 
     if (studyIdForSurveys && token) {
+        // Mostrar spinner y ocultar tabla
+        if (loadingSpinner) loadingSpinner.style.display = 'block';
+        if (tableContainer) tableContainer.style.display = 'none';
+        if (surveyNavContainer) surveyNavContainer.style.display = 'block';
+        
         const getSurveysUrl = `https://api.cheetah-research.ai/configuration/get_surveys/${studyIdForSurveys}`;
         
         axios.post(getSurveysUrl, {}, {
@@ -360,21 +466,100 @@ boton BorrarBtn
             }
         }).then(response => {
             const surveys = response.data;
-            if (surveys && typeof surveys === 'object' && !Array.isArray(surveys)) {
+            console.log(surveys);
+            if (surveys && Array.isArray(surveys)) {
+                surveyData = surveys.map((surveyObj, index) => {
+                    // Obtener la clave (ID) del objeto
+                    const surveyId = Object.keys(surveyObj)[0];
+                    const surveyData = surveyObj[surveyId];
+                    
+                    return {
+                        id: surveyId,
+                        survey: decodeUnicode(surveyData.survey || ''),
+                        rating: decodeUnicode(surveyData.rating || ''),
+                        comment: decodeUnicode(surveyData.comment || '')
+                    };
+                });
+                console.log('SurveyData llenado:', surveyData);
+            } else if (surveys && typeof surveys === 'object' && !Array.isArray(surveys)) {
+                // Mantener compatibilidad con el formato anterior
                 surveyData = Object.keys(surveys).map(key => ({
                     id: key,
-                    transcription: surveys[key]
+                    survey: decodeUnicode(surveys[key].survey || ''),
+                    rating: decodeUnicode(surveys[key].rating || ''),
+                    comment: decodeUnicode(surveys[key].comment || ''),
                 }));
+            } else {
+                surveyData = [];
             }
-            
             updateSurveyTable();
         }).catch(error => {
             console.error('Error al obtener las transcripciones de las encuestas:', error);
+            
+            // Ocultar spinner y mostrar tabla con error
+            if (loadingSpinner) loadingSpinner.style.display = 'none';
+            if (tableContainer) tableContainer.style.display = 'block';
+            
             if (surveyTableBody) {
-                surveyTableBody.innerHTML = '<tr><td colspan="4" class="text-center">Error al cargar las encuestas.</td></tr>';
+                surveyTableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error al cargar las encuestas.</td></tr>';
             }
             if (surveyNavContainer) {
                 surveyNavContainer.style.display = 'block';
+            }
+        });
+    }
+
+    // Analizar encuestas con endpoint /chatbot/analyze_surveys/
+    const analyzeBtn = document.getElementById('analyzeSurveysBtn');
+    if (analyzeBtn) {
+        analyzeBtn.addEventListener('click', async () => {
+            const studyId = sessionStorage.getItem('selectedStudyId');
+            if (!studyId) {
+                alert('Error: No se encontró el ID del estudio.');
+                return;
+            }
+
+            const ok = window.confirm('Este proceso ejecutará los análisis INDIVIDUALES de TODAS las encuestas del estudio y actualizará su rating y comentario en la base de datos.\n\nPuede tardar varios minutos según la cantidad de encuestas.\n\n¿Deseas continuar?');
+            if (!ok) return;
+
+            const originalText = analyzeBtn.textContent;
+            analyzeBtn.textContent = 'Analizando...';
+            analyzeBtn.disabled = true;
+
+            // Mostrar spinner durante el análisis
+            if (loadingSpinner) {
+                loadingSpinner.style.display = 'block';
+                const p = loadingSpinner.querySelector('p');
+                if (p) p.innerText = 'Analizando encuestas...';
+            }
+            if (tableContainer) tableContainer.style.display = 'none';
+
+            try {
+                const url = 'https://api.cheetah-research.ai/chatbot/analyze_surveys/';
+                const formData = new FormData();
+                formData.append('study_id', studyId);
+
+                await axios.post(url, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                });
+
+                alert('Análisis completado. Se actualizaron ratings y comentarios.');
+                // Refrescar vista para recargar las encuestas con rating/comment
+                window.location.reload();
+            } catch (err) {
+                console.error('Error al analizar encuestas:', err);
+                alert('Error al analizar encuestas. Inténtalo de nuevo.');
+            } finally {
+                analyzeBtn.textContent = originalText;
+                analyzeBtn.disabled = false;
+                if (loadingSpinner) {
+                    loadingSpinner.style.display = 'none';
+                    const p = loadingSpinner.querySelector('p');
+                    if (p) p.innerText = 'Cargando encuestas...';
+                }
+                if (tableContainer) tableContainer.style.display = 'block';
             }
         });
     }

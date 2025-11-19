@@ -1,6 +1,6 @@
 function listNonActiveUsers() {
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('user_id');
+    const token = sessionStorage.getItem('token');
+    const userId = sessionStorage.getItem('user_id');
 
     const url = `https://api.cheetah-research.ai/configuration/get_studies_by_user_id/${userId}/`;
 
@@ -35,11 +35,11 @@ document.addEventListener('DOMContentLoaded', listNonActiveUsers);
 
 document.addEventListener('DOMContentLoaded', function () {
     // Idioma
-    const lang = localStorage.getItem('language') || 'es';
+    const lang = sessionStorage.getItem('language') || 'es';
     setLanguage(lang);
 
-    const studyId = localStorage.getItem('selectedStudyId');
-    setColorsFromAPI(studyId);//Setea colores en LocalStorage y en la interfaz
+    const studyId = sessionStorage.getItem('selectedStudyId');
+    setColorsFromAPI(studyId);//Setea colores en sessionStorage y en la interfaz
 });
 
 
