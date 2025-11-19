@@ -1,22 +1,13 @@
 /* Default Properties */
 
-#TypeB-BG {
-  background: var(--bs-CR-black);
-}
-
 #btIMG-Cont, #btSend-Cont {
   transition: 0.2s ease-in-out;
-}
-
-#btIMG, #btSend-Icon{
-  fill: var(--bs-CR-orange-2);
-  color: var(--bs-CR-orange-2);
 }
 
 /* Hover Properties */
 
 #btIMG-Cont:hover, #btSend-Cont:hover {
-  background: var(--bs-CR-orange);
+  background: var(--bs-CR-gray-dark);
 }
 
 /* Links */
