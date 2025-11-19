@@ -7,7 +7,7 @@
 /* Hover Properties */
 
 #btIMG-Cont:hover, #btSend-Cont:hover {
-  background: var(--bs-CR-gray-dark);
+  background: var(--bs-CR-orange-2);
 }
 
 /* Links */
