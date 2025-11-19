@@ -37,6 +37,21 @@ img {
   background: linear-gradient(#ff000000 50%, var(--bs-CR-gray-dark) 130%), transparent;
 }
 
+#Bot-Name{
+  color: #aaa7aa;
+}
+#Bot-Status {
+  color: var(--bs-CR-orange-2);
+}
+
+#EmptyF-BG {
+  background: linear-gradient(160deg,#4b4b4b 0%, #2f3034 40%, var(--bs-CR-black) 100%);
+}
+
+#EmptyF-BG p:first-child {color: #aaa7aa;}
+#EmptyF-BG p:nth-child(2) {color: #fff;}
+#EmptyF-BG p:nth-child(4) {color: var(--bs-CR-orange-2);}
+
 /* Feed Scrollbar */
 
 #Feed-BG::-webkit-scrollbar {
