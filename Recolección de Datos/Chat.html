@@ -42,12 +42,12 @@
     </style>
 </head>
 
-<body class="d-flex flex-column" style="height: 100%;background: url(&quot;assets/img/Main%20BG.png&quot;) center / cover; backdrop-filter: brightness(167%) contrast(51%) invert(15%);">
+<body class="d-flex flex-column" style="height: 100%;background: url(&quot;assets/img/Main%20BG.png&quot;) center / cover;">
     <!-- <div class="d-flex" id="overlay"> -->
         
     </div>
 
-    <div class="container-fluid d-flex flex-row justify-content-start align-items-center align-content-center w-100" id="Header-BG" style="height: 8%;background: linear-gradient(160deg, var(--bs-CR-black) 0%, #2f3034 40%, var(--bs-CR-gray) 100%);backdrop-filter: blur(2px);-webkit-backdrop-filter: blur(2px);">
+    <div class="container-fluid d-flex flex-row justify-content-start align-items-center align-content-center w-100" id="Header-BG" style="height: 8%;">
         <div class="row d-flex flex-column justify-content-center align-content-center h-100">
             <div class="col d-flex flex-column justify-content-center align-content-center h-100" style="padding-right: 8px;padding-left: 8px;padding-top: 0px;margin-left: 15px;">
                 <h1 class="fw-semibold d-flex flex-row align-items-center order-1 m-0 mt-1" id="Bot-Name" style="font-family: hedliner;">Coso Bot</h1>
@@ -55,14 +55,14 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid d-flex flex-column" id="Chat-BG" style="height: 92%;backdrop-filter: opacity(0.45) brightness(178%) contrast(200%) invert(100%);-webkit-backdrop-filter: opacity(0.45) brightness(178%) contrast(200%) invert(100%);">
+    <div class="container-fluid d-flex flex-column" id="Chat-BG" style="height: 92%;">
         <div class="row flex-fill justify-content-center align-items-center order-2" id="Chat-Box">
             <div class="col text-truncate d-sm-block d-md-block d-lg-block d-xl-block text-wrap" style="height: 100%;overflow-y: visible;">
                 <div class="row px-3 py-2" id="Empty-Feed" style="display: flex;">
                     <div class="col d-flex d-xl-flex flex-column justify-content-center align-items-center align-self-center justify-content-xl-center align-items-xl-center" style="overflow: hidden;overflow-y: auto;min-height: 30.5rem;max-height: 30.5rem;height: auto;">
                         <div class="card border-0 rounded-4" id="EmptyF-BG">
                             <div class="card-body text-center">
-                                <p class="card-text" style="">Escribe algo para charlar con</p>
+                                <p class="card-text">Escribe algo para charlar con</p>
                                 <p class="card-text fw-bold" style="font-family: hedliner;font-size: 25px;color: #fff;">Cheetah Research</p>
                                 <img src="assets/img/Cheetah%20Paw%20Icon.svg" style="width: 60px;height: 60px;filter: invert(70%);">
                                 <p class="card-text" style="padding: 30px;">
@@ -77,7 +77,9 @@
                         <ul class="list-unstyled" id="Message-List">
                             <li id="Typing-Msg" class="my-2" style="display: none;">
                                 <div class="d-flex justify-content-end align-items-center align-content-center align-self-end BotIMG-Div" style="width: 50px;height: 100%;padding-right: 2px;padding-left: 0px;">
-                                    <div class="text-truncate d-flex justify-content-center align-items-center align-content-center BotIMG-Cont" style="background: #d1d1d1;"><img class="BotIMG" id="typingMessage_BotIMG" src="" style="max-height: 100%;"></div>
+                                    <div class="text-truncate d-flex justify-content-center align-items-center align-content-center BotIMG-Cont" style="background: #d1d1d1;">
+                                        <img class="BotIMG" id="typingMessage_BotIMG" src="" style="max-height: 100%;">
+                                    </div>
                                 </div>
                                 <div class="card text-truncate justify-content-center align-items-center align-content-center d-inline-block" style="border-radius : 13px;border-bottom-left-radius: 0px;background: #454545;max-width: 75%;border-bottom-width: medium;">
                                     <div class="card-body text-truncate justify-content-center align-items-center align-content-center text-break text-center d-flex flex-column p-2" style="width: 100%;height: 100%;"><img id="LoadingGif" src="assets/img/Loading%20Dots.gif" style="width: 100%;height: 150%;margin-right: 6px;" width="58" height="42"></div>
@@ -88,7 +90,7 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center align-items-center align-content-center order-3" id="Type-Box" style="background: rgba(170,167,170,0.16);padding-top: 6px;padding-right: 5px;padding-bottom: 6px;padding-left: 5px;backdrop-filter: blur(2px);-webkit-backdrop-filter: blur(2px);">
+        <div class="row justify-content-center align-items-center align-content-center order-3" id="Type-Box" style="padding-top: 6px;padding-right: 5px;padding-bottom: 6px;padding-left: 5px;">
             <div class="col align-content-center" id="TypeB-Container" style="height: 100%;">
                 <div class="row" id="TypeB-BG" style="border-radius : 13px;">
                     <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-8 col-xxl-9 p-0" style="height: 100%;">
@@ -111,7 +113,7 @@
                 </div>
             </div>
         </div>
-        <div class="row text-wrap justify-content-center align-items-center align-content-center order-4" id="Copyright-Legend" style="margin-top: 5px;text-align: center;width: 100%;color: var(--bs-CR-orange)">
+        <div class="row text-wrap justify-content-center align-items-center align-content-center order-4" id="Copyright-Legend" style="margin-top: 5px;text-align: center;width: 100%;">
             <p><strong>Cheetah Research</strong> es una marca registrada de <strong>Marketing Total S.A.</strong>. Todos los derechos reservados.</p>
         </div>
     </div>
