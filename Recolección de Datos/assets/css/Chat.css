@@ -31,6 +31,12 @@ img {
   display: flex;
 }
 
+/* Some Chat Colors */
+
+#Chat-BG {
+  background: linear-gradient(#ff000000 50%, var(--bs-CR-gray-dark) 130%), transparent;
+}
+
 /* Feed Scrollbar */
 
 #Feed-BG::-webkit-scrollbar {
