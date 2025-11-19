@@ -1,41 +1,22 @@
 /* Default Properties */
 
-#btIMG-Cont {
-  background: transparent;
+#TypeB-BG {
+  background: var(--bs-CR-black);
+}
+
+#btIMG-Cont, #btSend-Cont {
   transition: 0.2s ease-in-out;
 }
 
-#btSend-Cont {
-  background: var(--bs-CR-orange);
-  transition: 0.2s ease-in-out;
-}
-
-#btSend {
-  color: var(--bs-gray);
-  transition: 0.2s ease-in-out;
-}
-
-#btIMG {
-  color: var(--bs-CR-orange);
-  transition: 0.2s ease-in-out;
+#btIMG, #btSend-Icon{
+  fill: var(--bs-CR-orange-2);
+  color: var(--bs-CR-orange-2);
 }
 
 /* Hover Properties */
 
-#btSend-Cont:hover {
-  background: var(--bs-CR-black);
-}
-
-#btSend-Cont:hover #btSend {
-  color: #929292;
-}
-
-#btIMG:hover {
-  color: var(--bs-CR-gray-dark);
-}
-
-#btIMG-Cont:hover {
-  background: var(--bs-CR-orange-2);
+#btIMG-Cont:hover, #btSend-Cont:hover {
+  background: var(--bs-CR-orange);
 }
 
 /* Links */
