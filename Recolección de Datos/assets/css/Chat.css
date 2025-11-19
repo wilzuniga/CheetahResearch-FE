@@ -31,26 +31,39 @@ img {
   display: flex;
 }
 
+/* Chat Color filters */
+#Chat-BG{
+  backdrop-filter: opacity(0.45) brightness(178%) contrast(200%) invert(100%);
+  -webkit-backdrop-filter: opacity(0.45) brightness(178%) contrast(200%) invert(100%);
+}
+
+body {
+  backdrop-filter: brightness(167%) contrast(51%) invert(15%);
+  -webkit-backdrop-filter: brightness(167%) contrast(51%) invert(15%);
+}
+
 /* Some Chat Colors */
 
-#Chat-BG {background: linear-gradient(#ff000000 50%, var(--bs-CR-gray-dark) 130%), transparent;}
+#Chat-BG {background: linear-gradient(transparent 50%, var(--bs-CR-shadow) 85%, var(--bs-CR-orange) 110%);}
 
 #Header-BG {background: linear-gradient(160deg, var(--bs-CR-black) 0%, #2f3034 40%, var(--bs-CR-gray) 100%);}
 #Bot-Name{color: #aaa7aa;}
-#Bot-Status {color: var(--bs-CR-orange-2);}
+#Bot-Status {color: var(--bs-CR-gray);}
 
-#EmptyF-BG {background: linear-gradient(160deg,#4b4b4b 0%, #2f3034 40%, var(--bs-CR-black) 100%);}
+#EmptyF-BG {background: linear-gradient(160deg, var(--bs-CR-black) 35%, var(--bs-CR-orange) 100%);}
 
 #EmptyF-BG p:first-child {color: #aaa7aa;}
 #EmptyF-BG p:nth-child(2) {color: #fff;}
 #EmptyF-BG p:nth-child(4) {color: var(--bs-CR-orange-2);}
 
-#TypeB-BG {background: var(--bs-CR-black);}
+#TypeB-BG {background: linear-gradient(165deg, #4b4b4b 50%, #2f3034 65%, var(--bs-CR-black) 100%);}
 
 #btIMG, #btSend-Icon{
-  fill: var(--bs-CR-orange-2);
-  color: var(--bs-CR-orange-2);
+  fill: var(--bs-CR-gray);
+  color: var(--bs-CR-gray);
 }
+
+#Copyright-Legend {color: var(--bs-CR-white)}
 
 /* Feed Scrollbar */
 
