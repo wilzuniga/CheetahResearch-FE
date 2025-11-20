@@ -38,19 +38,19 @@ img {
 }
 
 body {
-  backdrop-filter: brightness(167%) contrast(51%) invert(15%);
-  -webkit-backdrop-filter: brightness(167%) contrast(51%) invert(15%);
+  /* backdrop-filter: brightness(167%) contrast(51%) invert(15%);
+  -webkit-backdrop-filter: brightness(167%) contrast(51%) invert(15%); */
 }
 
 /* Some Chat Colors */
 
-#Chat-BG {background: linear-gradient(transparent 50%, var(--bs-CR-shadow) 85%, var(--bs-CR-gray) 110%);}
+#Chat-BG {background: linear-gradient(rgb(from var(--bs-CR-white) r g b / 0.4) 60%, var(--bs-CR-gray-dark) 110%);}
 
 #Header-BG {background: linear-gradient(160deg, var(--bs-CR-black) 0%, #2f3034 40%, var(--bs-CR-orange) 100%);}
 #Bot-Name{color: #aaa7aa;}
 #Bot-Status {color: var(--bs-CR-orange);}
 
-#EmptyF-BG {background: linear-gradient(160deg, var(--bs-CR-black) 35%, var(--bs-CR-gray) 100%);}
+#EmptyF-BG {background: linear-gradient(160deg, var(--bs-CR-gray-dark) 10%, var(--bs-CR-black) 70%);}
 
 #EmptyF-BG p:first-child {color: #aaa7aa;}
 #EmptyF-BG p:nth-child(2) {color: #fff;}
