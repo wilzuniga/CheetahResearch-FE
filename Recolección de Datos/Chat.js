@@ -407,12 +407,7 @@ function getMessage(message, imageSrc, link) {
     BotIMG.style.maxHeight = '100%';
 
     const card = document.createElement('div');
-    card.className = 'card d-inline-block';
-    card.style.maxWidth = '75%';
-    card.style.borderRadius = '15px';
-    card.style.borderBottomLeftRadius = '0px';
-    card.style.borderBottomWidth = 'medium';
-    card.style.background = 'var(--bs-CR-orange-2)';
+    card.className = 'bot-msg-card card d-inline-block px-2';
 
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
@@ -442,10 +437,8 @@ function getMessage(message, imageSrc, link) {
 
     // Procesar el mensaje como Markdown
     const messageDiv = document.createElement('div');
-    messageDiv.className = 'text-start card-text'; // Alineación a la izquierda
-    messageDiv.style.fontSize = '18px'; // Ajuste del tamaño de fuente
-    messageDiv.style.lineHeight = '1.5'; // Espaciado entre líneas para mejor legibilidad
-    messageDiv.style.color = '#FFFFFF'; // Color del texto
+    messageDiv.className = 'bot-msg-text text-start card-text'; // Alineación a la izquierda
+    
 
     try {
         let unescapedMessage = message.replace(/\\n/g, '\n');
@@ -467,10 +460,7 @@ function getMessage(message, imageSrc, link) {
     cardBody.appendChild(messageDiv);
 
     const h4 = document.createElement('h4');
-    h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
-    h4.style.marginTop = '0px';
-    h4.style.color = '#555155';
-    h4.style.fontFamily = "League Spartan";
+    h4.className = 'bot-msg-date d-flex align-self-start justify-content-end order-3 card-subtitle text-end mt-0';
     h4.textContent = new Intl.DateTimeFormat('es-419', options).format(new Date());
     h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
 
