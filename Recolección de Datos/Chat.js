@@ -85,6 +85,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
             //Calcular newHeight
             if (newHeight > maxHeight) {//El height no puede pasarse de maxHeight 
                 newHeight = maxHeight;
+            } else if (newHeight < maxHeight) {
+                newHeight = 'auto';
+            } else {
+                newHeight = initHeight;
             }
             //Cambiar height
             messageInput.style.height = newHeight + 'px';
