@@ -480,35 +480,39 @@ function getMessage(message, imageSrc, link) {
 
 //Funciones cambiar colores de botones al soltar botón (móviles)
 document.getElementById('btIMG-Cont').addEventListener('touchstart', function () {
-    this.style.background = 'var(--bs-CR-orange-2)';
+    btIMG = document.getElementById('btIMG');
+    btIMG.style.fill = 'var(--bs-CR-black)';
+    this.style.background = 'var(--bs-CR-orange)';
     this.style.transition = '0s ease-in-out';
 });
 document.getElementById('btIMG-Cont').addEventListener('touchend', function () {
+    btIMG = document.getElementById('btIMG');
+    btIMG.style.fill = 'var(--bs-CR-orange)';
     this.style.background = 'transparent';
     this.style.transition = '0.2s ease-in-out';
 });
 
 document.getElementById('btSend-Cont').addEventListener('touchstart', function () {
-    btSend = document.getElementById('btSend');
-    btSend.style.color = '#929292';
-    this.style.background = 'var(--bs-CR-black)';
+    btSend = document.getElementById('btSend-Icon');
+    btSend.style.color = 'var(--bs-CR-black)';
+    this.style.background = 'var(--bs-CR-orange)';
     this.style.transition = '0s ease-in-out';
 });
 document.getElementById('btSend-Cont').addEventListener('touchend', function () {
-    btSend = document.getElementById('btSend');
-    btSend.style.color = 'var(--bs-gray-dark)';
-    this.style.backgroundColor = 'var(--bs-CR-orange)';
+    btSend = document.getElementById('btSend-Icon');
+    btSend.style.color = 'var(--bs-CR-orange)';
+    this.style.background = 'linear-gradient(160deg, var(--bs-CR-black) 40%, var(--bs-CR-orange) 130%)';
     this.style.transition = '0.2s ease-in-out';
 });
 
-document.getElementById('btIMG').addEventListener('touchstart', function () {
-    this.style.color = 'var(--bs-CR-gray-dark)';
-    this.style.transition = '0s ease-in-out';
-});
-document.getElementById('btIMG').addEventListener('touchend', function () {
-    this.style.color = 'var(--bs-CR-orange)';
-    this.style.transition = '0.2s ease-in-out';
-});
+// document.getElementById('btIMG').addEventListener('touchstart', function () {
+//     this.style.color = 'var(--bs-CR-gray-dark)';
+//     this.style.transition = '0s ease-in-out';
+// });
+// document.getElementById('btIMG').addEventListener('touchend', function () {
+//     this.style.color = 'var(--bs-CR-orange)';
+//     this.style.transition = '0.2s ease-in-out';
+// });
 
 //Función Cargar Encuesta
 function load(study_id) {
