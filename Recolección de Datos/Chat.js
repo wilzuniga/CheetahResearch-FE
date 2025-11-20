@@ -189,7 +189,7 @@ document.getElementById('btIMG').addEventListener('click', function () {
 
 //Enviar un mensaje como entrevistador
 function sendMessage(message, imageSrc) {
-    //BUSCAR SI INCLUYE LA PALABRA "LISTO" Y REEMPLAZARLA POR PERFECTO
+ //BUSCAR SI INCLUYE LA PALABRA "LISTO" Y REEMPLAZARLA POR PERFECTO
 
 
 
@@ -206,9 +206,6 @@ function sendMessage(message, imageSrc) {
     }
 
     let options = {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
 
         hour: '2-digit',
         minute: '2-digit',
@@ -221,12 +218,7 @@ function sendMessage(message, imageSrc) {
     li.className = 'd-flex justify-content-end my-3';
 
     const card = document.createElement('div');
-    card.className = 'card d-inline-block';
-    card.style.maxWidth = '80%';
-    card.style.borderRadius = '15px';
-    card.style.borderBottomRightRadius = '0px';
-    card.style.borderBottomWidth = 'medium';
-    card.style.background = 'var(--bs-CR-white)';
+    card.className = 'user-msg-card card d-inline-block px-2';
 
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
@@ -244,17 +236,13 @@ function sendMessage(message, imageSrc) {
     }
 
     const p = document.createElement('p');
-    p.className = 'card-text text-start text-break d-flex order-2';
-    p.style.color = '#212529';
-    p.style.marginBottom = '3px';
+    p.className = 'user-msg-text card-text text-start text-break d-flex order-2 mb-1';
     p.textContent = message;
     p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios
 
     const h4 = document.createElement('h4');
-    h4.className = 'd-flex justify-content-end order-3 card-subtitle text-end';
-    h4.style.marginTop = '0px';
-    h4.style.color = '#5d647b';
-    h4.style.fontFamily = "League Spartan";
+    h4.className = 'user-msg-date d-flex justify-content-end order-3 card-subtitle text-end mt-0';
+    
     h4.textContent = new Intl.DateTimeFormat('es-419', options).format(new Date());
     h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
 
