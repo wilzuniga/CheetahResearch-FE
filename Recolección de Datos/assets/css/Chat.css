@@ -43,9 +43,9 @@ img {
 #EmptyF-BG {background: linear-gradient(160deg, var(--bs-CR-gray-dark) 10%, var(--bs-CR-black) 70%);}
 
 #EmptyF-BG p:first-child {color: #aaa7aa;}
-#EmptyF-BG p:nth-child(2) {color: #fff;}
+#EmptyF-BG p:nth-child(2) {color: var(--bs-CR-orange-2);}
 #EmptyF-BG img {filter: invert(70%); -webkit-filter: invert(70%);}
-#EmptyF-BG p:nth-child(4) {color: var(--bs-CR-gray);}
+#EmptyF-BG p:nth-child(4) {color: var(--bs-CR-white);}
 
 #TypeB-BG {background: linear-gradient(165deg, #4b4b4b 50%, #2f3034 75%, var(--bs-CR-black) 100%);}
 
@@ -63,14 +63,15 @@ img {
   max-width: 80%;
   border-radius: 15px;
   border-bottom-right-radius: 0;
-  background: linear-gradient(0deg, var(--bs-gray-500) -20%, var(--bs-CR-white) 50%);
+  background: linear-gradient(0deg, var(--bs-gray-dark) -30%, var(--bs-CR-gray) 50%);
+  /* background: linear-gradient(0deg, var(--bs-gray-500) -20%, var(--bs-CR-white) 50%); */
   /* background: var(--bs-CR-white); */
 }
 .user-msg-text {
-  color: var(--bs-CR-black);
+  color: var(--bs-CR-white);
 }
 .user-msg-date {
-  color : var(--bs-CR-muted);
+  color : var(--bs-gray-500);
   font-family: "League Spartan";
 }
 
@@ -78,19 +79,19 @@ img {
   max-width: 75%;
   border-radius: 15px;
   border-bottom-left-radius: 0px;
-  background: linear-gradient(0deg, var(--bs-CR-orange-2) -20%, var(--bs-CR-orange) 50%);
+  background: linear-gradient(0deg, var(--bs-CR-orange) -30%, var(--bs-CR-orange-2) 50%);
   /* background: var(--bs-CR-orange); */
 }
 .bot-msg-text {
   font-size: 18px;
   line-height: 1.5;
-  color: var(--bs-CR-white);
+  color: var(--bs-black);
 }
 .bot-msg-date {
-  color: var(--bs-CR-black);
+  color: var(--bs-gray-700);
   font-family: "League Spartan";
 }
-#Typing-Msg-bubble {background: linear-gradient(0deg, var(--bs-CR-orange-2) -20%, var(--bs-CR-orange) 50%);}
+#Typing-Msg-bubble {background: linear-gradient(0deg, var(--bs-CR-orange) -30%, var(--bs-CR-orange-2) 50%);}
 
 /* Feed Scrollbar */
 
