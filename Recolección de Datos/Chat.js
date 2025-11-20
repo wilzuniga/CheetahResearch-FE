@@ -206,7 +206,6 @@ function sendMessage(message, imageSrc) {
     }
 
     let options = {
-
         hour: '2-digit',
         minute: '2-digit',
 
@@ -218,7 +217,7 @@ function sendMessage(message, imageSrc) {
     li.className = 'd-flex justify-content-end my-3';
 
     const card = document.createElement('div');
-    card.className = 'user-msg-card card d-inline-block px-2';
+    card.className = 'user-msg-card d-inline-block px-2';
 
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
@@ -379,12 +378,10 @@ function getMessage(message, imageSrc, link) {
     }
 
     let options = {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
-        hour12: true,
+
+        hour12: true
     };
 
     const messageList = document.getElementById('Message-List');
@@ -407,7 +404,7 @@ function getMessage(message, imageSrc, link) {
     BotIMG.style.maxHeight = '100%';
 
     const card = document.createElement('div');
-    card.className = 'bot-msg-card card d-inline-block px-2';
+    card.className = 'bot-msg-card d-inline-block px-2';
 
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
@@ -437,7 +434,7 @@ function getMessage(message, imageSrc, link) {
 
     // Procesar el mensaje como Markdown
     const messageDiv = document.createElement('div');
-    messageDiv.className = 'bot-msg-text text-start card-text'; // Alineación a la izquierda
+    messageDiv.className = 'bot-msg-text text-start card-text mb-1'; // Alineación a la izquierda
     
 
     try {
