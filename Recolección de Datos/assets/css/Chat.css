@@ -36,6 +36,9 @@ img {
   background: linear-gradient(rgb(from var(--bs-CR-white) r g b / 0.4) 82%, rgb(from var(--bs-CR-black) r g b / 0.3) 90%, rgb(from var(--bs-CR-black) r g b / 1) 105%);
 }
 
+#overlayContent {background: linear-gradient(160deg, var(--bs-CR-gray-dark) 10%, var(--bs-CR-black) 70%);color:var(--bs-CR-black); }
+#overlayContent p {color:var(--bs-CR-orange-2); }
+
 #Header-BG {background: linear-gradient(160deg, var(--bs-CR-black) 0%, #2f3034 40%, var(--bs-CR-orange) 100%);}
 #Bot-Name{color: #aaa7aa;}
 #Bot-Status {color: var(--bs-CR-orange);}
