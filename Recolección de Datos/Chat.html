@@ -43,7 +43,7 @@
 </head>
 
 <body class="d-flex flex-column" style="height: 100%;background: url(&quot;assets/img/Main%20BG.png&quot;) center / cover;">
-    <div class="d-flex" id="overlay">
+    <!-- <div class="d-flex" id="overlay"> -->
         
     </div>
 
@@ -64,7 +64,7 @@
                             <div class="card-body text-center">
                                 <p class="card-text">Escribe algo para charlar con</p>
                                 <p class="card-text fw-bold" style="font-family: hedliner;font-size: 25px;color: #fff;">Cheetah Research</p>
-                                <img src="assets/img/Cheetah%20Paw%20Icon.svg" style="width: 60px;height: 60px;filter: invert(70%);">
+                                <img src="assets/img/Cheetah%20Paw%20Icon.svg" style="width: 60px;height: 60px;">
                                 <p class="card-text" style="padding: 30px;">
                                     <span style="font-family: League Spartan;">Pista: ¡Di Hola!</span>
                                 </p>
@@ -81,8 +81,11 @@
                                         <img class="BotIMG" id="typingMessage_BotIMG" src="" style="max-height: 100%;">
                                     </div>
                                 </div>
-                                <div class="card text-truncate justify-content-center align-items-center align-content-center d-inline-block" style="border-radius : 13px;border-bottom-left-radius: 0px;background: #454545;max-width: 75%;border-bottom-width: medium;">
-                                    <div class="card-body text-truncate justify-content-center align-items-center align-content-center text-break text-center d-flex flex-column p-2" style="width: 100%;height: 100%;"><img id="LoadingGif" src="assets/img/Loading%20Dots.gif" style="width: 100%;height: 150%;margin-right: 6px;" width="58" height="42"></div>
+
+                                <div id="Typing-Msg-bubble" class="card text-truncate justify-content-center align-items-center align-content-center d-inline-block" style="border-radius: 13px;border-bottom-left-radius: 0px;max-width: 75%;">
+                                    <div class="card-body text-truncate justify-content-center align-items-center align-content-center text-break text-center d-flex flex-column p-2" style="width: 100%;height: 100%;">
+                                        <img id="LoadingGif" src="assets/img/Loading%20Dots.gif" style="width: 100%;height: 150%;margin-right: 6px;" width="58" height="42">
+                                    </div>
                                 </div>
                             </li>
                         </ul>
@@ -92,11 +95,11 @@
         </div>
         <div class="row justify-content-center align-items-center align-content-center order-3" id="Type-Box" style="padding-top: 6px;padding-right: 5px;padding-bottom: 6px;padding-left: 5px;">
             <div class="col align-content-center" id="TypeB-Container" style="height: 100%;">
-                <div class="row" id="TypeB-BG" style="border-radius : 13px;">
+                <div class="row rounded-4" id="TypeB-BG">
                     <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-8 col-xxl-9 p-0" style="height: 100%;">
                         <textarea id="Message-Input" class="align-content-center border-0" placeholder="Escribir Mensaje..." style="height: 100%;width: 100%;border-radius : 13px;resize: none;padding-left: 10px;background: #ffffff;"></textarea>
                     </div>
-                    <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1 col-xxl-1 text-nowrap d-flex d-md-flex flex-fill justify-content-center align-items-center align-content-center p-0 col-1" id="btIMG-Cont" style="height: 100%;margin-right: 0px;border-top-left-radius: 10px;border-bottom-left-radius: 10px;">
+                    <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1 col-xxl-1 text-nowrap d-flex d-md-flex flex-fill justify-content-center align-items-center align-content-center p-0 col-1 rounded-4" id="btIMG-Cont" style="height: 100%;margin-right: 0px;">
                         <button class="btn d-flex justify-content-center align-items-center align-content-center mx-auto" id="btIMG" type="button" style="border-radius : 13px;width: 100%;height: 100%;padding: 0px 0px;padding-right: 0px;position: relative;overflow: hidden;">
                             <input type="file" accept="image/*" id="fileInput" style="display:none;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-image-fill" id="imageIcon" style="display: flex;">
@@ -105,7 +108,7 @@
                             <img class="flash animated" id="imageInput" style="display:none;max-width:150%;object-fit:cover;position:absolute;">
                         </button>
                     </div>
-                    <div class="col-auto col-sm-1 col-md col-lg-1 col-xl-1 col-xxl-1 text-nowrap d-md-flex justify-content-md-end p-0" id="btSend-Cont" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;min-width: 50px;height: 100%;margin-right: 0px;position: static;">
+                    <div class="col-auto col-sm-1 col-md col-lg-1 col-xl-1 col-xxl-1 text-nowrap d-md-flex justify-content-md-end p-0 rounded-4" id="btSend-Cont" style="min-width: 50px;height: 100%;margin-right: 0px;position: static;">
                         <button class="btn float-end h-100" id="btSend" type="button" style="border-radius : 13px;width: 100%;border-style: none;border-color: #2e2e2e;border-bottom-style: none;">
                             <i class="fab fa-telegram-plane" id="btSend-Icon"></i>
                         </button>
@@ -117,13 +120,13 @@
             <p><strong>Cheetah Research</strong> es una marca registrada de <strong>Marketing Total S.A.</strong>. Todos los derechos reservados.</p>
         </div>
     </div>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.4.2/tinycolor.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/bs-init.js"></script> -->
     <script src="Chat.js"></script>
-    <script>
+    <!-- <script>
         window.onload = initializePage;
-    </script>
+    </script> -->
 </body>
 
 </html>
