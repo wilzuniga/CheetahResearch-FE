@@ -1,20 +1,21 @@
 /* Default Properties */
 
-#btIMG-Cont, #btSend-Cont {
-  transition: 0.2s ease-in-out;
-}
+.user-msg-card, .bot-msg-card {transition: 0.2s ease-in-out;}
+#btIMG-Cont, #btSend-Cont {transition: 0.2s ease-in-out;}
+#EmptyF-BG {transition: 0.2s ease-in-out;}
 
 /* Hover Properties */
 
-#btIMG-Cont:hover, #btSend-Cont:hover {
-  background: var(--bs-CR-orange);
-  
-}
+.user-msg-card:hover, .bot-msg-card:hover {transform: translateY(-3px);} 
+
+#btIMG-Cont:hover, #btSend-Cont:hover {background: var(--bs-CR-orange);}
 
 #btIMG-Cont:hover #btIMG, #btSend-Cont:hover #btSend-Icon {
   fill: var(--bs-CR-black);
   color: var(--bs-CR-black);
 }
+
+#EmptyF-BG:hover {transform: scale(1.05);}
 
 /* Links */
 
