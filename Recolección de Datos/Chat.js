@@ -505,15 +505,6 @@ document.getElementById('btSend-Cont').addEventListener('touchend', function () 
     this.style.transition = '0.2s ease-in-out';
 });
 
-// document.getElementById('btIMG').addEventListener('touchstart', function () {
-//     this.style.color = 'var(--bs-CR-gray-dark)';
-//     this.style.transition = '0s ease-in-out';
-// });
-// document.getElementById('btIMG').addEventListener('touchend', function () {
-//     this.style.color = 'var(--bs-CR-orange)';
-//     this.style.transition = '0.2s ease-in-out';
-// });
-
 //Función Cargar Encuesta
 function load(study_id) {
     const preguntas = [];
