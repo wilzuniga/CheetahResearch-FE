@@ -54,7 +54,11 @@ body {
 
 #EmptyF-BG p:first-child {color: #aaa7aa;}
 #EmptyF-BG p:nth-child(2) {color: #fff;}
+#EmptyF-BG img {filter: invert(70%); -webkit-filter: invert(70%);}
 #EmptyF-BG p:nth-child(4) {color: var(--bs-CR-orange);}
+
+#Typing-Msg-bubble {background: var(--bs-CR-orange);}
+/* #Typing-Msg-bubble {background: linear-gradient(160deg, var(--bs-CR-black) -50%, var(--bs-CR-orange) 100%);} */
 
 #TypeB-BG {background: linear-gradient(165deg, #4b4b4b 50%, #2f3034 65%, var(--bs-CR-black) 100%);}
 
