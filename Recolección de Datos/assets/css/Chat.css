@@ -33,8 +33,7 @@ img {
 
 /* Chat Color filters */
 #Chat-BG{
-  backdrop-filter: opacity(0.45) brightness(178%) contrast(200%) invert(100%);
-  -webkit-backdrop-filter: opacity(0.45) brightness(178%) contrast(200%) invert(100%);
+  /* backdrop-filter: opacity(0.5) contrast(210%) invert(50%); */
 }
 
 body {
@@ -44,7 +43,13 @@ body {
 
 /* Some Chat Colors */
 
-#Chat-BG {background: linear-gradient(rgb(from var(--bs-CR-white) r g b / 0.4) 60%, var(--bs-CR-gray-dark) 110%);}
+#Chat-BG {
+  /* background: linear-gradient(rgb(from var(--bs-CR-white) r g b / 0.1) 70%, rgb(from var(--bs-black) r g b / 1) 100%); */
+  /* background: linear-gradient(rgb(from var(--bs-CR-white) r g b / 0.5) 87%, rgb(from var(--bs-CR-white) r g b / 1) 88%); */
+  background: linear-gradient(rgb(from var(--bs-CR-white) r g b / 0.3) 70%, #2f3034d4 90%, rgb(from var(--bs-CR-black) r g b / 1) 100%);
+
+  /* background: rgb(from var(--bs-CR-white) r g b / 0.4); */
+}
 
 #Header-BG {background: linear-gradient(160deg, var(--bs-CR-black) 0%, #2f3034 40%, var(--bs-CR-orange) 100%);}
 #Bot-Name{color: #aaa7aa;}
@@ -55,9 +60,7 @@ body {
 #EmptyF-BG p:first-child {color: #aaa7aa;}
 #EmptyF-BG p:nth-child(2) {color: #fff;}
 #EmptyF-BG img {filter: invert(70%); -webkit-filter: invert(70%);}
-#EmptyF-BG p:nth-child(4) {color: var(--bs-CR-orange);}
-
-
+#EmptyF-BG p:nth-child(4) {color: var(--bs-CR-gray);}
 
 #TypeB-BG {background: linear-gradient(165deg, #4b4b4b 50%, #2f3034 75%, var(--bs-CR-black) 100%);}
 
@@ -133,6 +136,6 @@ body {
 }
 
 #Message-Input::-webkit-scrollbar-thumb {
-  background: var(--bs-CR-gray);
+  background: var(--bs-CR-black);
   border-radius : 13px;
 }
