@@ -576,12 +576,12 @@ async function loadInterviewer(study_id) {
             const buttonText = isEnglishStudy(study_id) ? 'Start Chat' : 'Iniciar Chat';
             
             formContainer.innerHTML = `
-            <div id="overlayContent" class="text-wrap">
+            <div id="overlayContent" class="text-wrap rounded-4">
                 <img src="${imgPP}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
-                <p id="greeting">
-                ${data.interviewerGreeting}
+                <p id="greeting" class="pt-3">
+                    ${data.interviewerGreeting}
                 </p>
-                <button id="AceptarChat" class="btn" style="margin: 10px 10px 0 0;background: var(--bs-CR-black);">${buttonText}</button>
+                <button id="AceptarChat" class="btn" style="background: var(--bs-CR-black);">${buttonText}</button>
             </div>
             `;
 
@@ -611,8 +611,8 @@ async function loadInterviewer(study_id) {
         }
         
         formContainer.innerHTML = `
-            <div id="overlayContent" class="text-wrap">
-                <p>${unavailableMessage}</p>
+            <div id="overlayContent" class="text-wrap rounded-4">
+                <p class="pt-3">${unavailableMessage}</p>
             </div>
         `;
 
