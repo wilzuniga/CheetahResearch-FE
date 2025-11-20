@@ -60,12 +60,14 @@ body {
 #Typing-Msg-bubble {background: var(--bs-CR-orange);}
 /* #Typing-Msg-bubble {background: linear-gradient(160deg, var(--bs-CR-black) -50%, var(--bs-CR-orange) 100%);} */
 
-#TypeB-BG {background: linear-gradient(165deg, #4b4b4b 50%, #2f3034 65%, var(--bs-CR-black) 100%);}
+#TypeB-BG {background: linear-gradient(165deg, #4b4b4b 50%, #2f3034 75%, var(--bs-CR-black) 100%);}
 
 #btIMG, #btSend-Icon{
   fill: var(--bs-CR-orange);
   color: var(--bs-CR-orange);
 }
+
+#btSend-Cont {background: linear-gradient(160deg, var(--bs-CR-black) 40%, var(--bs-CR-orange) 130%);}
 
 #Copyright-Legend {color: var(--bs-CR-white)}
 
