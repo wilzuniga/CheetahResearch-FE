@@ -11,8 +11,8 @@
 }
 
 #btIMG-Cont:hover #btIMG, #btSend-Cont:hover #btSend-Icon {
-  fill: var(--bs-CR-gray-dark);
-  color: var(--bs-CR-gray-dark);
+  fill: var(--bs-CR-black);
+  color: var(--bs-CR-black);
 }
 
 /* Links */
