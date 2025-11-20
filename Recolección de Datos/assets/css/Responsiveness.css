@@ -442,9 +442,7 @@
 }
 
 #overlayContent {
-  background: var(--bs-CR-white);
   padding: 20px;
-  border-radius : 13px;
 
   width: 50%;
   max-width: 600px; /* Opcional: limita el ancho máximo */
