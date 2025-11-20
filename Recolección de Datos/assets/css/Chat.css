@@ -57,8 +57,7 @@ body {
 #EmptyF-BG img {filter: invert(70%); -webkit-filter: invert(70%);}
 #EmptyF-BG p:nth-child(4) {color: var(--bs-CR-orange);}
 
-#Typing-Msg-bubble {background: var(--bs-CR-orange);}
-/* #Typing-Msg-bubble {background: linear-gradient(160deg, var(--bs-CR-black) -50%, var(--bs-CR-orange) 100%);} */
+
 
 #TypeB-BG {background: linear-gradient(165deg, #4b4b4b 50%, #2f3034 75%, var(--bs-CR-black) 100%);}
 
@@ -70,6 +69,41 @@ body {
 #btSend-Cont {background: linear-gradient(160deg, var(--bs-CR-black) 40%, var(--bs-CR-orange) 130%);}
 
 #Copyright-Legend {color: var(--bs-CR-white)}
+
+/* Message Bubbles */
+.user-msg-card {
+  max-width: 80%;
+  border-radius: 15px;
+  border-bottom-right-radius: 0;
+  background: linear-gradient(0deg, var(--bs-gray-500) -20%, var(--bs-CR-white) 50%);
+  /* background: var(--bs-CR-white); */
+}
+.user-msg-text {
+  color: var(--bs-CR-black);
+}
+.user-msg-date {
+  color : var(--bs-CR-muted);
+  font-family: "League Spartan";
+}
+
+.bot-msg-card {
+  max-width: 75%;
+  border-radius: 15px;
+  border-bottom-left-radius: 0px;
+  background: linear-gradient(0deg, var(--bs-CR-orange-2) -20%, var(--bs-CR-orange) 50%);
+  /* background: var(--bs-CR-orange); */
+}
+.bot-msg-text {
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--bs-CR-white);
+}
+.bot-msg-date {
+  color: var(--bs-CR-black);
+  font-family: "League Spartan";
+}
+#Typing-Msg-bubble {background: linear-gradient(0deg, var(--bs-CR-orange-2) -20%, var(--bs-CR-orange) 50%);}
+/* #Typing-Msg-bubble {background: linear-gradient(160deg, var(--bs-CR-black) -50%, var(--bs-CR-orange) 100%);} */
 
 /* Feed Scrollbar */
 
