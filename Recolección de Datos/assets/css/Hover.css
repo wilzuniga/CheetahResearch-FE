@@ -1,41 +1,45 @@
 /* Default Properties */
 
-#btIMG-Cont {
-  background: transparent;
-  transition: 0.2s ease-in-out;
-}
-
-#btSend-Cont {
-  background: var(--bs-CR-orange);
-  transition: 0.2s ease-in-out;
-}
-
-#btSend {
-  color: var(--bs-gray);
-  transition: 0.2s ease-in-out;
-}
-
-#btIMG {
-  color: var(--bs-CR-orange);
-  transition: 0.2s ease-in-out;
-}
+.user-msg-card, .bot-msg-card {transition: 0.2s ease-in-out;}
+#btIMG-Cont, #btSend-Cont {transition: 0.2s ease-in-out;}
+#EmptyF-BG {transition: 0.2s ease-in-out;}
+#Message-Input {border:none; transition: 0.1s ease-in-out;}
 
 /* Hover Properties */
 
-#btSend-Cont:hover {
-  background: var(--bs-CR-black);
+.user-msg-card:hover, .bot-msg-card:hover {transform: translateY(-3px);} 
+
+#btIMG-Cont:hover, #btSend-Cont:hover {background: var(--bs-CR-orange);}
+
+#btIMG-Cont:hover #btIMG, #btSend-Cont:hover #btSend-Icon {
+  fill: var(--bs-CR-black);
+  color: var(--bs-CR-black);
 }
 
-#btSend-Cont:hover #btSend {
-  color: #929292;
+#EmptyF-BG:hover {transform: scale(1.05); cursor: default;}
+
+#Message-Input:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--bs-CR-white), 0 0 0 3px var(--bs-CR-orange-2);
 }
 
-#btIMG:hover {
-  color: var(--bs-CR-gray-dark);
+.btn {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
-
-#btIMG-Cont:hover {
-  background: var(--bs-CR-orange-2);
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+.btn:hover::before {
+  left: 100%;
 }
 
 /* Links */
@@ -56,3 +60,4 @@ a:hover {
 #AceptarChat:hover {
   color:var(--bs-CR-orange);
 }
+

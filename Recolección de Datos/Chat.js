@@ -85,6 +85,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
             //Calcular newHeight
             if (newHeight > maxHeight) {//El height no puede pasarse de maxHeight 
                 newHeight = maxHeight;
+            } else if (newHeight < maxHeight) {
+                newHeight = 'auto';
+            } else {
+                newHeight = initHeight;
             }
             //Cambiar height
             messageInput.style.height = newHeight + 'px';
@@ -189,7 +193,7 @@ document.getElementById('btIMG').addEventListener('click', function () {
 
 //Enviar un mensaje como entrevistador
 function sendMessage(message, imageSrc) {
-    //BUSCAR SI INCLUYE LA PALABRA "LISTO" Y REEMPLAZARLA POR PERFECTO
+ //BUSCAR SI INCLUYE LA PALABRA "LISTO" Y REEMPLAZARLA POR PERFECTO
 
 
 
@@ -206,10 +210,6 @@ function sendMessage(message, imageSrc) {
     }
 
     let options = {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-
         hour: '2-digit',
         minute: '2-digit',
 
@@ -221,12 +221,7 @@ function sendMessage(message, imageSrc) {
     li.className = 'd-flex justify-content-end my-3';
 
     const card = document.createElement('div');
-    card.className = 'card d-inline-block';
-    card.style.maxWidth = '80%';
-    card.style.borderRadius = '15px';
-    card.style.borderBottomRightRadius = '0px';
-    card.style.borderBottomWidth = 'medium';
-    card.style.background = 'var(--bs-CR-white)';
+    card.className = 'user-msg-card d-inline-block px-2';
 
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
@@ -244,17 +239,13 @@ function sendMessage(message, imageSrc) {
     }
 
     const p = document.createElement('p');
-    p.className = 'card-text text-start text-break d-flex order-2';
-    p.style.color = '#212529';
-    p.style.marginBottom = '3px';
+    p.className = 'user-msg-text card-text text-start text-break d-flex order-2 mb-1';
     p.textContent = message;
     p.innerHTML = message.replace(/\n/g, '<br>').replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length));//registra el newline y espacios
 
     const h4 = document.createElement('h4');
-    h4.className = 'd-flex justify-content-end order-3 card-subtitle text-end';
-    h4.style.marginTop = '0px';
-    h4.style.color = '#5d647b';
-    h4.style.fontFamily = "League Spartan";
+    h4.className = 'user-msg-date d-flex justify-content-end order-3 card-subtitle text-end mt-0';
+    
     h4.textContent = new Intl.DateTimeFormat('es-419', options).format(new Date());
     h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
 
@@ -391,12 +382,10 @@ function getMessage(message, imageSrc, link) {
     }
 
     let options = {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
-        hour12: true,
+
+        hour12: true
     };
 
     const messageList = document.getElementById('Message-List');
@@ -419,12 +408,7 @@ function getMessage(message, imageSrc, link) {
     BotIMG.style.maxHeight = '100%';
 
     const card = document.createElement('div');
-    card.className = 'card d-inline-block';
-    card.style.maxWidth = '75%';
-    card.style.borderRadius = '15px';
-    card.style.borderBottomLeftRadius = '0px';
-    card.style.borderBottomWidth = 'medium';
-    card.style.background = 'var(--bs-CR-orange-2)';
+    card.className = 'bot-msg-card d-inline-block px-2';
 
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body text-break text-center d-flex flex-column p-2';
@@ -454,10 +438,8 @@ function getMessage(message, imageSrc, link) {
 
     // Procesar el mensaje como Markdown
     const messageDiv = document.createElement('div');
-    messageDiv.className = 'text-start card-text'; // Alineación a la izquierda
-    messageDiv.style.fontSize = '18px'; // Ajuste del tamaño de fuente
-    messageDiv.style.lineHeight = '1.5'; // Espaciado entre líneas para mejor legibilidad
-    messageDiv.style.color = '#FFFFFF'; // Color del texto
+    messageDiv.className = 'bot-msg-text text-start card-text mb-1'; // Alineación a la izquierda
+    
 
     try {
         let unescapedMessage = message.replace(/\\n/g, '\n');
@@ -479,10 +461,7 @@ function getMessage(message, imageSrc, link) {
     cardBody.appendChild(messageDiv);
 
     const h4 = document.createElement('h4');
-    h4.className = 'd-flex align-self-start justify-content-end order-3 card-subtitle text-end';
-    h4.style.marginTop = '0px';
-    h4.style.color = '#555155';
-    h4.style.fontFamily = "League Spartan";
+    h4.className = 'bot-msg-date d-flex align-self-start justify-content-end order-3 card-subtitle text-end mt-0';
     h4.textContent = new Intl.DateTimeFormat('es-419', options).format(new Date());
     h4.textContent = h4.textContent.replace('a.\u00A0m.', 'AM').replace('p.\u00A0m.', 'PM');
 
@@ -505,33 +484,28 @@ function getMessage(message, imageSrc, link) {
 
 //Funciones cambiar colores de botones al soltar botón (móviles)
 document.getElementById('btIMG-Cont').addEventListener('touchstart', function () {
-    this.style.background = 'var(--bs-CR-orange-2)';
+    btIMG = document.getElementById('btIMG');
+    btIMG.style.fill = 'var(--bs-CR-black)';
+    this.style.background = 'var(--bs-CR-orange)';
     this.style.transition = '0s ease-in-out';
 });
 document.getElementById('btIMG-Cont').addEventListener('touchend', function () {
+    btIMG = document.getElementById('btIMG');
+    btIMG.style.fill = 'var(--bs-CR-orange)';
     this.style.background = 'transparent';
     this.style.transition = '0.2s ease-in-out';
 });
 
 document.getElementById('btSend-Cont').addEventListener('touchstart', function () {
-    btSend = document.getElementById('btSend');
-    btSend.style.color = '#929292';
-    this.style.background = 'var(--bs-CR-black)';
+    btSend = document.getElementById('btSend-Icon');
+    btSend.style.color = 'var(--bs-CR-black)';
+    this.style.background = 'var(--bs-CR-orange)';
     this.style.transition = '0s ease-in-out';
 });
 document.getElementById('btSend-Cont').addEventListener('touchend', function () {
-    btSend = document.getElementById('btSend');
-    btSend.style.color = 'var(--bs-gray-dark)';
-    this.style.backgroundColor = 'var(--bs-CR-orange)';
-    this.style.transition = '0.2s ease-in-out';
-});
-
-document.getElementById('btIMG').addEventListener('touchstart', function () {
-    this.style.color = 'var(--bs-CR-gray-dark)';
-    this.style.transition = '0s ease-in-out';
-});
-document.getElementById('btIMG').addEventListener('touchend', function () {
-    this.style.color = 'var(--bs-CR-orange)';
+    btSend = document.getElementById('btSend-Icon');
+    btSend.style.color = 'var(--bs-CR-orange)';
+    this.style.background = 'linear-gradient(160deg, var(--bs-CR-black) 40%, var(--bs-CR-orange) 130%)';
     this.style.transition = '0.2s ease-in-out';
 });
 
@@ -602,12 +576,12 @@ async function loadInterviewer(study_id) {
             const buttonText = isEnglishStudy(study_id) ? 'Start Chat' : 'Iniciar Chat';
             
             formContainer.innerHTML = `
-            <div id="overlayContent" class="text-wrap">
+            <div id="overlayContent" class="text-wrap rounded-4">
                 <img src="${imgPP}" alt="Imagen del encuestador" style="width: 100px; height: 100px; border-radius: 50%;">
-                <p id="greeting">
-                ${data.interviewerGreeting}
+                <p id="greeting" class="pt-3">
+                    ${data.interviewerGreeting}
                 </p>
-                <button id="AceptarChat" class="btn" style="margin: 10px 10px 0 0;background: var(--bs-CR-black);">${buttonText}</button>
+                <button id="AceptarChat" class="btn" style="background: var(--bs-CR-black);">${buttonText}</button>
             </div>
             `;
 
@@ -637,8 +611,8 @@ async function loadInterviewer(study_id) {
         }
         
         formContainer.innerHTML = `
-            <div id="overlayContent" class="text-wrap">
-                <p>${unavailableMessage}</p>
+            <div id="overlayContent" class="text-wrap rounded-4">
+                <p class="pt-3">${unavailableMessage}</p>
             </div>
         `;
 
@@ -653,13 +627,14 @@ function endChat() {
     const messageInput = document.getElementById("Message-Input");
     const loadingMsg = document.getElementById("Typing-Msg");
     const btSend = document.getElementById("btSend");
-    const btIMG = document.getElementById("btIMG");
+    const btSendIcon = document.getElementById("btSend-Icon");
+    const btIMGIcon = document.getElementById("btIMG");
 
     // Mostrar placeholder en inglés o español según el estudio
     if (isEnglishStudy(study_id)) {
-        messageInput.placeholder = "Thanks for responding!";
+        messageInput.textContent = "Thanks for responding!";
     } else {
-        messageInput.placeholder = "¡Gracias por responder!";
+        messageInput.textContent = "¡Gracias por responder!";
     }
     
     loadingMsg.style.display = 'none';
@@ -668,8 +643,9 @@ function endChat() {
     btIMG.disabled = true;
 
     messageInput.parentElement.style.background = 'transparent';
+    messageInput.style.color = 'var(--bs-CR-white)';
     messageInput.style.background = 'transparent';
     messageInput.style.boxShadow = 'none';
-    btSend.style.color = 'var(--bs-CR-gray)';
-    btIMG.style.color = 'var(--bs-CR-gray)';
+    btSendIcon.style.color = 'var(--bs-CR-black)';
+    btIMGIcon.style.fill = 'var(--bs-CR-black)';
 }
