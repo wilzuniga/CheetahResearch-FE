@@ -627,13 +627,14 @@ function endChat() {
     const messageInput = document.getElementById("Message-Input");
     const loadingMsg = document.getElementById("Typing-Msg");
     const btSend = document.getElementById("btSend");
-    const btIMG = document.getElementById("btIMG");
+    const btSendIcon = document.getElementById("btSend-Icon");
+    const btIMGIcon = document.getElementById("btIMG");
 
     // Mostrar placeholder en inglés o español según el estudio
     if (isEnglishStudy(study_id)) {
-        messageInput.placeholder = "Thanks for responding!";
+        messageInput.textContent = "Thanks for responding!";
     } else {
-        messageInput.placeholder = "¡Gracias por responder!";
+        messageInput.textContent = "¡Gracias por responder!";
     }
     
     loadingMsg.style.display = 'none';
@@ -642,8 +643,9 @@ function endChat() {
     btIMG.disabled = true;
 
     messageInput.parentElement.style.background = 'transparent';
+    messageInput.style.color = 'var(--bs-CR-white)';
     messageInput.style.background = 'transparent';
     messageInput.style.boxShadow = 'none';
-    btSend.style.color = 'var(--bs-CR-muted)';
-    btIMG.style.fill = 'var(--bs-CR-muted)';
+    btSendIcon.style.color = 'var(--bs-CR-black)';
+    btIMGIcon.style.fill = 'var(--bs-CR-black)';
 }
