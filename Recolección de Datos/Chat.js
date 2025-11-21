@@ -644,6 +644,6 @@ function endChat() {
     messageInput.parentElement.style.background = 'transparent';
     messageInput.style.background = 'transparent';
     messageInput.style.boxShadow = 'none';
-    btSend.style.color = 'var(--bs-CR-gray)';
-    btIMG.style.color = 'var(--bs-CR-gray)';
+    btSend.style.color = 'var(--bs-CR-muted)';
+    btIMG.style.fill = 'var(--bs-CR-muted)';
 }
